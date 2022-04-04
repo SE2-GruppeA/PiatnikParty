@@ -16,3 +16,5 @@
 Alina Ehart: Projektleiter, Dokumentationsmanager, Stellvertretender Testmanager
 
 Nejc Dolinšek: UI-Manager, Stellvertretender Dokumentations Manager
+
+Valon Berisa: Developer, Stellvertretender Architekt
