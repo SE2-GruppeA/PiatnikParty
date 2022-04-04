@@ -13,3 +13,4 @@
  Hier wird ein feature/issue implementiert/behoben und danach in den develop per pullrequest gemerged.
 
 ## Rollenaufteilung
+Alina Ehart: Projektleiter, Dokumentationsmanager, Stellvertretender Testmanager
