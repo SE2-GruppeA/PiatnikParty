@@ -22,3 +22,5 @@ Valon Berisa: Developer, Stellvertretender Software-Architekt
 Tine Šimenc: Developer, Tester
 
 Benedikt Senitza: Software-Architekt
+
+Anton Serschen: Tester, Stellvertretender UI-Manager
