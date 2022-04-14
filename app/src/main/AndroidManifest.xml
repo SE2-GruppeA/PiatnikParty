@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PiatinkPartyApp">
         <activity
+            android:name=".LobbyScreen"
+            android:exported="false"
+            android:label="@string/title_activity_lobby_screen"
+            android:theme="@style/Theme.PiatinkPartyApp.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
