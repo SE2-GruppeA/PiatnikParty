@@ -15,7 +15,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.piatinkpartyapp.databinding.ActivityLobbyScreenBinding;
 
-public class LobbyScreen extends AppCompatActivity {
+public class PlaySelectedGame extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityLobbyScreenBinding binding;
