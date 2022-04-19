@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PiatinkPartyApp" >
         <activity
-            android:name=".Einstellungen"
+            android:name=".screens.Einstellungen"
             android:exported="false" />
         <activity
-            android:name=".CreateGame"
+            android:name=".screens.CreateGame"
             android:exported="false" />
         <activity
-            android:name=".PlaySelectedGame"
+            android:name=".screens.PlaySelectedGame"
             android:exported="false"
             android:label="@string/title_activity_lobby_screen"
             android:theme="@style/Theme.PiatinkPartyApp.NoActionBar" />
