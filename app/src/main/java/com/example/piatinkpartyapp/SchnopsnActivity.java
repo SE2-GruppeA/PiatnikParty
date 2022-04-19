@@ -35,7 +35,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         addOnclickHandlers();
     }
 
-    public void addAllViews(){
+    public void addAllViews() {
         arrowBtn = findViewById(R.id.arrowBtn);
         exitBtn = findViewById(R.id.exitBtn);
         scoreTxt = findViewById((R.id.scoreTxt));
@@ -43,7 +43,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         voteBtn = findViewById(R.id.voteBtn);
     }
 
-    public void addOnclickHandlers(){
+    public void addOnclickHandlers() {
         arrowBtn.setOnClickListener(this);
         exitBtn.setOnClickListener(this);
         scoreboardBtn.setOnClickListener(this);
@@ -52,13 +52,13 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        if(view == arrowBtn){
+        if (view == arrowBtn) {
             showSideDrawer();
-        }else if(view == exitBtn){
+        } else if (view == exitBtn) {
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    switch (which){
+                    switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
                             //Yes button clicked
                             break;
@@ -73,14 +73,22 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setMessage("Möchtest du dieses Spiel wirklich verlassen?").setPositiveButton("Ja", dialogClickListener)
                     .setNegativeButton("Nein", dialogClickListener).show();
-        }else if(view == scoreboardBtn){
-        }else if(view == voteBtn){
-
+        } else if (view == scoreboardBtn) {
+            showScoreboard();
+        } else if (view == voteBtn) {
+            showVote();
         }
     }
 
-    public void showSideDrawer(){
+    public void showSideDrawer() {
         getSupportFragmentManager().beginTransaction().add(android.R.id.content, new SideDrawer()).commit();
     }
 
+    public void showScoreboard() {
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new ScoreBoard()).commit();
+    }
+
+    public void showVote() {
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new VotingDialog()).commit();
+    }
 }
