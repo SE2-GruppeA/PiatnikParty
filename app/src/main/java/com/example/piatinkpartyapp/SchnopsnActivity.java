@@ -50,9 +50,15 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         voteBtn.setOnClickListener(this);
     }
 
-
     @Override
     public void onClick(View view) {
+        if(view == arrowBtn){
+        }else if(view == exitBtn){
 
+        }else if(view == scoreboardBtn){
+
+        }else if(view == voteBtn){
+
+        }
     }
 }
