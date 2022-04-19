@@ -9,5 +9,6 @@ public class GameClient {
 
     public void setClientID(int clientID) {
         ClientID = clientID;
+        String x = "10";
     }
 }
