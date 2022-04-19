@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.piatinkpartyapp.networking.GameClient;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button BtnLobbyPlay;
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, CreateGame.class));
                 finish();
+
+                // TEST : connects to server and logs info
+                // TODO : how to listen to responses from server ?
+                GameClient g = new GameClient();
             }
         }));
 

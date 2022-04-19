@@ -7,38 +7,38 @@ import com.esotericsoftware.kryonet.Listener;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-class GameClient {
+public class GameClient {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
     private static GameClient INSTANCE = null;
-    private int id;
+    private int playerID;
     private Client client;
 
-    private GameClient() {
-        client = new Client();
-        // this line of code has to run before we start / bind / connect to the server !
-        NetworkHandler.register(client.getKryo());
-        client.start();
-        try {
-            client.connect(10000, NetworkHandler.GAMESERVER_IP, NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        this.id = client.getID();
-        startListener();
 
 
+
+    public GameClient() {
+
+        // we to start this in a new thread, so we don't block the main Thread!
+        new Thread(()->{
+            client = new Client();
+            // this line of code has to run before we start / bind / connect to the server !
+            NetworkHandler.register(client.getKryo());
+            client.start();
+            try {
+                client.connect(10000, NetworkHandler.GAMESERVER_IP, NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            this.playerID = client.getID();
+            startListener();
+        }).start();
     }
 
     private void startListener() {
         client.addListener(new Listener() {
             @Override
             public void connected(Connection connection) {
-                try {
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 super.connected(connection);
             }
 
@@ -56,11 +56,23 @@ class GameClient {
             @Override
             public void received(Connection connection, Object object) {
                 try {
+                    if (object instanceof Packets.Response.ConnectedSuccessfully) {
+                        Packets.Response.ConnectedSuccessfully response =
+                                (Packets.Response.ConnectedSuccessfully) object;
 
+                        // TODO: notify UI
+                        if (response.isConnected && playerID == response.playerID) {
+                            LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
+                                    ", Client ID within game: " + response.playerID);
+                        } else {
+                            LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
+
 }

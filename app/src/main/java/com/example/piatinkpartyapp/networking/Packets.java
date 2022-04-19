@@ -8,7 +8,6 @@ NOTES :
  */
 class Packets {
 
-
     public static class Requests{
 
     }
@@ -18,8 +17,7 @@ class Packets {
             int playerID;
             boolean isConnected;
 
-            public ConnectedSuccessfully() {
-            }
+            public ConnectedSuccessfully() { }
 
             public ConnectedSuccessfully(int playerID, boolean isConnected) {
                 this.playerID = playerID;

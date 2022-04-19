@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+
+
 public class GameServer {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
@@ -45,6 +47,7 @@ public class GameServer {
 
             @Override
             public void disconnected(Connection connection) {
+
                 super.disconnected(connection);
             }
 
@@ -58,7 +61,6 @@ public class GameServer {
             }
         });
     }
-
 }
 
 
