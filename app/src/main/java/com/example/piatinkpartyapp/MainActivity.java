@@ -9,7 +9,8 @@ import android.widget.Button;
 
 import com.example.piatinkpartyapp.screens.CreateGame;
 import com.example.piatinkpartyapp.screens.Einstellungen;
-import com.example.piatinkpartyapp.screens.PlaySelectedGame;
+import com.example.piatinkpartyapp.screens.PlayGame;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         BtnLobbyPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, PlaySelectedGame.class));
+                startActivity(new Intent(MainActivity.this, PlayGame.class));
                 finish();
             }
         });
