@@ -14,6 +14,7 @@ import com.example.piatinkpartyapp.R;
 public class CreateGame extends AppCompatActivity {
 
     private Button returnButton;
+    private Button BtnCreateGame;
     private ServerViewModel model;
 
     @Override
@@ -31,6 +32,21 @@ public class CreateGame extends AppCompatActivity {
                 finish();
             }
         });
+
+        //Button for Creating the Game
+        BtnCreateGame = (Button) findViewById(R. id. BtnSpielErstellen);
+        BtnCreateGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CreateGame.this, LobbyWaitingOtherPlayersScreen.class));
+                finish();
+            }
+        });
+
+
+
+
+
 
 
         model = new ViewModelProvider(this).get(ServerViewModel.class);
