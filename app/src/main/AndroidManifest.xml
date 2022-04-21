@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PiatinkPartyApp">
         <activity
+            android:name=".screens.LobbyWaitingOtherPlayersScreen"
+            android:exported="false" />
+        <activity
             android:name=".screens.PlayGame"
             android:exported="false" />
         <activity

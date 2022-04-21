@@ -49,6 +49,8 @@ public class CreateGame extends AppCompatActivity {
 
 
 
+
+
         model = new ViewModelProvider(this).get(ServerViewModel.class);
 
 
