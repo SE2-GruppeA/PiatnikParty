@@ -24,6 +24,12 @@ class Packets {
                 this.isConnected = isConnected;
             }
         }
+
+        //Empty message
+        public static class LobbyCreatedMessage {
+            public LobbyCreatedMessage(){
+            }
+        }
     }
 
 }

@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/activity_create_game.xml" value="0.25" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/activity_lobby_waiting_other_players_screen.xml" value="0.3625" />
+        <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/activity_main.xml" value="0.3625" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/activity_play_game.xml" value="0.2359375" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_lobby_after_creating_game.xml" value="0.3625" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_lobby_waiting_other_players_screen.xml" value="0.4" />

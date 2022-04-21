@@ -55,6 +55,11 @@ public class GameServer {
             public void received(Connection connection, Object object) {
                 try {
 
+                    //The Server receives the Message and decides what to do whit it
+                    if(object instanceof Packets.Response.LobbyCreatedMessage){
+
+                    }
+
                 } catch (Exception ex) {
 
                 }

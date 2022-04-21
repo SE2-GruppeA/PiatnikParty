@@ -15,6 +15,11 @@ public class GameClient {
 
 
 
+    //This methods send new packets to Server
+    public void createLobby(){
+        client.sendTCP(new Packets.Response.LobbyCreatedMessage());
+    }
+
 
     public GameClient() {
 
@@ -61,12 +66,18 @@ public class GameClient {
                                 (Packets.Response.ConnectedSuccessfully) object;
 
                         // TODO: notify UI
+
+
+
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
                         } else {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
+                    }
+                    else if(object instanceof Packets.Response.LobbyCreatedMessage){
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

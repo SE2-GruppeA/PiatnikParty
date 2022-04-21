@@ -10,12 +10,14 @@ import android.widget.Button;
 
 import com.example.piatinkpartyapp.MainActivity;
 import com.example.piatinkpartyapp.R;
+import com.example.piatinkpartyapp.networking.GameClient;
 
 public class CreateGame extends AppCompatActivity {
 
     private Button returnButton;
     private Button BtnCreateGame;
     private ServerViewModel model;
+    private GameClient gameClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,15 @@ public class CreateGame extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(CreateGame.this, LobbyWaitingOtherPlayersScreen.class));
                 finish();
+
+                //Creates newMessage  when pressing the button, sends to the Server
+                gameClient = new GameClient();
+                gameClient.createLobby();
+
+
             }
+
+
         });
 
 
