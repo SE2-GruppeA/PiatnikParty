@@ -52,10 +52,11 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_schnopsn);
 
         addAllViews();
         addOnclickHandlers();
+        initializeGame();
     }
 
     public void addAllViews() {
