@@ -40,5 +40,10 @@ public class SchnopsnDeck extends Deck{
         return Symbol.randomSymbol();
     }
 
+    public SchnopsnDeck(GameName gameName, int players) {
+        super(gameName, players);
+        this.trump = selectTrump();
+    }
+
 }
 
