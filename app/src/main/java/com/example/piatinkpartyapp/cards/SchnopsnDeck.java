@@ -12,6 +12,16 @@ public class SchnopsnDeck extends Deck{
     HashMap<CardValue, Integer> point_map;
     ArrayList<CardValue> schnopsnCardValues;
 
+    /*exclude cardvalues 7 to 9*/
+    private ArrayList<CardValue> getSchnopsnCardValues(){
+        schnopsnCardValues = new ArrayList<>();
+        for(CardValue v : CardValue.values()){
+            if( v!= CardValue.SIEBEN && v!= CardValue.ACHT && v != CardValue.NEUN){
+                schnopsnCardValues.add(v);
+            }
+        }
+        return schnopsnCardValues;
+    }
 
 }
 
