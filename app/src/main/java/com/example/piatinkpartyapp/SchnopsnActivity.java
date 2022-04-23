@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManager;
@@ -18,9 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SchnopsnActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView arrowBtn;
@@ -119,5 +122,24 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
 
     public void showVote() {
         getSupportFragmentManager().beginTransaction().add(android.R.id.content, new VotingDialog()).commit();
+    }
+
+    /*Sample game setup
+    * creating corresponding deck
+    * set cards to imageviews
+    * get handcards
+    * set onlongclicklisteners to imageviews to interact with cards*/
+
+    public void initializeGame(){
+        deck = new SchnopsnDeck(GameName.Schnopsn, 1);
+        ArrayList<ImageView> handCardImageViews = new ArrayList<>();
+        handCardImageViews.add(handCardView1);
+        handCardImageViews.add(handCardView2);
+        handCardImageViews.add(handCardView3);
+        handCardImageViews.add(handCardView4);
+        handCardImageViews.add(handCardView5);
+        mixCardsBtn.setOnClickListener(this);
+        currentCard.setVisibility(View.INVISIBLE);
+        Card swapCard = deck.swappingCard();
     }
 }

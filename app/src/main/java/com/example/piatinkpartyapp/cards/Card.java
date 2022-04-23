@@ -4,11 +4,11 @@ package com.example.piatinkpartyapp.cards;
 * strings for front & backside define the picture that should be shown per card
 * boolean cheated for future check if the played card is a cheat-card*/
 public class Card {
-    Symbol symbol;
-    CardValue cardValue;
-    String backSide;
-    String frontSide;
-    Boolean cheated;
+    public Symbol symbol;
+    public CardValue cardValue;
+    public String backSide;
+    public String frontSide;
+    public Boolean cheated;
 
     public Card(Symbol symbol, CardValue cardValue){
         this.symbol = symbol;
