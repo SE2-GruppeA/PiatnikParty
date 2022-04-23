@@ -69,5 +69,16 @@ public class SchnopsnDeck extends Deck{
         }
         return points;
     }
+    /*creation of full cardvalue point mapping*/
+    public Map<CardValue, Integer> cardPoints() {
+        point_map = new HashMap<CardValue, Integer>();
+        Integer points = 0;
+        for (CardValue v : schnopsnCardValues) {
+            points = cardPoints(v);
+            point_map.put(v, points);
+        }
+
+        return point_map;
+    }
 }
 
