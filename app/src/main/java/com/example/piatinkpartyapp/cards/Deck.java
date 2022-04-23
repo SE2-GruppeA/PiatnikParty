@@ -16,6 +16,8 @@ public class Deck {
     public Deck(GameName gameName, int players){
         this.gameName = gameName;
         this.players = players;
+        this.cards = createCards();
+        this.deck = mixCards();
 
     }
     /*creating cards of each symbol & card-value
