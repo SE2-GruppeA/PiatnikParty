@@ -17,12 +17,27 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.SchnopsnDeck;
+
+import java.util.ArrayList;
+
 public class SchnopsnActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView arrowBtn;
+    ImageView handCardView1;
+    ImageView handCardView2;
+    ImageView handCardView3;
+    ImageView handCardView4;
+    ImageView handCardView5;
+    ImageView cardDeckView;
+    ImageView swapCardView;
     ImageButton exitBtn;
     TextView scoreTxt;
     Button scoreboardBtn;
     Button voteBtn;
+    Button mixCardsBtn;
+    public static SchnopsnDeck deck;
+    ArrayList<Card> handCards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
