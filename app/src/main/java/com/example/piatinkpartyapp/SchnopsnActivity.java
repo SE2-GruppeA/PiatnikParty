@@ -19,8 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
+import com.example.piatinkpartyapp.cards.Symbol;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -141,6 +143,19 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         handCardImageViews.add(handCardView5);
         currentCard.setVisibility(View.INVISIBLE);
         Card swapCard = deck.swappingCard();
+        setCardImage(swapCard.frontSide.toLowerCase(Locale.ROOT),swapCardView);
+
+        //request handcards
+        handCards = deck.getHandCards();
+        setCardImage("backside",cardDeckView);
+        int j = 0;
+        //set onclickListeners to handcards
+        for(ImageView imageView:handCardImageViews){
+
+            setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT),imageView);
+            j++;
+            handCardViewListener(imageView);
+        }
     }
     private static void setCardImage(String cardName, ImageView imgview){
         Integer rid = getResId(cardName);
@@ -158,5 +173,41 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
             return -1;
         }
+    }
+    //play card from handcards, displayed & set to currentCard
+    private static void play(Card c){
+        String s = c.frontSide.toLowerCase(Locale.ROOT);
+        setCardImage(s, currentCard);
+    }
+ /*longonclicklistener to handcards
+ * if longonclick to handcard, card gets played, if it is available (handcards showing the backside image are unavailable -checked via imageview description)*/
+    private void handCardViewListener(ImageView handCardView){
+        handCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                //currenCard view is only to be visible if there is a played card - invisible by default
+                currentCard.setVisibility(View.VISIBLE);
+                //card only playable if it is availalbe (not showing its backside)
+                if(!handCardView.getContentDescription().equals("backside")){
+                    String[] x = handCardView.getContentDescription().toString().split("_");
+
+                    //select selected card form handcards array list
+                    Card c = new Card(Symbol.randomSymbol(),CardValue.ACHT);
+                    for(Card d : handCards){
+                        if(d.symbol.name().equals(x[0].toUpperCase(Locale.ROOT)) && d.cardValue.name().equals(x[1].toUpperCase(Locale.ROOT))){
+                            c = handCards.get(handCards.indexOf(d));
+                        }
+                    }
+
+                    //play selected card, remove it from handcards & show backside of this card
+                    play(c);
+                    handCards.remove(c);
+                    setCardImage("backside",handCardView);
+
+
+                }
+                return false;
+            }
+        });
     }
 }
