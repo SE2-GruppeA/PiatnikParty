@@ -44,6 +44,30 @@ public class SchnopsnDeck extends Deck{
         super(gameName, players);
         this.trump = selectTrump();
     }
-
+    /*get game points per cardvalue*/
+    private Integer cardPoints(CardValue v) {
+        Integer points = 0;
+        switch (v.name()) {
+            case ("ZEHNER"):
+                points = 10;
+                break;
+            case ("UNTER"):
+                points = 2;
+                break;
+            case ("OBER"):
+                points = 3;
+                break;
+            case ("KOENIG"):
+                points = 4;
+                break;
+            case ("ASS"):
+                points = 11;
+                break;
+            default:
+                points = 0;
+                break;
+        }
+        return points;
+    }
 }
 
