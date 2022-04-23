@@ -28,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
         BtnLobbyPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, PlaySelectedGame.class));
-                finish();
+                /*startActivity(new Intent(MainActivity.this, PlaySelectedGame.class));
+                finish();*/
+                Intent intent = new Intent(MainActivity.this, SchnopsnActivity.class);
+                startActivity(intent);
             }
         });
 
