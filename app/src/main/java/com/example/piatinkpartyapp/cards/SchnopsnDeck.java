@@ -33,5 +33,6 @@ public class SchnopsnDeck extends Deck{
         return cards;
     }
 
+
 }
 
