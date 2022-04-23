@@ -10,7 +10,7 @@ import java.util.Collections;
 public class Deck {
     GameName gameName;
     ArrayList<Card> cards = new ArrayList<>();
-    ArrayList<Card> deck;
+    public ArrayList<Card> deck;
     int players;
 
     public Deck(GameName gameName, int players){

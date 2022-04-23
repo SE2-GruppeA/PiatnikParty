@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
@@ -156,6 +157,46 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
             j++;
             handCardViewListener(imageView);
         }
+        cardDeckView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+
+                if(deck.deck.size() > 0){
+                    if(handCards.size() < 5){
+                        Card c = deck.takeCard();
+                        handCards.add(c);
+                        for(ImageView i : handCardImageViews){
+                            if(i.getContentDescription().equals("backside")){
+                                setCardImage(c.frontSide.toLowerCase(Locale.ROOT),i);
+                                i.setContentDescription(c.frontSide.toLowerCase(Locale.ROOT));
+                                break;
+
+                            }
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(),"handcards full!", Toast.LENGTH_LONG).show();
+                    }
+
+                }else {
+                    if (handCards.size() < 5) {
+                        Card c = swapCard;
+                        handCards.add(c);
+                        for (ImageView i : handCardImageViews) {
+                            if (i.getContentDescription().equals("backside")) {
+                                setCardImage(c.frontSide.toLowerCase(Locale.ROOT), i);
+                                i.setContentDescription(c.frontSide.toLowerCase(Locale.ROOT));
+                                break;
+
+                            }
+                        }
+                        swapCardView.setVisibility(View.INVISIBLE);
+                        cardDeckView.setVisibility(View.INVISIBLE);
+                    }
+                }
+                return false;
+            }
+        });
     }
     private static void setCardImage(String cardName, ImageView imgview){
         Integer rid = getResId(cardName);
