@@ -14,23 +14,15 @@ import android.widget.TextView;
 
 import com.example.piatinkpartyapp.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CreateGameFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CreateGameFragment extends Fragment implements View.OnClickListener {
 
+    private Button BtnBack;
+    private Button BtnStartGame;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private String mParam1;
-    private String mParam2;
 
-    public CreateGameFragment() {
-        // Required empty public constructor
-    }
-
+    public CreateGameFragment(){}
     public static CreateGameFragment newInstance(String param1, String param2) {
         CreateGameFragment fragment = new CreateGameFragment();
         Bundle args = new Bundle();
@@ -39,30 +31,37 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
         fragment.setArguments(args);
         return fragment;
     }
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
 
     }
 
     @Override
     public void onClick(View view) {
+        if(view == BtnBack){
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }else if( view == BtnStartGame){
+            getActivity().getSupportFragmentManager().beginTransaction().replace(androidx.fragment.R.id.fragment_container_view_tag,new WaitingPlayersFragment()).commit();
 
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_main, container, false);
-        Button Btn = (Button) view.findViewById(R. id. LobbyStartGameBtn);
-        return view;
+        // Inflate the layout for this fragment
+        View root = inflater.inflate(R.layout.fragment_play_game, container, false);;
+        //add views
+        BtnBack = root.findViewById(R.id.BtnBack2);
+        BtnStartGame = root.findViewById(R. id. LobbyStartGameBtn);
+        //add onclick listeners
+        BtnBack.setOnClickListener(this);
+        BtnStartGame.setOnClickListener(this);
+
+        return root;
     }
 }
