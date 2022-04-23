@@ -10,14 +10,12 @@ import java.util.Collections;
 public class Deck {
     GameName gameName;
     ArrayList<Card> cards = new ArrayList<>();
-    public ArrayList<Card> deck;
+    ArrayList<Card> deck;
     int players;
 
     public Deck(GameName gameName, int players){
         this.gameName = gameName;
         this.players = players;
-        this.cards = createCards();
-        this.deck = mixCards();
 
     }
     /*creating cards of each symbol & card-value
@@ -30,35 +28,5 @@ public class Deck {
             }
         }
         return cards;
-    }
-    /*mixing order of cards in the deck
-    * checking functionality via logcat since order of deck cards isnt visile in antoher way*/
-    public ArrayList<Card> mixCards(){
-        Log.d("b4############",cards.toString());
-        Collections.shuffle(cards);
-        Log.d("after############",cards.toString());
-        return cards;
-    }
-    /*each player can request handcards --> array of cards is returned
-    * in basic case 5 cards special cases handled by inheritance with separate decks*/
-    public ArrayList<Card> getHandCards(){
-        ArrayList<Card> handCards = new ArrayList<>();
-        /*card is taken from deck & added to handcard arraylist, needs to be removed from deck to prevent duplicate cards*/
-        for(int i= 0; i<5; i++){
-            Card c = deck.get(i);
-            handCards.add(c);
-            deck.remove(c);
-        }
-        return handCards;
-    }
-    /*take new card from deck - uppermost card, return if & afterwards remove it from deck to prevent duplicated cards
-    * if deck is empty return null*/
-    public Card takeCard(){
-        if(deck.size() >0){
-            Card c = deck.get(0);
-            deck.remove(c);
-            return c;
-        }
-        return  null;
     }
 }
