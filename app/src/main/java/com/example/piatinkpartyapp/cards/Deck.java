@@ -51,4 +51,14 @@ public class Deck {
         }
         return handCards;
     }
+    /*take new card from deck - uppermost card, return if & afterwards remove it from deck to prevent duplicated cards
+    * if deck is empty return null*/
+    public Card takeCard(){
+        if(deck.size() >0){
+            Card c = deck.get(0);
+            deck.remove(c);
+            return c;
+        }
+        return  null;
+    }
 }
