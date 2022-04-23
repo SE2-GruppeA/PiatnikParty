@@ -22,6 +22,7 @@ import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -138,8 +139,24 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         handCardImageViews.add(handCardView3);
         handCardImageViews.add(handCardView4);
         handCardImageViews.add(handCardView5);
-        mixCardsBtn.setOnClickListener(this);
         currentCard.setVisibility(View.INVISIBLE);
         Card swapCard = deck.swappingCard();
+    }
+    private static void setCardImage(String cardName, ImageView imgview){
+        Integer rid = getResId(cardName);
+        imgview.setImageResource(rid);
+        imgview.setContentDescription(cardName);
+    }
+    public static int getResId(String resName) {
+
+        try {
+
+            Field idField = R.drawable.class.getDeclaredField(resName);
+            Log.d("##############",idField.getName());
+            return idField.getInt(idField);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }
