@@ -2,27 +2,28 @@ package com.example.piatinkpartyapp.screens;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.piatinkpartyapp.R;
 
-public class CreateGameFragment extends Fragment implements View.OnClickListener {
+public class CreateGameFragment extends Fragment implements View.OnClickListener{
 
-    private Button BtnBack;
-    private Button BtnStartGame;
+    private Button backBtn;
+    private Button startGameBtn;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private String mParam1;
+    private String mParam2;
+
     public CreateGameFragment(){}
+
     public static CreateGameFragment newInstance(String param1, String param2) {
         CreateGameFragment fragment = new CreateGameFragment();
         Bundle args = new Bundle();
@@ -31,37 +32,39 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View root = inflater.inflate(R.layout.fragment_create_game, container, false);;
+        //add views
+        backBtn = root.findViewById(R.id.BtnBack);
+        startGameBtn = root.findViewById(R. id. StartGameBtn);
+
+        //add onclick listeners
+        backBtn.setOnClickListener(this);
+        startGameBtn.setOnClickListener(this);
+
+        return root;
     }
 
     @Override
     public void onClick(View view) {
-        if(view == BtnBack){
+
+        if(view == backBtn){
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        }else if( view == BtnStartGame){
+        }else if (view == startGameBtn){
             getActivity().getSupportFragmentManager().beginTransaction().replace(androidx.fragment.R.id.fragment_container_view_tag,new WaitingPlayersFragment()).commit();
-
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_play_game, container, false);;
-        //add views
-        BtnBack = root.findViewById(R.id.BtnBack2);
-        BtnStartGame = root.findViewById(R. id. LobbyStartGameBtn);
-        //add onclick listeners
-        BtnBack.setOnClickListener(this);
-        BtnStartGame.setOnClickListener(this);
-
-        return root;
     }
 }

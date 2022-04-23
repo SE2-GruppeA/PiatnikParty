@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if(view == GameRulesBtn){
             showGameRulesFragment();
         }
-
     }
 
     public void addAllMainActivityViews(){
