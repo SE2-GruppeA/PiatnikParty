@@ -36,6 +36,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
     Button scoreboardBtn;
     Button voteBtn;
     Button mixCardsBtn;
+    private static ImageView currentCard;
     public static SchnopsnDeck deck;
     ArrayList<Card> handCards;
 
@@ -56,6 +57,16 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         scoreTxt = findViewById((R.id.scoreTxt));
         scoreboardBtn = findViewById(R.id.scoreboardBtn);
         voteBtn = findViewById(R.id.voteBtn);
+
+        handCardView1 = findViewById(R.id.card1);
+        handCardView2 = findViewById(R.id.card2);
+        handCardView3 = findViewById(R.id.card3);
+        handCardView4 = findViewById(R.id.card4);
+        handCardView5 = findViewById(R.id.card5);
+        cardDeckView = findViewById(R.id.cardDeck);
+        currentCard = findViewById(R.id.currentCard);
+        swapCardView = findViewById(R.id.swapCard);
+        mixCardsBtn = findViewById(R.id.mixBtn);
     }
 
     public void addOnclickHandlers() {
