@@ -23,5 +23,15 @@ public class SchnopsnDeck extends Deck{
         return schnopsnCardValues;
     }
 
+    @Override
+    public ArrayList<Card> createCards(){
+        for(Symbol s : Symbol.values()){
+            for( CardValue v : getSchnopsnCardValues()){
+                cards.add(new Card(s,v));
+            }
+        }
+        return cards;
+    }
+
 }
 
