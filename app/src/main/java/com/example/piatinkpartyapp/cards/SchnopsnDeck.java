@@ -32,7 +32,13 @@ public class SchnopsnDeck extends Deck{
         }
         return cards;
     }
+    public Symbol getTrump() {
+        return trump;
+    }
 
+    public Symbol selectTrump() {
+        return Symbol.randomSymbol();
+    }
 
 }
 
