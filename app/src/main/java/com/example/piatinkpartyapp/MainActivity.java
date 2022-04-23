@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private Button BtnLobbyPlay;
     private Button createGame;
     private Button einstellungen;
+    private Button rules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, Einstellungen.class));
+            }
+        });
+        rules = (Button) findViewById(R.id.BtnGameRules);
+        rules.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,SchnopsnActivity.class));
             }
         });
 
