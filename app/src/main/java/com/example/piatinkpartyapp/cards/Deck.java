@@ -39,4 +39,16 @@ public class Deck {
         Log.d("after############",cards.toString());
         return cards;
     }
+    /*each player can request handcards --> array of cards is returned
+    * in basic case 5 cards special cases handled by inheritance with separate decks*/
+    public ArrayList<Card> getHandCards(){
+        ArrayList<Card> handCards = new ArrayList<>();
+        /*card is taken from deck & added to handcard arraylist, needs to be removed from deck to prevent duplicate cards*/
+        for(int i= 0; i<5; i++){
+            Card c = deck.get(i);
+            handCards.add(c);
+            deck.remove(c);
+        }
+        return handCards;
+    }
 }
