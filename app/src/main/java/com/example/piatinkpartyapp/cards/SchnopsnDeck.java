@@ -80,5 +80,25 @@ public class SchnopsnDeck extends Deck{
 
         return point_map;
     }
+    /*in schopsn there is a swapping card showing its image half under the deck, its symbol is trump & it can be swapped against the trump UNTER during the game*/
+    public Card swappingCard(){
+        Card swappingCard = null;
+        CardValue v = CardValue.randomValue();
+        // as the random symbol might not be part of the schnopsnCardValue arraylist it needs to be check if it is part
+        if(schnopsnCardValues.contains(v)){
+
+            for(Card c : deck){
+                if(c.cardValue == v && c.symbol == trump){
+                    swappingCard = c;
+                    deck.remove(c);
+                    return swappingCard;
+                }
+            }
+
+        }else { // if it isnt part, the function is called recurseivly again
+            return swappingCard();
+        }
+        return  null;
+    }
 }
 
