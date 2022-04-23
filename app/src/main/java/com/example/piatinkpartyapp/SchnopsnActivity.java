@@ -74,6 +74,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         exitBtn.setOnClickListener(this);
         scoreboardBtn.setOnClickListener(this);
         voteBtn.setOnClickListener(this);
+        mixCardsBtn.setOnClickListener(this);
     }
 
     @Override
@@ -103,6 +104,8 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
             showScoreboard();
         } else if (view == voteBtn) {
             showVote();
+        }else if(view == mixCardsBtn){
+            deck.mixCards();
         }
     }
 
