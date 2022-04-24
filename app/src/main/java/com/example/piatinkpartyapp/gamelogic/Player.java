@@ -1,14 +1,17 @@
 package com.example.piatinkpartyapp.gamelogic;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.example.piatinkpartyapp.cards.Card;
+
+import java.util.ArrayList;
 
 public class Player {
     private Integer id;
     private String playerName;
     private int points = 0;
-    // private ArrayList<Card> handcards;
-    //private ArrayList<Card> cardsWon;
-    //private Card cardPlayed;
+    private ArrayList<Card> handcards;
+    private ArrayList<Card> cardsWon;
+    private Card cardPlayed;
     private boolean finished;
     private boolean roundFinished;
     private boolean cheaten;
@@ -19,25 +22,25 @@ public class Player {
         this.playerName = playerName;
         this.clientConnection = connection;
     }
-    /*
-        public Card addHandcard(Card card) {
-            handcards.add(card);
-            return card;
-        }
 
-        public void removeHandcard(Card card) {
-            handcards.remove(card);
-        }
+    public Card addHandcard(Card card) {
+        handcards.add(card);
+        return card;
+    }
 
-        public Card addCardsWon(Card card) {
-            cardsWon.add(card);
-            return card;
-        }
+    public void removeHandcard(Card card) {
+        handcards.remove(card);
+    }
 
-        public void clearCardsWon() {
-            cardsWon.clear();
-        }
-    */
+    public Card addCardsWon(Card card) {
+        cardsWon.add(card);
+        return card;
+    }
+
+    public void clearCardsWon() {
+        cardsWon.clear();
+    }
+
     public void addPoints(int pointsWon) {
         points = points + pointsWon;
     }
@@ -58,15 +61,15 @@ public class Player {
     public void setPoints(int points) {
         this.points = points;
     }
-    /*
-        public ArrayList<Card> getHandcards() {
-            return handcards;
-        }
 
-        public void setHandcards(ArrayList<Card> handcards) {
-            this.handcards = handcards;
-        }
-    */
+    public ArrayList<Card> getHandcards() {
+        return handcards;
+    }
+
+    public void setHandcards(ArrayList<Card> handcards) {
+        this.handcards = handcards;
+    }
+
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
@@ -110,7 +113,7 @@ public class Player {
     public Connection getClientConnection() {
         return clientConnection;
     }
-/*
+
     public Card getCardPlayed() {
         return cardPlayed;
     }
@@ -118,5 +121,4 @@ public class Player {
     public void setCardPlayed(Card cardPlayed) {
         this.cardPlayed = cardPlayed;
     }
-    */
 }
