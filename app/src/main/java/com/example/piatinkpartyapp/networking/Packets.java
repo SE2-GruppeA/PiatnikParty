@@ -6,7 +6,7 @@ NOTES :
     If you create a constructor, which also sets the variables,
     then we also need an  empty constructor, else Kryonet throws an Exception !!!
  */
-class Packets {
+public class Packets {
 
     public static class Requests{
 
