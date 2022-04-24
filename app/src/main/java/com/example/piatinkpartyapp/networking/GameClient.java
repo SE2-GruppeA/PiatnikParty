@@ -71,6 +71,19 @@ public class GameClient {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
                     }
+                    if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
+                        Packets.Responses.ReceiveEndToEndChatMessage receivedMessage =
+                                (Packets.Responses.ReceiveEndToEndChatMessage) object;
+                        LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
+
+                        // TODO: notify UI.
+
+                    } else if (object instanceof Packets.Responses.ReceiveToAllChatMessage) {
+                        Packets.Responses.ReceiveToAllChatMessage receivedMessage =
+                                (Packets.Responses.ReceiveToAllChatMessage) object;
+                        LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
+                        // TODO: notify UI.
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

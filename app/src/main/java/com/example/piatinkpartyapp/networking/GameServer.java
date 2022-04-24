@@ -6,7 +6,6 @@ import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -52,7 +51,8 @@ public class GameServer {
                     super.connected(connection);
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    System.out.println("ERROR : " + ex.getMessage());
+
+                    LOG.warning("ERROR : " + ex.getMessage());
                 }
             }
 
@@ -65,7 +65,11 @@ public class GameServer {
             @Override
             public void received(Connection connection, Object object) {
                 try {
-
+                    if (object instanceof Packets.Requests.SendEndToEndChatMessage) {
+                        // TODO handleEndToEndMessage
+                    } else if (object instanceof Packets.Requests.SendToAllChatMessage) {
+                        // TODO handleSendToAllChatMessage
+                    }
                 } catch (Exception ex) {
 
                 }
@@ -77,12 +81,12 @@ public class GameServer {
         executorService.execute(() -> client.sendTCP(packet));
     }
 
-    public void sendPacketToAllExcept(int exceptTCP_ClientID, IPackets response){
-        executorService.execute(()-> server.sendToAllExceptTCP(exceptTCP_ClientID, response));
+    public void sendPacketToAllExcept(int exceptTCP_ClientID, IPackets response) {
+        executorService.execute(() -> server.sendToAllExceptTCP(exceptTCP_ClientID, response));
     }
 
-    public void sendPacketToAll(IPackets response){
-        executorService.execute(()->server.sendToAllTCP(response));
+    public void sendPacketToAll(IPackets response) {
+        executorService.execute(() -> server.sendToAllTCP(response));
     }
 
 
