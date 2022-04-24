@@ -117,4 +117,9 @@ public class GameClient {
         client.sendTCP(new Packets.Requests.StartGameMessage());
     }
 
+    // Call this method from client to start a game
+    public void startGame() {
+        client.sendTCP(new Packets.Requests.StartGameMessage());
+    }
+
 }
