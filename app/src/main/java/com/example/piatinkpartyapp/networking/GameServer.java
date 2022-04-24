@@ -58,7 +58,6 @@ public class GameServer {
 
             @Override
             public void disconnected(Connection connection) {
-
                 super.disconnected(connection);
             }
 
@@ -88,8 +87,6 @@ public class GameServer {
     public void sendPacketToAll(IPackets response) {
         executorService.execute(() -> server.sendToAllTCP(response));
     }
-
-
 }
 
 

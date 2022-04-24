@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // TEST : connects to server and logs info
                 // TODO : how to listen to responses from server ?
-                GameClient g = new GameClient();
+                GameClient g = new GameClient("192.168.1.15");
             }
         }));
 
