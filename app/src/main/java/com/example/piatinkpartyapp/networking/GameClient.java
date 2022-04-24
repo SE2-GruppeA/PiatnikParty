@@ -5,6 +5,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class GameClient {
@@ -12,14 +14,13 @@ public class GameClient {
     private static GameClient INSTANCE = null;
     private int playerID;
     private Client client;
-
-
+    private ExecutorService executorService;
 
 
     public GameClient() {
-
-        // we to start this in a new thread, so we don't block the main Thread!
-        new Thread(()->{
+        executorService = Executors.newFixedThreadPool(5);
+        executorService.execute(() -> {
+            // we to start this in a new thread, so we don't block the main Thread!
             client = new Client();
             // this line of code has to run before we start / bind / connect to the server !
             NetworkHandler.register(client.getKryo());
@@ -32,7 +33,9 @@ public class GameClient {
 
             this.playerID = client.getID();
             startListener();
-        }).start();
+
+        });
+
     }
 
     private void startListener() {
@@ -72,6 +75,13 @@ public class GameClient {
                     e.printStackTrace();
                 }
             }
+        });
+    }
+
+    // Generic function which should be used for sending packets to server!
+    public void sendPackage(IPackets packet) {
+        executorService.execute(() -> {
+            client.sendTCP(packet);
         });
     }
 
