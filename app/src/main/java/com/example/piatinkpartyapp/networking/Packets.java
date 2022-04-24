@@ -46,6 +46,16 @@ public class Packets {
                 this.cards = cards;
             }
         }
+
+        public static class NotifyPlayerYourTurn {
+            public int playerID;
+
+            public NotifyPlayerYourTurn() { }
+
+            public NotifyPlayerYourTurn(int playerID) {
+                this.playerID = playerID;
+            }
+        }
     }
 
 }

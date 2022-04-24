@@ -71,6 +71,8 @@ public class Game {
             AusgabeTest();
             resetRoundFinished();
             sendHandCards();
+            // notify first player that it is his turn
+            notifyPlayerYourTurn(players.get(0));
         }).start();
     }
 
@@ -89,5 +91,12 @@ public class Game {
             request.playerID = player.getClientConnection().getID();
             player.getClientConnection().sendTCP(request);
         }
+    }
+
+    // notify player: "it's your turn"
+    public void notifyPlayerYourTurn(Player player) {
+        Packets.Responses.NotifyPlayerYourTurn request = new Packets.Responses.NotifyPlayerYourTurn();
+        request.playerID =  player.getClientConnection().getID();
+        player.getClientConnection().sendTCP(request);
     }
 }
