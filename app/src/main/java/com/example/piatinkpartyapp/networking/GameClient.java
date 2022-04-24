@@ -58,9 +58,6 @@ public class GameClient {
                                 (Packets.Responses.ConnectedSuccessfully) object;
 
                         // TODO: notify UI
-
-
-
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
@@ -76,6 +73,12 @@ public class GameClient {
 
                         // TODO: notify UI
                         LOG.info("Handcards received for player: " + response.playerID);
+                    } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
+                        Packets.Responses.NotifyPlayerYourTurn response =
+                                (Packets.Responses.NotifyPlayerYourTurn) object;
+
+                        // TODO: notify UI
+                        LOG.info("It's your turn! player: " + response.playerID);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
