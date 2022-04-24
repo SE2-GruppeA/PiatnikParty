@@ -1,6 +1,10 @@
 package com.example.piatinkpartyapp.networking;
 
 
+import com.example.piatinkpartyapp.cards.Card;
+
+import java.util.ArrayList;
+
 /*
 NOTES :
     If you create a constructor, which also sets the variables,
@@ -28,6 +32,18 @@ public class Packets {
         //Empty message
         public static class LobbyCreatedMessage {
             public LobbyCreatedMessage(){
+            }
+        }
+
+        public static class SendHandCards {
+            public int playerID;
+            public ArrayList<Card> cards;
+
+            public SendHandCards() { }
+
+            public SendHandCards(int playerID, ArrayList<Card> cards) {
+                this.playerID = playerID;
+                this.cards = cards;
             }
         }
     }

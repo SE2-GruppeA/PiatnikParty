@@ -13,5 +13,6 @@ class NetworkHandler {
 
     public static void register(Kryo kryo) {
         kryo.register(Packets.Response.ConnectedSuccessfully.class);
+        kryo.register(Packets.Response.SendHandCards.class);
     }
 }

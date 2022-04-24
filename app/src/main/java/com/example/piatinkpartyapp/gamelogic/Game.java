@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.networking.GameServer;
+import com.example.piatinkpartyapp.networking.Packets;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -69,6 +70,7 @@ public class Game {
         new Thread(()->{
             AusgabeTest();
             resetRoundFinished();
+            sendHandCards();
         }).start();
     }
 
@@ -76,6 +78,16 @@ public class Game {
         LOG.info("ArrayList players: ");
         for (Player player : players) {
             LOG.info("Player: " + player.getId() + " - " + player.getPlayerName());
+        }
+    }
+
+    // send handcards to players
+    public void sendHandCards() {
+        for (Player player: players) {
+            Packets.Response.SendHandCards request = new Packets.Response.SendHandCards();
+            request.cards = deck.getHandCards();
+            request.playerID = player.getClientConnection().getID();
+            player.getClientConnection().sendTCP(request);
         }
     }
 }
