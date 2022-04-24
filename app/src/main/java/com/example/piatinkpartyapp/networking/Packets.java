@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /*
 NOTES :
     If you create a constructor, which also sets the variables,
-    then we also need an  empty constructor, else Kryonet throws an Exception !!!
+    then we also need an empty constructor, else Kryonet throws an Exception !!!
  */
 public class Packets {
 
@@ -16,7 +16,7 @@ public class Packets {
 
     }
 
-    public static class Response {
+    public static class Responses {
         public static class ConnectedSuccessfully {
             int playerID;
             boolean isConnected;

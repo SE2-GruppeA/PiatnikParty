@@ -17,7 +17,7 @@ public class GameClient {
 
     //This methods send new packets to Server
     public void createLobby(){
-        client.sendTCP(new Packets.Response.LobbyCreatedMessage());
+        client.sendTCP(new Packets.Responses.LobbyCreatedMessage());
     }
 
 
@@ -61,9 +61,9 @@ public class GameClient {
             @Override
             public void received(Connection connection, Object object) {
                 try {
-                    if (object instanceof Packets.Response.ConnectedSuccessfully) {
-                        Packets.Response.ConnectedSuccessfully response =
-                                (Packets.Response.ConnectedSuccessfully) object;
+                    if (object instanceof Packets.Responses.ConnectedSuccessfully) {
+                        Packets.Responses.ConnectedSuccessfully response =
+                                (Packets.Responses.ConnectedSuccessfully) object;
 
                         // TODO: notify UI
 
@@ -76,7 +76,7 @@ public class GameClient {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
                     }
-                    else if(object instanceof Packets.Response.LobbyCreatedMessage){
+                    else if(object instanceof Packets.Responses.LobbyCreatedMessage){
 
                     }
                 } catch (Exception e) {

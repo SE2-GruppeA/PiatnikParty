@@ -12,7 +12,7 @@ class NetworkHandler {
     static final int TCP_UDP = 54777;
 
     public static void register(Kryo kryo) {
-        kryo.register(Packets.Response.ConnectedSuccessfully.class);
-        kryo.register(Packets.Response.SendHandCards.class);
+        kryo.register(Packets.Responses.ConnectedSuccessfully.class);
+        kryo.register(Packets.Responses.SendHandCards.class);
     }
 }

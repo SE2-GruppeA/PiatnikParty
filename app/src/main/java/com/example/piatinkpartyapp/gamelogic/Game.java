@@ -84,7 +84,7 @@ public class Game {
     // send handcards to players
     public void sendHandCards() {
         for (Player player: players) {
-            Packets.Response.SendHandCards request = new Packets.Response.SendHandCards();
+            Packets.Responses.SendHandCards request = new Packets.Responses.SendHandCards();
             request.cards = deck.getHandCards();
             request.playerID = player.getClientConnection().getID();
             player.getClientConnection().sendTCP(request);
