@@ -59,9 +59,9 @@ public class GameClient {
             @Override
             public void received(Connection connection, Object object) {
                 try {
-                    if (object instanceof Packets.Response.ConnectedSuccessfully) {
-                        Packets.Response.ConnectedSuccessfully response =
-                                (Packets.Response.ConnectedSuccessfully) object;
+                    if (object instanceof Packets.Responses.ConnectedSuccessfully) {
+                        Packets.Responses.ConnectedSuccessfully response =
+                                (Packets.Responses.ConnectedSuccessfully) object;
 
                         // TODO: notify UI
                         if (response.isConnected && playerID == response.playerID) {

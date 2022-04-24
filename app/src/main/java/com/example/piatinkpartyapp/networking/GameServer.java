@@ -6,8 +6,10 @@ import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-
 
 
 public class GameServer {
@@ -15,14 +17,23 @@ public class GameServer {
 
     private Server server;
     private ArrayList<Connection> clients = new ArrayList<>();
+    private ExecutorService executorService;
 
     public void startNewGameServer() throws IOException {
-        server = new Server();
-        NetworkHandler.register(server.getKryo());
-        // this line of code has to run before we start / bind / connect to the server !
-        server.start();
-        server.bind(NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
-        startListener();
+        executorService = Executors.newFixedThreadPool(5);
+        executorService.execute(() -> {
+            server = new Server();
+            NetworkHandler.register(server.getKryo());
+            // this line of code has to run before we start / bind / connect to the server !
+            server.start();
+            try {
+                server.bind(NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            startListener();
+        });
+
     }
 
 
@@ -33,7 +44,7 @@ public class GameServer {
                 try {
                     LOG.info("Client with ID : " + connection.getID() + " just connected");
 
-                    Packets.Response.ConnectedSuccessfully response = new Packets.Response.ConnectedSuccessfully();
+                    Packets.Responses.ConnectedSuccessfully response = new Packets.Responses.ConnectedSuccessfully();
                     response.isConnected = clients.contains(connection) ? false : clients.add(connection);
                     response.playerID = connection.getID();
 
@@ -61,6 +72,20 @@ public class GameServer {
             }
         });
     }
+
+    public void sendPacket(Connection client, IPackets packet) {
+        executorService.execute(() -> client.sendTCP(packet));
+    }
+
+    public void sendPacketToAllExcept(int exceptTCP_ClientID, IPackets response){
+        executorService.execute(()-> server.sendToAllExceptTCP(exceptTCP_ClientID, response));
+    }
+
+    public void sendPacketToAll(IPackets response){
+        executorService.execute(()->server.sendToAllTCP(response));
+    }
+
+
 }
 
 
