@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp.networking;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.example.piatinkpartyapp.gamelogic.Game;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class GameServer {
 
     private Server server;
     private ArrayList<Connection> clients = new ArrayList<>();
+    private Game game;
 
     public void startNewGameServer() throws IOException {
         server = new Server();
@@ -22,6 +24,8 @@ public class GameServer {
         // this line of code has to run before we start / bind / connect to the server !
         server.start();
         server.bind(NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
+        // create new Game
+        game = new Game();
         startListener();
     }
 

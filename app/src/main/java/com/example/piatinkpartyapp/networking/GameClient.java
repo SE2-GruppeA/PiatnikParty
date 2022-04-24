@@ -13,14 +13,6 @@ public class GameClient {
     private int playerID;
     private Client client;
 
-
-
-    //This methods send new packets to Server
-    public void createLobby(){
-        client.sendTCP(new Packets.Responses.LobbyCreatedMessage());
-    }
-
-
     public GameClient() {
 
         // we to start this in a new thread, so we don't block the main Thread!
@@ -90,6 +82,11 @@ public class GameClient {
                 }
             }
         });
+    }
+
+    //This methods send new packets to Server
+    public void createLobby(){
+        client.sendTCP(new Packets.Responses.LobbyCreatedMessage());
     }
 
 }
