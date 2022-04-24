@@ -61,7 +61,8 @@ public class GameServer {
                     }
 
                 } catch (Exception ex) {
-
+                    ex.printStackTrace();
+                    System.out.println("ERROR : " + ex.getMessage());
                 }
             }
         });

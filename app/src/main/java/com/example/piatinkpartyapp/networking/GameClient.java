@@ -78,6 +78,12 @@ public class GameClient {
                     }
                     else if(object instanceof Packets.Responses.LobbyCreatedMessage){
 
+                    } else if (object instanceof Packets.Responses.SendHandCards) {
+                        Packets.Responses.SendHandCards response =
+                                (Packets.Responses.SendHandCards) object;
+
+                        // TODO: notify UI
+                        LOG.info("Handcards received for player: " + response.playerID);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
