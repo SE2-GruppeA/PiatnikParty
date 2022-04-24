@@ -62,6 +62,8 @@ public class GameServer {
                     //The Server receives the Message and decides what to do whit it
                     if(object instanceof Packets.Responses.LobbyCreatedMessage){
 
+                    } else if(object instanceof Packets.Requests.StartGameMessage){
+                        game.startGame();
                     }
 
                 } catch (Exception ex) {

@@ -11,7 +11,7 @@ public class NetworkHandler {
 
     public static void register(Kryo kryo) {
         //Requests
-
+        kryo.register(Packets.Requests.StartGameMessage.class);
 
         //Responses
         kryo.register(Packets.Responses.ConnectedSuccessfully.class);

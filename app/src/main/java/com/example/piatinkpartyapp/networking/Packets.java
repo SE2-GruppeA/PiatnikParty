@@ -11,11 +11,15 @@ NOTES :
     then we also need an empty constructor, else Kryonet throws an Exception !!!
  */
 public class Packets {
-
+    // Requests -> Message From Client to Server
     public static class Requests{
-
+        public static class StartGameMessage {
+            public StartGameMessage(){
+            }
+        }
     }
 
+    // Responses -> Message From Server to one Client or all Clients
     public static class Responses {
         public static class ConnectedSuccessfully {
             int playerID;
