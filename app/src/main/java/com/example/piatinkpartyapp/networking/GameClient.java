@@ -65,9 +65,6 @@ public class GameClient {
                                 (Packets.Responses.ConnectedSuccessfully) object;
 
                         // TODO: notify UI
-
-
-
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
