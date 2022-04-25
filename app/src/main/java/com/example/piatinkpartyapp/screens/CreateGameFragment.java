@@ -11,10 +11,8 @@ import android.widget.Button;
 
 import com.example.piatinkpartyapp.R;
 
-public class CreateGameFragment extends Fragment implements View.OnClickListener{
 
-    private Button backBtn;
-    private Button startGameBtn;
+public class CreateGameFragment extends Fragment implements View.OnClickListener{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -23,6 +21,9 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
     private String mParam2;
 
     public CreateGameFragment(){}
+
+    private Button ButtonBack;
+    private Button ButtonStartGame;
 
     public static CreateGameFragment newInstance(String param1, String param2) {
         CreateGameFragment fragment = new CreateGameFragment();
@@ -43,28 +44,18 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_create_game, container, false);;
-        //add views
-        backBtn = root.findViewById(R.id.BtnBack);
-        startGameBtn = root.findViewById(R. id. StartGameBtn);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        //add onclick listeners
-        backBtn.setOnClickListener(this);
-        startGameBtn.setOnClickListener(this);
-
-        return root;
+        return inflater.inflate(R.layout.fragment_create_game, container, false);
     }
 
     @Override
     public void onClick(View view) {
-
-        if(view == backBtn){
+        if(view == ButtonBack){
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        }else if (view == startGameBtn){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(androidx.fragment.R.id.fragment_container_view_tag,new WaitingPlayersFragment()).commit();
+        }else if (view == ButtonStartGame){
+            // Go to Next Screen
+           // getActivity().getSupportFragmentManager().beginTransaction().replace(androidx.fragment.R. id. fragment_container_view_tag, new WaitingPlayersFragment()).commit();
         }
     }
 }

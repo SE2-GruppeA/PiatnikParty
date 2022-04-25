@@ -43,8 +43,8 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_play_game, container, false);;
         //add views
