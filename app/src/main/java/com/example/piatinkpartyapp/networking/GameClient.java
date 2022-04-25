@@ -15,6 +15,7 @@ public class GameClient {
     private int playerID;
     private Client client;
     private ExecutorService executorService;
+    int x = 11;
 
     public GameClient(String gameServer_IP) {
         executorService = Executors.newFixedThreadPool(5);
