@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if(view == ShowTableBtn){
             showTableMainActivity();
         }else if(view == GameRulesBtn){
-
+            showGameRulesFragment();
         }
     }
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showGameRulesFragment(){
-
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new GameRulesFragment()).commit();
     }
 
     public void showTableMainActivity(){
