@@ -5,6 +5,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class GameClient {
@@ -12,20 +14,14 @@ public class GameClient {
     private static GameClient INSTANCE = null;
     private int playerID;
     private Client client;
+    private ExecutorService executorService;
 
 
-
-    //This methods send new packets to Server
-    public void createLobby(){
-        client.sendTCP(new Packets.Responses.LobbyCreatedMessage());
-    }
-
-
-    public GameClient(String serverIP) {
-
-        // we to start this in a new thread, so we don't block the main Thread!
-        new Thread(()->{
-            NetworkHandler.GAMESERVER_IP = serverIP;
+    public GameClient(String gameServer_IP) {
+        executorService = Executors.newFixedThreadPool(5);
+        executorService.execute(() -> {
+            NetworkHandler.GAMESERVER_IP = gameServer_IP;
+            // we to start this in a new thread, so we don't block the main Thread!!
             client = new Client();
             // this line of code has to run before we start / bind / connect to the server !
             NetworkHandler.register(client.getKryo());
@@ -38,7 +34,9 @@ public class GameClient {
 
             this.playerID = client.getID();
             startListener();
-        }).start();
+
+        });
+
     }
 
     private void startListener() {
@@ -67,9 +65,6 @@ public class GameClient {
                                 (Packets.Responses.ConnectedSuccessfully) object;
 
                         // TODO: notify UI
-
-
-
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
@@ -77,13 +72,30 @@ public class GameClient {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
                     }
-                    else if(object instanceof Packets.Responses.LobbyCreatedMessage){
+                    if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
+                        Packets.Responses.ReceiveEndToEndChatMessage receivedMessage =
+                                (Packets.Responses.ReceiveEndToEndChatMessage) object;
+                        LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
 
+                        // TODO: notify UI.
+
+                    } else if (object instanceof Packets.Responses.ReceiveToAllChatMessage) {
+                        Packets.Responses.ReceiveToAllChatMessage receivedMessage =
+                                (Packets.Responses.ReceiveToAllChatMessage) object;
+                        LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
+                        // TODO: notify UI.
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+        });
+    }
+
+    // Generic function which should be used for sending packets to server!
+    public void sendPackage(IPackets packet) {
+        executorService.execute(() -> {
+            client.sendTCP(packet);
         });
     }
 
