@@ -59,11 +59,14 @@ public class GameClient {
             @Override
             public void received(Connection connection, Object object) {
                 try {
-                    if (object instanceof Packets.Responses.ConnectedSuccessfully) {
-                        Packets.Responses.ConnectedSuccessfully response =
-                                (Packets.Responses.ConnectedSuccessfully) object;
+                    if (object instanceof Packets.Response.ConnectedSuccessfully) {
+                        Packets.Response.ConnectedSuccessfully response =
+                                (Packets.Response.ConnectedSuccessfully) object;
 
                         // TODO: notify UI
+
+
+
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
@@ -75,6 +78,11 @@ public class GameClient {
                         Packets.Responses.ReceiveEndToEndChatMessage receivedMessage =
                                 (Packets.Responses.ReceiveEndToEndChatMessage) object;
                         LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
+                    else if(object instanceof Packets.Responses.LobbyCreatedMessage){
+
+                    } else if (object instanceof Packets.Responses.SendHandCards) {
+                        Packets.Responses.SendHandCards response =
+                                (Packets.Responses.SendHandCards) object;
 
                         // TODO: notify UI.
 
@@ -83,6 +91,14 @@ public class GameClient {
                                 (Packets.Responses.ReceiveToAllChatMessage) object;
                         LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
                         // TODO: notify UI.
+                        // TODO: notify UI
+                        LOG.info("Handcards received for player: " + response.playerID);
+                    } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
+                        Packets.Responses.NotifyPlayerYourTurn response =
+                                (Packets.Responses.NotifyPlayerYourTurn) object;
+
+                        // TODO: notify UI
+                        LOG.info("It's your turn! player: " + response.playerID);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -96,6 +112,16 @@ public class GameClient {
         executorService.execute(() -> {
             client.sendTCP(packet);
         });
+    }
+
+    //This methods send new packets to Server
+    public void createLobby(){
+        client.sendTCP(new Packets.Responses.LobbyCreatedMessage());
+    }
+
+    // Call this method from client to start a game
+    public void startGame() {
+        client.sendTCP(new Packets.Requests.StartGameMessage());
     }
 
 }

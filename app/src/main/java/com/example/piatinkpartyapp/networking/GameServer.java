@@ -6,9 +6,8 @@ import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+
 
 
 public class GameServer {
@@ -16,6 +15,7 @@ public class GameServer {
 
     private Server server;
     private ArrayList<Connection> clients = new ArrayList<>();
+    private Game game;
     private ExecutorService executorService;
 
     public void startNewGameServer() throws IOException {
@@ -30,9 +30,10 @@ public class GameServer {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            // create new Game
+            game = new Game();
             startListener();
         });
-
     }
 
 
@@ -43,7 +44,7 @@ public class GameServer {
                 try {
                     LOG.info("Client with ID : " + connection.getID() + " just connected");
 
-                    Packets.Responses.ConnectedSuccessfully response = new Packets.Responses.ConnectedSuccessfully();
+                    Packets.Response.ConnectedSuccessfully response = new Packets.Response.ConnectedSuccessfully();
                     response.isConnected = clients.contains(connection) ? false : clients.add(connection);
                     response.playerID = connection.getID();
 
@@ -51,13 +52,13 @@ public class GameServer {
                     super.connected(connection);
                 } catch (Exception ex) {
                     ex.printStackTrace();
-
-                    LOG.warning("ERROR : " + ex.getMessage());
+                    System.out.println("ERROR : " + ex.getMessage());
                 }
             }
 
             @Override
             public void disconnected(Connection connection) {
+
                 super.disconnected(connection);
             }
 
@@ -68,13 +69,25 @@ public class GameServer {
                         // TODO handleEndToEndMessage
                     } else if (object instanceof Packets.Requests.SendToAllChatMessage) {
                         // TODO handleSendToAllChatMessage
-                    }
-                } catch (Exception ex) {
 
+                    //The Server receives the Message and decides what to do whit it
+                    if(object instanceof Packets.Responses.LobbyCreatedMessage){
+
+                    } else if(object instanceof Packets.Requests.StartGameMessage){
+                        game.startGame();
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("ERROR : " + ex.getMessage());
                 }
             }
         });
     }
+}
+
+
+
 
     public void sendPacket(Connection client, IPackets packet) {
         executorService.execute(() -> client.sendTCP(packet));

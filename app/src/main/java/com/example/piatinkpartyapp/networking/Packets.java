@@ -5,12 +5,17 @@ interface IPackets{
 }
 
 
+import com.example.piatinkpartyapp.cards.Card;
+
+import java.util.ArrayList;
+
 /*
 NOTES :
     If you create a constructor, which also sets the variables,
-    then we also need an  empty constructor, else Kryonet throws an Exception !!!!
+    then we also need an  empty constructor, else Kryonet throws an Exception !!!
  */
-class Packets {
+public class Packets {
+    // Requests -> Message From Client to Server
     public static class Requests{
         public static class SendEndToEndChatMessage implements IPackets {
             String message;
@@ -33,7 +38,14 @@ class Packets {
 
             public SendToAllChatMessage() {
             }
+        public static class StartGameMessage {
+            public StartGameMessage(){
+            }
+        }
+    }
 
+    // Responses -> Message From Server to one Client or all Clients
+    public static class Responses {
             public SendToAllChatMessage(String message, int from) {
                 this.message = message;
                 this.from = from;
@@ -78,6 +90,28 @@ class Packets {
             public ReceiveToAllChatMessage(String message, int from) {
                 this.message = message;
                 this.from = from;
+            }
+        }
+
+        public static class SendHandCards {
+            public int playerID;
+            public ArrayList<Card> cards;
+
+            public SendHandCards() { }
+
+            public SendHandCards(int playerID, ArrayList<Card> cards) {
+                this.playerID = playerID;
+                this.cards = cards;
+            }
+        }
+
+        public static class NotifyPlayerYourTurn {
+            public int playerID;
+
+            public NotifyPlayerYourTurn() { }
+
+            public NotifyPlayerYourTurn(int playerID) {
+                this.playerID = playerID;
             }
         }
     }
