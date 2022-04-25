@@ -24,3 +24,7 @@ Tine Šimenc: Developer, Tester
 Benedikt Senitza: Software-Architekt
 
 Anton Serschen: Tester, Stellvertretender UI-Manager
+
+## Daily Diaries
+
+Valon Berisa: https://aauklagenfurt-my.sharepoint.com/:w:/g/personal/valberisa_edu_aau_at/ETvxCkYEKQhEmAmfD1LYOMQBLb6wrnmxU1NxdGishLTKeA?e=IAfeSV
