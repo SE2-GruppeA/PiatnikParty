@@ -7,7 +7,7 @@ class NetworkHandler {
 
 
     //for testing now
-    public static final String GAMESERVER_IP = "192.168.1.15" ;
+    public static String GAMESERVER_IP = "192.168.1.15" ;
     static final int TCP_Port = 59555;
     static final int TCP_UDP = 54777;
 

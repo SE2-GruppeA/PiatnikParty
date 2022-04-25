@@ -12,7 +12,7 @@ class Packets {
 
     }
 
-    public static class Response {
+    public static class Responses {
         public static class ConnectedSuccessfully {
             int playerID;
             boolean isConnected;

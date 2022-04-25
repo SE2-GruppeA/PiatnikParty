@@ -33,7 +33,7 @@ public class GameServer {
                 try {
                     LOG.info("Client with ID : " + connection.getID() + " just connected");
 
-                    Packets.Response.ConnectedSuccessfully response = new Packets.Response.ConnectedSuccessfully();
+                    Packets.Responses.ConnectedSuccessfully response = new Packets.Responses.ConnectedSuccessfully();
                     response.isConnected = clients.contains(connection) ? false : clients.add(connection);
                     response.playerID = connection.getID();
 
@@ -56,7 +56,7 @@ public class GameServer {
                 try {
 
                     //The Server receives the Message and decides what to do whit it
-                    if(object instanceof Packets.Response.LobbyCreatedMessage){
+                    if(object instanceof Packets.Responses.LobbyCreatedMessage){
 
                     }
 
