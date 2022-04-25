@@ -54,6 +54,7 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         if(view == BtnBackGameRules){
+            //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
     }
