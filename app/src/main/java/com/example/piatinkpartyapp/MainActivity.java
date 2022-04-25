@@ -7,17 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.piatinkpartyapp.screens.CreateGame;
-import com.example.piatinkpartyapp.screens.Einstellungen;
-import com.example.piatinkpartyapp.screens.PlayGame;
-
+import com.example.piatinkpartyapp.networking.GameClient;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button BtnLobbyPlay;
     private Button createGame;
     private Button einstellungen;
-    private Button rules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         BtnLobbyPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, PlayGame.class));
+                startActivity(new Intent(MainActivity.this, PlaySelectedGame.class));
                 finish();
             }
         });
@@ -43,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, CreateGame.class));
                 finish();
+
+                // TEST : connects to server and logs info test!
+                // TODO : how to listen to responses from server ?
+                GameClient g = new GameClient("192.168.1.15");
             }
         }));
 
@@ -52,13 +52,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, Einstellungen.class));
-            }
-        });
-        rules = (Button) findViewById(R.id.BtnGameRules);
-        rules.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,SchnopsnActivity.class));
             }
         });
 
