@@ -1,12 +1,12 @@
 package com.example.piatinkpartyapp.screens;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.piatinkpartyapp.MainActivity;
 import com.example.piatinkpartyapp.R;
@@ -44,7 +44,7 @@ public class CreateGame extends AppCompatActivity {
                 finish();
 
                 //Creates newMessage  when pressing the button, sends to the Server
-                gameClient = new GameClient();
+                gameClient = new GameClient("");
                 gameClient.createLobby();
 
 
