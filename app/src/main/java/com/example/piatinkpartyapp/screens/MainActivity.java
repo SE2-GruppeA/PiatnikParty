@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button PlayGameBtn;
     private Button EinstellungenBtn;
     private Button GameRulesBtn;
+    private Button ShowTableBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +35,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             showPlayGameFragment();
         }else if(view == EinstellungenBtn){
             showEinstellungenFragment();
+        }else if(view == ShowTableBtn){
+            showTableMainActivity();
         }else if(view == GameRulesBtn){
-            showGameRulesFragment();
+
         }
     }
 
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PlayGameBtn = findViewById(R. id. BtnPlayGame);
         EinstellungenBtn = findViewById(R. id. BtnOptions);
         GameRulesBtn = findViewById( R. id. BtnGameRules);
+        ShowTableBtn = findViewById(R. id. btnShowTable);
     }
 
     public void addOnclickHandlersMainActivity() {
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PlayGameBtn.setOnClickListener(this);
         EinstellungenBtn.setOnClickListener(this);
         GameRulesBtn.setOnClickListener(this);
+        ShowTableBtn.setOnClickListener(this);
     }
 
     public void showCreateGameFragment() {
@@ -67,10 +72,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showGameRulesFragment(){
+
+    }
+
+    public void showTableMainActivity(){
         Intent a = new Intent(this, SchnopsnActivity.class);
         a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(a);
     }
-
-
 }
