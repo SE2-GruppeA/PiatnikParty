@@ -3,9 +3,12 @@ package com.example.piatinkpartyapp.networking;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.example.piatinkpartyapp.gamelogic.Game;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 
@@ -44,7 +47,7 @@ public class GameServer {
                 try {
                     LOG.info("Client with ID : " + connection.getID() + " just connected");
 
-                    Packets.Response.ConnectedSuccessfully response = new Packets.Response.ConnectedSuccessfully();
+                    Packets.Responses.ConnectedSuccessfully response = new Packets.Responses.ConnectedSuccessfully();
                     response.isConnected = clients.contains(connection) ? false : clients.add(connection);
                     response.playerID = connection.getID();
 
@@ -70,9 +73,6 @@ public class GameServer {
                     } else if (object instanceof Packets.Requests.SendToAllChatMessage) {
                         // TODO handleSendToAllChatMessage
 
-                    //The Server receives the Message and decides what to do whit it
-                    if(object instanceof Packets.Responses.LobbyCreatedMessage){
-
                     } else if(object instanceof Packets.Requests.StartGameMessage){
                         game.startGame();
                     }
@@ -84,10 +84,6 @@ public class GameServer {
             }
         });
     }
-}
-
-
-
 
     public void sendPacket(Connection client, IPackets packet) {
         executorService.execute(() -> client.sendTCP(packet));

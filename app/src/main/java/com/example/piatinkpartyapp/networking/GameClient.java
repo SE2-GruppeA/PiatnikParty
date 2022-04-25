@@ -59,9 +59,9 @@ public class GameClient {
             @Override
             public void received(Connection connection, Object object) {
                 try {
-                    if (object instanceof Packets.Response.ConnectedSuccessfully) {
-                        Packets.Response.ConnectedSuccessfully response =
-                                (Packets.Response.ConnectedSuccessfully) object;
+                    if (object instanceof Packets.Responses.ConnectedSuccessfully) {
+                        Packets.Responses.ConnectedSuccessfully response =
+                                (Packets.Responses.ConnectedSuccessfully) object;
 
                         // TODO: notify UI
 
@@ -74,24 +74,21 @@ public class GameClient {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
                     }
-                    if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
+                    else if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
                         Packets.Responses.ReceiveEndToEndChatMessage receivedMessage =
                                 (Packets.Responses.ReceiveEndToEndChatMessage) object;
                         LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
-                    else if(object instanceof Packets.Responses.LobbyCreatedMessage){
-
+                        // TODO: notify UI.
+                    } else if (object instanceof Packets.Responses.ReceiveToAllChatMessage) {
+                        Packets.Responses.ReceiveToAllChatMessage receivedMessage =
+                                (Packets.Responses.ReceiveToAllChatMessage) object;
+                        LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
+                        // TODO: notify UI
                     } else if (object instanceof Packets.Responses.SendHandCards) {
                         Packets.Responses.SendHandCards response =
                                 (Packets.Responses.SendHandCards) object;
 
                         // TODO: notify UI.
-
-                    } else if (object instanceof Packets.Responses.ReceiveToAllChatMessage) {
-                        Packets.Responses.ReceiveToAllChatMessage receivedMessage =
-                                (Packets.Responses.ReceiveToAllChatMessage) object;
-                        LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
-                        // TODO: notify UI.
-                        // TODO: notify UI
                         LOG.info("Handcards received for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
                         Packets.Responses.NotifyPlayerYourTurn response =
@@ -112,11 +109,6 @@ public class GameClient {
         executorService.execute(() -> {
             client.sendTCP(packet);
         });
-    }
-
-    //This methods send new packets to Server
-    public void createLobby(){
-        client.sendTCP(new Packets.Responses.LobbyCreatedMessage());
     }
 
     // Call this method from client to start a game
