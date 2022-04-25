@@ -93,7 +93,7 @@ public class GameClient {
     }
 
     // Generic function which should be used for sending packets to server!
-    public void sendPackage(IPackets packet) {
+    public void sendPacket(IPackets packet) {
         executorService.execute(() -> {
             client.sendTCP(packet);
         });
