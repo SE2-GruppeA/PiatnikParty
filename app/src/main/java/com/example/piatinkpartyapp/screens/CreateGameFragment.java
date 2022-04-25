@@ -60,10 +60,10 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        if(view == ButtonBack){
+        if(view == ButtonBack) {
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        }else if(view == ButtonStartLobby){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(androidx.fragment.R. id.fragment_container_view_tag,
+        }else if(view == ButtonStartLobby) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                     new WaitingPlayersFragment()).commit();
         }
     }
