@@ -1,6 +1,6 @@
 package com.example.piatinkpartyapp.networking;
 
-// will be used as some kind of placeholder for a generic packet send method
+// will be used as some kind of placeholder for a generic packet send method!
 interface IPackets{
     int x = 10;
 }
@@ -9,7 +9,7 @@ interface IPackets{
 /*
 NOTES :
     If you create a constructor, which also sets the variables,
-    then we also need an  empty constructor, else Kryonet throws an Exception !!!
+    then we also need an  empty constructor, else Kryonet throws an Exception !!!!
  */
 class Packets {
 

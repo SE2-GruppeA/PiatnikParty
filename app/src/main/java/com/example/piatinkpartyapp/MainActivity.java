@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CreateGame.class));
                 finish();
 
-                // TEST : connects to server and logs info test
+                // TEST : connects to server and logs info test!
                 // TODO : how to listen to responses from server ?
                 GameClient g = new GameClient("192.168.1.15");
             }

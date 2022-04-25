@@ -21,7 +21,7 @@ public class GameClient {
         executorService = Executors.newFixedThreadPool(5);
         executorService.execute(() -> {
             NetworkHandler.GAMESERVER_IP = gameServer_IP;
-            // we to start this in a new thread, so we don't block the main Thread!
+            // we to start this in a new thread, so we don't block the main Thread!!
             client = new Client();
             // this line of code has to run before we start / bind / connect to the server !
             NetworkHandler.register(client.getKryo());

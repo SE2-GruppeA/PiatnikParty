@@ -23,7 +23,7 @@ public class GameServer {
         executorService.execute(() -> {
             server = new Server();
             NetworkHandler.register(server.getKryo());
-            // this line of code has to run before we start / bind / connect to the server !
+            // this line of code has to run before we start / bind / connect to the server !!
             server.start();
             try {
                 server.bind(NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
