@@ -11,7 +11,6 @@ NOTES :
     then we also need an  empty constructor, else Kryonet throws an Exception !!!!
  */
 class Packets {
-
     public static class Requests{
         public static class SendEndToEndChatMessage implements IPackets {
             String message;
