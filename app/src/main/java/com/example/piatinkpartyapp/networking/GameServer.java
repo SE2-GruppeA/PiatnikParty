@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp.networking;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.example.piatinkpartyapp.gamelogic.Game;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,11 +12,13 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 
+
 public class GameServer {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
     private Server server;
     private ArrayList<Connection> clients = new ArrayList<>();
+    private Game game;
     private ExecutorService executorService;
 
     public void startNewGameServer() throws IOException {
@@ -30,9 +33,10 @@ public class GameServer {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            // create new Game
+            game = new Game();
             startListener();
         });
-
     }
 
 
@@ -51,13 +55,13 @@ public class GameServer {
                     super.connected(connection);
                 } catch (Exception ex) {
                     ex.printStackTrace();
-
-                    LOG.warning("ERROR : " + ex.getMessage());
+                    System.out.println("ERROR : " + ex.getMessage());
                 }
             }
 
             @Override
             public void disconnected(Connection connection) {
+
                 super.disconnected(connection);
             }
 
@@ -68,9 +72,14 @@ public class GameServer {
                         // TODO handleEndToEndMessage
                     } else if (object instanceof Packets.Requests.SendToAllChatMessage) {
                         // TODO handleSendToAllChatMessage
-                    }
-                } catch (Exception ex) {
 
+                    } else if(object instanceof Packets.Requests.StartGameMessage){
+                        game.startGame();
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("ERROR : " + ex.getMessage());
                 }
             }
         });
