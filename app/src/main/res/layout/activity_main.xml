@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".screens.MainActivity">
 
     <TextView
         android:id="@+id/welcomingText"
         android:layout_width="381dp"
         android:layout_height="90dp"
         android:autoText="false"
-        android:text="Welcome player to Piatnik party, where the fun begins."
+        android:text="@string/welcome_player_to_piatnik_party_where_the_fun_begins"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
@@ -27,8 +27,8 @@
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:layout_marginStart="104dp"
-        android:layout_marginTop="36dp"
-        android:text="Play selected game"
+        android:layout_marginTop="20dp"
+        android:text="@string/play_game"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomingText" />
 
@@ -38,7 +38,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="104dp"
         android:layout_marginTop="20dp"
-        android:text="Create game"
+        android:text="@string/create_game"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BtnPlayGame" />
 
@@ -48,7 +48,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="104dp"
         android:layout_marginTop="20dp"
-        android:text="options"
+        android:text="@string/options"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BtnCreateGame" />
 
@@ -58,8 +58,22 @@
         android:layout_height="50dp"
         android:layout_marginStart="104dp"
         android:layout_marginTop="20dp"
-        android:text="Game rules"
+        android:text="@string/game_rules"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BtnOptions" />
+
+    <Button
+        android:id="@+id/btnShowTable"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/show_table"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BtnGameRules"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
