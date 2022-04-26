@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new CreateGameFragment()).commit();
 
     }
-    public void showPlayGameFragment(){
+    public void showPlayGameFragment() {
         getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new PlayGameFragment()).commit();
     }
