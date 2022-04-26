@@ -11,7 +11,7 @@ import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnActivity;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button CreateGameBtn;
     private Button PlayGameBtn;
@@ -31,13 +31,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view == CreateGameBtn) {
             showCreateGameFragment();
-        }else if(view==PlayGameBtn){
+        } else if(view == PlayGameBtn) {
             showPlayGameFragment();
-        }else if(view == EinstellungenBtn){
+        } else if(view == EinstellungenBtn) {
             showEinstellungenFragment();
-        }else if(view == ShowTableBtn){
+        } else if(view == ShowTableBtn) {
             showTableMainActivity();
-        }else if(view == GameRulesBtn){
+        } else if(view == GameRulesBtn) {
             showGameRulesFragment();
         }
     }
@@ -59,20 +59,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showCreateGameFragment() {
-        //Broken Code
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new CreateGameFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new CreateGameFragment()).commit();
 
     }
     public void showPlayGameFragment(){
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new PlayGameFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new PlayGameFragment()).commit();
     }
 
     public void showEinstellungenFragment(){
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new EinstellungenFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new EinstellungenFragment()).commit();
     }
 
     public void showGameRulesFragment(){
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new GameRulesFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new GameRulesFragment()).commit();
     }
 
     public void showTableMainActivity(){
