@@ -15,6 +15,7 @@ public class GameClient {
     private int playerID;
     private Client client;
     private ExecutorService executorService;
+    int x = 11;
 
     public GameClient(String gameServer_IP) {
         executorService = Executors.newFixedThreadPool(5);
@@ -64,9 +65,6 @@ public class GameClient {
                                 (Packets.Responses.ConnectedSuccessfully) object;
 
                         // TODO: notify UI
-
-
-
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
@@ -109,6 +107,11 @@ public class GameClient {
         executorService.execute(() -> {
             client.sendTCP(packet);
         });
+    }
+
+    // Call this method from client to start a game
+    public void startGame() {
+        client.sendTCP(new Packets.Requests.StartGameMessage());
     }
 
     // Call this method from client to start a game

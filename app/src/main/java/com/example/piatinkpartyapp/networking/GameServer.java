@@ -61,7 +61,6 @@ public class GameServer {
 
             @Override
             public void disconnected(Connection connection) {
-
                 super.disconnected(connection);
             }
 
