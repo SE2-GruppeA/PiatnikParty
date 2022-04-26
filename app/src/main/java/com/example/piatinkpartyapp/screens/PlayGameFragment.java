@@ -1,15 +1,10 @@
 package com.example.piatinkpartyapp.screens;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.piatinkpartyapp.R;
+import androidx.fragment.app.Fragment;
 
 
 
@@ -42,17 +37,17 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    //@Override
+    //public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_play_game, container, false);;
+        //View root = inflater.inflate(R.layout.fragment_play_game, container, false);;
         //add views
-        BackBtn = root.findViewById(R.id.BtnBack);
+        //BackBtn = root.findViewById(R.id.BtnBack);
         //add onclick listeners
-        BackBtn.setOnClickListener(this);
-        return root;
-    }
+        //BackBtn.setOnClickListener(this);
+        //return root;
+    //}
 
     @Override
     public void onClick(View view) {
