@@ -16,7 +16,7 @@ import com.example.piatinkpartyapp.R;
  * Use the {@link PlayGameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PlayGameFragment extends Fragment {
+public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
     private Button backBtn;
 
@@ -67,15 +67,13 @@ public class PlayGameFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_play_game, container, false);
 
         backBtn = (Button) root.findViewById(R.id.returnButton);
+        backBtn.setOnClickListener(this);
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().commit();
-            }
-        });
-
-        // Inflate the layout for this fragment
         return root;
+    }
+
+    @Override
+    public void onClick(View view) {
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }
