@@ -3,15 +3,11 @@ package com.example.piatinkpartyapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -118,7 +114,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void showSideDrawer() {
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new SideDrawer()).commit();
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new Chat()).commit();
     }
 
     public void showScoreboard() {

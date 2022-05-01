@@ -11,10 +11,10 @@ import android.widget.ImageView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SideDrawer#newInstance} factory method to
+ * Use the {@link Chat#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SideDrawer extends Fragment implements View.OnClickListener {
+public class Chat extends Fragment implements View.OnClickListener {
     View root;
 
     ImageView arrowBackBtn;
@@ -27,7 +27,7 @@ public class SideDrawer extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    public SideDrawer() {
+    public Chat() {
         // Required empty public constructor
     }
 
@@ -40,8 +40,8 @@ public class SideDrawer extends Fragment implements View.OnClickListener {
      * @return A new instance of fragment SideDrawer.
      */
     // TODO: Rename and change types and number of parameters
-    public static SideDrawer newInstance(String param1, String param2) {
-        SideDrawer fragment = new SideDrawer();
+    public static Chat newInstance(String param1, String param2) {
+        Chat fragment = new Chat();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,7 +62,7 @@ public class SideDrawer extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root = inflater.inflate(R.layout.fragment_side_drawer, container, false);
+        root = inflater.inflate(R.layout.fragment_chat, container, false);
 
         //add views
         arrowBackBtn = root.findViewById(R.id.arrowBackBtn);
