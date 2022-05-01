@@ -77,9 +77,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setRecyclerViewWithDummyData() {
-        chatMessages.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm"));
-        chatMessages.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm"));
-        chatMessages.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm"));
+        chatMessages.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm",false));
+        chatMessages.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", true));
+        chatMessages.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm",false));
+        chatMessages.add(new ChatMessage("Player 2", "I good thx ! \uD83D\uDE02\uD83D\uDE02? ", "today at 10:38 pm",true));
+        chatMessages.add(new ChatMessage("Player 2", "I'm kinda hungry \uD83E\uDD24\uD83E\uDD24\uD83E\uDD24 ", "today at 10:39 pm",true));
+        chatMessages.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm",false));
     }
 
 
