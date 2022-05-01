@@ -11,12 +11,13 @@ import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnActivity;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button CreateGameBtn;
     private Button PlayGameBtn;
     private Button EinstellungenBtn;
     private Button GameRulesBtn;
+    private Button ShowTableBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +31,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view == CreateGameBtn) {
             showCreateGameFragment();
-        }else if(view==PlayGameBtn){
+        } else if(view == PlayGameBtn) {
             showPlayGameFragment();
-        }else if(view == EinstellungenBtn){
+        } else if(view == EinstellungenBtn) {
             showEinstellungenFragment();
-        }else if(view == GameRulesBtn){
+        } else if(view == ShowTableBtn) {
+            showTableMainActivity();
+        } else if(view == GameRulesBtn) {
             showGameRulesFragment();
         }
     }
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PlayGameBtn = findViewById(R. id. BtnPlayGame);
         EinstellungenBtn = findViewById(R. id. BtnOptions);
         GameRulesBtn = findViewById( R. id. BtnGameRules);
+        ShowTableBtn = findViewById(R. id. btnShowTable);
     }
 
     public void addOnclickHandlersMainActivity() {
@@ -51,26 +55,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PlayGameBtn.setOnClickListener(this);
         EinstellungenBtn.setOnClickListener(this);
         GameRulesBtn.setOnClickListener(this);
+        ShowTableBtn.setOnClickListener(this);
     }
 
     public void showCreateGameFragment() {
-        //Broken Code
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new CreateGameFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new CreateGameFragment()).commit();
 
     }
-    public void showPlayGameFragment(){
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new PlayGameFragment()).commit();
+    public void showPlayGameFragment() {
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new PlayGameFragment()).commit();
     }
 
     public void showEinstellungenFragment(){
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new EinstellungenFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new EinstellungenFragment()).commit();
     }
 
     public void showGameRulesFragment(){
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new GameRulesFragment()).commit();
+    }
+
+    public void showTableMainActivity(){
         Intent a = new Intent(this, SchnopsnActivity.class);
         a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(a);
     }
-
-
 }

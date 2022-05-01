@@ -20,6 +20,7 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.screens.MainActivity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
     Button scoreboardBtn;
     Button voteBtn;
     Button mixCardsBtn;
+    private Button backBtn;
     private static ImageView currentCard;
     public static SchnopsnDeck deck;
     ArrayList<Card> handCards;
@@ -51,6 +53,14 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_schnopsn);
 
         addAllViews();
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goBack();
+            }
+        });
+
         addOnclickHandlers();
         initializeGame();
     }
@@ -61,6 +71,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         scoreTxt = findViewById((R.id.scoreTxt));
         scoreboardBtn = findViewById(R.id.scoreboardBtn);
         voteBtn = findViewById(R.id.voteBtn);
+        backBtn = findViewById(R.id.backBtn);
 
         handCardView1 = findViewById(R.id.card1);
         handCardView2 = findViewById(R.id.card2);
@@ -108,7 +119,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
             showScoreboard();
         } else if (view == voteBtn) {
             showVote();
-        }else if(view == mixCardsBtn){
+        }else if(view == mixCardsBtn) {
             deck.mixCards();
         }
     }
@@ -171,11 +182,11 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
 
                             }
                         }
-                    }else{
+                    } else {
                         Toast.makeText(getApplicationContext(),"handcards full!", Toast.LENGTH_LONG).show();
                     }
 
-                }else {
+                } else {
                     if (handCards.size() < 5) {
                         Card c = swapCard;
                         handCards.add(c);
@@ -247,5 +258,10 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
                 return false;
             }
         });
+    }
+
+    private void goBack() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

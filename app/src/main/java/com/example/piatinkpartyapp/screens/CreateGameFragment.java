@@ -51,6 +51,7 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
         //add views
         ButtonBack = root.findViewById(R.id.buttonBack);
         ButtonStartLobby = root. findViewById(R. id. buttonStartLobby);
+
         //add onclick listeners
         ButtonBack.setOnClickListener(this);
         ButtonStartLobby.setOnClickListener(this);
@@ -60,9 +61,9 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        if(view == ButtonBack) {
+        if (view == ButtonBack) {
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        }else if(view == ButtonStartLobby) {
+        } else if(view == ButtonStartLobby) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                     new WaitingPlayersFragment()).commit();
         }

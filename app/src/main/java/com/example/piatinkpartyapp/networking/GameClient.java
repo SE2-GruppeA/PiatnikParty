@@ -15,6 +15,7 @@ public class GameClient {
     private int playerID;
     private Client client;
     private ExecutorService executorService;
+    int x = 11;
 
     public GameClient(String gameServer_IP) {
         executorService = Executors.newFixedThreadPool(5);
@@ -71,18 +72,28 @@ public class GameClient {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
                     }
-                    if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
+                    else if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
                         Packets.Responses.ReceiveEndToEndChatMessage receivedMessage =
                                 (Packets.Responses.ReceiveEndToEndChatMessage) object;
                         LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
-
                         // TODO: notify UI.
-
                     } else if (object instanceof Packets.Responses.ReceiveToAllChatMessage) {
                         Packets.Responses.ReceiveToAllChatMessage receivedMessage =
                                 (Packets.Responses.ReceiveToAllChatMessage) object;
                         LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
+                        // TODO: notify UI
+                    } else if (object instanceof Packets.Responses.SendHandCards) {
+                        Packets.Responses.SendHandCards response =
+                                (Packets.Responses.SendHandCards) object;
+
                         // TODO: notify UI.
+                        LOG.info("Handcards received for player: " + response.playerID);
+                    } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
+                        Packets.Responses.NotifyPlayerYourTurn response =
+                                (Packets.Responses.NotifyPlayerYourTurn) object;
+
+                        // TODO: notify UI
+                        LOG.info("It's your turn! player: " + response.playerID);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -96,6 +107,10 @@ public class GameClient {
         executorService.execute(() -> {
             client.sendTCP(packet);
         });
+    }
+    // Call this method from client to start a game
+    public void startGame() {
+        client.sendTCP(new Packets.Requests.StartGameMessage());
     }
 
 }

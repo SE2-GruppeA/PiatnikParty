@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/frameLayout4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".screens.GameRulesFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:id="@+id/buttonBackGameRules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:text="back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextTextSchnopsn"
+        android:layout_width="match_parent"
+        android:layout_height="5270dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="175dp"
+        android:layout_marginEnd="16dp"
+        android:editable="false"
+        android:ems="10"
+        android:gravity="start|top"
+
+        android:inputType="textMultiLine"
+
+        android:text="SCHNOPSN&#10;
+                Schnapsen ist ein Kartenspiel für in der Regel 2 Personen (es gibt auch das Dreierschnapsen für 3 und das Bauernschnapsen für 4 Personen), das wie jedes andere Kartenspiel bestimmten Spielregeln folgt. Der Ursprung des Spiels liegt in Österreich. Es zählt dort rechtlich nicht als Glücksspiel, sondern als Geschicklichkeitsspiel oder Gesellschaftsspiel.&#10;
+
+    Ziel des Spiels ist es, durch das Stechen der gegnerischen Karten und Ansagen möglichst rasch 66 Punkte oder mehr zu sammeln. Hat einer der Mitspieler 66 Punkte oder mehr erreicht bekommt er Siegespunkte.&#10;
+    Schnapsen wird mit einem Deck von 20 Karten (10, Bube, Dame, König, Ass) gespielt. Es gibt keine prinzipielle Rangfolge der Farben. Aber durch das Austeilen wird zu Beginn jedes Spieles eine Trumpf-Farbe (Atout) bestimmt, die dann für diese Spielrunde gilt und über allen anderen Farben steht. Den Karten werden folgende Werte zugeordnet:&#10;
+    Ass: 11&#10;
+    10: 10&#10;
+    König: 4&#10;
+    Dame/Ober: 3&#10;
+    Bube/Unter: 2&#10;
+    Die Spielenden wechseln sich beim Geben ab, die Karten werden verdeckt ausgeteilt. Beide Spieler bekommen fünf Karten und eine zusätzliche Karte wird aufgedeckt. Diese zusätzliche Karte bestimmt die Trumpffarbe (Atout). Der restliche Kartenstapel wird als Talon quer über diese Karte gelegt, sodass die Trumpfkarte zur Hälfte sichtbar bleibt; sie zählt als unterste Karte desTalons. Der Spieler, der nicht ausgeteilt hat, beginnt die Partie. Die Person, die an der Reihe ist, hat vier Möglichkeiten:&#10;
+    Eine Karte aus der Hand ausspielen: Die ausgespielte Karte kommt in die Tischmitte. Der zweite Spieler ist an der Reihe auszuspielen und kann somit die Karte des Gegners stechen oder wird selbst gestochen. Derjenige der den Stich macht, bekommt die beiden Karten und darf die Punktezahl zu den eigenen dazuzählen. Die Person, die den Stich gewonnen hat, hebt daraufhin die oberste Karte des Talons ab, ihr Gegner die nächste. Nachdem beide Spielenden ihr Blatt wieder auf fünf Karten ergänzt haben, spielt der Gewinner des Stichs zum nächsten Stich aus. Auf diese Weise setzt sich das Spiel fort, bis der Talon aufgebraucht ist. Ab dann gilt Farb- und Stichzwang.&#10;
+    Zudrehen: Glaubt der Spieler, dass er ohne weiteres Abheben die benötigte Punktezahl von 66 erreichen kann, so kann er zudrehen, indem er auf den Kartenstapel klickt. Hat ein Spielender zugedreht, wird ab diesem Zeitpunkt nicht mehr vom Kartenstapel abgehoben. Das Spiel verhält sich als ob der Abhebestapel aufgebraucht wäre, es herrscht also Farb- und Stichzwang.&#10;
+    Atout-Karte austauschen: Hält ein Spielender die niedrigste Atout-Karte, also den Atout-Buben in der Hand – sei es, dass er diese Karte bereits beim Austeilen oder sie erst beim Abheben vom Kartenstapel bzw. Talon erhalten hat – so darf er diese niedrigste Trumpfkarte gegen die offen aufliegende Trumpfkarte austauschen. Dafür zieht er den Atout Buben auf die Trumpfkarte unter dem Abhebestapel. Danach spielt er aus und die Partie geht normal weiter.&#10;
+    Ansagen: Hat ein Spielender König und Dame einer Farbe in der Hand wird ein Button angezeigt und der Spieler kann das entsprechenden Pärchen ansagen:&#10;
+    Handelt es sich um das Atout-Pärchen werden 40 Punkte angesagt&#10;
+    Handelt es sich um ein Pärchen in einer anderen Farbe werden 20 Punkte angesagt&#10;
+    Der Spieler bekommt die angesagte Punktezahl gutgeschrieben und kann sich entscheiden, ob er die Dame oder den König ausspielen möchte. Danach geht die Partie normal weiter.&#10;
+    Zu Beginn des Spieles herrscht weder Farb- noch Stichzwang. Das bedeutet: ein Spieler kann jede seiner Spielkarten ausspielen, sticht aber nur mit einer höheren Karte derselben Farbe oder einem Atout. Werden zwei Karten unterschiedlicher Farben ausgespielt (und keine der beiden Karten ist Atout) so sticht die Karte, die zuerst ausgespielt wurde. Beispiel: Karo ist Atout&#10;
+    Der erste Spieler spielt die Herz Dame aus, der zweite das Herz Ass -> die zweite Person macht den Stich (gleiche Farbe)&#10;
+    Die erste Mitspieler spielt den Herz Buben aus, der zweite das Kreuz As -> der erste Spieler macht den Stich (unterschiedliche Farbe)&#10;
+    Der erste Mitspieler spielt das Kreuz As aus, der zweite den Karo Buben -> der zweite Spieler gewinnt (Atout)&#10;
+    Glaubt ein Mitspieler, dass er ohne weiteres Abheben die benötigte Punktezahl von 66 erreichen kann, so kann er zudrehen, indem er auf den Abhebestapel klickt. In diesem Fall wird die Partie normal fortgesetzt, verhält sich aber so, als ob der Abhebestapel aufgebraucht wäre. Das bedeutet: der Spieler, der zugedreht hat, beginnt mit dem Ausspielen und
+    es wird nicht mehr abgehoben
+    es herrscht Farb- und Stichzwang&#10;
+    Achtung: Hat ein Spieler zugedreht, kann die Trumpfkarte nicht mehr ausgetauscht werden, weil sich das Spiel so verhält, als ob der Abhebestapel aufgebraucht wäre.&#10;
+    Wurde zugedreht, funktioniert die Endpunktevergabe anders als bei einem normalen Spiel: Dreht ein Spieler zu, so wird die Punktezahl des Gegners eingefroren. Das bedeutet: es gelten für die Endpunktevergabe Stiche des Gegners, die er nach dem Zudrehen macht nicht, sondern nur die Punktezahl, die er vor dem Zudrehen schon hatte.&#10;
+    Hatte der Gegner zum Zeitpunkt des Zudrehens noch keinen Stich, so gewinnt der Spieler drei Siegespunkte&#10;
+
+    Achtung: Der Spieler, der zudreht, muss mindestens die Punktezahl von 66 erreichen, sonst verliert er das Spiel!"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/editTextTextWattn"
+        android:layout_width="match_parent"
+        android:layout_height="5270dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="175dp"
+        android:layout_marginEnd="16dp"
+        android:editable="false"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+
+        android:textColor="@color/black"
+        android:text="WATTN&#10;
+                Watten kann man in allen erdenklichen Varianten, zu zweit, zu dritt, zu viert und zu sechst. Klassisch ist aber das Viererwatten, bei dem zwei Zweierteams gegeneinander spielen. Die Teampartner sitzen einander gegenüber. Jeder Spieler erhält vom Geber fünf Karten, der Geber wechselt nach jeder Runde im Uhrzeigersinn. Nur der links vom Geber sitzende Spieler und der Geber selbst dürfen die Karten anschauen, denn sie „sagen an“. Der links vom Geber Sitzende bestimmt den Schlag, das ist eine Ziffern- oder Figurenkarte, z. B. Siebener oder Ober. Der Geber selbst sagt den Trumpf an, also die Farbe (Herz, Karo, Pick oder Kreuz). Jetzt dürfen alle ihre Karten anschauen.&#10;
+
+    Der Schlagansager spielt eine Karte aus, im Uhrzeigersinn wirft jeder eine Karte. Ziel ist es natürlich, zu stechen. Das Team mit drei Stichen gewinnt die Runde. Geht eine Farbe aus, die nicht Trumpf ist, so kann man sie mit einer höheren Karte in gleicher Farbe stechen, z. B. Schellkönig sticht Schellzehner (Farbstich). Trumpf sticht die anderen Farben, hoher Trumpf sticht niederen Trumpf, Schlag sticht Trumpf.&#10;
+    Die beste Karte ist der Schlag in Trumpffarbe, der sogenannte Rechte. Mit dem Rechten kann man die anderen Schlagkarten, die Blinden, stechen. Derjenige, der den Stich macht, streift die Karten ein und spielt eine neue Karte aus.&#10;
+
+    Gute Watter haben die Karten genau im Blick und zählen mit, welche Karten noch im Spiel sein könnten. Offen bleibt immer die Frage, welche Karten im Reststapel liegen bleiben und nicht ausgegeben werden.
+    "
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/editTextTextHosnObe"
+        android:layout_width="match_parent"
+        android:layout_height="5270dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="175dp"
+        android:layout_marginEnd="16dp"
+        android:editable="false"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:text="HOSN OBE&#10;
+    An einem Spiel können zwei bis vier Spieler teilnehmen.&#10;
+    Jeder Spieler erhält drei Karten (Hand-Karten) - drei weitere Karten werden offen in die Mitte gelegt (Tisch-Karten).&#10;
+    Es wird mit einem 32-Kartenblatt gespielt (7-10, J, Q, K, A). Die Karten haben folgende Werte:&#10;
+    Karte - Wert&#10;
+    As - 11&#10;
+    König, Dame, Bub, Zehn - 10&#10;
+    Neun - 9&#10;
+    Acht - 8&#10;
+    Sieben - 7&#10;
+    Es gilt jetzt durch tauschen der eigenen Karten mit den Tisch-Karten möglichst viele Punkte zu erhalten
+    Nur Karten mit der gleichen Farbe (Herz, Kreuz, Karo, Pik) erhöhen die eigenen Punkte&#10;
+    Zusätzlich gibt es drei spezielle Kartenkombinationen:&#10;
+    1. Drei Karten mit dem gleichen Zahlenwert (z.B. drei mal König, drei mal die Sieben, usw.). Diese Kombination ergibt 30½ Punkte&#10;
+    2. Ein As und zwei 10-Punkte Karten der gleichen Farbe. Das ist eine Hose und zählt 31 Punkte. Die Runde ist sofort beendet und der oder die Spieler mit den wenigsten Hand-Punkten verliert ein Leben.&#10;
+    3. Drei Asse. Diese Kombination nennt sich Feuer - die Runde ist sofort beendet und ALLE anderen Spieler verlieren ein Leben, egal wie viele Hand-Punkte sie haben.&#10;
+    Jeder Spieler erhält drei Karten - der Geber kann jetzt entscheiden ob drei neue Karten vom Kartenstapel in die Tischmitte kommen, oder ob er seine Handkarten in die Tischmitte gibt. Wenn er seine eigenen Karten in die Tischmitte legt, erhält der Geber drei neue Karten vom Kartenstapel.&#10;
+    Du kannst in jeder Runde eine von vier möglichen Aktionen ausführen:&#10;
+
+    1. Tausche eine deiner Karten gegen eine aus der Mitte.&#10;
+    2. Tausche deine gesamte Hand mit den drei Karten in der Mitte.
+    3. Passen/Schieben - wenn du keine Kartenänderungen vornehmen möchtest, kannst du so an den nächsten Spieler weitergeben.&#10;
+    4. Klopfen - wenn du glaubst, dass du nicht am wenigsten Punkte hast, kannst du so die letzte Runde anzeigen.&#10;
+    Wenn in einer Runde jeder Spieler passt/schiebt, werden die Tischkarten durch drei neue Karten vom Kartenstapel ausgetauscht.&#10;
+    "
+
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/editTextTextPensionistln"
+        android:layout_width="match_parent"
+        android:layout_height="5270dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="175dp"
+        android:layout_marginEnd="16dp"
+        android:editable="false"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:text="PENSIONISTELN &#10;
+    Es gibt 5 Runden mit unterschiedlichen Reglen, die man sonst vom Kartenspielen gar nicht gewöhnt ist - es wird immer der Verlierer ermittlen (am Scoreboard -1 Punkte), der Spieler mit den meinsten SChlechtpunkten pro Runde verliert - bei Gleichstand gibt es mehrere Verlierer. Gespielt wird mit Doppeldeutschen-Karten von ASS bis SIEBEN, es gibt keinen Trumpf, es besteht Farbzwang aber kein Stichzwang.
+    Runden:&#10;
+    'KEIN STICH': Für jeden Stich, den man macht bekommt man einen Schlechtpunkt.&#10;
+    'KEIN HERZ': Für jede Herz-Karte, die sich im Stich befindet bekommt man einen Schlechtpunkt.&#10;
+    'KEIN OBER': Für jede Ober-Karte, die sich im Stich befindet bekommt man einen Schlechtpunkt.&#10;
+    'KEIN HERZ-KOENIG': Hat man den Herz-Koenig im Stich so bekommt man einen Schlechtpunkt.&#10;
+    'VERDECKT': Gespielt wird mit verdeckten Karte, es wird immer die oberste ausgespielt, der Spieler der den ersten Stich macht und der Spieler der den letzten Stich macht bekommen einen Schlechtpunkt.&#10;
+    'UNTER AUFLEGEN:' Es geht darum als erstes alle seine Handkarten loszuwerden, dazu werden Reihen aufgelegt, es muss mit dem Kreuz-Unter begonnen werden, dann kann pro Runde den Wertigkeiten gemäß eine Karte in eine Reihe abgelegt werden"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageViewKaSi"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageViewKrAc"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.636"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageViewPN"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.067"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageViewHZ"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.643"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.067"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageViewHU"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.643"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.114"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageViewHO"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.114"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageViewHK"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.161"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageViewHA"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.161"
+        tools:src="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/buttonSchnopsn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Schnopsn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonWattn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Wattn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonHosnObe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Hosn Obe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.827"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonPensionistln"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:text="Pensionistln"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonKarten"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:text="Karten"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.58"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

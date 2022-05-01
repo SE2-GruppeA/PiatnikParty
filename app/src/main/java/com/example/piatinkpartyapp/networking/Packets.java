@@ -1,7 +1,12 @@
 package com.example.piatinkpartyapp.networking;
 
+import com.example.piatinkpartyapp.cards.Card;
+
+import java.util.ArrayList;
+
 // will be used as some kind of placeholder for a generic packet send method!
 interface IPackets{
+    int x = 10;
 }
 
 
@@ -10,7 +15,8 @@ NOTES :
     If you create a constructor, which also sets the variables,
     then we also need an  empty constructor, else Kryonet throws an Exception !!!!
  */
-class Packets {
+public class Packets {
+
     public static class Requests{
         public static class SendEndToEndChatMessage implements IPackets {
             String message;
@@ -37,6 +43,11 @@ class Packets {
             public SendToAllChatMessage(String message, int from) {
                 this.message = message;
                 this.from = from;
+            }
+        }
+
+        public static class StartGameMessage {
+            public StartGameMessage() {
             }
         }
     }
@@ -80,6 +91,26 @@ class Packets {
                 this.from = from;
             }
         }
-    }
+        public static class SendHandCards {
+            public int playerID;
+            public ArrayList<Card> cards;
 
+            public SendHandCards() { }
+
+            public SendHandCards(int playerID, ArrayList<Card> cards) {
+                this.playerID = playerID;
+                this.cards = cards;
+            }
+        }
+
+        public static class NotifyPlayerYourTurn {
+            public int playerID;
+
+            public NotifyPlayerYourTurn() { }
+
+            public NotifyPlayerYourTurn(int playerID) {
+                this.playerID = playerID;
+            }
+        }
+    }
 }
