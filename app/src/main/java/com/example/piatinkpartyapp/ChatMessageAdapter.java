@@ -1,0 +1,54 @@
+package com.example.piatinkpartyapp;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.MessageViewHolder> {
+    private ArrayList<ChatMessage> messages;
+
+    public ChatMessageAdapter(ArrayList<ChatMessage> messages) {
+        this.messages = messages;
+    }
+
+    @NonNull
+    @Override
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new MessageViewHolder(
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_message, parent, false)
+        );
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+        ChatMessage chatMessage = messages.get(position);
+        holder.tv_playerName.setText(chatMessage.playerName);
+        holder.tv_message.setText(chatMessage.message);
+        holder.tv_time.setText(chatMessage.date);
+    }
+
+    @Override
+    public int getItemCount() {
+        return messages.size();
+    }
+
+
+    class MessageViewHolder extends RecyclerView.ViewHolder {
+        private TextView tv_playerName;
+        private TextView tv_message;
+        private TextView tv_time;
+
+        public MessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tv_playerName = itemView.findViewById(R.id.tv_playerName);
+            tv_message = itemView.findViewById(R.id.tv_message);
+            tv_time = itemView.findViewById(R.id.tv_time);
+        }
+    }
+}

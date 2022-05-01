@@ -114,7 +114,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void showSideDrawer() {
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new Chat()).commit();
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new ChatFragment()).commit();
     }
 
     public void showScoreboard() {
