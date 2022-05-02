@@ -3,13 +3,23 @@ package com.example.piatinkpartyapp.screens;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.piatinkpartyapp.CreateGameViewModel;
 import com.example.piatinkpartyapp.R;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 
 public class CreateGameFragment extends Fragment implements View.OnClickListener {
@@ -56,6 +66,12 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
         ButtonBack.setOnClickListener(this);
         ButtonStartLobby.setOnClickListener(this);
 
+        TextView textView1 = root.findViewById(R.id.textView);
+        TextView textView2 = root.findViewById(R.id.textView2);
+
+        textView1.setText("Your IP Address is:");
+        textView2.setText(getIp());
+
         return root;
     }
 
@@ -67,5 +83,31 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
             getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                     new WaitingPlayersFragment()).commit();
         }
+    }
+
+    public String getIp() {
+
+        String ipAddress = null;
+
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
+                 en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses();
+                     enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+
+                    if (!inetAddress.isLoopbackAddress()) {
+                        ipAddress = inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            ex.printStackTrace();
+            System.out.println("The IP address could not be found!!!");
+        }
+
+        return ipAddress;
     }
 }
