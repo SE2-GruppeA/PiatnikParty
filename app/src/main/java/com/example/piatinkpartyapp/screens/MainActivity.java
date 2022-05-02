@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnActivity;
 import com.example.piatinkpartyapp.SchnopsnFragment;
+import com.example.piatinkpartyapp.networking.GameServer;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

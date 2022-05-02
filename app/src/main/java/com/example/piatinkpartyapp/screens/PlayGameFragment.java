@@ -3,6 +3,8 @@ package com.example.piatinkpartyapp.screens;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.piatinkpartyapp.GameViewModel;
 import com.example.piatinkpartyapp.R;
+import com.example.piatinkpartyapp.networking.GameServer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +25,9 @@ import com.example.piatinkpartyapp.R;
 public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
     private Button backBtn;
+    private Button connectButton;
+    private ViewModel viewModel = new ViewModelProvider(this).get(GameViewModel.class);
+    private EditText editText;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,15 +78,18 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
         backBtn = (Button) root.findViewById(R.id.returnButton);
         backBtn.setOnClickListener(this);
 
-        Button connectButton = (Button) root.findViewById(R.id.button3);
-        EditText editText = (EditText) root.findViewById(R.id.editTextTextPersonName);
+        connectButton = (Button) root.findViewById(R.id.button3);
+        editText = (EditText) root.findViewById(R.id.editTextTextPersonName);
 
         return root;
     }
 
     @Override
     public void onClick(View view) {
+
         if (view == backBtn)
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        else if (view == connectButton)
+            ((GameViewModel) viewModel).joinGameServer(editText.getText().toString());
     }
 }

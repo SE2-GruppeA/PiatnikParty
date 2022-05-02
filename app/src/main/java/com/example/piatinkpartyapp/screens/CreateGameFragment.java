@@ -3,9 +3,6 @@ package com.example.piatinkpartyapp.screens;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.piatinkpartyapp.CreateGameViewModel;
 import com.example.piatinkpartyapp.R;
 
 import java.net.InetAddress;
@@ -28,7 +24,6 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
     private static final String ARG_PARAM2 = "param2";
     private Button ButtonBack;
     private Button ButtonStartLobby;
-
 
     private String mParam1;
     private String mParam2;
