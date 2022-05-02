@@ -1,9 +1,14 @@
 package com.example.piatinkpartyapp.networking;
 
+import android.view.View;
+import android.widget.TextView;
+
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.screens.PlayGameFragment;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -77,6 +82,12 @@ public class GameClient {
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
+
+                            /*
+                            PlayGameFragment playGameFragment = new PlayGameFragment();
+                            playGameFragment.setConnectedSuccessfuly();
+
+                             */
                         } else {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }

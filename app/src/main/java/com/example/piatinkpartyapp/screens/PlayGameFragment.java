@@ -28,6 +28,7 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
     private Button connectButton;
     private ViewModel viewModel;
     private EditText editText;
+    private TextView textView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,6 +78,8 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
         viewModel = new ViewModelProvider(this).get(GameViewModel.class);
 
+        textView = (TextView) root.findViewById(R.id.textView6);
+
         backBtn = (Button) root.findViewById(R.id.returnButton);
         backBtn.setOnClickListener(this);
 
@@ -92,7 +95,14 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
         if (view == backBtn)
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        else if (view == connectButton)
+        else if (view == connectButton) {
             ((GameViewModel) viewModel).joinGameServer(editText.getText().toString());
+        }
+
     }
+
+    public void setConnectedSuccessfuly() {
+        textView.setText("Erforlgreich verbunden!!!");
+    }
+
 }
