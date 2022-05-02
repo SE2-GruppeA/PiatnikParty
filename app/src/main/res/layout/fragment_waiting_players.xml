@@ -31,8 +31,8 @@
 
     <Button
         android:id="@+id/BtnStartGame3"
-        android:layout_width="147dp"
-        android:layout_height="38dp"
+        android:layout_width="175dp"
+        android:layout_height="51dp"
         android:layout_marginBottom="136dp"
         android:text="Start game"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,5 +40,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.898" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

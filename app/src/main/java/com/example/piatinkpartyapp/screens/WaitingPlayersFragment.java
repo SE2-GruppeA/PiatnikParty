@@ -9,16 +9,17 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.WaitingForPlayersViewModel;
 
-public class WaitingPlayersFragment extends Fragment {
+
+public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private TextView textView;
 
     private String mParam1;
     private String mParam2;
@@ -53,12 +54,17 @@ public class WaitingPlayersFragment extends Fragment {
 
         ViewModel viewModel = new ViewModelProvider(this).get(WaitingForPlayersViewModel.class);
 
-        String text = ((WaitingForPlayersViewModel) viewModel).getIp().toString();
+        TextView textView = (TextView) view.findViewById(R.id.textView4);
 
-        textView = (TextView) view.findViewById(R.id.textView4);
-        textView.setText(text);
+        Button backBtn = (Button) view.findViewById(R.id.button2);
+        backBtn.setOnClickListener(this);
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }

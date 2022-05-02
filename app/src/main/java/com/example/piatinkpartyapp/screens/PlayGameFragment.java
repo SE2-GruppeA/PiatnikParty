@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.piatinkpartyapp.R;
 
@@ -69,11 +71,15 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
         backBtn = (Button) root.findViewById(R.id.returnButton);
         backBtn.setOnClickListener(this);
 
+        Button connectButton = (Button) root.findViewById(R.id.button3);
+        EditText editText = (EditText) root.findViewById(R.id.editTextTextPersonName);
+
         return root;
     }
 
     @Override
     public void onClick(View view) {
+        if (view == backBtn)
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }
