@@ -1,9 +1,12 @@
 package com.example.piatinkpartyapp.screens;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,8 +67,12 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
         TextView textView1 = root.findViewById(R.id.textView);
         TextView textView2 = root.findViewById(R.id.textView2);
 
+        Context context = requireContext().getApplicationContext();
+        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+
         textView1.setText("Your IP Address is:");
-        textView2.setText(getIp());
+        textView2.setText(ip);
 
         return root;
     }
@@ -94,7 +101,7 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
                     InetAddress inetAddress = enumIpAddr.nextElement();
 
                     if (!inetAddress.isLoopbackAddress()) {
-                        ipAddress = inetAddress.getHostAddress().toString();
+                        ipAddress = inetAddress.getHostAddress();
                     }
                 }
             }

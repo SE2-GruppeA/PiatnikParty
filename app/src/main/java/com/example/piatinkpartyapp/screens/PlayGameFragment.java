@@ -26,7 +26,7 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
     private Button backBtn;
     private Button connectButton;
-    private ViewModel viewModel = new ViewModelProvider(this).get(GameViewModel.class);
+    private ViewModel viewModel;
     private EditText editText;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -75,10 +75,13 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
         View root = inflater.inflate(R.layout.fragment_play_game, container, false);
 
+        viewModel = new ViewModelProvider(this).get(GameViewModel.class);
+
         backBtn = (Button) root.findViewById(R.id.returnButton);
         backBtn.setOnClickListener(this);
 
         connectButton = (Button) root.findViewById(R.id.button3);
+        connectButton.setOnClickListener(this);
         editText = (EditText) root.findViewById(R.id.editTextTextPersonName);
 
         return root;
