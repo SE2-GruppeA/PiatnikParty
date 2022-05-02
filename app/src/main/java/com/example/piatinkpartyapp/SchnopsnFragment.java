@@ -1,5 +1,6 @@
 package com.example.piatinkpartyapp;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.SchnopsnDeck;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +25,23 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class SchnopsnFragment extends Fragment {
+    ImageView arrowBtn;
+    ImageView handCardView1;
+    ImageView handCardView2;
+    ImageView handCardView3;
+    ImageView handCardView4;
+    ImageView handCardView5;
+    ImageView cardDeckView;
+    ImageView swapCardView;
+    ImageButton exitBtn;
+    TextView scoreTxt;
+    Button scoreboardBtn;
+    Button voteBtn;
+    Button mixCardsBtn;
+    private Button backBtn;
+    private static ImageView currentCard;
+    public static SchnopsnDeck deck;
+    ArrayList<Card> handCards;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,6 +81,10 @@ public class SchnopsnFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //set fullscreen and landscape mode
+        requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @Override
@@ -61,6 +93,30 @@ public class SchnopsnFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_schnopsn, container, false);
 
+        addAllViews(root);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goBack();
+            }
+        });
+
+        addOnclickHandlers(root);
+        initializeGame();
         return root;
+    }
+
+    private void initializeGame() {
+    }
+
+    private void addOnclickHandlers(View view) {
+    }
+
+    private void addAllViews(View view) {
+    }
+
+    private void goBack(){
+
     }
 }

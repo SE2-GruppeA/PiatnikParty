@@ -21,13 +21,8 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
-import com.example.piatinkpartyapp.networking.GameClient;
-import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.NetworkHandler;
-import com.example.piatinkpartyapp.networking.Packets;
 import com.example.piatinkpartyapp.screens.MainActivity;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -69,15 +64,6 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
 
         addOnclickHandlers();
         initializeGame();
-
-        GameServer gameServer = new GameServer();
-        GameClient gameClient = new GameClient(NetworkHandler.GAMESERVER_IP);
-        try {
-            gameServer.startNewGameServer();
-            gameClient.startGame();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void addAllViews() {
