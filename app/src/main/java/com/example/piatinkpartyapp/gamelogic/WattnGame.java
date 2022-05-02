@@ -15,6 +15,7 @@ public class WattnGame extends Game {
     private int mainPlayerId;
     private Player roundStartPlayer;
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Integer> playerPoints = new ArrayList<>();
     private WattnDeck deck;
 
 
@@ -42,7 +43,6 @@ public class WattnGame extends Game {
     public Player getRoundWinnerWattn(){
         Player winningPlayer = this.roundStartPlayer;
         Player currentPlayer = getNextPlayer(this.roundStartPlayer);
-
         while (currentPlayer != this.roundStartPlayer) {
             //the player that plays the right card always wins the subround
             if(currentPlayer.getCardPlayed() == deck.getRightCard()){
@@ -56,10 +56,13 @@ public class WattnGame extends Game {
                 if(currentPlayer.getCardPlayed().getSymbol() == deck.getTrump() && deck.cardPoints(currentPlayer.getCardPlayed().cardValue) > deck.cardPoints(winningPlayer.getCardPlayed().cardValue)){
                     winningPlayer = currentPlayer;
                 }
-                //other cases: if same colour higher value wins, if trump & other value trump wins
+                //default cases: if same colour higher value wins, if trump & other value trump wins
             }else if(currentPlayer.getCardPlayed().getSymbol() == deck.getTrump() || (winningPlayer.getCardPlayed().getSymbol() == currentPlayer.getCardPlayed().getSymbol() && deck.cardPoints(currentPlayer.getCardPlayed().cardValue) > deck.cardPoints(winningPlayer.getCardPlayed().cardValue))){
                 winningPlayer = currentPlayer;
             }
+            Integer p = playerPoints.get(winningPlayer.getPoints());
+            p++;
+            playerPoints.set(winningPlayer.getId(),p);
             currentPlayer = getNextPlayer(currentPlayer);
         }
         return winningPlayer;
