@@ -164,11 +164,37 @@ public class Game {
             if (checkIfAllPlayersFinishedRound()) {
                 // gelegte Karten vergleichen und Stich zu cardsWon + Punkte dazurechnen
                 LOG.info("RoundFinished. Trump is: " + deck.getTrump().toString());
+
+                Player roundWonPlayer = getRoundWinnerPlayerSchnopsn();
+                LOG.info("Round won by Player: " + roundWonPlayer.getId());
             } else {
                 // Nächsten Spieler benachrichtigen dass er dran ist
                 LOG.info("notify next player: " + getNextPlayer(player).getId());
                 notifyPlayerYourTurn(getNextPlayer(player));
             }
         }).start();
+    }
+
+    public Player getRoundWinnerPlayerSchnopsn() {
+        Player winnerPlayer = this.roundStartPlayer;
+        Player currentPlayer = getNextPlayer(this.roundStartPlayer);
+
+        while(currentPlayer != this.roundStartPlayer) {
+            if (winnerPlayer.getCardPlayed().getSymbol() == deck.getTrump()) {
+                if (currentPlayer.getCardPlayed().getSymbol() == deck.getTrump()
+                        && deck.cardPoints(currentPlayer.getCardPlayed().getCardValue()) > deck.cardPoints(winnerPlayer.getCardPlayed().getCardValue())) {
+                    winnerPlayer = currentPlayer;
+                }
+            } else {
+                if (currentPlayer.getCardPlayed().getSymbol() == deck.getTrump()
+                        || (winnerPlayer.getCardPlayed().getSymbol() == currentPlayer.getCardPlayed().getSymbol()
+                        && deck.cardPoints(currentPlayer.getCardPlayed().getCardValue()) > deck.cardPoints(winnerPlayer.getCardPlayed().getCardValue()))) {
+                    winnerPlayer = currentPlayer;
+                }
+            }
+            currentPlayer = getNextPlayer(currentPlayer);
+        }
+
+        return winnerPlayer;
     }
 }
