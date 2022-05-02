@@ -114,6 +114,22 @@ public class SchnopsnFragment extends Fragment {
     }
 
     private void addAllViews(View view) {
+        arrowBtn = view.findViewById(R.id.arrowBtn);
+        exitBtn = view.findViewById(R.id.exitBtn);
+        scoreTxt = view.findViewById((R.id.scoreTxt));
+        scoreboardBtn = view.findViewById(R.id.scoreboardBtn);
+        voteBtn = view.findViewById(R.id.voteBtn);
+        backBtn = view.findViewById(R.id.backBtn);
+
+        handCardView1 = view.findViewById(R.id.card1);
+        handCardView2 = view.findViewById(R.id.card2);
+        handCardView3 = view.findViewById(R.id.card3);
+        handCardView4 = view.findViewById(R.id.card4);
+        handCardView5 = view.findViewById(R.id.card5);
+        cardDeckView = view.findViewById(R.id.cardDeck);
+        currentCard = view.findViewById(R.id.currentCard);
+        swapCardView = view.findViewById(R.id.swapCard);
+        mixCardsBtn = view.findViewById(R.id.mixBtn);
     }
 
     private void goBack(){
