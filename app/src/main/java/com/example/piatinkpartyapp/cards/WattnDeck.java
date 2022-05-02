@@ -46,4 +46,41 @@ public class WattnDeck extends Deck {
         }
         return null;
     }
+    public Integer cardPoints(CardValue v){
+        Integer points = 0;
+        if(v.equals(getHit())){
+            points = 100;
+        }else{
+            switch (v.name()){
+                case("SIEBEN"):
+                    points = 1;
+                    break;
+                case("ACHT"):
+                    points = 2;
+                    break;
+                case("NEUN"):
+                    points = 3;
+                    break;
+                case("ZEHN"):
+                    points = 4;
+                    break;
+                case("UNTER"):
+                    points = 5;
+                    break;
+                case("OBER"):
+                    points = 6;
+                    break;
+                case("KOENIG"):
+                    points = 7;
+                    break;
+                case("ASS"):
+                    points =8;
+                    break;
+                default:
+                    points = 0;
+                    break;
+            }
+        }
+        return points;
+    }
 }
