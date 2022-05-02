@@ -82,7 +82,7 @@ public class GameServer {
                                 (Packets.Requests.PlayerSetCard) object;
 
                         LOG.info("Card: " + request.card.getSymbol().toString() + request.card.getCardValue().toString() + " was set from Client ID: " + connection.getID());
-                        //game.setCard(connection.getID(), request.card);
+                        game.setCard(connection.getID(), request.card);
                     }
 
                 } catch (Exception ex) {

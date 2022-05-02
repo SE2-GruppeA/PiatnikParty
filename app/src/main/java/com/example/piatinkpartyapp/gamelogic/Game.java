@@ -143,4 +143,32 @@ public class Game {
         request.playerID =  player.getClientConnection().getID();
         player.getClientConnection().sendTCP(request);
     }
+
+    // Player set card
+    public void setCard(int playerID, Card card) {
+        Player player = getPlayerByID(playerID);
+
+        //only for testing
+        //Card card2 = player.getHandcards().get(0);
+
+        new Thread(()->{
+            player.setRoundFinished(true);
+            LOG.info("setRoundFinished = true");
+
+            player.setCardPlayed(card);
+            LOG.info("set Playercard of player: " + player.getId() + " card: " +  card.getSymbol().toString() + card.getCardValue().toString());
+
+            player.removeHandcard(card);
+            LOG.info("card removed from handcards");
+
+            if (checkIfAllPlayersFinishedRound()) {
+                // gelegte Karten vergleichen und Stich zu cardsWon + Punkte dazurechnen
+                LOG.info("RoundFinished. Trump is: " + deck.getTrump().toString());
+            } else {
+                // Nächsten Spieler benachrichtigen dass er dran ist
+                LOG.info("notify next player: " + getNextPlayer(player).getId());
+                notifyPlayerYourTurn(getNextPlayer(player));
+            }
+        }).start();
+    }
 }
