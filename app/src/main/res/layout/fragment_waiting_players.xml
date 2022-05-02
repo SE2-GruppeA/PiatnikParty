@@ -31,10 +31,10 @@
 
     <Button
         android:id="@+id/BtnStartGame3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="147dp"
+        android:layout_height="38dp"
         android:layout_marginBottom="136dp"
-        android:text="Star game"
+        android:text="Start game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
