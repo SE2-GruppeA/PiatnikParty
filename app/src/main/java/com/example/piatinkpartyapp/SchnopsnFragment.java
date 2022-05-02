@@ -314,7 +314,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     }
 
     private void goBack() {
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
