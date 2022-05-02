@@ -69,6 +69,7 @@ public class GameServer {
                 try {
                     if (object instanceof Packets.Requests.SendEndToEndChatMessage) {
                         // TODO handleEndToEndMessage
+
                     } else if (object instanceof Packets.Requests.SendToAllChatMessage) {
                         // TODO handleSendToAllChatMessage
 

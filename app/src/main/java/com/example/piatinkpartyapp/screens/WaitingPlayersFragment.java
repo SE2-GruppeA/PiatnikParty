@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.WaitingForPlayersViewModel;
 
-
 public class WaitingPlayersFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";

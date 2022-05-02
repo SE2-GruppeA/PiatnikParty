@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class GameClient {
+
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
     private static GameClient INSTANCE = null;
     private int playerID;
@@ -45,7 +46,6 @@ public class GameClient {
             public void connected(Connection connection) {
                 super.connected(connection);
             }
-
 
             @Override
             public void disconnected(Connection connection) {
@@ -87,6 +87,9 @@ public class GameClient {
                                 (Packets.Responses.SendHandCards) object;
 
                         // TODO: notify UI.
+                        // response.cards
+
+
                         LOG.info("Handcards received for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
                         Packets.Responses.NotifyPlayerYourTurn response =
