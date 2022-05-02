@@ -39,6 +39,14 @@ public class GameClient {
 
     }
 
+    public static GameClient getInstance() throws IOException {
+        if (INSTANCE == null) {
+            INSTANCE = new GameClient(NetworkHandler.GAMESERVER_IP);
+        }
+        return INSTANCE;
+    }
+
+
     private void startListener() {
         client.addListener(new Listener() {
             @Override
