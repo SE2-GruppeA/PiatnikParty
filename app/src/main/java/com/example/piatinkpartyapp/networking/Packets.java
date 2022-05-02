@@ -50,6 +50,18 @@ public class Packets {
             public StartGameMessage() {
             }
         }
+
+        public static class PlayerSetCard {
+            int playerID;
+            Card card;
+
+            public PlayerSetCard() { }
+
+            public PlayerSetCard(int playerID, Card card) {
+                this.playerID = playerID;
+                this.card = card;
+            }
+        }
     }
 
     public static class Responses {
@@ -111,6 +123,26 @@ public class Packets {
             public NotifyPlayerYourTurn(int playerID) {
                 this.playerID = playerID;
             }
+        }
+
+        public static class PlayerGetHandoutCard {
+            public int playerID;
+            public Card card;
+
+            public PlayerGetHandoutCard() { }
+
+            public PlayerGetHandoutCard(int playerID, Card card) {
+                this.playerID = playerID;
+                this.card = card;
+            }
+        }
+
+        public static class EndOfRound {
+            public EndOfRound() { }
+        }
+
+        public static class EndOfGame {
+            public EndOfGame() { }
         }
     }
 }
