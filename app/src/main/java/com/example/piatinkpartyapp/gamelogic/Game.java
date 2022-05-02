@@ -167,6 +167,9 @@ public class Game {
 
                 Player roundWonPlayer = getRoundWinnerPlayerSchnopsn();
                 LOG.info("Round won by Player: " + roundWonPlayer.getId());
+
+                addPointsToWinnerPlayer(roundWonPlayer);
+                LOG.info("Points added to winner player: " + roundWonPlayer.getId() + ". Points: " + roundWonPlayer.getPoints());
             } else {
                 // Nächsten Spieler benachrichtigen dass er dran ist
                 LOG.info("notify next player: " + getNextPlayer(player).getId());
@@ -196,5 +199,13 @@ public class Game {
         }
 
         return winnerPlayer;
+    }
+
+    public void addPointsToWinnerPlayer(Player winnerPlayer) {
+        for (Player player: players) {
+            winnerPlayer.addPoints(deck.cardPoints(player.getCardPlayed().getValue()));
+            LOG.info("Points added to player: " + winnerPlayer.getId() + ". Points: " + deck.cardPoints(player.getCardPlayed().getValue()));
+
+        }
     }
 }
