@@ -49,7 +49,6 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     Button scoreboardBtn;
     Button voteBtn;
     Button mixCardsBtn;
-    private Button backBtn;
     private static ImageView currentCard;
     public static SchnopsnDeck deck;
     ArrayList<Card> handCards;
@@ -106,13 +105,6 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
 
         addAllViews(root);
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goBack();
-            }
-        });
-
         addOnclickHandlers();
         initializeGame();
         return root;
@@ -132,7 +124,6 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         scoreTxt = view.findViewById((R.id.scoreTxt));
         scoreboardBtn = view.findViewById(R.id.scoreboardBtn);
         voteBtn = view.findViewById(R.id.voteBtn);
-        backBtn = view.findViewById(R.id.backBtn);
 
         handCardView1 = view.findViewById(R.id.card1);
         handCardView2 = view.findViewById(R.id.card2);
