@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.networking;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.example.piatinkpartyapp.cards.Card;
 
 public class NetworkHandler {
 
@@ -12,10 +13,15 @@ public class NetworkHandler {
     public static void register(Kryo kryo) {
         //Requests
         kryo.register(Packets.Requests.StartGameMessage.class);
+        kryo.register(Packets.Requests.PlayerSetCard.class);
 
         //Responses
         kryo.register(Packets.Responses.ConnectedSuccessfully.class);
         kryo.register(Packets.Responses.SendHandCards.class);
         kryo.register(Packets.Responses.NotifyPlayerYourTurn.class);
+        kryo.register(Packets.Responses.PlayerGetHandoutCard.class);
+
+        // Other classes
+        kryo.register(Card.class);
     }
 }

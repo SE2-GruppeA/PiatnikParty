@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp.networking;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.example.piatinkpartyapp.cards.Card;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -39,6 +40,14 @@ public class GameClient {
         });
 
     }
+
+    public static GameClient getInstance() throws IOException {
+        if (INSTANCE == null) {
+            INSTANCE = new GameClient(NetworkHandler.GAMESERVER_IP);
+        }
+        return INSTANCE;
+    }
+
 
     private void startListener() {
         client.addListener(new Listener() {
@@ -97,6 +106,19 @@ public class GameClient {
 
                         // TODO: notify UI
                         LOG.info("It's your turn! player: " + response.playerID);
+                    } else if (object instanceof Packets.Responses.PlayerGetHandoutCard) {
+                        Packets.Responses.PlayerGetHandoutCard response =
+                                (Packets.Responses.PlayerGetHandoutCard) object;
+
+                        Card card = response.card;
+                        // TODO: notify UI
+                        LOG.info("Handout card received for player: " + response.playerID);
+                    } else if (object instanceof Packets.Responses.EndOfRound) {
+                        Packets.Responses.EndOfRound response =
+                                (Packets.Responses.EndOfRound) object;
+
+                        // TODO: notify UI
+                        LOG.info("End of round!");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -116,4 +138,11 @@ public class GameClient {
         client.sendTCP(new Packets.Requests.StartGameMessage());
     }
 
+    public void setCard(Card card) {
+        new Thread(()->{
+            Packets.Requests.PlayerSetCard request = new Packets.Requests.PlayerSetCard();
+            request.card =  card;
+            client.sendTCP(request);
+        }).start();
+    }
 }
