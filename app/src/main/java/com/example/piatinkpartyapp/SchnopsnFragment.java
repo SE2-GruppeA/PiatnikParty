@@ -155,7 +155,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
-                            //Yes button clicked
+                            goBack();
                             break;
 
                         case DialogInterface.BUTTON_NEGATIVE:
@@ -314,6 +314,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     }
 
     private void goBack() {
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }
