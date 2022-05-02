@@ -2,8 +2,10 @@ package com.example.piatinkpartyapp.gamelogic;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.networking.GameServer;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class Player {
     private Integer id;
@@ -17,6 +19,11 @@ public class Player {
     private boolean cheaten;
     private Connection clientConnection;
 
+    private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
+
+    public Player() {
+    }
+
     public Player(Connection connection, String playerName) {
         this.id = connection.getID();
         this.playerName = playerName;
@@ -29,7 +36,12 @@ public class Player {
     }
 
     public void removeHandcard(Card card) {
-        handcards.remove(card);
+        LOG.info("remove card: " +  card.getSymbol().toString() + card.getCardValue().toString());
+        if (handcards.contains(card)) {
+            handcards.remove(card);
+        } else {
+            LOG.info("card could not removed because it's not part of handcards");
+        }
     }
 
     public Card addCardsWon(Card card) {

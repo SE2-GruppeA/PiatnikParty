@@ -48,7 +48,7 @@ public class SchnopsnDeck extends Deck{
     private Integer cardPoints(CardValue v) {
         Integer points = 0;
         switch (v.name()) {
-            case ("ZEHNER"):
+            case ("ZEHN"):
                 points = 10;
                 break;
             case ("UNTER"):
