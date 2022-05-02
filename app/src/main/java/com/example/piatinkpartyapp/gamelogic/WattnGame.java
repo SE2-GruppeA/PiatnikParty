@@ -56,6 +56,9 @@ public class WattnGame extends Game {
                 if(currentPlayer.getCardPlayed().getSymbol() == deck.getTrump() && deck.cardPoints(currentPlayer.getCardPlayed().cardValue) > deck.cardPoints(winningPlayer.getCardPlayed().cardValue)){
                     winningPlayer = currentPlayer;
                 }
+                //other cases: if same colour higher value wins, if trump & other value trump wins
+            }else if(currentPlayer.getCardPlayed().getSymbol() == deck.getTrump() || (winningPlayer.getCardPlayed().getSymbol() == currentPlayer.getCardPlayed().getSymbol() && deck.cardPoints(currentPlayer.getCardPlayed().cardValue) > deck.cardPoints(winningPlayer.getCardPlayed().cardValue))){
+                winningPlayer = currentPlayer;
             }
             currentPlayer = getNextPlayer(currentPlayer);
         }
