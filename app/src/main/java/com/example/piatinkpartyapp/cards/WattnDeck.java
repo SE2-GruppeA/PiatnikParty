@@ -9,6 +9,7 @@ public class WattnDeck extends Deck {
      * players only get 5 hand cards at the beginning, no cards are drawn from the deck*/
     public Symbol trump;
     public CardValue hit;
+    public Card rightCard;
 
     public WattnDeck(GameName gameName, int players) {
         super(gameName, players);
@@ -35,5 +36,14 @@ public class WattnDeck extends Deck {
             return deck.get(deck.size() - 1);
         }
         return  null;
+    }
+    //highest card in game
+    public Card getRightCard(){
+        for(Card c : deck){
+            if(c.cardValue == getHit() && c.symbol == getTrump()){
+                return c;
+            }
+        }
+        return null;
     }
 }
