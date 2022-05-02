@@ -20,7 +20,7 @@ import com.example.piatinkpartyapp.R;
 import java.util.Objects;
 
 
-public class GameRulesFragment extends Fragment {
+public class GameRulesFragment extends Fragment implements View.OnClickListener {
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -73,14 +73,7 @@ public class GameRulesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_game_rules, container, false);
         BtnBackGameRules = (Button) view.findViewById(R. id. buttonBackGameRules);
-        BtnBackGameRules.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requireActivity().getSupportFragmentManager().beginTransaction().commit();
-            }
-        });
-
-
+        BtnBackGameRules.setOnClickListener(this);
 
         kasi = view.findViewById(R.id.imageViewKaSi);
         kasi.setVisibility(View.INVISIBLE);
@@ -258,5 +251,10 @@ public class GameRulesFragment extends Fragment {
                 Toast.makeText(getContext(), desc, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }

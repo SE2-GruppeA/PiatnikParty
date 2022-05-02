@@ -20,7 +20,7 @@ import java.util.Objects;
  * Use the {@link EinstellungenFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EinstellungenFragment extends Fragment {
+public class EinstellungenFragment extends Fragment implements View.OnClickListener {
 
     private Button backBtn;
 
@@ -67,20 +67,16 @@ public class EinstellungenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_einstellungen, container, false);
 
-        Fragment einstellungenFragment = new EinstellungenFragment();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_einstellungen_view, einstellungenFragment);
+        backBtn = (Button) root.findViewById(R.id.button);
+        backBtn.setOnClickListener(this);
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentTransaction.commit();
-            }
-        });
+        return root;
+    }
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_einstellungen, container, false);
+    @Override
+    public void onClick(View view) {
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }
