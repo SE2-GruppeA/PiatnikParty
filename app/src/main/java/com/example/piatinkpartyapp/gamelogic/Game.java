@@ -203,9 +203,26 @@ public class Game {
 
     public void addPointsToWinnerPlayer(Player winnerPlayer) {
         for (Player player: players) {
-            winnerPlayer.addPoints(deck.cardPoints(player.getCardPlayed().getValue()));
-            LOG.info("Points added to player: " + winnerPlayer.getId() + ". Points: " + deck.cardPoints(player.getCardPlayed().getValue()));
+            winnerPlayer.addPoints(deck.cardPoints(player.getCardPlayed().getCardValue()));
+            LOG.info("Points added to player: " + winnerPlayer.getId() + ". Points: " + deck.cardPoints(player.getCardPlayed().getCardValue()));
 
+        }
+    }
+
+
+    public void handoutCard() {
+        Card newCard;
+        for (Player player: players) {
+            newCard = deck.takeCard(2);
+            if (newCard != null) {
+                player.addHandcard(newCard);
+
+                // send message with handout card to players
+                Packets.Responses.PlayerGetHandoutCard response = new Packets.Responses.PlayerGetHandoutCard();
+                response.playerID = player.getClientConnection().getID();
+                response.card = newCard;
+                player.getClientConnection().sendTCP(response);
+            }
         }
     }
 }
