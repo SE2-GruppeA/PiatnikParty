@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * Use the {@link SchnopsnFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SchnopsnFragment extends Fragment {
+public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     ImageView arrowBtn;
     ImageView handCardView1;
     ImageView handCardView2;
@@ -133,6 +133,11 @@ public class SchnopsnFragment extends Fragment {
     }
 
     private void goBack(){
+
+    }
+
+    @Override
+    public void onClick(View view) {
 
     }
 }
