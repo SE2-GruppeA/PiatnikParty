@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.gamelogic;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.networking.GameServer;
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
 
 public class Game {
     private int mainPlayerId;
-    private Player currentPlayer;
+    private Player roundStartPlayer;
     private ArrayList<Player> players = new ArrayList<>();
     private SchnopsnDeck deck;
 
@@ -19,6 +20,7 @@ public class Game {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
     public Game() {
+        resetSchnopsnDeck();
     }
 
     public Integer getMainPlayerId() {
@@ -33,12 +35,12 @@ public class Game {
         this.mainPlayerId = mainPlayerId;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
+    public Player getRoundStartPlayer() {
+        return roundStartPlayer;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    public void setRoundStartPlayer(Player roundStartPlayer) {
+        this.roundStartPlayer = roundStartPlayer;
     }
 
     public void resetSchnopsnDeck() {
@@ -51,10 +53,47 @@ public class Game {
         return player;
     }
 
+    public Player getPlayerByID(int playerID) {
+        for (Player player: players) {
+            if (player.getId() == playerID) {
+                return player;
+            }
+        }
+        return new Player();
+    }
+
+    public boolean checkIfAllPlayersFinishedRound() {
+        for (Player player: players) {
+            if (!player.isRoundFinished()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Player getNextPlayer(Player player) {
+        int currentIndex = players.indexOf(player);
+        if (currentIndex == players.size()-1) {
+            currentIndex = 0;
+            //LOG.info("No next player! return first player");
+        } else {
+            currentIndex = currentIndex + 1;
+            //LOG.info("Index of next player: " + currentIndex);
+        }
+        return players.get(currentIndex);
+    }
+
     // reset points from players
     public void resetPlayerPoints() {
         for (Player player: players) {
             player.resetPoints();
+        }
+    }
+
+    // reset played card from players
+    public void resetPlayedCard() {
+        for (Player player: players) {
+            player.setCardPlayed(null);
         }
     }
 
@@ -71,6 +110,7 @@ public class Game {
             AusgabeTest();
             resetRoundFinished();
             sendHandCards();
+            setRoundStartPlayer(players.get(0));
             // notify first player that it is his turn
             notifyPlayerYourTurn(players.get(0));
         }).start();
@@ -86,8 +126,12 @@ public class Game {
     // send handcards to players
     public void sendHandCards() {
         for (Player player: players) {
+            ArrayList<Card> handCards = deck.getHandCards();
+            player.setHandcards(handCards);
+
+            // send message to client with handcards
             Packets.Responses.SendHandCards request = new Packets.Responses.SendHandCards();
-            request.cards = deck.getHandCards();
+            request.cards = handCards;
             request.playerID = player.getClientConnection().getID();
             player.getClientConnection().sendTCP(request);
         }
