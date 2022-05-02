@@ -170,6 +170,9 @@ public class Game {
 
                 addPointsToWinnerPlayer(roundWonPlayer);
                 LOG.info("Points added to winner player: " + roundWonPlayer.getId() + ". Points: " + roundWonPlayer.getPoints());
+
+                //TODO: check if one player have enough points
+                startNewRoundSchnopsn(roundWonPlayer);
             } else {
                 // Nächsten Spieler benachrichtigen dass er dran ist
                 LOG.info("notify next player: " + getNextPlayer(player).getId());
@@ -209,11 +212,24 @@ public class Game {
         }
     }
 
+    public void startNewRoundSchnopsn(Player startPlayer) {
+        new Thread(()->{
+            if (startPlayer.getHandcards().isEmpty()) {
+                sendEndRoundMessageToPlayers();
+            } else {
+                resetRoundFinished();
+                resetPlayedCard();
+                handoutCard();
+                setRoundStartPlayer(startPlayer);
+                notifyPlayerYourTurn(startPlayer);
+            }
+        }).start();
+    }
 
     public void handoutCard() {
         Card newCard;
         for (Player player: players) {
-            newCard = deck.takeCard(2);
+            newCard = deck.takeCard();
             if (newCard != null) {
                 player.addHandcard(newCard);
 
@@ -223,6 +239,13 @@ public class Game {
                 response.card = newCard;
                 player.getClientConnection().sendTCP(response);
             }
+        }
+    }
+
+    public void sendEndRoundMessageToPlayers() {
+        for (Player player: players) {
+            Packets.Responses.EndOfRound response = new Packets.Responses.EndOfRound();
+            player.getClientConnection().sendTCP(response);
         }
     }
 }
