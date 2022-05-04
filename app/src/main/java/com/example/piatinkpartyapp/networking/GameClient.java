@@ -1,16 +1,12 @@
 package com.example.piatinkpartyapp.networking;
 
-import android.view.View;
-import android.widget.TextView;
-
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
-import com.example.piatinkpartyapp.screens.PlayGameFragment;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -102,12 +98,18 @@ public class GameClient {
                                 (Packets.Responses.ReceiveToAllChatMessage) object;
                         LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
                         // TODO: notify UI
+                    }  else if (object instanceof Packets.Responses.GameStartedClientMessage) {
+                        Packets.Responses.GameStartedClientMessage response =
+                                (Packets.Responses.GameStartedClientMessage) object;
+
+                        // TODO: notify UI.
+                        LOG.info("Game was started from host!");
                     } else if (object instanceof Packets.Responses.SendHandCards) {
                         Packets.Responses.SendHandCards response =
                                 (Packets.Responses.SendHandCards) object;
 
                         // TODO: notify UI.
-                        // response.cards
+                        ArrayList<Card> handcards = response.cards;
 
 
                         LOG.info("Handcards received for player: " + response.playerID);

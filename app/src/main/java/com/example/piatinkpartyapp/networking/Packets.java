@@ -137,6 +137,10 @@ public class Packets {
             }
         }
 
+        public static class GameStartedClientMessage {
+            public GameStartedClientMessage() { }
+        }
+
         public static class EndOfRound {
             public EndOfRound() { }
         }

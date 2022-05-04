@@ -1,19 +1,18 @@
 package com.example.piatinkpartyapp.screens;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.piatinkpartyapp.R;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.piatinkpartyapp.GameViewModel;
+import com.example.piatinkpartyapp.R;
 
 
 public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
@@ -26,6 +25,8 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
     private String mParam1;
     private String mParam2;
+
+    ViewModel viewModel;
 
     public WaitingPlayersFragment() {
         // Required empty public constructor
@@ -55,7 +56,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
         View view = inflater.inflate(R.layout.fragment_waiting_players, container, false);
 
-        ViewModel viewModel = new ViewModelProvider(this).get(GameViewModel.class);
+        viewModel = new ViewModelProvider(this).get(GameViewModel.class);
 
         TextView textView = (TextView) view.findViewById(R.id.textView4);
 
@@ -77,7 +78,9 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     public void onClick(View view) {
         if (view == backBtn)
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        //else if (view == BtnStartGame3)
+        else if (view == BtnStartGame3) {
+            ((GameViewModel) viewModel).startGame();
+        }
 
     }
 }

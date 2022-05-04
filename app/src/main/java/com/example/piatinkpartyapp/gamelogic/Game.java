@@ -108,6 +108,7 @@ public class Game {
     public void startGame() {
         new Thread(()->{
             AusgabeTest();
+            sendGameStartedMessageToClients();
             resetRoundFinished();
             sendHandCards();
             setRoundStartPlayer(players.get(0));
@@ -120,6 +121,15 @@ public class Game {
         LOG.info("ArrayList players: ");
         for (Player player : players) {
             LOG.info("Player: " + player.getId() + " - " + player.getPlayerName());
+        }
+    }
+
+    // send handcards to players
+    public void sendGameStartedMessageToClients() {
+        for (Player player: players) {
+            // send message to client that game has started
+            Packets.Responses.GameStartedClientMessage request = new Packets.Responses.GameStartedClientMessage();
+            player.getClientConnection().sendTCP(request);
         }
     }
 

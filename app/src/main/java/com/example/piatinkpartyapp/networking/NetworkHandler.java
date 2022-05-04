@@ -20,6 +20,9 @@ public class NetworkHandler {
         kryo.register(Packets.Responses.SendHandCards.class);
         kryo.register(Packets.Responses.NotifyPlayerYourTurn.class);
         kryo.register(Packets.Responses.PlayerGetHandoutCard.class);
+        kryo.register(Packets.Responses.GameStartedClientMessage.class);
+        kryo.register(Packets.Responses.EndOfRound.class);
+        kryo.register(Packets.Responses.EndOfGame.class);
 
         // Other classes
         kryo.register(Card.class);
