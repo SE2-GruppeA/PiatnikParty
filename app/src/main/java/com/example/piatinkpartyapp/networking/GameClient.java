@@ -148,7 +148,9 @@ public class GameClient {
     }
     // Call this method from client to start a game
     public void startGame() {
-        client.sendTCP(new Packets.Requests.StartGameMessage());
+        new Thread(()->{
+            client.sendTCP(new Packets.Requests.StartGameMessage());
+        }).start();
     }
 
     public void setCard(Card card) {
