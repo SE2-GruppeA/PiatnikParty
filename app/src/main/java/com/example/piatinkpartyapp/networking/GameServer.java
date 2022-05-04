@@ -51,6 +51,8 @@ public class GameServer {
                     response.isConnected = clients.contains(connection) ? false : clients.add(connection);
                     response.playerID = connection.getID();
 
+                    game.addPlayer(connection, "test");
+
                     connection.sendTCP(response);
                     super.connected(connection);
                 } catch (Exception ex) {
