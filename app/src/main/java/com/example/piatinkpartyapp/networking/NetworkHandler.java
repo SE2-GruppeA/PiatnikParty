@@ -26,5 +26,6 @@ public class NetworkHandler {
 
         // Other classes
         kryo.register(Card.class);
+        kryo.register(java.util.ArrayList.class);
     }
 }
