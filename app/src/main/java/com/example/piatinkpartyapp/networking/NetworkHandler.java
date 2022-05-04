@@ -2,6 +2,8 @@ package com.example.piatinkpartyapp.networking;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.Symbol;
 
 public class NetworkHandler {
 
@@ -26,6 +28,8 @@ public class NetworkHandler {
 
         // Other classes
         kryo.register(Card.class);
+        kryo.register(CardValue.class);
+        kryo.register(Symbol.class);
         kryo.register(java.util.ArrayList.class);
     }
 }
