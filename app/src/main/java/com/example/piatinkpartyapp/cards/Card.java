@@ -10,6 +10,9 @@ public class Card {
     public String frontSide;
     public Boolean cheated;
 
+    public Card() {
+    }
+
     public Card(Symbol symbol, CardValue cardValue){
         this.symbol = symbol;
         this.cardValue = cardValue;
