@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.screens.PlayGameFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,11 +80,9 @@ public class GameClient {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
 
-                            /*
                             PlayGameFragment playGameFragment = new PlayGameFragment();
                             playGameFragment.setConnectedSuccessfuly();
 
-                             */
                         } else {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
@@ -159,5 +158,21 @@ public class GameClient {
             request.card =  card;
             client.sendTCP(request);
         }).start();
+    }
+
+    public int getPlayerID() {
+        return playerID;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public static GameClient getINSTANCE() {
+        return INSTANCE;
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 }
