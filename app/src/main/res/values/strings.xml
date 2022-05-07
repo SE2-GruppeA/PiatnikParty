@@ -22,4 +22,5 @@
     <string name="start_lobby">Start Lobby</string>
     <string name="change_brightness">Change screen brightness</string>
     <string name="get_permissions">Grant permissions to change settings</string>
+    <string name="connected_players">The following players are connected to the host</string>
 </resources>

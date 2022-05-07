@@ -92,7 +92,7 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
 
         if (view == backBtn)
-            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+            requireActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         else if (view == connectButton) {
             ((GameViewModel) viewModel).joinGameServer(editText.getText().toString());
         }
@@ -100,7 +100,7 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setConnectedSuccessfuly() {
-        textView.setText("Erforlgreich verbunden!!!");
+        textView.setText(R.string.connection_successful);
     }
 
 }
