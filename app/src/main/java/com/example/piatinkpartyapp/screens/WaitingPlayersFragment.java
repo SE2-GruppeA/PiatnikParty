@@ -1,18 +1,34 @@
 package com.example.piatinkpartyapp.screens;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.piatinkpartyapp.GameViewModel;
 import com.example.piatinkpartyapp.R;
+import com.example.piatinkpartyapp.gamelogic.Game;
+import com.example.piatinkpartyapp.gamelogic.Player;
+import com.example.piatinkpartyapp.networking.GameClient;
+import com.example.piatinkpartyapp.networking.GameServer;
+import com.example.piatinkpartyapp.networking.Packets;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
@@ -22,6 +38,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
     Button backBtn;
     Button BtnStartGame3;
+    ListView connectedListView;
 
     private String mParam1;
     private String mParam2;
@@ -66,6 +83,19 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         BtnStartGame3 = (Button) view.findViewById(R.id.BtnStartGame3);
         BtnStartGame3.setOnClickListener(this);
 
+        connectedListView = (ListView) view.findViewById(R.id.connectedListView);
+
+        Packets.Responses.ConnectedSuccessfully connectedSuccessfully =
+                new Packets.Responses.ConnectedSuccessfully();
+        int playerID = connectedSuccessfully.getPlayerID();
+
+        ArrayList<Integer> arrayList = new ArrayList<>(Collections.singleton(playerID));
+
+        GameViewModel.ListAdapter listAdapter =
+                new GameViewModel.ListAdapter(requireActivity().getApplicationContext(), arrayList);
+
+        connectedListView.setAdapter(listAdapter);
+
         CreateGameFragment createGameFragment = new CreateGameFragment();
 
         ((GameViewModel) viewModel).createGameServer(createGameFragment.getIp());
@@ -81,6 +111,13 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         else if (view == BtnStartGame3) {
             ((GameViewModel) viewModel).startGame();
         }
+    }
+
+    private void reloadData() {
+
+        List<Integer> ids;
+
+
     }
 
 
