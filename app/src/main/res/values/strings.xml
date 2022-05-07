@@ -20,4 +20,5 @@
     <string name="back">back</string>
     <string name="connection_successful">Erfolgreich verbunden!</string>
     <string name="start_lobby">Start Lobby</string>
+    <string name="change_brightness">Change screen brightness</string>
 </resources>
