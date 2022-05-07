@@ -1,12 +1,6 @@
 package com.example.piatinkpartyapp.screens;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.piatinkpartyapp.R;
+import androidx.fragment.app.Fragment;
 
-import java.util.Objects;
+import com.example.piatinkpartyapp.R;
 
 
 public class GameRulesFragment extends Fragment implements View.OnClickListener {
