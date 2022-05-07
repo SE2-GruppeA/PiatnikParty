@@ -6,13 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.piatinkpartyapp.GameViewModel;
 import com.example.piatinkpartyapp.R;
+import com.example.piatinkpartyapp.SchnopsnFragment;
+import com.example.piatinkpartyapp.networking.GameClient;
+import com.example.piatinkpartyapp.networking.GameServer;
+
+import java.io.IOException;
 
 
 public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
@@ -26,7 +31,8 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     private String mParam1;
     private String mParam2;
 
-    ViewModel viewModel;
+    GameServer server;
+    GameClient gameClient;
 
     public WaitingPlayersFragment() {
         // Required empty public constructor
@@ -56,7 +62,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
         View view = inflater.inflate(R.layout.fragment_waiting_players, container, false);
 
-        viewModel = new ViewModelProvider(this).get(GameViewModel.class);
+        //viewModel = new ViewModelProvider(this).get(GameViewModel.class);
 
         TextView textView = (TextView) view.findViewById(R.id.textView4);
 
@@ -66,12 +72,35 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         BtnStartGame3 = (Button) view.findViewById(R.id.BtnStartGame3);
         BtnStartGame3.setOnClickListener(this);
 
-        CreateGameFragment createGameFragment = new CreateGameFragment();
+        server = new GameServer();
+        try {
+            server.startNewGameServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        ((GameViewModel) viewModel).createGameServer(createGameFragment.getIp());
+        gameClient = new ViewModelProvider(getActivity()).get(GameClient.class);
+
+        gameClient.getConnectionState().observe(getViewLifecycleOwner(), connectionState ->
+                waitForConnection(connectionState));
+
+        gameClient.isGameStarted().observe(getViewLifecycleOwner(), isGameStarted -> waitForGameStart());
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void waitForConnection(boolean connectionState) {
+        if(connectionState == true){
+            Toast.makeText(requireActivity().getApplicationContext(),"Verbindung zum Server erfolgreich", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(requireActivity().getApplicationContext(),"Verbindung zum Server fehlgeschlagen", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void waitForGameStart(){
+        getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new SchnopsnFragment()).commit();
     }
 
     @Override
@@ -79,7 +108,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         if (view == backBtn)
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         else if (view == BtnStartGame3) {
-            ((GameViewModel) viewModel).startGame();
+            gameClient.startGame();
         }
 
     }

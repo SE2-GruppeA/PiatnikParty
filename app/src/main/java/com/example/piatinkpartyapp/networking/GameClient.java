@@ -1,5 +1,10 @@
 package com.example.piatinkpartyapp.networking;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -11,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-public class GameClient {
+public class GameClient extends ViewModel {
 
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
     private static GameClient INSTANCE = null;
@@ -19,6 +24,13 @@ public class GameClient {
     private Client client;
     private ExecutorService executorService;
     int x = 11;
+
+    private MutableLiveData<ArrayList<Card>> handCards;
+    private MutableLiveData<Boolean> connectionState;
+    private MutableLiveData<Boolean> myTurn;
+    private MutableLiveData<Boolean> gameStarted;
+    private MutableLiveData<Card> handoutCard;
+    private MutableLiveData<Boolean> endOfRound;
 
     public GameClient(String gameServer_IP) {
         executorService = Executors.newFixedThreadPool(5);
@@ -39,7 +51,37 @@ public class GameClient {
             startListener();
 
         });
+        addLiveData();
+    }
 
+    private void addLiveData(){
+        handCards = new MutableLiveData<>();
+        connectionState = new MutableLiveData<>();
+        myTurn = new MutableLiveData<>();
+        gameStarted = new MutableLiveData<>();
+        handoutCard = new MutableLiveData<>();
+        endOfRound = new MutableLiveData<>();
+    }
+
+    public GameClient(){
+        executorService = Executors.newFixedThreadPool(1);
+        executorService.execute(() -> {
+            // we to start this in a new thread, so we don't block the main Thread!!
+            client = new Client();
+            // this line of code has to run before we start / bind / connect to the server !
+            NetworkHandler.register(client.getKryo());
+            client.start();
+            try {
+                client.connect(10000, NetworkHandler.GAMESERVER_IP, NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            this.playerID = client.getID();
+            startListener();
+
+        });
+        addLiveData();
     }
 
     public static GameClient getInstance() throws IOException {
@@ -74,7 +116,9 @@ public class GameClient {
                         Packets.Responses.ConnectedSuccessfully response =
                                 (Packets.Responses.ConnectedSuccessfully) object;
 
-                        // TODO: notify UI
+                        //update for ui
+                        connectionState.postValue(((Packets.Responses.ConnectedSuccessfully) object)    .isConnected);
+
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
@@ -102,35 +146,41 @@ public class GameClient {
                         Packets.Responses.GameStartedClientMessage response =
                                 (Packets.Responses.GameStartedClientMessage) object;
 
-                        // TODO: notify UI.
+                        // notify ui: game started
+                        gameStarted.postValue(true);
+
                         LOG.info("Game was started from host!");
                     } else if (object instanceof Packets.Responses.SendHandCards) {
                         Packets.Responses.SendHandCards response =
                                 (Packets.Responses.SendHandCards) object;
 
-                        // TODO: notify UI.
-                        ArrayList<Card> handcards = response.cards;
-
+                        // notify ui
+                        handCards.postValue(response.cards);
 
                         LOG.info("Handcards received for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
                         Packets.Responses.NotifyPlayerYourTurn response =
                                 (Packets.Responses.NotifyPlayerYourTurn) object;
 
-                        // TODO: notify UI
+                        // notify ui : yourturn
+                        myTurn.postValue(true);
+
                         LOG.info("It's your turn! player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.PlayerGetHandoutCard) {
                         Packets.Responses.PlayerGetHandoutCard response =
                                 (Packets.Responses.PlayerGetHandoutCard) object;
 
                         Card card = response.card;
-                        // TODO: notify UI
+                        // notify ui with handout card
+                        handoutCard.postValue(card);
+
                         LOG.info("Handout card received for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.EndOfRound) {
                         Packets.Responses.EndOfRound response =
                                 (Packets.Responses.EndOfRound) object;
 
-                        // TODO: notify UI
+                        //notify ui: end of round
+                        endOfRound.postValue(true);
                         LOG.info("End of round!");
                     }
                 } catch (Exception e) {
@@ -159,5 +209,25 @@ public class GameClient {
             request.card =  card;
             client.sendTCP(request);
         }).start();
+    }
+
+    public LiveData<Boolean> getConnectionState(){
+        return connectionState;
+    }
+
+    public LiveData<ArrayList<Card>> getHandCards(){
+        return handCards;
+    }
+
+    public LiveData<Boolean> isMyTurn(){
+        return myTurn;
+    }
+
+    public LiveData<Boolean> isGameStarted(){
+        return gameStarted;
+    }
+
+    public LiveData<Card> getHandoutCard(){
+        return handoutCard;
     }
 }
