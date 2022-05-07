@@ -3,12 +3,13 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.piatinkpartyapp"
         minSdk 28
-        targetSdk 32
+        targetSdk 30
         versionCode 1
         versionName "1.0"
 
