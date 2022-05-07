@@ -81,6 +81,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         else if (view == BtnStartGame3) {
             ((GameViewModel) viewModel).startGame();
         }
-
     }
+
+
 }

@@ -79,4 +79,5 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
     public void onClick(View view) {
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
+
 }
