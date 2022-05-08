@@ -75,7 +75,7 @@ public class WattnGame extends Game {
             } //hit case - first played hit wins
            else if(winningPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue() ){
                winningPlayer = winningPlayer;
-           }
+           }//hit case - hit wins
             else if(currentPlayer.getCardPlayed().getCardValue() ==deck.getHit() && winningPlayer.getCardPlayed() != deck.getRightCard()){
 
                 winningPlayer = currentPlayer;

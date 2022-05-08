@@ -139,5 +139,96 @@ public class WattnTest {
         assertEquals(p2, winner);
 
     }
+    @Test
+    public void testwithPlayersTrump1(){
+        Player p1 = new Player();
+        p1.setId(1);
+        Player p2 = new Player();
+        p2.setId(2);
+        WattnGame wg = new WattnGame();
+        wg.players.add(p1);
+        wg.players.add(p2);
+        wg.setHit(CardValue.KOENIG);
+        wg.setTrump(Symbol.PICK);
 
+        wg.roundStartPlayer = p1;
+
+        assertEquals(p1, wg.roundStartPlayer);
+        assertEquals(p2, wg.getNextPlayer(p1));
+
+        p2.setCardPlayed(new Card(Symbol.PICK,CardValue.ACHT));
+        p1.setCardPlayed(new Card(Symbol.PICK, CardValue.ASS));
+        Player winner = wg.getRoundWinnerWattn();
+        assertEquals(p1, winner);
+
+    }
+    @Test
+    public void testwithPlayersTrump2(){
+        Player p1 = new Player();
+        p1.setId(1);
+        Player p2 = new Player();
+        p2.setId(2);
+        WattnGame wg = new WattnGame();
+        wg.players.add(p1);
+        wg.players.add(p2);
+        wg.setHit(CardValue.KOENIG);
+        wg.setTrump(Symbol.PICK);
+
+        wg.roundStartPlayer = p1;
+
+        assertEquals(p1, wg.roundStartPlayer);
+        assertEquals(p2, wg.getNextPlayer(p1));
+
+        p2.setCardPlayed(new Card(Symbol.PICK,CardValue.ASS));
+        p1.setCardPlayed(new Card(Symbol.PICK, CardValue.OBER));
+        Player winner = wg.getRoundWinnerWattn();
+        assertEquals(p2, winner);
+
+    }
+    @Test
+    public void testwithPlayersOneTrump1(){
+        Player p1 = new Player();
+        p1.setId(1);
+        Player p2 = new Player();
+        p2.setId(2);
+        WattnGame wg = new WattnGame();
+        wg.players.add(p1);
+        wg.players.add(p2);
+        wg.setHit(CardValue.KOENIG);
+        wg.setTrump(Symbol.PICK);
+
+        wg.roundStartPlayer = p1;
+
+        assertEquals(p1, wg.roundStartPlayer);
+        assertEquals(p2, wg.getNextPlayer(p1));
+
+        p2.setCardPlayed(new Card(Symbol.KREUZ,CardValue.ASS));
+        p1.setCardPlayed(new Card(Symbol.PICK, CardValue.SIEBEN));
+        Player winner = wg.getRoundWinnerWattn();
+        assertEquals(p1, winner);
+
+    }
+    @Test
+    public void testwithPlayersOneTrump2(){
+        Player p1 = new Player();
+        p1.setId(1);
+        Player p2 = new Player();
+        p2.setId(2);
+        WattnGame wg = new WattnGame();
+        wg.players.add(p1);
+        wg.players.add(p2);
+        wg.setHit(CardValue.KOENIG);
+        wg.setTrump(Symbol.PICK);
+
+        wg.roundStartPlayer = p1;
+
+        assertEquals(p1, wg.roundStartPlayer);
+        assertEquals(p2, wg.getNextPlayer(p1));
+
+        p1.setCardPlayed(new Card(Symbol.KREUZ,CardValue.ASS));
+        p2.setCardPlayed(new Card(Symbol.PICK, CardValue.SIEBEN));
+        Player winner = wg.getRoundWinnerWattn();
+        assertEquals(p2, winner);
+
+    }
 }
