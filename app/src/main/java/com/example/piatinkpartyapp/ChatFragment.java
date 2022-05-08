@@ -77,12 +77,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setRecyclerViewWithDummyData() {
-        chatMessages.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm",false));
+        chatMessages.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", false));
         chatMessages.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", true));
-        chatMessages.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm",false));
-        chatMessages.add(new ChatMessage("Player 2", "I good thx ! \uD83D\uDE02\uD83D\uDE02? ", "today at 10:38 pm",true));
-        chatMessages.add(new ChatMessage("Player 2", "I'm kinda hungry \uD83E\uDD24\uD83E\uDD24\uD83E\uDD24 ", "today at 10:39 pm",true));
-        chatMessages.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm",false));
+        chatMessages.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm", false));
+        chatMessages.add(new ChatMessage("Player 2", "I good thx ! \uD83D\uDE02\uD83D\uDE02? ", "today at 10:38 pm", true));
+        chatMessages.add(new ChatMessage("Player 2", "I'm kinda hungry \uD83E\uDD24\uD83E\uDD24\uD83E\uDD24 ", "today at 10:39 pm", true));
+        chatMessages.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm", false));
     }
 
 
@@ -91,6 +91,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         binding = FragmentChatBinding.inflate(inflater, container, false);
         binding.arrowBackBtn.setOnClickListener(this);
         setUpChatRecyclerView();
+        binding.button2.setOnClickListener(v -> onClickSendMessage(v));
         return binding.getRoot();
     }
 
@@ -99,7 +100,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if (view == binding.arrowBackBtn) {
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-            //getActivity().getSupportFragmentManager().popBackStack();
         }
+    }
+
+
+    private void onClickSendMessage(View v) {
+        String s = binding.etChatMessage.getText().toString();
+        System.out.println(s);
     }
 }
