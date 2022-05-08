@@ -72,8 +72,17 @@ public class GameServer {
                     } else if (object instanceof Packets.Requests.SendToAllChatMessage) {
                         // TODO handleSendToAllChatMessage
 
-                    } else if(object instanceof Packets.Requests.StartGameMessage){
+                    } else if (object instanceof Packets.Requests.StartGameMessage){
                         game.startGame();
+
+                        LOG.info("Game started on server : " + NetworkHandler.GAMESERVER_IP +
+                                ", Client ID started the game: " + connection.getID());
+                    } else if (object instanceof Packets.Requests.PlayerSetCard){
+                        Packets.Requests.PlayerSetCard request =
+                                (Packets.Requests.PlayerSetCard) object;
+
+                        LOG.info("Card: " + request.card.getSymbol().toString() + request.card.getCardValue().toString() + " was set from Client ID: " + connection.getID());
+                        game.setCard(connection.getID(), request.card);
                     }
 
                 } catch (Exception ex) {

@@ -45,10 +45,10 @@ public class SchnopsnDeck extends Deck{
         this.trump = selectTrump();
     }
     /*get game points per cardvalue*/
-    private Integer cardPoints(CardValue v) {
+    public Integer cardPoints(CardValue v) {
         Integer points = 0;
         switch (v.name()) {
-            case ("ZEHNER"):
+            case ("ZEHN"):
                 points = 10;
                 break;
             case ("UNTER"):
