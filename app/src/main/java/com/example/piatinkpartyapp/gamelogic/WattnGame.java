@@ -64,13 +64,18 @@ public class WattnGame extends Game {
         Player currentPlayer = getNextPlayer(this.roundStartPlayer);
         while (currentPlayer != this.roundStartPlayer) {
             //the player that plays the right card always wins the subround
+            // first played card is right card
            if(winningPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue() && winningPlayer.getCardPlayed().getSymbol() == deck.getRightCard().getSymbol()){
                winningPlayer = winningPlayer;
            }
+           //second played card is right card
            else if(currentPlayer.getCardPlayed().getSymbol() == deck.getRightCard().getSymbol() && currentPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue()){
                 winningPlayer = currentPlayer;
 
             } //hit case - first played hit wins
+           else if(winningPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue() ){
+               winningPlayer = winningPlayer;
+           }
             else if(currentPlayer.getCardPlayed().getCardValue() ==deck.getHit() && winningPlayer.getCardPlayed() != deck.getRightCard()){
 
                 winningPlayer = currentPlayer;
