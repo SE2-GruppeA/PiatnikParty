@@ -10,6 +10,7 @@ import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -23,7 +24,7 @@ public class GameClient {
 
     public GameClient(String gameServer_IP) {
         initLiveData();
-        executorService = Executors.newFixedThreadPool(5);
+        executorService = Executors.newFixedThreadPool(1);
         executorService.execute(() -> {
             NetworkHandler.GAMESERVER_IP = gameServer_IP;
             // we to start this in a new thread, so we don't block the main Thread!!
@@ -98,8 +99,10 @@ public class GameClient {
                                 (Packets.Responses.ReceiveToAllChatMessage) object;
                         LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
                         ChatMessage msg = new ChatMessage("Player " + String.valueOf(receivedMessage.from), receivedMessage.message, receivedMessage.date, ChatMessage.MessageType.OUT);
-                        newMessage.postValue(msg);
 
+                        ArrayList<ChatMessage> value = chatMessages.getValue();
+                        value.add(msg);
+                        chatMessages.postValue(value);
 
                     } else if (object instanceof Packets.Responses.SendHandCards) {
                         Packets.Responses.SendHandCards response =
@@ -155,10 +158,10 @@ public class GameClient {
 
     /////////////////// START - CHAT - LOGiC ///////////////////
     // Will be used for updating UI when Client receives Messages from Server
-    private MutableLiveData<ChatMessage> newMessage;
+    private MutableLiveData<ArrayList<ChatMessage>> chatMessages;
 
-    public LiveData<ChatMessage> getNewChatMessage() {
-        return newMessage;
+    public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() {
+        return chatMessages;
     }
 
     public void sendEndToEndMessage(String message, int to) {
@@ -172,7 +175,26 @@ public class GameClient {
     }
 
     public void initLiveData() {
-        newMessage = new MutableLiveData<>();
+        chatMessages = new MutableLiveData<>();
+        ArrayList<ChatMessage> dummy = new ArrayList<>();
+
+        dummy.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "I good thx ! \uD83D\uDE02\uD83D\uDE02? ", "today at 10:38 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 2", "I'm kinda hungry \uD83E\uDD24\uD83E\uDD24\uD83E\uDD24 ", "today at 10:39 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "I good thx ! \uD83D\uDE02\uD83D\uDE02? ", "today at 10:38 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 2", "I'm kinda hungry \uD83E\uDD24\uD83E\uDD24\uD83E\uDD24 ", "today at 10:39 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm", ChatMessage.MessageType.OUT));
+
+        chatMessages.setValue(dummy);
     }
     /////////////////// END - CHAT - LOGiC ///////////////////
 

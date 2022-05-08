@@ -24,7 +24,9 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatFragment;
+import com.example.piatinkpartyapp.networking.GameServer;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -94,6 +96,28 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         //set fullscreen and landscape mode
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        //todo: remove, but used for testing
+        startChatTestServer();
+        System.out.println("pepep");
+    }
+
+
+
+    /*
+    Only used for testing so I can create a client on same device to connect to
+     */
+    GameServer s;
+    private void startChatTestServer() {
+        s = new GameServer();
+        try {
+            s.startNewGameServer();
+            Thread.sleep(2000);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

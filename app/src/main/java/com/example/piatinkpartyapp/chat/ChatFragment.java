@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,14 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.databinding.FragmentChatBinding;
-import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.utils.Utils;
-
-import java.io.IOException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,10 +30,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    private ArrayList<ChatMessage> chatMessages;
     private FragmentChatBinding binding;
     private ClientViewModel model;
-    ChatAdapter chatAdapter;
+    private ChatAdapter chatAdapter;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -76,33 +67,10 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setUpChatRecyclerView() {
-        chatMessages = new ArrayList<>();
-        setRecyclerViewWithDummyData();
-
-        chatAdapter = new ChatAdapter(chatMessages);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
         binding.rvChatMessages.setLayoutManager(layoutManager);
         binding.rvChatMessages.setItemAnimator(new DefaultItemAnimator());
         binding.rvChatMessages.setAdapter(chatAdapter);
-    }
-
-    private void setRecyclerViewWithDummyData() {
-        chatMessages.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
-        chatMessages.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", ChatMessage.MessageType.OUT));
-        chatMessages.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", ChatMessage.MessageType.OUT));
-        chatMessages.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm", ChatMessage.MessageType.IN));
-        chatMessages.add(new ChatMessage("Player 2", "I good thx ! \uD83D\uDE02\uD83D\uDE02? ", "today at 10:38 pm", ChatMessage.MessageType.OUT));
-        chatMessages.add(new ChatMessage("Player 2", "I'm kinda hungry \uD83E\uDD24\uD83E\uDD24\uD83E\uDD24 ", "today at 10:39 pm", ChatMessage.MessageType.IN));
-        chatMessages.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm", ChatMessage.MessageType.OUT));
-        chatMessages.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
-        chatMessages.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
-        chatMessages.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
-        chatMessages.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", ChatMessage.MessageType.OUT));
-        chatMessages.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm", ChatMessage.MessageType.IN));
-        chatMessages.add(new ChatMessage("Player 2", "I good thx ! \uD83D\uDE02\uD83D\uDE02? ", "today at 10:38 pm", ChatMessage.MessageType.OUT));
-        chatMessages.add(new ChatMessage("Player 2", "I'm kinda hungry \uD83E\uDD24\uD83E\uDD24\uD83E\uDD24 ", "today at 10:39 pm", ChatMessage.MessageType.IN));
-        chatMessages.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm", ChatMessage.MessageType.OUT));
     }
 
 
@@ -110,46 +78,34 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentChatBinding.inflate(inflater, container, false);
         binding.arrowBackBtn.setOnClickListener(this);
-
-        /* TEST */
-        binding.startServerBtn.setOnClickListener(v -> startServer(v));
-
-        setUpChatRecyclerView();
         binding.button2.setOnClickListener(v -> onClick_SendChatMessage(v));
+        /*
+        ORDER OF THIS CODE IS IMPORTANT !!!!
+
+        First retrieve view model, because we need an instance, so we can retrieve our LiveData
+        to instantiate other objects such as an adapter !
+
+        and use getActivity, so the ViewModel lives in the Activity Container and not in it's own,
+        therefore will not be created "new" every time... but live so long till the mother activity
+        closes.
+         */
+        model = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+
+        // NOTE - IMPORTANT : instantiate adapter, then define observer, else exception !
+        chatAdapter = new ChatAdapter(model.getChatMessages().getValue());
+        setUpChatRecyclerView();
+
+        /*
+        this will be called instant, when fragment gets created !!! so you have to instantiate
+        your liveData else you will get an exception
+         */
+        model.getChatMessages().observe(getActivity(), newMessage -> addChatMessageToRecyclerView());
         return binding.getRoot();
     }
 
-    GameServer s;
-    private void startServer(View v)  {
-        s = new GameServer();
-        try {
-            s.startNewGameServer();
-            Thread.sleep(5000);
-            setUpChatObserver();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    private void setUpChatObserver() {
-        model = new ViewModelProvider(this).get(ClientViewModel.class);
-        final Observer<ChatMessage> newChatMessageObserver = newChatMessage -> {
-            addChatMessageToRecyclerView(newChatMessage);
-        };
-        try {
-            model.getNewChatMessage().observe(getViewLifecycleOwner(), newChatMessageObserver);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void addChatMessageToRecyclerView(ChatMessage message) {
-        chatMessages.add(message);
+    private void addChatMessageToRecyclerView() {
         chatAdapter.notifyDataSetChanged();
-        binding.rvChatMessages.scrollToPosition(chatMessages.size() - 1);
+        recyclerViewScrollDown();
     }
 
     @Override
@@ -159,12 +115,20 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
     private void onClick_SendChatMessage(View v) {
-        String message = binding.etChatMessage.getText().toString();
-        System.out.println(message);
+        final ChatMessage newChatMessage = new ChatMessage(
+                model.getPlayerID(),
+                binding.etChatMessage.getText().toString(),
+                Utils.getDateAsString(),
+                ChatMessage.MessageType.IN
+        );
+        model.getChatMessages().getValue().add(newChatMessage);
+        chatAdapter.notifyDataSetChanged();
+        recyclerViewScrollDown();
+        model.sendToAllChatMessage(newChatMessage.getMessage());
+    }
 
-        addChatMessageToRecyclerView(new ChatMessage(model.getPlayerID(), message, Utils.getDateAsString(), ChatMessage.MessageType.IN));
-        model.sendToAllChatMessage(message);
+    private void recyclerViewScrollDown(){
+        binding.rvChatMessages.scrollToPosition(model.getChatMessages().getValue().size()-1);
     }
 }

@@ -38,7 +38,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessageViewHolder holder, int position) {
-
         holder.bindData(messages.get(position));
     }
 
@@ -71,9 +70,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
         }
 
         public void bindData(ChatMessage chatMessage) {
-            tv_ChatPlayerName.setText(chatMessage.playerName);
-            tv_ChatMessage.setText(chatMessage.message);
-            tv_ChatDate.setText(chatMessage.date);
+            tv_ChatPlayerName.setText(chatMessage.getPlayerName());
+            tv_ChatMessage.setText(chatMessage.getMessage());
+            tv_ChatDate.setText(chatMessage.getDate());
         }
     }
 }
