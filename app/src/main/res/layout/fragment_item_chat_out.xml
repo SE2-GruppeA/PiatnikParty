@@ -15,7 +15,7 @@
         app:cardCornerRadius="25dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:cardBackgroundColor="@color/chat_out_red">
+        app:cardBackgroundColor="@color/chat_out_blue">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

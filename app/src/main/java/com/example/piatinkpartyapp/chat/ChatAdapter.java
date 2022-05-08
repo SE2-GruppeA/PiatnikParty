@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp;
+package com.example.piatinkpartyapp.chat;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,12 +6,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.piatinkpartyapp.R;
+
 import java.util.ArrayList;
 
-public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.ChatMessageViewHolder> {
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageViewHolder> {
     private ArrayList<ChatMessage> messages;
 
-    public ChatMessageAdapter(ArrayList<ChatMessage> messages) {
+    public ChatAdapter(ArrayList<ChatMessage> messages) {
         this.messages = messages;
     }
 

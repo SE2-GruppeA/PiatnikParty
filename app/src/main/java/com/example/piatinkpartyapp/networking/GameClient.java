@@ -1,9 +1,13 @@
 package com.example.piatinkpartyapp.networking;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.chat.ChatMessage;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -16,9 +20,9 @@ public class GameClient {
     private int playerID;
     private Client client;
     private ExecutorService executorService;
-    int x = 11;
 
     public GameClient(String gameServer_IP) {
+        initLiveData();
         executorService = Executors.newFixedThreadPool(5);
         executorService.execute(() -> {
             NetworkHandler.GAMESERVER_IP = gameServer_IP;
@@ -47,6 +51,9 @@ public class GameClient {
         return INSTANCE;
     }
 
+    public String getPlayerID() {
+        return "Player " + playerID;
+    }
 
     private void startListener() {
         client.addListener(new Listener() {
@@ -80,17 +87,20 @@ public class GameClient {
                         } else {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
-                    }
-                    else if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
+                    } else if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
                         Packets.Responses.ReceiveEndToEndChatMessage receivedMessage =
                                 (Packets.Responses.ReceiveEndToEndChatMessage) object;
                         LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
-                        // TODO: notify UI.
+
+
                     } else if (object instanceof Packets.Responses.ReceiveToAllChatMessage) {
                         Packets.Responses.ReceiveToAllChatMessage receivedMessage =
                                 (Packets.Responses.ReceiveToAllChatMessage) object;
                         LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
-                        // TODO: notify UI
+                        ChatMessage msg = new ChatMessage("Player " + String.valueOf(receivedMessage.from), receivedMessage.message, receivedMessage.date, ChatMessage.MessageType.OUT);
+                        newMessage.postValue(msg);
+
+
                     } else if (object instanceof Packets.Responses.SendHandCards) {
                         Packets.Responses.SendHandCards response =
                                 (Packets.Responses.SendHandCards) object;
@@ -126,20 +136,44 @@ public class GameClient {
 
     // Generic function which should be used for sending packets to server!
     public void sendPacket(IPackets packet) {
-        executorService.execute(() -> {
-            client.sendTCP(packet);
-        });
+        executorService.execute(() -> client.sendTCP(packet));
     }
+
     // Call this method from client to start a game
     public void startGame() {
         client.sendTCP(new Packets.Requests.StartGameMessage());
     }
 
     public void setCard(Card card) {
-        new Thread(()->{
+        new Thread(() -> {
             Packets.Requests.PlayerSetCard request = new Packets.Requests.PlayerSetCard();
-            request.card =  card;
+            request.card = card;
             client.sendTCP(request);
         }).start();
     }
+
+
+    /////////////////// START - CHAT - LOGiC ///////////////////
+    // Will be used for updating UI when Client receives Messages from Server
+    private MutableLiveData<ChatMessage> newMessage;
+
+    public LiveData<ChatMessage> getNewChatMessage() {
+        return newMessage;
+    }
+
+    public void sendEndToEndMessage(String message, int to) {
+        Packets.Requests.SendEndToEndChatMessage request = new Packets.Requests.SendEndToEndChatMessage(message, playerID, to);
+        sendPacket(request);
+    }
+
+    public void sendToAll(String message) {
+        Packets.Requests.SendToAllChatMessage request = new Packets.Requests.SendToAllChatMessage(message, playerID);
+        sendPacket(request);
+    }
+
+    public void initLiveData() {
+        newMessage = new MutableLiveData<>();
+    }
+    /////////////////// END - CHAT - LOGiC ///////////////////
+
 }

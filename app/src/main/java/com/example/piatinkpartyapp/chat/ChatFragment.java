@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp;
+package com.example.piatinkpartyapp.chat;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,13 +6,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.databinding.FragmentChatBinding;
+import com.example.piatinkpartyapp.networking.GameServer;
+import com.example.piatinkpartyapp.utils.Utils;
 
+import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +40,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
     private ArrayList<ChatMessage> chatMessages;
     private FragmentChatBinding binding;
+    private ClientViewModel model;
+    ChatAdapter chatAdapter;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -68,12 +79,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         chatMessages = new ArrayList<>();
         setRecyclerViewWithDummyData();
 
-        ChatMessageAdapter chatMessageAdapter = new ChatMessageAdapter(chatMessages);
+        chatAdapter = new ChatAdapter(chatMessages);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
         binding.rvChatMessages.setLayoutManager(layoutManager);
         binding.rvChatMessages.setItemAnimator(new DefaultItemAnimator());
-        binding.rvChatMessages.setAdapter(chatMessageAdapter);
+        binding.rvChatMessages.setAdapter(chatAdapter);
     }
 
     private void setRecyclerViewWithDummyData() {
@@ -99,11 +110,47 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentChatBinding.inflate(inflater, container, false);
         binding.arrowBackBtn.setOnClickListener(this);
+
+        /* TEST */
+        binding.startServerBtn.setOnClickListener(v -> startServer(v));
+
         setUpChatRecyclerView();
-        binding.button2.setOnClickListener(v -> onClickSendMessage(v));
+        binding.button2.setOnClickListener(v -> onClick_SendChatMessage(v));
         return binding.getRoot();
     }
 
+    GameServer s;
+    private void startServer(View v)  {
+        s = new GameServer();
+        try {
+            s.startNewGameServer();
+            Thread.sleep(5000);
+            setUpChatObserver();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void setUpChatObserver() {
+        model = new ViewModelProvider(this).get(ClientViewModel.class);
+        final Observer<ChatMessage> newChatMessageObserver = newChatMessage -> {
+            addChatMessageToRecyclerView(newChatMessage);
+        };
+        try {
+            model.getNewChatMessage().observe(getViewLifecycleOwner(), newChatMessageObserver);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void addChatMessageToRecyclerView(ChatMessage message) {
+        chatMessages.add(message);
+        chatAdapter.notifyDataSetChanged();
+        binding.rvChatMessages.scrollToPosition(chatMessages.size() - 1);
+    }
 
     @Override
     public void onClick(View view) {
@@ -113,8 +160,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void onClickSendMessage(View v) {
-        String s = binding.etChatMessage.getText().toString();
-        System.out.println(s);
+    private void onClick_SendChatMessage(View v) {
+        String message = binding.etChatMessage.getText().toString();
+        System.out.println(message);
+
+        addChatMessageToRecyclerView(new ChatMessage(model.getPlayerID(), message, Utils.getDateAsString(), ChatMessage.MessageType.IN));
+        model.sendToAllChatMessage(message);
     }
 }

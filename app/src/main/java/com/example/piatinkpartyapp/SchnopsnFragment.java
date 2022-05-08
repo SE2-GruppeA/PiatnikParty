@@ -2,7 +2,6 @@ package com.example.piatinkpartyapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
@@ -24,7 +23,7 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
-import com.example.piatinkpartyapp.screens.MainActivity;
+import com.example.piatinkpartyapp.chat.ChatFragment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

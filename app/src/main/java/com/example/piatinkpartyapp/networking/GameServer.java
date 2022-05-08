@@ -4,13 +4,14 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.example.piatinkpartyapp.gamelogic.Game;
+import com.example.piatinkpartyapp.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-
 
 
 public class GameServer {
@@ -68,16 +69,15 @@ public class GameServer {
             public void received(Connection connection, Object object) {
                 try {
                     if (object instanceof Packets.Requests.SendEndToEndChatMessage) {
-                        // TODO handleEndToEndMessage
+                        handleEndToEndMessage((Packets.Requests.SendEndToEndChatMessage) object);
                     } else if (object instanceof Packets.Requests.SendToAllChatMessage) {
-                        // TODO handleSendToAllChatMessage
-
-                    } else if (object instanceof Packets.Requests.StartGameMessage){
+                        handleSendToAllChatMessage((Packets.Requests.SendToAllChatMessage) object);
+                    } else if (object instanceof Packets.Requests.StartGameMessage) {
                         game.startGame();
 
                         LOG.info("Game started on server : " + NetworkHandler.GAMESERVER_IP +
                                 ", Client ID started the game: " + connection.getID());
-                    } else if (object instanceof Packets.Requests.PlayerSetCard){
+                    } else if (object instanceof Packets.Requests.PlayerSetCard) {
                         Packets.Requests.PlayerSetCard request =
                                 (Packets.Requests.PlayerSetCard) object;
 
@@ -93,6 +93,33 @@ public class GameServer {
         });
     }
 
+
+
+    /////////////////// Chat - Handler Methods !!! ///////////////////
+    private void handleEndToEndMessage(Packets.Requests.SendEndToEndChatMessage request) throws Exception {
+        final Connection messageReceiverClientConnection = Arrays
+                .stream(server.getConnections())
+                .filter(connection -> connection.getID() == request.to)
+                .findFirst()
+                .orElseThrow(() -> new Exception("Client with ID : " + request.to + " not found, so we cannot send the message!"));
+        Packets.Responses.ReceiveEndToEndChatMessage response
+                = new Packets.Responses.ReceiveEndToEndChatMessage(request.message, request.from, request.to);
+        messageReceiverClientConnection.sendTCP(response);
+    }
+
+    private void handleSendToAllChatMessage(Packets.Requests.SendToAllChatMessage request) {
+        Packets.Responses.ReceiveToAllChatMessage response =
+                new Packets.Responses.ReceiveToAllChatMessage(request.message, request.from, Utils.getDateAsString());
+
+        // this should be called but for testing purposes, I send to myself again, so I can see that it really worked!
+        //sendPacketToAllExcept(request.from, response);
+        sendPacketToAll(response);
+    }
+    /////////////////// END - Chat - Handler Methods !!! ///////////////////
+
+
+
+    /////////////////// Generic Send Methods! ///////////////////
     public void sendPacket(Connection client, IPackets packet) {
         executorService.execute(() -> client.sendTCP(packet));
     }
@@ -104,4 +131,7 @@ public class GameServer {
     public void sendPacketToAll(IPackets response) {
         executorService.execute(() -> server.sendToAllTCP(response));
     }
+    /////////////////// END - Generic Send Methods! ///////////////////
+
+
 }

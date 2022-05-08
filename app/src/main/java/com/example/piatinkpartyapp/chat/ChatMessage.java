@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp;
+package com.example.piatinkpartyapp.chat;
 
 public class ChatMessage {
     String playerName;

@@ -21,6 +21,7 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.chat.ChatFragment;
 import com.example.piatinkpartyapp.screens.MainActivity;
 
 import java.lang.reflect.Field;
