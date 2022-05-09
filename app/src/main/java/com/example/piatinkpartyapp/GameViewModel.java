@@ -1,19 +1,16 @@
 package com.example.piatinkpartyapp;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.networking.GameClient;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.NetworkHandler;
-import com.example.piatinkpartyapp.networking.Packets;
 import com.example.piatinkpartyapp.screens.WaitingPlayersFragment;
 
 import java.io.IOException;
@@ -102,7 +99,7 @@ public class GameViewModel extends ViewModel {
         WaitingPlayersFragment waitingPlayersFragment = new WaitingPlayersFragment();
         Context context = waitingPlayersFragment.getContext();
 
-        int player = gameClient.getPlayerID();
+        String player = gameClient.getPlayerID();
 
         private ArrayList<Integer> data;
 
@@ -118,11 +115,11 @@ public class GameViewModel extends ViewModel {
         public GameClient getGameClient() {
             return gameClient;
         }
-
+/*
         public int getPlayer() {
             return player;
         }
-
+*/
         public List<Integer> getData() {
             return data;
         }
@@ -143,11 +140,11 @@ public class GameViewModel extends ViewModel {
         public void setGameClient(GameClient gameClient) {
             this.gameClient = gameClient;
         }
-
+/*
         public void setPlayer(int player) {
             this.player = player;
         }
-
+*/
         public void setWaitingPlayersFragment(WaitingPlayersFragment waitingPlayersFragment) {
             this.waitingPlayersFragment = waitingPlayersFragment;
         }
