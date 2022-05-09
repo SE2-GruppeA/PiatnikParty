@@ -102,7 +102,7 @@ public class GameViewModel extends ViewModel {
         WaitingPlayersFragment waitingPlayersFragment = new WaitingPlayersFragment();
         Context context = waitingPlayersFragment.getContext();
 
-        int player = gameClient.getPlayerID();
+        String player = gameClient.getPlayerID();
 
         private ArrayList<Integer> data;
 
@@ -119,7 +119,7 @@ public class GameViewModel extends ViewModel {
             return gameClient;
         }
 
-        public int getPlayer() {
+        public String getPlayer() {
             return player;
         }
 
@@ -144,7 +144,7 @@ public class GameViewModel extends ViewModel {
             this.gameClient = gameClient;
         }
 
-        public void setPlayer(int player) {
+        public void setPlayer(String player) {
             this.player = player;
         }
 
