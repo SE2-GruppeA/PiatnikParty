@@ -19,8 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
-import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.cards.WattnDeck;
 import com.example.piatinkpartyapp.chat.ChatFragment;
 import com.example.piatinkpartyapp.screens.MainActivity;
 
@@ -44,7 +44,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
     Button mixCardsBtn;
     private Button backBtn;
     private static ImageView currentCard;
-    public static SchnopsnDeck deck;
+    public static WattnDeck deck;
     ArrayList<Card> handCards;
 
     @Override
@@ -121,7 +121,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
             showScoreboard();
         } else if (view == voteBtn) {
             showVote();
-        }else if(view == mixCardsBtn) {
+        } else if (view == mixCardsBtn) {
             deck.mixCards();
         }
     }
@@ -139,13 +139,13 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
     }
 
     /*Sample game setup
-    * creating corresponding deck
-    * set cards to imageviews
-    * get handcards
-    * set onlongclicklisteners to imageviews to interact with cards*/
+     * creating corresponding deck
+     * set cards to imageviews
+     * get handcards
+     * set onlongclicklisteners to imageviews to interact with cards*/
 
-    public void initializeGame(){
-        deck = new SchnopsnDeck(GameName.Schnopsn, 1);
+    public void initializeGame() {
+        deck = new WattnDeck(GameName.Wattn, 2);
         ArrayList<ImageView> handCardImageViews = new ArrayList<>();
         handCardImageViews.add(handCardView1);
         handCardImageViews.add(handCardView2);
@@ -153,99 +153,63 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         handCardImageViews.add(handCardView4);
         handCardImageViews.add(handCardView5);
         currentCard.setVisibility(View.INVISIBLE);
-        Card swapCard = deck.swappingCard();
-        setCardImage(swapCard.frontSide.toLowerCase(Locale.ROOT),swapCardView);
+        //Card swapCard = deck.swappingCard();
+        //    setCardImage(swapCard.frontSide.toLowerCase(Locale.ROOT),swapCardView);
 
         //request handcards
         handCards = deck.getHandCards();
-        setCardImage("backside",cardDeckView);
+        setCardImage("backside", cardDeckView);
         int j = 0;
         //set onclickListeners to handcards
-        for(ImageView imageView:handCardImageViews){
+        for (ImageView imageView : handCardImageViews) {
 
-            setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT),imageView);
+            setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
             j++;
             handCardViewListener(imageView);
         }
-        cardDeckView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-
-
-                if(deck.deck.size() > 0){
-                    if(handCards.size() < 5){
-                        Card c = deck.takeCard();
-                        handCards.add(c);
-                        for(ImageView i : handCardImageViews){
-                            if(i.getContentDescription().equals("backside")){
-                                setCardImage(c.frontSide.toLowerCase(Locale.ROOT),i);
-                                i.setContentDescription(c.frontSide.toLowerCase(Locale.ROOT));
-                                break;
-
-                            }
-                        }
-                    } else {
-                        Toast.makeText(getApplicationContext(),"handcards full!", Toast.LENGTH_LONG).show();
-                    }
-
-                } else {
-                    if (handCards.size() < 5) {
-                        Card c = swapCard;
-                        handCards.add(c);
-                        for (ImageView i : handCardImageViews) {
-                            if (i.getContentDescription().equals("backside")) {
-                                setCardImage(c.frontSide.toLowerCase(Locale.ROOT), i);
-                                i.setContentDescription(c.frontSide.toLowerCase(Locale.ROOT));
-                                break;
-
-                            }
-                        }
-                        swapCardView.setVisibility(View.INVISIBLE);
-                        cardDeckView.setVisibility(View.INVISIBLE);
-                    }
-                }
-                return false;
-            }
-        });
     }
-    private static void setCardImage(String cardName, ImageView imgview){
+
+    private static void setCardImage(String cardName, ImageView imgview) {
         Integer rid = getResId(cardName);
         imgview.setImageResource(rid);
         imgview.setContentDescription(cardName);
     }
+
     public static int getResId(String resName) {
 
         try {
 
             Field idField = R.drawable.class.getDeclaredField(resName);
-            Log.d("##############",idField.getName());
+            Log.d("##############", idField.getName());
             return idField.getInt(idField);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
     }
+
     //play card from handcards, displayed & set to currentCard
-    private static void play(Card c){
+    private static void play(Card c) {
         String s = c.frontSide.toLowerCase(Locale.ROOT);
         setCardImage(s, currentCard);
     }
- /*longonclicklistener to handcards
- * if longonclick to handcard, card gets played, if it is available (handcards showing the backside image are unavailable -checked via imageview description)*/
-    private void handCardViewListener(ImageView handCardView){
+
+    /*longonclicklistener to handcards
+     * if longonclick to handcard, card gets played, if it is available (handcards showing the backside image are unavailable -checked via imageview description)*/
+    private void handCardViewListener(ImageView handCardView) {
         handCardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 //currenCard view is only to be visible if there is a played card - invisible by default
                 currentCard.setVisibility(View.VISIBLE);
                 //card only playable if it is availalbe (not showing its backside)
-                if(!handCardView.getContentDescription().equals("backside")){
+                if (!handCardView.getContentDescription().equals("backside")) {
                     String[] x = handCardView.getContentDescription().toString().split("_");
 
                     //select selected card form handcards array list
-                    Card c = new Card(Symbol.randomSymbol(),CardValue.ACHT);
-                    for(Card d : handCards){
-                        if(d.symbol.name().equals(x[0].toUpperCase(Locale.ROOT)) && d.cardValue.name().equals(x[1].toUpperCase(Locale.ROOT))){
+                    Card c = new Card(Symbol.randomSymbol(), CardValue.ACHT);
+                    for (Card d : handCards) {
+                        if (d.symbol.name().equals(x[0].toUpperCase(Locale.ROOT)) && d.cardValue.name().equals(x[1].toUpperCase(Locale.ROOT))) {
                             c = handCards.get(handCards.indexOf(d));
                         }
                     }
@@ -253,17 +217,18 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
                     //play selected card, remove it from handcards & show backside of this card
                     play(c);
                     handCards.remove(c);
-                    setCardImage("backside",handCardView);
+                    setCardImage("backside", handCardView);
 
 
                 }
                 return false;
             }
         });
+
     }
 
-    private void goBack() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        private void goBack () {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
-}

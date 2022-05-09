@@ -1,6 +1,8 @@
 package com.example.piatinkpartyapp.networking;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.Symbol;
 
 import java.util.ArrayList;
 
@@ -60,6 +62,25 @@ public class Packets {
             public PlayerSetCard(int playerID, Card card) {
                 this.playerID = playerID;
                 this.card = card;
+            }
+        }
+
+        public static class SendHit {
+            public CardValue hit;
+
+            public SendHit(){}
+
+            public SendHit(CardValue hit){
+                this.hit = hit;
+            }
+        }
+        public static class SendTrump {
+            public Symbol trump;
+
+            public SendTrump(){}
+
+            public SendTrump(Symbol trump){
+                this.trump = trump;
             }
         }
     }
@@ -130,6 +151,8 @@ public class Packets {
             }
         }
 
+
+
         public static class NotifyPlayerYourTurn {
             public int playerID;
 
@@ -163,5 +186,7 @@ public class Packets {
         public static class EndOfGame {
             public EndOfGame() { }
         }
+
+
     }
 }

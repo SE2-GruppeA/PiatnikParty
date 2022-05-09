@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.example.piatinkpartyapp.gamelogic.Game;
+import com.example.piatinkpartyapp.gamelogic.WattnGame;
 import com.example.piatinkpartyapp.utils.Utils;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class GameServer {
 
     private Server server;
     private ArrayList<Connection> clients = new ArrayList<>();
-    private Game game;
+    private WattnGame game;
     private ExecutorService executorService;
 
     public void startNewGameServer() throws IOException {
@@ -36,7 +37,7 @@ public class GameServer {
                 e.printStackTrace();
             }
             // create new Game
-            game = new Game();
+            game = new WattnGame();
             startListener();
         });
     }
@@ -86,6 +87,12 @@ public class GameServer {
 
                         LOG.info("Card: " + request.card.getSymbol().toString() + request.card.getCardValue().toString() + " was set from Client ID: " + connection.getID());
                         game.setCard(connection.getID(), request.card);
+                    } else if(object instanceof Packets.Requests.SendHit){
+                        Packets.Requests.SendHit request = (Packets.Requests.SendHit) object;
+                        game.setHit(request.hit);
+                    }else if(object instanceof Packets.Requests.SendTrump) {
+                        Packets.Requests.SendTrump request = (Packets.Requests.SendTrump) object;
+                        game.setTrump(request.trump);
                     }
 
                 } catch (Exception ex) {

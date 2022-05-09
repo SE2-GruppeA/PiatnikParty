@@ -26,6 +26,9 @@ public class NetworkHandler {
         kryo.register(Packets.Requests.StartGameMessage.class);
         kryo.register(Packets.Requests.PlayerSetCard.class);
 
+        kryo.register(Packets.Requests.SendHit.class);
+        kryo.register(Packets.Requests.SendTrump.class);
+
         //Responses
         kryo.register(Packets.Responses.ConnectedSuccessfully.class);
         kryo.register(Packets.Responses.SendHandCards.class);
@@ -34,6 +37,8 @@ public class NetworkHandler {
         kryo.register(Packets.Responses.GameStartedClientMessage.class);
         kryo.register(Packets.Responses.EndOfRound.class);
         kryo.register(Packets.Responses.EndOfGame.class);
+
+
 
         // Other classes
         kryo.register(Card.class);

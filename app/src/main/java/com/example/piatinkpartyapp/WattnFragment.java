@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.cards.WattnDeck;
 import com.example.piatinkpartyapp.chat.ChatFragment;
@@ -172,6 +173,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
      //   clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
 
         //initializeGame();
+       //  deck = new WattnDeck(GameName.Wattn,2);
         return root;
         }
 
@@ -306,6 +308,43 @@ public boolean onLongClick(View view) {
         }
         return false;
         }
+        });
+
+        //final Integer[] doubleClickLastTime = {0};
+
+        handCardView.setOnClickListener(new View.OnClickListener() {
+                //add double click listeners in order to set hit & trump
+                Long doubleClickLastTime = 0L;
+                @Override
+                public void onClick(View view) {
+
+                        if (System.currentTimeMillis() - doubleClickLastTime < 300) {
+                                doubleClickLastTime = 0L;
+                                if () {
+                                        String[] desc = handCardView.getContentDescription().toString().split("_");
+                                        for (CardValue v : CardValue.values()) {
+                                                if (v.name().equals(desc[1])) {
+                                                        deck.setHit(v);
+
+                                                }
+                                        }
+                                } else if (deck.getTrump() == null) {
+                                        String[] desc = handCardView.getContentDescription().toString().split("_");
+                                        for (Symbol s : Symbol.values()) {
+                                                if (s.name().equals(desc[0])) {
+                                                        deck.setTrump(s);
+                                                }
+                                        }
+
+                                }
+                                Toast.makeText(getActivity(), "Hit is " + deck.getHit(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "Trump is " + deck.getTrump(), Toast.LENGTH_LONG).show();
+                        } else {
+                                doubleClickLastTime = System.currentTimeMillis();
+                        }
+                }
+
+
         });
         }
 
