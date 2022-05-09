@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.GameClient;
 
@@ -57,5 +59,10 @@ public class ClientViewModel extends ViewModel {
         client.setCard(c);
     }
 
+    public LiveData<Boolean> selectTrump(){return client.selectTrump();}
+   /* public LiveData<CardValue> getHit(){return client.getHit();}*/
+public void setTrump(Symbol trump){
+    client.setTrump(trump);
+}
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

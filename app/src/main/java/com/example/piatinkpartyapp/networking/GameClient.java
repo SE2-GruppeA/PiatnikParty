@@ -144,12 +144,12 @@ public class GameClient {
                     }
                     else if(object instanceof Packets.Responses.getTrump){
                         Packets.Responses.getTrump response = (Packets.Responses.getTrump) object;
-                        trump.postValue(response.s);
+                      //  trump.postValue(response.s);
 
                     }
                     else if(object instanceof  Packets.Responses.getHit){
                         Packets.Responses.getHit response = (Packets.Responses.getHit) object;
-                        hit.postValue(response.cv);
+                       // hit.postValue(response.cv);
                     }
                     else if (object instanceof Packets.Responses.EndOfRound) {
                         Packets.Responses.EndOfRound response =
@@ -186,6 +186,13 @@ public class GameClient {
         new Thread(()->{
             Packets.Requests.PlayerSetCard request = new Packets.Requests.PlayerSetCard();
             request.card =  card;
+            client.sendTCP(request);
+        }).start();
+    }
+    public void setTrump(Symbol trump){
+        new Thread(()->{
+            Packets.Requests.SendTrump request = new Packets.Requests.SendTrump();
+            request.trump = trump;
             client.sendTCP(request);
         }).start();
     }
@@ -246,8 +253,9 @@ public class GameClient {
     private MutableLiveData<Boolean> gameStarted;
     private MutableLiveData<Card> handoutCard;
     private MutableLiveData<Boolean> endOfRound;
-    private MutableLiveData<Symbol> trump;
-    private MutableLiveData<CardValue> hit;
+    private MutableLiveData<Boolean> selTrump;
+   /* private MutableLiveData<Symbol> trump;
+    private MutableLiveData<CardValue> hit;*/
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -260,6 +268,9 @@ public class GameClient {
     public LiveData<Boolean> isMyTurn(){
         return myTurn;
     }
+    public LiveData<Boolean> selectTrump(){
+        return selTrump;
+    }
 
     public LiveData<Boolean> isGameStarted(){
         return gameStarted;
@@ -269,12 +280,12 @@ public class GameClient {
         return handoutCard;
     }
 
-    public LiveData<Symbol> getTrump(){
+   /* public LiveData<Symbol> getTrump(){
         return trump;
     }
     public  LiveData<CardValue> getHit(){
         return hit;
-    }
+    }*/
 
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
@@ -283,9 +294,11 @@ public class GameClient {
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<>();
+        selTrump = new MutableLiveData<>();
 
-        trump = new MutableLiveData<>();
-        hit = new MutableLiveData<>();
+      /*  trump = new MutableLiveData<>();
+
+        hit = new MutableLiveData<>();*/
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

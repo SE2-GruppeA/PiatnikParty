@@ -125,7 +125,55 @@ private void waitForMyTurn() {
         Toast.makeText(requireActivity().getApplicationContext(),
         "Du bist dran", Toast.LENGTH_LONG).show();
         }
+        private Symbol selectTrump(){
+                final Symbol[] sym = {null};
+                int j = 0;
+                for(ImageView imageView:handCardImageViews){
 
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                                //add double click listeners in order to set hit & trump
+                                Long doubleClickLastTime = 0L;
+                                @Override
+                                public void onClick(View view) {
+
+                                        if (System.currentTimeMillis() - doubleClickLastTime < 300) {
+                                                doubleClickLastTime = 0L;
+                                                //    if (deck.getHit() == null) {
+                                       /* String[] desc = handCardView.getContentDescription().toString().split("_");
+                                        for (CardValue v : CardValue.values()) {
+                                                if (v.name().equals(desc[1])) {
+                                                        deck.setHit(v);
+
+                                                }
+                                        }*/
+                                                // } else if (deck.getTrump() == null) {
+                                                Toast.makeText(getActivity(), "test works",Toast.LENGTH_LONG).show();
+                                                String[] desc = imageView.getContentDescription().toString().split("_");
+                                                for (Symbol s : Symbol.values()) {
+                                                        if (s.name().equals(desc[0])) {
+                                                                sym[0] = s;
+                                                                Toast.makeText(getActivity(), "Trump is "+s, Toast.LENGTH_LONG).show();
+                                                        }
+                                                }
+
+                                                // }
+                                                //  Toast.makeText(getActivity(), "Hit is " + deck.getHit(), Toast.LENGTH_LONG).show();
+                                                // Toast.makeText(getActivity(), "Trump is " + deck.getTrump(), Toast.LENGTH_LONG).show();
+                                        } else {
+                                                doubleClickLastTime = System.currentTimeMillis();
+                                        }
+                                }
+
+
+                        });
+                }
+                return sym[0];
+        }
+
+
+private void showTrump(Symbol trump){
+        Toast.makeText(requireActivity().getApplicationContext(), "Trump is "+ trump, Toast.LENGTH_LONG).show();
+}
 private void initHandCardsViews(){
         handCardImageViews = new ArrayList<>();
         handCardImageViews.add(handCardView1);
@@ -170,7 +218,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
         clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
         clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn());
-     //   clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
+        clientViewModel.selectTrump().observe(getActivity(), selTrump -> selectTrump());
+      // clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
 
         //initializeGame();
        //  deck = new WattnDeck(GameName.Wattn,2);
@@ -312,40 +361,7 @@ public boolean onLongClick(View view) {
 
         //final Integer[] doubleClickLastTime = {0};
 
-        handCardView.setOnClickListener(new View.OnClickListener() {
-                //add double click listeners in order to set hit & trump
-                Long doubleClickLastTime = 0L;
-                @Override
-                public void onClick(View view) {
 
-                        if (System.currentTimeMillis() - doubleClickLastTime < 300) {
-                                doubleClickLastTime = 0L;
-                                if () {
-                                        String[] desc = handCardView.getContentDescription().toString().split("_");
-                                        for (CardValue v : CardValue.values()) {
-                                                if (v.name().equals(desc[1])) {
-                                                        deck.setHit(v);
-
-                                                }
-                                        }
-                                } else if (deck.getTrump() == null) {
-                                        String[] desc = handCardView.getContentDescription().toString().split("_");
-                                        for (Symbol s : Symbol.values()) {
-                                                if (s.name().equals(desc[0])) {
-                                                        deck.setTrump(s);
-                                                }
-                                        }
-
-                                }
-                                Toast.makeText(getActivity(), "Hit is " + deck.getHit(), Toast.LENGTH_LONG).show();
-                                Toast.makeText(getActivity(), "Trump is " + deck.getTrump(), Toast.LENGTH_LONG).show();
-                        } else {
-                                doubleClickLastTime = System.currentTimeMillis();
-                        }
-                }
-
-
-        });
         }
 
 private void goBack() {

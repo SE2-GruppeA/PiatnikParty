@@ -1,12 +1,12 @@
 package com.example.piatinkpartyapp.gamelogic;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.esotericsoftware.kryonet.Connection;
+import android.util.Log;
+
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
-import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.cards.WattnDeck;
 import com.example.piatinkpartyapp.networking.GameServer;
@@ -34,7 +34,8 @@ public class WattnGame extends Game {
     public void resetWattnDeck(){
         deck = new WattnDeck(GameName.Wattn,2);
         //setting hit & trump randomly 4 testing because UI isn't connected to game logic via live data yet
-       // deck.setHit(CardValue.randomValue());
+        deck.setHit(CardValue.randomValue());
+        deck.setTrump(Symbol.randomSymbol());
        // deck.setHit(CardValue.ZEHN);
         //deck.setTrump(Symbol.HERZ);
 
@@ -99,6 +100,56 @@ public class WattnGame extends Game {
             }
         }
         return winningPlayer;
+    }
+    @Override
+    public void sendHandCards() {
+        for (Player player: players) {
+            ArrayList<Card> handCards = deck.getHandCards();
+            player.setHandcards(handCards);
+
+            // send message to client with handcards
+            Packets.Responses.SendHandCards request = new Packets.Responses.SendHandCards();
+            request.cards = handCards;
+            request.playerID = player.getClientConnection().getID();
+            player.getClientConnection().sendTCP(request);
+        }
+    }
+    @Override
+    public void setCard(int playerID, Card card) {
+        Player player = getPlayerByID(playerID);
+
+        //only for testing
+        //Card card2 = player.getHandcards().get(0);
+
+        new Thread(()->{
+            player.setRoundFinished(true);
+            LOG.info("setRoundFinished = true");
+
+            player.setCardPlayed(card);
+            Log.e("##########", card.getCardValue() +" "+ card.getSymbol());
+            LOG.info("set Playercard of player: " + player.getId() + " card: " +  card.getSymbol().toString() + card.getCardValue().toString());
+
+            player.removeHandcard(card);
+            LOG.info("card removed from handcards");
+
+            if (checkIfAllPlayersFinishedRound()) {
+                // gelegte Karten vergleichen und Stich zu cardsWon + Punkte dazurechnen
+                LOG.info("RoundFinished. Trump is: " + deck.getTrump().toString());
+
+                Player roundWonPlayer = getRoundWinnerWattn();
+                LOG.info("Round won by Player: " + roundWonPlayer.getId());
+
+                addPointsToWinnerPlayer(roundWonPlayer);
+                LOG.info("Points added to winner player: " + roundWonPlayer.getId() + ". Points: " + roundWonPlayer.getPoints());
+
+                //TODO: check if one player have enough points
+                startNewRoundSchnopsn(roundWonPlayer);
+            } else {
+                // Nächsten Spieler benachrichtigen dass er dran ist
+                LOG.info("notify next player: " + getNextPlayer(player).getId());
+                notifyPlayerYourTurn(getNextPlayer(player));
+            }
+        }).start();
     }
 
 }

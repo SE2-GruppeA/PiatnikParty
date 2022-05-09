@@ -92,6 +92,7 @@ public class GameServer {
                         game.setHit(request.hit);
                     }else if(object instanceof Packets.Requests.SendTrump) {
                         Packets.Requests.SendTrump request = (Packets.Requests.SendTrump) object;
+                    //    game.setTrump(request.trump);
                         game.setTrump(request.trump);
                     }
 
