@@ -107,6 +107,14 @@ public class GameClient {
                         value.add(msg);
                         chatMessages.postValue(value);
 
+                    } else if (object instanceof Packets.Responses.GameStartedClientMessage) {
+                        Packets.Responses.GameStartedClientMessage response =
+                                (Packets.Responses.GameStartedClientMessage) object;
+
+                        // notify UI: send handcards to SchnopsnFragment
+                        //handCards.postValue(response.cards);
+
+                        //LOG.info("Game started for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.SendHandCards) {
                         Packets.Responses.SendHandCards response =
                                 (Packets.Responses.SendHandCards) object;
