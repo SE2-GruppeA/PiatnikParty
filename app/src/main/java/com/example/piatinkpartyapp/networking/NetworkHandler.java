@@ -38,6 +38,9 @@ public class NetworkHandler {
         kryo.register(Packets.Responses.EndOfRound.class);
         kryo.register(Packets.Responses.EndOfGame.class);
 
+        kryo.register(Packets.Responses.getHit.class);
+        kryo.register(Packets.Responses.getTrump.class);
+
 
 
         // Other classes

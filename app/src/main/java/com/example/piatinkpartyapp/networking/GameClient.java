@@ -7,6 +7,8 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 
 import java.io.IOException;
@@ -139,7 +141,17 @@ public class GameClient {
                         handoutCard.postValue(response.card);
 
                         LOG.info("Handout card received for player: " + response.playerID);
-                    } else if (object instanceof Packets.Responses.EndOfRound) {
+                    }
+                    else if(object instanceof Packets.Responses.getTrump){
+                        Packets.Responses.getTrump response = (Packets.Responses.getTrump) object;
+                        trump.postValue(response.s);
+
+                    }
+                    else if(object instanceof  Packets.Responses.getHit){
+                        Packets.Responses.getHit response = (Packets.Responses.getHit) object;
+                        hit.postValue(response.cv);
+                    }
+                    else if (object instanceof Packets.Responses.EndOfRound) {
                         Packets.Responses.EndOfRound response =
                                 (Packets.Responses.EndOfRound) object;
 
@@ -149,6 +161,7 @@ public class GameClient {
 
                         LOG.info("End of round!");
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -233,6 +246,8 @@ public class GameClient {
     private MutableLiveData<Boolean> gameStarted;
     private MutableLiveData<Card> handoutCard;
     private MutableLiveData<Boolean> endOfRound;
+    private MutableLiveData<Symbol> trump;
+    private MutableLiveData<CardValue> hit;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -254,6 +269,13 @@ public class GameClient {
         return handoutCard;
     }
 
+    public LiveData<Symbol> getTrump(){
+        return trump;
+    }
+    public  LiveData<CardValue> getHit(){
+        return hit;
+    }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -261,6 +283,9 @@ public class GameClient {
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<>();
+
+        trump = new MutableLiveData<>();
+        hit = new MutableLiveData<>();
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

@@ -187,6 +187,19 @@ public class Packets {
             public EndOfGame() { }
         }
 
-
+        public static class getHit{
+            public CardValue cv;
+            public getHit(){}
+            public getHit(CardValue cv){
+                this.cv = cv;
+            }
+        }
+        public static class getTrump{
+            public Symbol s;
+            public getTrump(){}
+            public getTrump(Symbol s){
+                this.s = s;
+            }
+        }
     }
 }
