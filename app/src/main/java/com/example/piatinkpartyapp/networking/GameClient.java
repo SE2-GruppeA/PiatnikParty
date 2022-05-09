@@ -111,10 +111,10 @@ public class GameClient {
                         Packets.Responses.GameStartedClientMessage response =
                                 (Packets.Responses.GameStartedClientMessage) object;
 
-                        // notify UI: send handcards to SchnopsnFragment
-                        //handCards.postValue(response.cards);
+                        // notify UI: game has started
+                        gameStarted.postValue(true);
 
-                        //LOG.info("Game started for player: " + response.playerID);
+                        LOG.info("Game started by server");
                     } else if (object instanceof Packets.Responses.SendHandCards) {
                         Packets.Responses.SendHandCards response =
                                 (Packets.Responses.SendHandCards) object;
