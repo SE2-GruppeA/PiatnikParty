@@ -1,5 +1,8 @@
 package com.example.piatinkpartyapp.networking;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -109,7 +112,7 @@ public class GameClient {
                                 (Packets.Responses.SendHandCards) object;
 
                         // notify UI: send handcards to SchnopsnFragment
-                        handCards.postValue((ArrayList<Card>) object);
+                        handCards.postValue(response.cards);
 
                         LOG.info("Handcards received for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
