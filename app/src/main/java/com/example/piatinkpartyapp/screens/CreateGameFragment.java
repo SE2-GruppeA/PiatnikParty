@@ -1,15 +1,25 @@
 package com.example.piatinkpartyapp.screens;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.piatinkpartyapp.R;
+import com.example.piatinkpartyapp.networking.NetworkHandler;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 
 public class CreateGameFragment extends Fragment implements View.OnClickListener {
@@ -18,7 +28,6 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
     private static final String ARG_PARAM2 = "param2";
     private Button ButtonBack;
     private Button ButtonStartLobby;
-
 
     private String mParam1;
     private String mParam2;
@@ -50,11 +59,26 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
 
         //add views
         ButtonBack = root.findViewById(R.id.buttonBack);
-        ButtonStartLobby = root. findViewById(R. id. buttonStartLobby);
+        ButtonStartLobby = root.findViewById(R. id. buttonStartLobby);
 
         //add onclick listeners
         ButtonBack.setOnClickListener(this);
         ButtonStartLobby.setOnClickListener(this);
+
+        TextView textView1 = root.findViewById(R.id.textView);
+        TextView textView2 = root.findViewById(R.id.textView2);
+
+        //set the local ip as gameserver ip, we need to do this because the ClientViewModel autmatically
+        //creates an instance of gameclient
+        //needs to be relocated !!!
+
+        Context context = requireContext().getApplicationContext();
+        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+        NetworkHandler.GAMESERVER_IP = ip;
+
+        textView1.setText("Your IP Address is:");
+        textView2.setText(ip);
 
         return root;
     }

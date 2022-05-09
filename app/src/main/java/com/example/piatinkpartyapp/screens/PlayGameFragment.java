@@ -3,13 +3,20 @@ package com.example.piatinkpartyapp.screens;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
+import com.example.piatinkpartyapp.SchnopsnFragment;
+import com.example.piatinkpartyapp.networking.GameClient;
+import com.example.piatinkpartyapp.networking.NetworkHandler;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +26,12 @@ import com.example.piatinkpartyapp.R;
 public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
     private Button backBtn;
+    private Button connectButton;
+    //private ViewModel viewModel;
+    private EditText editText;
+    private TextView textView;
+
+    ClientViewModel clientViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,14 +79,44 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
         View root = inflater.inflate(R.layout.fragment_play_game, container, false);
 
+        textView = (TextView) root.findViewById(R.id.textView6);
+
         backBtn = (Button) root.findViewById(R.id.returnButton);
         backBtn.setOnClickListener(this);
+
+        connectButton = (Button) root.findViewById(R.id.button3);
+        connectButton.setOnClickListener(this);
+        editText = (EditText) root.findViewById(R.id.editTextTextPersonName);
 
         return root;
     }
 
+    private void waitForGameStart() {
+        getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new SchnopsnFragment()).commit();
+    }
+
     @Override
     public void onClick(View view) {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+
+        if (view == backBtn)
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        else if (view == connectButton) {
+            NetworkHandler.GAMESERVER_IP =  editText.getText().toString();
+
+            clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+            clientViewModel.getConnectionState().observe(getActivity(), connectionState -> setConnectedSuccessfuly(connectionState));
+            clientViewModel.isGameStarted().observe(getActivity(), gameStarted -> waitForGameStart());
+        }
+
     }
+
+    public void setConnectedSuccessfuly(boolean connectionSate) {
+        if(connectionSate) {
+            textView.setText("Erforlgreich verbunden!!!");
+        }else{
+            textView.setText("Verbindung fehlgeschlagen");
+        }
+    }
+
 }

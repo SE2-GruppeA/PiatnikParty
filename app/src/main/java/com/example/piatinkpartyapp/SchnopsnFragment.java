@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,9 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
-import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatFragment;
@@ -53,6 +54,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     private static ImageView currentCard;
     public static SchnopsnDeck deck;
     ArrayList<Card> handCards;
+
+    ClientViewModel clientViewModel;
+    ArrayList<ImageView> handCardImageViews;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -120,6 +124,33 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void waitForMyTurn() {
+        Toast.makeText(requireActivity().getApplicationContext(),
+                "Du bist dran", Toast.LENGTH_LONG).show();
+    }
+
+    private void initHandCardsViews(){
+        handCardImageViews = new ArrayList<>();
+        handCardImageViews.add(handCardView1);
+        handCardImageViews.add(handCardView2);
+        handCardImageViews.add(handCardView3);
+        handCardImageViews.add(handCardView4);
+        handCardImageViews.add(handCardView5);
+    }
+
+    private void updateHandCards(ArrayList<Card> handCards) {
+        this.handCards = handCards;
+
+        int j = 0;
+        //set onclickListeners to handcards
+        for(ImageView imageView:handCardImageViews){
+
+            setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT),imageView);
+            j++;
+            handCardViewListener(imageView);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,8 +160,27 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         addAllViews(root);
 
         addOnclickHandlers();
-        initializeGame();
+        initHandCardsViews();
+
+        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+
+        clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
+        clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn());
+        clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
+
+        //initializeGame();
         return root;
+    }
+
+    private void getHandoutCard(Card c) {
+        handCards.add(c);
+        for(ImageView i : handCardImageViews){
+            if(i.getContentDescription().equals("backside")){
+                setCardImage(c.frontSide.toLowerCase(Locale.ROOT),i);
+                i.setContentDescription(c.frontSide.toLowerCase(Locale.ROOT));
+                break;
+            }
+        }
     }
 
     private void addOnclickHandlers() {
@@ -138,7 +188,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         exitBtn.setOnClickListener(this);
         scoreboardBtn.setOnClickListener(this);
         voteBtn.setOnClickListener(this);
-        mixCardsBtn.setOnClickListener(this);
+        //mixCardsBtn.setOnClickListener(this);
     }
 
     private void addAllViews(View view) {
@@ -203,76 +253,6 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new VotingDialog()).commit();
     }
 
-    /*Sample game setup
-     * creating corresponding deck
-     * set cards to imageviews
-     * get handcards
-     * set onlongclicklisteners to imageviews to interact with cards*/
-
-    public void initializeGame(){
-        deck = new SchnopsnDeck(GameName.Schnopsn, 1);
-        ArrayList<ImageView> handCardImageViews = new ArrayList<>();
-        handCardImageViews.add(handCardView1);
-        handCardImageViews.add(handCardView2);
-        handCardImageViews.add(handCardView3);
-        handCardImageViews.add(handCardView4);
-        handCardImageViews.add(handCardView5);
-        currentCard.setVisibility(View.INVISIBLE);
-        Card swapCard = deck.swappingCard();
-        setCardImage(swapCard.frontSide.toLowerCase(Locale.ROOT),swapCardView);
-
-        //request handcards
-        handCards = deck.getHandCards();
-        setCardImage("backside",cardDeckView);
-        int j = 0;
-        //set onclickListeners to handcards
-        for(ImageView imageView:handCardImageViews){
-
-            setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT),imageView);
-            j++;
-            handCardViewListener(imageView);
-        }
-        cardDeckView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-
-
-                if(deck.deck.size() > 0){
-                    if(handCards.size() < 5){
-                        Card c = deck.takeCard();
-                        handCards.add(c);
-                        for(ImageView i : handCardImageViews){
-                            if(i.getContentDescription().equals("backside")){
-                                setCardImage(c.frontSide.toLowerCase(Locale.ROOT),i);
-                                i.setContentDescription(c.frontSide.toLowerCase(Locale.ROOT));
-                                break;
-
-                            }
-                        }
-                    } else {
-                        Toast.makeText(requireActivity().getApplicationContext(),"handcards full!", Toast.LENGTH_LONG).show();
-                    }
-
-                } else {
-                    if (handCards.size() < 5) {
-                        Card c = swapCard;
-                        handCards.add(c);
-                        for (ImageView i : handCardImageViews) {
-                            if (i.getContentDescription().equals("backside")) {
-                                setCardImage(c.frontSide.toLowerCase(Locale.ROOT), i);
-                                i.setContentDescription(c.frontSide.toLowerCase(Locale.ROOT));
-                                break;
-
-                            }
-                        }
-                        swapCardView.setVisibility(View.INVISIBLE);
-                        cardDeckView.setVisibility(View.INVISIBLE);
-                    }
-                }
-                return false;
-            }
-        });
-    }
     private static void setCardImage(String cardName, ImageView imgview){
         Integer rid = getResId(cardName);
         imgview.setImageResource(rid);
@@ -316,11 +296,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
                     }
 
                     //play selected card, remove it from handcards & show backside of this card
-                    play(c);
+                    //play(c);
+                    clientViewModel.setCard(c);
                     handCards.remove(c);
                     setCardImage("backside",handCardView);
-
-
                 }
                 return false;
             }

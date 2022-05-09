@@ -81,7 +81,9 @@ public class GameClient {
                         Packets.Responses.ConnectedSuccessfully response =
                                 (Packets.Responses.ConnectedSuccessfully) object;
 
-                        // TODO: notify UI
+                        // notify UI: connection information
+                        connectionState.postValue(response.isConnected);
+
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
@@ -108,26 +110,34 @@ public class GameClient {
                         Packets.Responses.SendHandCards response =
                                 (Packets.Responses.SendHandCards) object;
 
-                        // TODO: notify UI.
+                        // notify UI: send handcards to SchnopsnFragment
+                        handCards.postValue((ArrayList<Card>) object);
+
                         LOG.info("Handcards received for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
                         Packets.Responses.NotifyPlayerYourTurn response =
                                 (Packets.Responses.NotifyPlayerYourTurn) object;
 
-                        // TODO: notify UI
+                        // notify UI: its the clients turn
+                        myTurn.postValue(true);
+
                         LOG.info("It's your turn! player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.PlayerGetHandoutCard) {
                         Packets.Responses.PlayerGetHandoutCard response =
                                 (Packets.Responses.PlayerGetHandoutCard) object;
 
-                        Card card = response.card;
-                        // TODO: notify UI
+                        // notify UI: clients gets one card
+                        handoutCard.postValue(response.card);
+
                         LOG.info("Handout card received for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.EndOfRound) {
                         Packets.Responses.EndOfRound response =
                                 (Packets.Responses.EndOfRound) object;
 
-                        // TODO: notify UI
+                        // notify UI: round of player is over
+                        //turn of the player is over, therefore myTurn is set to false again
+                        myTurn.postValue(false);
+
                         LOG.info("End of round!");
                     }
                 } catch (Exception e) {
@@ -195,7 +205,51 @@ public class GameClient {
         dummy.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm", ChatMessage.MessageType.OUT));
 
         chatMessages.setValue(dummy);
+
+        //for main game uis
+        initLiveDataMainGameUIs();
+
     }
     /////////////////// END - CHAT - LOGiC ///////////////////
 
+
+    ////////////// START - MainGameUIs - LOGiC //////////////
+
+    private MutableLiveData<ArrayList<Card>> handCards;
+    private MutableLiveData<Boolean> connectionState;
+    private MutableLiveData<Boolean> myTurn;
+    private MutableLiveData<Boolean> gameStarted;
+    private MutableLiveData<Card> handoutCard;
+    private MutableLiveData<Boolean> endOfRound;
+
+    public LiveData<Boolean> getConnectionState(){
+        return connectionState;
+    }
+
+    public LiveData<ArrayList<Card>> getHandCards(){
+        return handCards;
+    }
+
+    public LiveData<Boolean> isMyTurn(){
+        return myTurn;
+    }
+
+    public LiveData<Boolean> isGameStarted(){
+        return gameStarted;
+    }
+
+    public LiveData<Card> getHandoutCard(){
+        return handoutCard;
+    }
+
+    private void initLiveDataMainGameUIs(){
+        handCards = new MutableLiveData<>();
+        connectionState = new MutableLiveData<>();
+        myTurn = new MutableLiveData<>();
+        gameStarted = new MutableLiveData<>();
+        handoutCard = new MutableLiveData<>();
+        endOfRound = new MutableLiveData<>();
+    }
+
+    /////////////// END - MainGameUIs - LOGiC ///////////////
 }

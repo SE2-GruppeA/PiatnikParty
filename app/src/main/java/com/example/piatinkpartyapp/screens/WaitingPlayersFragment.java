@@ -1,28 +1,37 @@
 package com.example.piatinkpartyapp.screens;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
-import com.example.piatinkpartyapp.WaitingForPlayersViewModel;
+import com.example.piatinkpartyapp.SchnopsnFragment;
+import com.example.piatinkpartyapp.networking.GameServer;
+
+import java.io.IOException;
 
 
-public class WaitingPlayersFragment extends Fragment {
+public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private TextView textView;
+
+    Button backBtn;
+    Button BtnStartGame3;
 
     private String mParam1;
     private String mParam2;
+
+    GameServer server;
+    ClientViewModel clientViewModel;
 
     public WaitingPlayersFragment() {
         // Required empty public constructor
@@ -52,14 +61,55 @@ public class WaitingPlayersFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_waiting_players, container, false);
 
-        ViewModel viewModel = new ViewModelProvider(this).get(WaitingForPlayersViewModel.class);
+        //viewModel = new ViewModelProvider(this).get(GameViewModel.class);
 
-        String text = ((WaitingForPlayersViewModel) viewModel).getIp().toString();
+        TextView textView = (TextView) view.findViewById(R.id.textView4);
 
-        textView = (TextView) view.findViewById(R.id.textView4);
-        textView.setText(text);
+        backBtn = (Button) view.findViewById(R.id.button2);
+        backBtn.setOnClickListener(this);
+
+        BtnStartGame3 = (Button) view.findViewById(R.id.BtnStartGame3);
+        BtnStartGame3.setOnClickListener(this);
+
+        //test for gameserver start -> needs relocation
+        server = new GameServer();
+        try {
+            server.startNewGameServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+        clientViewModel.getConnectionState().observe(getActivity(), connectionState ->
+                waitForConnection(connectionState));
+
+        clientViewModel.isGameStarted().observe(getActivity(), isGameStarted -> waitForGameStart());
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void waitForConnection(boolean connectionState) {
+        if(connectionState == true){
+            Toast.makeText(requireActivity().getApplicationContext(),"Verbindung zum Server erfolgreich", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(requireActivity().getApplicationContext(),"Verbindung zum Server fehlgeschlagen", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void waitForGameStart(){
+        getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new SchnopsnFragment()).commit();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == backBtn)
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        else if (view == BtnStartGame3) {
+            clientViewModel.startGame();
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }
+
     }
 }
