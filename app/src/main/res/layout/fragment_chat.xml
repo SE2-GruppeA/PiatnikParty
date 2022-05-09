@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="350dp"
+    android:layout_width="500dp"
     android:layout_height="match_parent"
     tools:context=".SchnopsnActivity">
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:clickable="true"
         android:scaleType="centerCrop"
         android:src="@drawable/sidebar"
@@ -18,30 +18,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <EditText
         android:id="@+id/et_chatMessage"
-        android:layout_width="186dp"
-        android:layout_height="36dp"
+        android:layout_width="276dp"
+        android:layout_height="57dp"
         android:layout_margin="10dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="8dp"
-        android:hint="        Enter Message"
+        android:layout_marginStart="61dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="16dp"
+        android:hint="Enter Message"
         android:maxLength="10"
+        android:textColorHint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"></EditText>
-
-    <Button
-        android:id="@+id/btn_sendMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="9dp"
-        android:text="Send"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/arrowBackBtn"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_chatMessages"></EditText>
 
     <ImageView
         android:id="@+id/arrowBackBtn"
@@ -61,11 +53,25 @@
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/et_chatMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/arrowBackBtn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/et_chatMessage"
+        app:layout_constraintTop_toBottomOf="@+id/rv_chatMessages"
         app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

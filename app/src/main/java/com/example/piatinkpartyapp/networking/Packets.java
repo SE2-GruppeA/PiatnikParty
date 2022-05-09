@@ -33,7 +33,7 @@ public class Packets {
             }
         }
 
-        public static class SendToAllChatMessage {
+        public static class SendToAllChatMessage implements IPackets {
             String message;
             int from;
 
@@ -105,14 +105,16 @@ public class Packets {
         }
         public static class ReceiveToAllChatMessage implements IPackets {
             String message;
+            String date;
             int from;
 
             public ReceiveToAllChatMessage() {
             }
 
-            public ReceiveToAllChatMessage(String message, int from) {
+            public ReceiveToAllChatMessage(String message, int from, String date) {
                 this.message = message;
                 this.from = from;
+                this.date = date;
             }
         }
 
