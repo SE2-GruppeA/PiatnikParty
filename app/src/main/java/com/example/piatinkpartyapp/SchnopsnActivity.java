@@ -1,17 +1,12 @@
 package com.example.piatinkpartyapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -19,11 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.chat.ChatFragment;
+import com.example.piatinkpartyapp.screens.MainActivity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -43,6 +42,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
     Button scoreboardBtn;
     Button voteBtn;
     Button mixCardsBtn;
+    private Button backBtn;
     private static ImageView currentCard;
     public static SchnopsnDeck deck;
     ArrayList<Card> handCards;
@@ -55,6 +55,14 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_schnopsn);
 
         addAllViews();
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goBack();
+            }
+        });
+
         addOnclickHandlers();
         initializeGame();
     }
@@ -65,6 +73,7 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
         scoreTxt = findViewById((R.id.scoreTxt));
         scoreboardBtn = findViewById(R.id.scoreboardBtn);
         voteBtn = findViewById(R.id.voteBtn);
+        backBtn = findViewById(R.id.backBtn);
 
         handCardView1 = findViewById(R.id.card1);
         handCardView2 = findViewById(R.id.card2);
@@ -112,13 +121,13 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
             showScoreboard();
         } else if (view == voteBtn) {
             showVote();
-        }else if(view == mixCardsBtn){
+        }else if(view == mixCardsBtn) {
             deck.mixCards();
         }
     }
 
     public void showSideDrawer() {
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new SideDrawer()).commit();
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new ChatFragment()).commit();
     }
 
     public void showScoreboard() {
@@ -175,11 +184,11 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
 
                             }
                         }
-                    }else{
+                    } else {
                         Toast.makeText(getApplicationContext(),"handcards full!", Toast.LENGTH_LONG).show();
                     }
 
-                }else {
+                } else {
                     if (handCards.size() < 5) {
                         Card c = swapCard;
                         handCards.add(c);
@@ -251,5 +260,10 @@ public class SchnopsnActivity extends AppCompatActivity implements View.OnClickL
                 return false;
             }
         });
+    }
+
+    private void goBack() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
