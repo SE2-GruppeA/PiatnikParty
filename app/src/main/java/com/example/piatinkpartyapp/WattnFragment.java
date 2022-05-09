@@ -38,16 +38,18 @@ public class WattnFragment extends Fragment implements View.OnClickListener {
         ImageView handCardView3;
         ImageView handCardView4;
         ImageView handCardView5;
-        ImageView cardDeckView;
-        ImageView swapCardView;
+
         ImageButton exitBtn;
         TextView scoreTxt;
         Button scoreboardBtn;
         Button voteBtn;
         Button mixCardsBtn;
-private static ImageView currentCard;
+public static ImageView currentCardPlayer1;
+public static ImageView currentCardPlayer2;
 public static WattnDeck deck;
         ArrayList<Card> handCards;
+      public static  ArrayList<Card> currentCards;
+        ArrayList<ImageView> currentCardImageViews;
 
         ClientViewModel clientViewModel;
         ArrayList<ImageView> handCardImageViews;
@@ -130,6 +132,13 @@ private void initHandCardsViews(){
         handCardImageViews.add(handCardView3);
         handCardImageViews.add(handCardView4);
         handCardImageViews.add(handCardView5);
+
+        //current cards
+        currentCards = new ArrayList<>();
+        currentCardImageViews = new ArrayList<>();
+        currentCardImageViews.add(currentCardPlayer1);
+        currentCardImageViews.add(currentCardPlayer2);
+
         }
 
 private void updateHandCards(ArrayList<Card> handCards) {
@@ -160,13 +169,13 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
         clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
         clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn());
-        clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
+     //   clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
 
         //initializeGame();
         return root;
         }
 
-private void getHandoutCard(Card c) {
+/*private void getHandoutCard(Card c) {
         handCards.add(c);
         for(ImageView i : handCardImageViews){
         if(i.getContentDescription().equals("backside")){
@@ -175,7 +184,7 @@ private void getHandoutCard(Card c) {
         break;
         }
         }
-        }
+        }*/
 
 private void addOnclickHandlers() {
         arrowBtn.setOnClickListener(this);
@@ -197,10 +206,9 @@ private void addAllViews(View view) {
         handCardView3 = view.findViewById(R.id.card3);
         handCardView4 = view.findViewById(R.id.card4);
         handCardView5 = view.findViewById(R.id.card5);
-        cardDeckView = view.findViewById(R.id.cardDeck);
-        currentCard = view.findViewById(R.id.currentCard);
-        swapCardView = view.findViewById(R.id.swapCard);
-        mixCardsBtn = view.findViewById(R.id.mixBtn);
+        currentCardPlayer1 = view.findViewById(R.id.currentCardPlayer1);
+        currentCardPlayer2 = view.findViewById(R.id.currentCardPlayer2);
+     //   mixCardsBtn = view.findViewById(R.id.mixBtn);
         }
 
 @Override
@@ -267,7 +275,8 @@ public static int getResId(String resName) {
 //play card from handcards, displayed & set to currentCard
 private static void play(Card c){
         String s = c.frontSide.toLowerCase(Locale.ROOT);
-        setCardImage(s, currentCard);
+        currentCards.add(c);
+        setCardImage(s, currentCardPlayer1);
         }
 /*longonclicklistener to handcards
  * if longonclick to handcard, card gets played, if it is available (handcards showing the backside image are unavailable -checked via imageview description)*/
@@ -276,7 +285,7 @@ private void handCardViewListener(ImageView handCardView){
 @Override
 public boolean onLongClick(View view) {
         //currenCard view is only to be visible if there is a played card - invisible by default
-        currentCard.setVisibility(View.VISIBLE);
+        currentCardPlayer1.setVisibility(View.VISIBLE);
         //card only playable if it is availalbe (not showing its backside)
         if(!handCardView.getContentDescription().equals("backside")){
         String[] x = handCardView.getContentDescription().toString().split("_");

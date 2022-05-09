@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnFragment;
+import com.example.piatinkpartyapp.WattnFragment;
 import com.example.piatinkpartyapp.networking.GameServer;
 
 import java.io.IOException;
@@ -98,8 +99,10 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     }
 
     private void waitForGameStart(){
+        /*getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new SchnopsnFragment()).commit();*/
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
-                new SchnopsnFragment()).commit();
+                new WattnFragment()).commit();
     }
 
     @Override
