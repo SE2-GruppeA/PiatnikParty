@@ -74,8 +74,8 @@ public WattnFragment() {
  * @return A new instance of fragment SchnopsnFragment.
  */
 // TODO: Rename and change types and number of parameters
-public static SchnopsnFragment newInstance(String param1, String param2) {
-        SchnopsnFragment fragment = new SchnopsnFragment();
+public static WattnFragment newInstance(String param1, String param2) {
+        WattnFragment fragment = new WattnFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -149,7 +149,7 @@ private void updateHandCards(ArrayList<Card> handCards) {
 public View onCreateView(LayoutInflater inflater, ViewGroup container,
                          Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_schnopsn, container, false);
+        View root = inflater.inflate(R.layout.fragment_wattn, container, false);
 
         addAllViews(root);
 
