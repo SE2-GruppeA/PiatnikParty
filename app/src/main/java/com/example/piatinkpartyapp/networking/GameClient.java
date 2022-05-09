@@ -2,13 +2,12 @@ package com.example.piatinkpartyapp.networking;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.chat.ChatMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-public class GameClient extends ViewModel {
-
+public class GameClient {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
     private static GameClient INSTANCE = null;
     private int playerID;
@@ -25,15 +23,9 @@ public class GameClient extends ViewModel {
     private ExecutorService executorService;
     int x = 11;
 
-    private MutableLiveData<ArrayList<Card>> handCards;
-    private MutableLiveData<Boolean> connectionState;
-    private MutableLiveData<Boolean> myTurn;
-    private MutableLiveData<Boolean> gameStarted;
-    private MutableLiveData<Card> handoutCard;
-    private MutableLiveData<Boolean> endOfRound;
-
     public GameClient(String gameServer_IP) {
-        executorService = Executors.newFixedThreadPool(5);
+        initLiveData();
+        executorService = Executors.newFixedThreadPool(1);
         executorService.execute(() -> {
             NetworkHandler.GAMESERVER_IP = gameServer_IP;
             // we to start this in a new thread, so we don't block the main Thread!!
@@ -51,37 +43,7 @@ public class GameClient extends ViewModel {
             startListener();
 
         });
-        addLiveData();
-    }
 
-    private void addLiveData(){
-        handCards = new MutableLiveData<>();
-        connectionState = new MutableLiveData<>();
-        myTurn = new MutableLiveData<>();
-        gameStarted = new MutableLiveData<>();
-        handoutCard = new MutableLiveData<>();
-        endOfRound = new MutableLiveData<>();
-    }
-
-    public GameClient(){
-        executorService = Executors.newFixedThreadPool(1);
-        executorService.execute(() -> {
-            // we to start this in a new thread, so we don't block the main Thread!!
-            client = new Client();
-            // this line of code has to run before we start / bind / connect to the server !
-            NetworkHandler.register(client.getKryo());
-            client.start();
-            try {
-                client.connect(10000, NetworkHandler.GAMESERVER_IP, NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            this.playerID = client.getID();
-            startListener();
-
-        });
-        addLiveData();
     }
 
     public static GameClient getInstance() throws IOException {
@@ -91,6 +53,9 @@ public class GameClient extends ViewModel {
         return INSTANCE;
     }
 
+    public String getPlayerID() {
+        return "Player " + playerID;
+    }
 
     private void startListener() {
         client.addListener(new Listener() {
@@ -98,6 +63,7 @@ public class GameClient extends ViewModel {
             public void connected(Connection connection) {
                 super.connected(connection);
             }
+
 
             @Override
             public void disconnected(Connection connection) {
@@ -116,45 +82,44 @@ public class GameClient extends ViewModel {
                         Packets.Responses.ConnectedSuccessfully response =
                                 (Packets.Responses.ConnectedSuccessfully) object;
 
-                        //update for ui
-                        connectionState.postValue(((Packets.Responses.ConnectedSuccessfully) object)    .isConnected);
+                        // notify UI: connection information
+                        connectionState.postValue(response.isConnected);
 
                         if (response.isConnected && playerID == response.playerID) {
                             LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
                                     ", Client ID within game: " + response.playerID);
-
-                            /*
-                            PlayGameFragment playGameFragment = new PlayGameFragment();
-                            playGameFragment.setConnectedSuccessfuly();
-
-                             */
                         } else {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
-                    }
-                    else if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
+                    } else if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
                         Packets.Responses.ReceiveEndToEndChatMessage receivedMessage =
                                 (Packets.Responses.ReceiveEndToEndChatMessage) object;
                         LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
-                        // TODO: notify UI.
+
+
                     } else if (object instanceof Packets.Responses.ReceiveToAllChatMessage) {
                         Packets.Responses.ReceiveToAllChatMessage receivedMessage =
                                 (Packets.Responses.ReceiveToAllChatMessage) object;
                         LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
-                        // TODO: notify UI
-                    }  else if (object instanceof Packets.Responses.GameStartedClientMessage) {
+                        ChatMessage msg = new ChatMessage("Player " + String.valueOf(receivedMessage.from), receivedMessage.message, receivedMessage.date, ChatMessage.MessageType.OUT);
+
+                        ArrayList<ChatMessage> value = chatMessages.getValue();
+                        value.add(msg);
+                        chatMessages.postValue(value);
+
+                    } else if (object instanceof Packets.Responses.GameStartedClientMessage) {
                         Packets.Responses.GameStartedClientMessage response =
                                 (Packets.Responses.GameStartedClientMessage) object;
 
-                        // notify ui: game started
+                        // notify UI: game has started
                         gameStarted.postValue(true);
 
-                        LOG.info("Game was started from host!");
+                        LOG.info("Game started by server");
                     } else if (object instanceof Packets.Responses.SendHandCards) {
                         Packets.Responses.SendHandCards response =
                                 (Packets.Responses.SendHandCards) object;
 
-                        // notify ui
+                        // notify UI: send handcards to SchnopsnFragment
                         handCards.postValue(response.cards);
 
                         LOG.info("Handcards received for player: " + response.playerID);
@@ -162,7 +127,7 @@ public class GameClient extends ViewModel {
                         Packets.Responses.NotifyPlayerYourTurn response =
                                 (Packets.Responses.NotifyPlayerYourTurn) object;
 
-                        // notify ui : yourturn
+                        // notify UI: its the clients turn
                         myTurn.postValue(true);
 
                         LOG.info("It's your turn! player: " + response.playerID);
@@ -170,17 +135,18 @@ public class GameClient extends ViewModel {
                         Packets.Responses.PlayerGetHandoutCard response =
                                 (Packets.Responses.PlayerGetHandoutCard) object;
 
-                        Card card = response.card;
-                        // notify ui with handout card
-                        handoutCard.postValue(card);
+                        // notify UI: clients gets one card
+                        handoutCard.postValue(response.card);
 
                         LOG.info("Handout card received for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.EndOfRound) {
                         Packets.Responses.EndOfRound response =
                                 (Packets.Responses.EndOfRound) object;
 
-                        //notify ui: end of round
-                        endOfRound.postValue(true);
+                        // notify UI: round of player is over
+                        //turn of the player is over, therefore myTurn is set to false again
+                        myTurn.postValue(false);
+
                         LOG.info("End of round!");
                     }
                 } catch (Exception e) {
@@ -211,6 +177,63 @@ public class GameClient extends ViewModel {
         }).start();
     }
 
+
+    /////////////////// START - CHAT - LOGiC ///////////////////
+    // Will be used for updating UI when Client receives Messages from Server
+    private MutableLiveData<ArrayList<ChatMessage>> chatMessages;
+
+    public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() {
+        return chatMessages;
+    }
+
+    public void sendEndToEndMessage(String message, int to) {
+        Packets.Requests.SendEndToEndChatMessage request = new Packets.Requests.SendEndToEndChatMessage(message, playerID, to);
+        sendPacket(request);
+    }
+
+    public void sendToAll(String message) {
+        Packets.Requests.SendToAllChatMessage request = new Packets.Requests.SendToAllChatMessage(message, playerID);
+        sendPacket(request);
+    }
+
+    public void initLiveData() {
+        chatMessages = new MutableLiveData<>();
+        ArrayList<ChatMessage> dummy = new ArrayList<>();
+
+        dummy.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "I good thx ! \uD83D\uDE02\uD83D\uDE02? ", "today at 10:38 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 2", "I'm kinda hungry \uD83E\uDD24\uD83E\uDD24\uD83E\uDD24 ", "today at 10:39 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 1", "Hello Valon - Player2 \uD83D\uDE02\uD83D\uDE02\uD83D\uDE02\uD83D\uDE02 \uD83D\uDE08", "today at 10:30 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "Hello Player 1, whats up ?", "today at 10:35 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 1", "Nothing much hbu \uD83D\uDE02\uD83D\uDE02? ", "today at 10:36 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "I good thx ! \uD83D\uDE02\uD83D\uDE02? ", "today at 10:38 pm", ChatMessage.MessageType.OUT));
+        dummy.add(new ChatMessage("Player 2", "I'm kinda hungry \uD83E\uDD24\uD83E\uDD24\uD83E\uDD24 ", "today at 10:39 pm", ChatMessage.MessageType.IN));
+        dummy.add(new ChatMessage("Player 2", "Ye I feel ya, fasting is hard \uD83D\uDE14\uD83D\uDE14 ", "today at 10:41 pm", ChatMessage.MessageType.OUT));
+
+        chatMessages.setValue(dummy);
+
+        //for main game uis
+        initLiveDataMainGameUIs();
+
+    }
+    /////////////////// END - CHAT - LOGiC ///////////////////
+
+
+    ////////////// START - MainGameUIs - LOGiC //////////////
+
+    private MutableLiveData<ArrayList<Card>> handCards;
+    private MutableLiveData<Boolean> connectionState;
+    private MutableLiveData<Boolean> myTurn;
+    private MutableLiveData<Boolean> gameStarted;
+    private MutableLiveData<Card> handoutCard;
+    private MutableLiveData<Boolean> endOfRound;
+
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
     }
@@ -230,4 +253,15 @@ public class GameClient extends ViewModel {
     public LiveData<Card> getHandoutCard(){
         return handoutCard;
     }
+
+    private void initLiveDataMainGameUIs(){
+        handCards = new MutableLiveData<>();
+        connectionState = new MutableLiveData<>();
+        myTurn = new MutableLiveData<>();
+        gameStarted = new MutableLiveData<>();
+        handoutCard = new MutableLiveData<>();
+        endOfRound = new MutableLiveData<>();
+    }
+
+    /////////////// END - MainGameUIs - LOGiC ///////////////
 }

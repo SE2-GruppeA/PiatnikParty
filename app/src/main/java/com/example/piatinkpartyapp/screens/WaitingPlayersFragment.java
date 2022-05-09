@@ -9,12 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnFragment;
-import com.example.piatinkpartyapp.networking.GameClient;
 import com.example.piatinkpartyapp.networking.GameServer;
 
 import java.io.IOException;
@@ -32,7 +31,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     private String mParam2;
 
     GameServer server;
-    GameClient gameClient;
+    ClientViewModel clientViewModel;
 
     public WaitingPlayersFragment() {
         // Required empty public constructor
@@ -72,6 +71,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         BtnStartGame3 = (Button) view.findViewById(R.id.BtnStartGame3);
         BtnStartGame3.setOnClickListener(this);
 
+        //test for gameserver start -> needs relocation
         server = new GameServer();
         try {
             server.startNewGameServer();
@@ -79,12 +79,11 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
             e.printStackTrace();
         }
 
-        gameClient = new ViewModelProvider(getActivity()).get(GameClient.class);
-
-        gameClient.getConnectionState().observe(getViewLifecycleOwner(), connectionState ->
+        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+        clientViewModel.getConnectionState().observe(getActivity(), connectionState ->
                 waitForConnection(connectionState));
 
-        gameClient.isGameStarted().observe(getViewLifecycleOwner(), isGameStarted -> waitForGameStart());
+        clientViewModel.isGameStarted().observe(getActivity(), isGameStarted -> waitForGameStart());
 
         // Inflate the layout for this fragment
         return view;
@@ -108,7 +107,8 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         if (view == backBtn)
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         else if (view == BtnStartGame3) {
-            gameClient.startGame();
+            clientViewModel.startGame();
+            //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
 
     }

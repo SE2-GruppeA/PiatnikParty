@@ -2,13 +2,11 @@ package com.example.piatinkpartyapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,14 +19,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
-import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
-import com.example.piatinkpartyapp.networking.GameClient;
-import com.example.piatinkpartyapp.screens.MainActivity;
+import com.example.piatinkpartyapp.chat.ChatFragment;
+import com.example.piatinkpartyapp.networking.GameServer;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -56,7 +55,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     public static SchnopsnDeck deck;
     ArrayList<Card> handCards;
 
-    GameClient gameClient;
+    ClientViewModel clientViewModel;
     ArrayList<ImageView> handCardImageViews;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -101,6 +100,28 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         //set fullscreen and landscape mode
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        //todo: remove, but used for testing
+        //startChatTestServer();
+        System.out.println("pepep");
+    }
+
+
+
+    /*
+    Only used for testing so I can create a client on same device to connect to
+     */
+    GameServer s;
+    private void startChatTestServer() {
+        s = new GameServer();
+        try {
+            s.startNewGameServer();
+            Thread.sleep(2000);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void waitForMyTurn() {
@@ -141,11 +162,11 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         addOnclickHandlers();
         initHandCardsViews();
 
-        gameClient = new ViewModelProvider(getActivity()).get(GameClient.class);
+        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
-        gameClient.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
-        gameClient.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn());
-        gameClient.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
+        clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
+        clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn());
+        clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
 
         //initializeGame();
         return root;
@@ -276,7 +297,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
 
                     //play selected card, remove it from handcards & show backside of this card
                     //play(c);
-                    gameClient.setCard(c);
+                    clientViewModel.setCard(c);
                     handCards.remove(c);
                     setCardImage("backside",handCardView);
                 }

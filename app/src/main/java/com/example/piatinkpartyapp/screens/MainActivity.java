@@ -1,16 +1,13 @@
 package com.example.piatinkpartyapp.screens;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.piatinkpartyapp.R;
-import com.example.piatinkpartyapp.SchnopsnActivity;
 import com.example.piatinkpartyapp.SchnopsnFragment;
-import com.example.piatinkpartyapp.networking.GameServer;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -27,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         addAllMainActivityViews();
         addOnclickHandlersMainActivity();
+        System.out.println("pepep");
     }
 
     @Override

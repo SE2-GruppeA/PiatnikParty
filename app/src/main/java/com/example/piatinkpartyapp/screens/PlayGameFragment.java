@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnFragment;
 import com.example.piatinkpartyapp.networking.GameClient;
@@ -30,7 +31,7 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
     private EditText editText;
     private TextView textView;
 
-    GameClient gameClient;
+    ClientViewModel clientViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -103,9 +104,9 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
         else if (view == connectButton) {
             NetworkHandler.GAMESERVER_IP =  editText.getText().toString();
 
-            gameClient = new ViewModelProvider(getActivity()).get(GameClient.class);
-            gameClient.getConnectionState().observe(getActivity(), connectionState -> setConnectedSuccessfuly(connectionState));
-            gameClient.isGameStarted().observe(getActivity(), gameStarted -> waitForGameStart());
+            clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+            clientViewModel.getConnectionState().observe(getActivity(), connectionState -> setConnectedSuccessfuly(connectionState));
+            clientViewModel.isGameStarted().observe(getActivity(), gameStarted -> waitForGameStart());
         }
 
     }

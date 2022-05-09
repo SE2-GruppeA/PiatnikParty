@@ -33,7 +33,7 @@ public class Packets {
             }
         }
 
-        public static class SendToAllChatMessage {
+        public static class SendToAllChatMessage implements IPackets {
             String message;
             int from;
 
@@ -75,6 +75,18 @@ public class Packets {
                 this.playerID = playerID;
                 this.isConnected = isConnected;
             }
+
+            public int getPlayerID() {
+                return playerID;
+            }
+
+            public void setConnected(boolean connected) {
+                isConnected = connected;
+            }
+
+            public void setPlayerID(int playerID) {
+                this.playerID = playerID;
+            }
         }
 
         public static class ReceiveEndToEndChatMessage implements IPackets {
@@ -93,16 +105,19 @@ public class Packets {
         }
         public static class ReceiveToAllChatMessage implements IPackets {
             String message;
+            String date;
             int from;
 
             public ReceiveToAllChatMessage() {
             }
 
-            public ReceiveToAllChatMessage(String message, int from) {
+            public ReceiveToAllChatMessage(String message, int from, String date) {
                 this.message = message;
                 this.from = from;
+                this.date = date;
             }
         }
+
         public static class SendHandCards {
             public int playerID;
             public ArrayList<Card> cards;
