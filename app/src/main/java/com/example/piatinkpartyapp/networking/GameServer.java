@@ -86,6 +86,19 @@ public class GameServer {
 
                         LOG.info("Card: " + request.card.getSymbol().toString() + request.card.getCardValue().toString() + " was set from Client ID: " + connection.getID());
                         game.setCard(connection.getID(), request.card);
+                    } else if (object instanceof Packets.Requests.ForceVoting){
+                        LOG.info("Voting has been initiated by client " + connection.getID());
+
+                        Packets.Responses.VoteForNextGame response =
+                                new Packets.Responses.VoteForNextGame();
+
+                        sendPacketToAll(response);
+
+                        LOG.info("VoteForNextGame sent to all Clients");
+                    } else if(object instanceof  Packets.Requests.VoteForNextGame){
+
+                        LOG.info("Client " + connection.getID() + " voted for" +
+                                ((Packets.Requests.VoteForNextGame) object).gameName.toString());
                     }
 
                 } catch (Exception ex) {

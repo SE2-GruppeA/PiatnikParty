@@ -1,7 +1,9 @@
 package com.example.piatinkpartyapp.networking;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.GameName;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 // will be used as some kind of placeholder for a generic packet send method!
@@ -60,6 +62,23 @@ public class Packets {
             public PlayerSetCard(int playerID, Card card) {
                 this.playerID = playerID;
                 this.card = card;
+            }
+        }
+
+        //for testing -> starts the voting process
+        //in the final game this is not needed as at the end of each game
+        //a vote will happen
+        public static class ForceVoting implements IPackets {
+            public ForceVoting() {}
+        }
+
+        public static class VoteForNextGame implements IPackets {
+            GameName gameName;
+
+            public VoteForNextGame() {}
+
+            public VoteForNextGame(GameName nextGame) {
+                this.gameName = nextGame;
             }
         }
     }
@@ -162,6 +181,10 @@ public class Packets {
 
         public static class EndOfGame {
             public EndOfGame() { }
+        }
+
+        public static class VoteForNextGame implements IPackets {
+            public VoteForNextGame() { }
         }
     }
 }

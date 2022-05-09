@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 
 import java.io.IOException;
@@ -148,6 +149,9 @@ public class GameClient {
                         myTurn.postValue(false);
 
                         LOG.info("End of round!");
+                    } else if(object instanceof Packets.Responses.VoteForNextGame){
+                        voteForNextGame.postValue(true);
+                        LOG.info("VoteForNextGame received from the server");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -233,6 +237,7 @@ public class GameClient {
     private MutableLiveData<Boolean> gameStarted;
     private MutableLiveData<Card> handoutCard;
     private MutableLiveData<Boolean> endOfRound;
+    private MutableLiveData<Boolean> voteForNextGame;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -254,6 +259,8 @@ public class GameClient {
         return handoutCard;
     }
 
+    public LiveData<Boolean> isVotingForNextGame() { return voteForNextGame; }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -261,6 +268,26 @@ public class GameClient {
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<>();
+        voteForNextGame = new MutableLiveData<>();
+    }
+
+    public void sendVoteForNextGame(GameName nextGame){
+        Packets.Requests.VoteForNextGame request =
+                new Packets.Requests.VoteForNextGame(nextGame);
+
+        sendPacket(request);
+
+        voteForNextGame.postValue(false);
+
+        LOG.info("Client voted for " + nextGame.toString());
+    }
+
+    public void forceVoting(){
+        Packets.Requests.ForceVoting request = new Packets.Requests.ForceVoting();
+
+        sendPacket(request);
+
+        LOG.info("Voting force message has been sent to the server");
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////
