@@ -1,14 +1,16 @@
 plugins {
     id 'com.android.application'
+    id 'com.dicedmelon.gradle.jacoco-android'
 }
 
 android {
-    compileSdk 32
+    compileSdkVersion 31
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "com.example.piatinkpartyapp"
-        minSdk 28
-        targetSdk 32
+        minSdkVersion 28
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -22,8 +24,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     buildFeatures {
         viewBinding true
@@ -46,3 +48,4 @@ dependencies {
     //Used for networking
     implementation group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
 }
+
