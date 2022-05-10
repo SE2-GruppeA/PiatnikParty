@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.GameClient;
 
@@ -55,6 +56,18 @@ public class ClientViewModel extends ViewModel {
 
     public void setCard(Card c) {
         client.setCard(c);
+    }
+
+    public LiveData<Boolean> isVotingForNextGame(){
+        return client.isVotingForNextGame();
+    }
+
+    public void forceVoting(){
+        client.forceVoting();
+    }
+
+    public void voteForNextGame(GameName nextGame){
+        client.sendVoteForNextGame(nextGame);
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

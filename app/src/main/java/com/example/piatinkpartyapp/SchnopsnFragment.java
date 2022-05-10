@@ -167,9 +167,16 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
         clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn());
         clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
+        clientViewModel.isVotingForNextGame().observe(getActivity(), votingForNextGame -> voteForNextGame(votingForNextGame));
 
         //initializeGame();
         return root;
+    }
+
+    private void voteForNextGame(Boolean votingForNextGame) {
+        if(votingForNextGame) {
+            showVote();
+        }
     }
 
     private void getHandoutCard(Card c) {
@@ -235,7 +242,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         } else if (view == scoreboardBtn) {
             showScoreboard();
         } else if (view == voteBtn) {
-            showVote();
+            clientViewModel.forceVoting();
         }else if(view == mixCardsBtn) {
             deck.mixCards();
         }

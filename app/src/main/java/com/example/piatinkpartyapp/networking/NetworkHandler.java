@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp.networking;
 import com.esotericsoftware.kryo.Kryo;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 
 public class NetworkHandler {
@@ -25,6 +26,8 @@ public class NetworkHandler {
         //Requests
         kryo.register(Packets.Requests.StartGameMessage.class);
         kryo.register(Packets.Requests.PlayerSetCard.class);
+        kryo.register(Packets.Requests.ForceVoting.class);
+        kryo.register(Packets.Requests.VoteForNextGame.class);
 
         //Responses
         kryo.register(Packets.Responses.ConnectedSuccessfully.class);
@@ -34,11 +37,13 @@ public class NetworkHandler {
         kryo.register(Packets.Responses.GameStartedClientMessage.class);
         kryo.register(Packets.Responses.EndOfRound.class);
         kryo.register(Packets.Responses.EndOfGame.class);
+        kryo.register(Packets.Responses.VoteForNextGame.class);
 
         // Other classes
         kryo.register(Card.class);
         kryo.register(CardValue.class);
         kryo.register(Symbol.class);
         kryo.register(java.util.ArrayList.class);
+        kryo.register(GameName.class);
     }
 }
