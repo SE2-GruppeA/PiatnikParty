@@ -29,6 +29,7 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
     private Button ButtonBack;
     private Button ButtonStartLobby;
 
+
     private String mParam1;
     private String mParam2;
 
@@ -59,7 +60,7 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
 
         //add views
         ButtonBack = root.findViewById(R.id.buttonBack);
-        ButtonStartLobby = root.findViewById(R. id. buttonStartLobby);
+        ButtonStartLobby = root. findViewById(R. id. buttonStartLobby);
 
         //add onclick listeners
         ButtonBack.setOnClickListener(this);
@@ -91,5 +92,31 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
             getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                     new WaitingPlayersFragment()).commit();
         }
+    }
+
+    public String getIp() {
+
+        String ipAddress = null;
+
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
+                 en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses();
+                     enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+
+                    if (!inetAddress.isLoopbackAddress()) {
+                        ipAddress = inetAddress.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            ex.printStackTrace();
+            System.out.println("The IP address could not be found!!!");
+        }
+
+        return ipAddress;
     }
 }

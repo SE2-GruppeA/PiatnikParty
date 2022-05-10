@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class Game {
     private int mainPlayerId;
     private Player roundStartPlayer;
-    private ArrayList<Player> players = new ArrayList<>();
+    public ArrayList<Player> players = new ArrayList<>();
     private SchnopsnDeck deck;
 
     // Logging for testing
@@ -108,6 +108,7 @@ public class Game {
     public void startGame() {
         new Thread(()->{
             AusgabeTest();
+            sendGameStartedMessageToClients();
             resetRoundFinished();
             sendHandCards();
             setRoundStartPlayer(players.get(0));
@@ -120,6 +121,15 @@ public class Game {
         LOG.info("ArrayList players: ");
         for (Player player : players) {
             LOG.info("Player: " + player.getId() + " - " + player.getPlayerName());
+        }
+    }
+
+    // send handcards to players
+    public void sendGameStartedMessageToClients() {
+        for (Player player: players) {
+            // send message to client that game has started
+            Packets.Responses.GameStartedClientMessage request = new Packets.Responses.GameStartedClientMessage();
+            player.getClientConnection().sendTCP(request);
         }
     }
 
@@ -214,8 +224,13 @@ public class Game {
 
     public void startNewRoundSchnopsn(Player startPlayer) {
         new Thread(()->{
-            if (startPlayer.getHandcards().isEmpty()) {
-                sendEndRoundMessageToPlayers();
+            if (startPlayer.getPoints() >= 66 ) {
+                // if the player gets at least 66 points then the player wins
+                // TODO: test if player can win on other places? wenn 20 oder 40 angesagt wird?
+                sendEndRoundMessageToPlayers(startPlayer);
+            } else if (startPlayer.getHandcards().isEmpty()) {
+                // if handcards are empty, the player that won the last "Stich" wins the round
+                sendEndRoundMessageToPlayers(startPlayer);
             } else {
                 resetRoundFinished();
                 resetPlayedCard();
@@ -242,7 +257,7 @@ public class Game {
         }
     }
 
-    public void sendEndRoundMessageToPlayers() {
+    public void sendEndRoundMessageToPlayers(Player roundWinner) {
         for (Player player: players) {
             Packets.Responses.EndOfRound response = new Packets.Responses.EndOfRound();
             player.getClientConnection().sendTCP(response);
