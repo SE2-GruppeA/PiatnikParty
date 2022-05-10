@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class Game {
     private int mainPlayerId;
     private Player roundStartPlayer;
-    private ArrayList<Player> players = new ArrayList<>();
+    public ArrayList<Player> players = new ArrayList<>();
     private SchnopsnDeck deck;
 
     // Logging for testing
