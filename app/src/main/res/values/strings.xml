@@ -18,4 +18,9 @@
     <string name="create_game">Create game</string>
     <string name="welcome_player_to_piatnik_party_where_the_fun_begins">Welcome player to Piatnik party, where the fun begins.</string>
     <string name="back">back</string>
+    <string name="connection_successful">Erfolgreich verbunden!</string>
+    <string name="start_lobby">Start Lobby</string>
+    <string name="change_brightness">Change screen brightness</string>
+    <string name="get_permissions">Grant permissions to change settings</string>
+    <string name="connected_players">The following players are connected to the host</string>
 </resources>

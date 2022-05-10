@@ -21,6 +21,7 @@ public class GameClient {
     private int playerID;
     private Client client;
     private ExecutorService executorService;
+    int x = 11;
 
     public GameClient(String gameServer_IP) {
         initLiveData();
@@ -106,12 +107,20 @@ public class GameClient {
                         value.add(msg);
                         chatMessages.postValue(value);
 
+                    } else if (object instanceof Packets.Responses.GameStartedClientMessage) {
+                        Packets.Responses.GameStartedClientMessage response =
+                                (Packets.Responses.GameStartedClientMessage) object;
+
+                        // notify UI: game has started
+                        gameStarted.postValue(true);
+
+                        LOG.info("Game started by server");
                     } else if (object instanceof Packets.Responses.SendHandCards) {
                         Packets.Responses.SendHandCards response =
                                 (Packets.Responses.SendHandCards) object;
 
                         // notify UI: send handcards to SchnopsnFragment
-                        handCards.postValue((ArrayList<Card>) object);
+                        handCards.postValue(response.cards);
 
                         LOG.info("Handcards received for player: " + response.playerID);
                     } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
@@ -149,18 +158,21 @@ public class GameClient {
 
     // Generic function which should be used for sending packets to server!
     public void sendPacket(IPackets packet) {
-        executorService.execute(() -> client.sendTCP(packet));
+        executorService.execute(() -> {
+            client.sendTCP(packet);
+        });
     }
-
     // Call this method from client to start a game
     public void startGame() {
-        client.sendTCP(new Packets.Requests.StartGameMessage());
+        new Thread(()->{
+            client.sendTCP(new Packets.Requests.StartGameMessage());
+        }).start();
     }
 
     public void setCard(Card card) {
-        new Thread(() -> {
+        new Thread(()->{
             Packets.Requests.PlayerSetCard request = new Packets.Requests.PlayerSetCard();
-            request.card = card;
+            request.card =  card;
             client.sendTCP(request);
         }).start();
     }

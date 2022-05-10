@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 
+
 public class GameServer {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
@@ -51,6 +52,8 @@ public class GameServer {
                     Packets.Responses.ConnectedSuccessfully response = new Packets.Responses.ConnectedSuccessfully();
                     response.isConnected = clients.contains(connection) ? false : clients.add(connection);
                     response.playerID = connection.getID();
+
+                    game.addPlayer(connection, "test");
 
                     connection.sendTCP(response);
                     super.connected(connection);
@@ -131,7 +134,4 @@ public class GameServer {
     public void sendPacketToAll(IPackets response) {
         executorService.execute(() -> server.sendToAllTCP(response));
     }
-    /////////////////// END - Generic Send Methods! ///////////////////
-
-
 }

@@ -102,7 +102,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         //todo: remove, but used for testing
-        startChatTestServer();
+        //startChatTestServer();
         System.out.println("pepep");
     }
 

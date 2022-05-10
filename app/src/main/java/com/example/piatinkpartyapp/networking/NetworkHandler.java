@@ -2,6 +2,8 @@ package com.example.piatinkpartyapp.networking;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.Symbol;
 
 public class NetworkHandler {
 
@@ -29,8 +31,14 @@ public class NetworkHandler {
         kryo.register(Packets.Responses.SendHandCards.class);
         kryo.register(Packets.Responses.NotifyPlayerYourTurn.class);
         kryo.register(Packets.Responses.PlayerGetHandoutCard.class);
+        kryo.register(Packets.Responses.GameStartedClientMessage.class);
+        kryo.register(Packets.Responses.EndOfRound.class);
+        kryo.register(Packets.Responses.EndOfGame.class);
 
         // Other classes
         kryo.register(Card.class);
+        kryo.register(CardValue.class);
+        kryo.register(Symbol.class);
+        kryo.register(java.util.ArrayList.class);
     }
 }

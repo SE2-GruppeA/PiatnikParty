@@ -108,7 +108,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         else if (view == BtnStartGame3) {
             clientViewModel.startGame();
-            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+            //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
 
     }
