@@ -70,5 +70,9 @@ public class ClientViewModel extends ViewModel {
         client.sendVoteForNextGame(nextGame);
     }
 
+    public LiveData<Boolean> isEndOfRound(){
+        return client.isEndOfRound();
+    }
+
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

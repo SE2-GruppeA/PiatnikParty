@@ -58,6 +58,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     ClientViewModel clientViewModel;
     ArrayList<ImageView> handCardImageViews;
 
+    //indicates the clients turn, so they can not
+    //play cards when its false
+    Boolean isMyTurn;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -103,7 +107,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
 
         //todo: remove, but used for testing
         //startChatTestServer();
-        System.out.println("pepep");
+        //System.out.println("pepep");
     }
 
 
@@ -124,9 +128,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void waitForMyTurn() {
-        Toast.makeText(requireActivity().getApplicationContext(),
-                "Du bist dran", Toast.LENGTH_LONG).show();
+    private void waitForMyTurn(Boolean isMyTurn) {
+        if(isMyTurn) {
+            Toast.makeText(requireActivity().getApplicationContext(), "Du bist dran", Toast.LENGTH_SHORT).show();
+            this.isMyTurn = true;
+        }else{
+            this.isMyTurn = false;
+        }
     }
 
     private void initHandCardsViews(){
@@ -136,6 +144,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         handCardImageViews.add(handCardView3);
         handCardImageViews.add(handCardView4);
         handCardImageViews.add(handCardView5);
+        isMyTurn = false;
     }
 
     private void updateHandCards(ArrayList<Card> handCards) {
@@ -165,12 +174,21 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
         clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
-        clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn());
+        clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn(isMyTurn));
         clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
         clientViewModel.isVotingForNextGame().observe(getActivity(), votingForNextGame -> voteForNextGame(votingForNextGame));
+        clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
 
         //initializeGame();
         return root;
+    }
+
+    private void atRoundEnd(Boolean isEndOfRound) {
+        if(isEndOfRound){
+            Toast.makeText(requireActivity().getApplicationContext(),
+                    "Runde ist zuende",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void voteForNextGame(Boolean votingForNextGame) {
@@ -288,25 +306,32 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         handCardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                //currenCard view is only to be visible if there is a played card - invisible by default
-                currentCard.setVisibility(View.VISIBLE);
-                //card only playable if it is availalbe (not showing its backside)
-                if(!handCardView.getContentDescription().equals("backside")){
-                    String[] x = handCardView.getContentDescription().toString().split("_");
+                //cards can only be played if it is the clients turn
+                if(isMyTurn){
+                    //currenCard view is only to be visible if there is a played card - invisible by default
+                    currentCard.setVisibility(View.VISIBLE);
+                    //card only playable if it is availalbe (not showing its backside)
+                    if(!handCardView.getContentDescription().equals("backside")){
+                        String[] x = handCardView.getContentDescription().toString().split("_");
 
-                    //select selected card form handcards array list
-                    Card c = new Card(Symbol.randomSymbol(), CardValue.ACHT);
-                    for(Card d : handCards){
-                        if(d.symbol.name().equals(x[0].toUpperCase(Locale.ROOT)) && d.cardValue.name().equals(x[1].toUpperCase(Locale.ROOT))){
-                            c = handCards.get(handCards.indexOf(d));
+                        //select selected card form handcards array list
+                        Card c = new Card(Symbol.randomSymbol(), CardValue.ACHT);
+                        for(Card d : handCards){
+                            if(d.symbol.name().equals(x[0].toUpperCase(Locale.ROOT)) && d.cardValue.name().equals(x[1].toUpperCase(Locale.ROOT))){
+                                c = handCards.get(handCards.indexOf(d));
+                            }
                         }
-                    }
 
-                    //play selected card, remove it from handcards & show backside of this card
-                    //play(c);
-                    clientViewModel.setCard(c);
-                    handCards.remove(c);
-                    setCardImage("backside",handCardView);
+                        //play selected card, remove it from handcards & show backside of this card
+                        //play(c);
+                        clientViewModel.setCard(c);
+                        handCards.remove(c);
+                        setCardImage("backside",handCardView);
+                    }
+                }else{
+                    Toast.makeText(requireActivity().getApplicationContext(),
+                            "Warte auf deine Runde",
+                            Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }

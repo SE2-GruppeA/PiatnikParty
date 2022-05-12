@@ -145,8 +145,7 @@ public class GameClient {
                                 (Packets.Responses.EndOfRound) object;
 
                         // notify UI: round of player is over
-                        //turn of the player is over, therefore myTurn is set to false again
-                        myTurn.postValue(false);
+                        endOfRound.postValue(true);
 
                         LOG.info("End of round!");
                     } else if(object instanceof Packets.Responses.VoteForNextGame){
@@ -178,6 +177,8 @@ public class GameClient {
             Packets.Requests.PlayerSetCard request = new Packets.Requests.PlayerSetCard();
             request.card =  card;
             client.sendTCP(request);
+            //player should not play a card if it is not their turn
+            myTurn.postValue(false);
         }).start();
     }
 
@@ -253,6 +254,10 @@ public class GameClient {
 
     public LiveData<Boolean> isGameStarted(){
         return gameStarted;
+    }
+
+    public LiveData<Boolean> isEndOfRound() {
+        return endOfRound;
     }
 
     public LiveData<Card> getHandoutCard(){
