@@ -80,77 +80,23 @@ public class GameClient {
             public void received(Connection connection, Object object) {
                 try {
                     if (object instanceof Responses.ConnectedSuccessfully) {
-                        Responses.ConnectedSuccessfully response =
-                                (Responses.ConnectedSuccessfully) object;
-
-                        // notify UI: connection information
-                        connectionState.postValue(response.isConnected);
-
-                        if (response.isConnected && playerID == response.playerID) {
-                            LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
-                                    ", Client ID within game: " + response.playerID);
-                        } else {
-                            LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
-                        }
+                        handle_ConnectedSuccessfully((Responses.ConnectedSuccessfully) object);
                     } else if (object instanceof Responses.ReceiveEndToEndChatMessage) {
-                        Responses.ReceiveEndToEndChatMessage receivedMessage =
-                                (Responses.ReceiveEndToEndChatMessage) object;
-                        LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
-
-
+                        handle_ReceiveEndToEndMessage((Responses.ReceiveEndToEndChatMessage) object);
                     } else if (object instanceof Responses.ReceiveToAllChatMessage) {
-                        Responses.ReceiveToAllChatMessage receivedMessage =
-                                (Responses.ReceiveToAllChatMessage) object;
-                        LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
-                        ChatMessage msg = new ChatMessage("Player " + String.valueOf(receivedMessage.from), receivedMessage.message, receivedMessage.date, ChatMessage.MessageType.OUT);
-
-                        ArrayList<ChatMessage> value = chatMessages.getValue();
-                        value.add(msg);
-                        chatMessages.postValue(value);
-
+                        handle_ReceiveToAllChatMessage((Responses.ReceiveToAllChatMessage) object);
                     } else if (object instanceof Responses.GameStartedClientMessage) {
-                        Responses.GameStartedClientMessage response =
-                                (Responses.GameStartedClientMessage) object;
-
-                        // notify UI: game has started
-                        gameStarted.postValue(true);
-
-                        LOG.info("Game started by server");
+                        handle_GameStartedClientMessage((Responses.GameStartedClientMessage) object);
                     } else if (object instanceof Responses.SendHandCards) {
-                        Responses.SendHandCards response =
-                                (Responses.SendHandCards) object;
-
-                        // notify UI: send handcards to SchnopsnFragment
-                        handCards.postValue(response.cards);
-
-                        LOG.info("Handcards received for player: " + response.playerID);
+                        handle_SendHandCards((Responses.SendHandCards) object);
                     } else if (object instanceof Responses.NotifyPlayerYourTurn) {
-                        Responses.NotifyPlayerYourTurn response =
-                                (Responses.NotifyPlayerYourTurn) object;
-
-                        // notify UI: its the clients turn
-                        myTurn.postValue(true);
-
-                        LOG.info("It's your turn! player: " + response.playerID);
+                        handle_NotifyPlayerYourTurn((Responses.NotifyPlayerYourTurn) object);
                     } else if (object instanceof Responses.PlayerGetHandoutCard) {
-                        Responses.PlayerGetHandoutCard response =
-                                (Responses.PlayerGetHandoutCard) object;
-
-                        // notify UI: clients gets one card
-                        handoutCard.postValue(response.card);
-
-                        LOG.info("Handout card received for player: " + response.playerID);
+                        handle_PlayerGetHandoutCard((Responses.PlayerGetHandoutCard) object);
                     } else if (object instanceof Responses.EndOfRound) {
-                        Responses.EndOfRound response =
-                                (Responses.EndOfRound) object;
-
-                        // notify UI: round of player is over
-                        endOfRound.postValue(true);
-
-                        LOG.info("End of round!");
+                        handle_EndOfRound((Responses.EndOfRound) object);
                     } else if(object instanceof Responses.VoteForNextGame){
-                        voteForNextGame.postValue(true);
-                        LOG.info("VoteForNextGame received from the server");
+                        handle_VoteForNextGame();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -158,6 +104,79 @@ public class GameClient {
             }
         });
     }
+
+    /////////////////// START - Handler Methods !!! ///////////////////
+    private void handle_VoteForNextGame() {
+        voteForNextGame.postValue(true);
+        LOG.info("VoteForNextGame received from the server");
+    }
+
+    private void handle_EndOfRound(Responses.EndOfRound object) {
+        Responses.EndOfRound response =
+                object;
+
+        // notify UI: round of player is over
+        endOfRound.postValue(true);
+
+        LOG.info("End of round!");
+    }
+
+    private void handle_PlayerGetHandoutCard(Responses.PlayerGetHandoutCard object) {
+        Responses.PlayerGetHandoutCard response =
+                object;
+
+        // notify UI: clients gets one card
+        handoutCard.postValue(response.card);
+
+        LOG.info("Handout card received for player: " + response.playerID);
+    }
+
+    private void handle_NotifyPlayerYourTurn(Responses.NotifyPlayerYourTurn object) {
+        Responses.NotifyPlayerYourTurn response =
+                object;
+
+        // notify UI: its the clients turn
+        myTurn.postValue(true);
+
+        LOG.info("It's your turn! player: " + response.playerID);
+    }
+
+    private void handle_SendHandCards(Responses.SendHandCards object) {
+        Responses.SendHandCards response =
+                object;
+
+        // notify UI: send handcards to SchnopsnFragment
+        handCards.postValue(response.cards);
+
+        LOG.info("Handcards received for player: " + response.playerID);
+    }
+
+    private void handle_GameStartedClientMessage(Responses.GameStartedClientMessage object) {
+        Responses.GameStartedClientMessage response =
+                object;
+
+        // notify UI: game has started
+        gameStarted.postValue(true);
+
+        LOG.info("Game started by server");
+    }
+
+    private void handle_ConnectedSuccessfully(Responses.ConnectedSuccessfully object) {
+        Responses.ConnectedSuccessfully response =
+                object;
+
+        // notify UI: connection information
+        connectionState.postValue(response.isConnected);
+
+        if (response.isConnected && playerID == response.playerID) {
+            LOG.info("Client connected successfully to server : " + NetworkHandler.GAMESERVER_IP +
+                    ", Client ID within game: " + response.playerID);
+        } else {
+            LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
+        }
+    }
+    /////////////////// END - Handler Methods !!! ///////////////////
+
 
     // Generic function which should be used for sending packets to server!
     public void sendPacket(IPackets packet) {
@@ -184,11 +203,29 @@ public class GameClient {
 
 
     /////////////////// START - CHAT - LOGiC ///////////////////
+
     // Will be used for updating UI when Client receives Messages from Server
     private MutableLiveData<ArrayList<ChatMessage>> chatMessages;
 
     public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() {
         return chatMessages;
+    }
+
+    private void handle_ReceiveToAllChatMessage(Responses.ReceiveToAllChatMessage object) {
+        Responses.ReceiveToAllChatMessage receivedMessage =
+                object;
+        LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
+        ChatMessage msg = new ChatMessage("Player " + String.valueOf(receivedMessage.from), receivedMessage.message, receivedMessage.date, ChatMessage.MessageType.OUT);
+
+        ArrayList<ChatMessage> value = chatMessages.getValue();
+        value.add(msg);
+        chatMessages.postValue(value);
+    }
+
+    private void handle_ReceiveEndToEndMessage(Responses.ReceiveEndToEndChatMessage object) {
+        Responses.ReceiveEndToEndChatMessage receivedMessage =
+                object;
+        LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
     }
 
     public void sendEndToEndMessage(String message, int to) {
