@@ -129,7 +129,10 @@ public class GameServer {
 
         // this should be called but for testing purposes, I send to myself again, so I can see that it really worked!
         //sendPacketToAllExcept(request.from, response);
-        sendPacketToAll(response);
+        // this line of code down below is just used for testing purposes
+        //sendPacketToAll(response);
+
+        sendPacketToAllExcept(request.from, response);
     }
     /////////////////// END - Chat - Handler Methods !!! ///////////////////
 

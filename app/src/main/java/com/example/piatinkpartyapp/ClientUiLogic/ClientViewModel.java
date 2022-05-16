@@ -21,11 +21,14 @@ public class ClientViewModel extends ViewModel {
         return String.valueOf(client.getPlayerID());
     }
 
+    ////////////// START - Chat UI - LOGiC //////////////
     public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() { return client.getChatMessages(); }
 
     public void sendToAllChatMessage(String message) {
         client.sendToAll(message);
     }
+    ////////////// END - Chat UI - LOGiC //////////////
+
 
     ////////////// START - MainGameUIs - LOGiC //////////////
 
