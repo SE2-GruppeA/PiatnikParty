@@ -1,19 +1,16 @@
 package com.example.piatinkpartyapp;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.networking.GameClient;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.NetworkHandler;
-import com.example.piatinkpartyapp.networking.Packets;
 import com.example.piatinkpartyapp.screens.WaitingPlayersFragment;
 
 import java.io.IOException;

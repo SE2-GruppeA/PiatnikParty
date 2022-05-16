@@ -79,9 +79,9 @@ public class GameClient {
             @Override
             public void received(Connection connection, Object object) {
                 try {
-                    if (object instanceof Packets.Responses.ConnectedSuccessfully) {
-                        Packets.Responses.ConnectedSuccessfully response =
-                                (Packets.Responses.ConnectedSuccessfully) object;
+                    if (object instanceof Responses.ConnectedSuccessfully) {
+                        Responses.ConnectedSuccessfully response =
+                                (Responses.ConnectedSuccessfully) object;
 
                         // notify UI: connection information
                         connectionState.postValue(response.isConnected);
@@ -92,15 +92,15 @@ public class GameClient {
                         } else {
                             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
                         }
-                    } else if (object instanceof Packets.Responses.ReceiveEndToEndChatMessage) {
-                        Packets.Responses.ReceiveEndToEndChatMessage receivedMessage =
-                                (Packets.Responses.ReceiveEndToEndChatMessage) object;
+                    } else if (object instanceof Responses.ReceiveEndToEndChatMessage) {
+                        Responses.ReceiveEndToEndChatMessage receivedMessage =
+                                (Responses.ReceiveEndToEndChatMessage) object;
                         LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
 
 
-                    } else if (object instanceof Packets.Responses.ReceiveToAllChatMessage) {
-                        Packets.Responses.ReceiveToAllChatMessage receivedMessage =
-                                (Packets.Responses.ReceiveToAllChatMessage) object;
+                    } else if (object instanceof Responses.ReceiveToAllChatMessage) {
+                        Responses.ReceiveToAllChatMessage receivedMessage =
+                                (Responses.ReceiveToAllChatMessage) object;
                         LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
                         ChatMessage msg = new ChatMessage("Player " + String.valueOf(receivedMessage.from), receivedMessage.message, receivedMessage.date, ChatMessage.MessageType.OUT);
 
@@ -108,47 +108,47 @@ public class GameClient {
                         value.add(msg);
                         chatMessages.postValue(value);
 
-                    } else if (object instanceof Packets.Responses.GameStartedClientMessage) {
-                        Packets.Responses.GameStartedClientMessage response =
-                                (Packets.Responses.GameStartedClientMessage) object;
+                    } else if (object instanceof Responses.GameStartedClientMessage) {
+                        Responses.GameStartedClientMessage response =
+                                (Responses.GameStartedClientMessage) object;
 
                         // notify UI: game has started
                         gameStarted.postValue(true);
 
                         LOG.info("Game started by server");
-                    } else if (object instanceof Packets.Responses.SendHandCards) {
-                        Packets.Responses.SendHandCards response =
-                                (Packets.Responses.SendHandCards) object;
+                    } else if (object instanceof Responses.SendHandCards) {
+                        Responses.SendHandCards response =
+                                (Responses.SendHandCards) object;
 
                         // notify UI: send handcards to SchnopsnFragment
                         handCards.postValue(response.cards);
 
                         LOG.info("Handcards received for player: " + response.playerID);
-                    } else if (object instanceof Packets.Responses.NotifyPlayerYourTurn) {
-                        Packets.Responses.NotifyPlayerYourTurn response =
-                                (Packets.Responses.NotifyPlayerYourTurn) object;
+                    } else if (object instanceof Responses.NotifyPlayerYourTurn) {
+                        Responses.NotifyPlayerYourTurn response =
+                                (Responses.NotifyPlayerYourTurn) object;
 
                         // notify UI: its the clients turn
                         myTurn.postValue(true);
 
                         LOG.info("It's your turn! player: " + response.playerID);
-                    } else if (object instanceof Packets.Responses.PlayerGetHandoutCard) {
-                        Packets.Responses.PlayerGetHandoutCard response =
-                                (Packets.Responses.PlayerGetHandoutCard) object;
+                    } else if (object instanceof Responses.PlayerGetHandoutCard) {
+                        Responses.PlayerGetHandoutCard response =
+                                (Responses.PlayerGetHandoutCard) object;
 
                         // notify UI: clients gets one card
                         handoutCard.postValue(response.card);
 
                         LOG.info("Handout card received for player: " + response.playerID);
-                    } else if (object instanceof Packets.Responses.EndOfRound) {
-                        Packets.Responses.EndOfRound response =
-                                (Packets.Responses.EndOfRound) object;
+                    } else if (object instanceof Responses.EndOfRound) {
+                        Responses.EndOfRound response =
+                                (Responses.EndOfRound) object;
 
                         // notify UI: round of player is over
                         endOfRound.postValue(true);
 
                         LOG.info("End of round!");
-                    } else if(object instanceof Packets.Responses.VoteForNextGame){
+                    } else if(object instanceof Responses.VoteForNextGame){
                         voteForNextGame.postValue(true);
                         LOG.info("VoteForNextGame received from the server");
                     }
@@ -168,13 +168,13 @@ public class GameClient {
     // Call this method from client to start a game
     public void startGame() {
         new Thread(()->{
-            client.sendTCP(new Packets.Requests.StartGameMessage());
+            client.sendTCP(new Requests.StartGameMessage());
         }).start();
     }
 
     public void setCard(Card card) {
         new Thread(()->{
-            Packets.Requests.PlayerSetCard request = new Packets.Requests.PlayerSetCard();
+            Requests.PlayerSetCard request = new Requests.PlayerSetCard();
             request.card =  card;
             client.sendTCP(request);
             //player should not play a card if it is not their turn
@@ -192,12 +192,12 @@ public class GameClient {
     }
 
     public void sendEndToEndMessage(String message, int to) {
-        Packets.Requests.SendEndToEndChatMessage request = new Packets.Requests.SendEndToEndChatMessage(message, playerID, to);
+        Requests.SendEndToEndChatMessage request = new Requests.SendEndToEndChatMessage(message, playerID, to);
         sendPacket(request);
     }
 
     public void sendToAll(String message) {
-        Packets.Requests.SendToAllChatMessage request = new Packets.Requests.SendToAllChatMessage(message, playerID);
+        Requests.SendToAllChatMessage request = new Requests.SendToAllChatMessage(message, playerID);
         sendPacket(request);
     }
 
@@ -277,8 +277,8 @@ public class GameClient {
     }
 
     public void sendVoteForNextGame(GameName nextGame){
-        Packets.Requests.VoteForNextGame request =
-                new Packets.Requests.VoteForNextGame(nextGame);
+        Requests.VoteForNextGame request =
+                new Requests.VoteForNextGame(nextGame);
 
         sendPacket(request);
 
@@ -288,7 +288,7 @@ public class GameClient {
     }
 
     public void forceVoting(){
-        Packets.Requests.ForceVoting request = new Packets.Requests.ForceVoting();
+        Requests.ForceVoting request = new Requests.ForceVoting();
 
         sendPacket(request);
 
