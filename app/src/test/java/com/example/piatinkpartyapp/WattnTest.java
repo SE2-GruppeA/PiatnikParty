@@ -1,16 +1,17 @@
 package com.example.piatinkpartyapp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.gamelogic.WattnGame;
 
-import org.junit.Test;
 
-import java.util.ArrayList;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+
 
 /**
  * Example local unit test, which will execute on the development machine (host).
