@@ -66,8 +66,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 ////////// 2. move also sonarqube properties //////////
 sonarqube {
     properties {
-        property "sonar.projectKey", "SE2-sample-tut-project_demo-repo"
-        property "sonar.organization", "se2-sample-tut-project"
+        property "sonar.projectKey", "PiatnikParty"
+        property "sonar.organization", "SE2-GruppeA"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.java.coveragePlugin", "jacoco"
 
