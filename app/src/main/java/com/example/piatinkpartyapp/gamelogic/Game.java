@@ -5,7 +5,7 @@ import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Packets;
+import com.example.piatinkpartyapp.networking.Responses;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -128,7 +128,7 @@ public class Game {
     public void sendGameStartedMessageToClients() {
         for (Player player: players) {
             // send message to client that game has started
-            Packets.Responses.GameStartedClientMessage request = new Packets.Responses.GameStartedClientMessage();
+            Responses.GameStartedClientMessage request = new Responses.GameStartedClientMessage();
             player.getClientConnection().sendTCP(request);
         }
     }
@@ -140,7 +140,7 @@ public class Game {
             player.setHandcards(handCards);
 
             // send message to client with handcards
-            Packets.Responses.SendHandCards request = new Packets.Responses.SendHandCards();
+            Responses.SendHandCards request = new Responses.SendHandCards();
             request.cards = handCards;
             request.playerID = player.getClientConnection().getID();
             player.getClientConnection().sendTCP(request);
@@ -149,7 +149,7 @@ public class Game {
 
     // notify player: "it's your turn"
     public void notifyPlayerYourTurn(Player player) {
-        Packets.Responses.NotifyPlayerYourTurn request = new Packets.Responses.NotifyPlayerYourTurn();
+        Responses.NotifyPlayerYourTurn request = new Responses.NotifyPlayerYourTurn();
         request.playerID =  player.getClientConnection().getID();
         player.getClientConnection().sendTCP(request);
     }
@@ -249,7 +249,7 @@ public class Game {
                 player.addHandcard(newCard);
 
                 // send message with handout card to players
-                Packets.Responses.PlayerGetHandoutCard response = new Packets.Responses.PlayerGetHandoutCard();
+                Responses.PlayerGetHandoutCard response = new Responses.PlayerGetHandoutCard();
                 response.playerID = player.getClientConnection().getID();
                 response.card = newCard;
                 player.getClientConnection().sendTCP(response);
@@ -259,7 +259,7 @@ public class Game {
 
     public void sendEndRoundMessageToPlayers(Player roundWinner) {
         for (Player player: players) {
-            Packets.Responses.EndOfRound response = new Packets.Responses.EndOfRound();
+            Responses.EndOfRound response = new Responses.EndOfRound();
             player.getClientConnection().sendTCP(response);
         }
     }

@@ -2,15 +2,13 @@ package com.example.piatinkpartyapp.gamelogic;
 
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.cards.WattnDeck;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Packets;
+import com.example.piatinkpartyapp.networking.Responses;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -108,7 +106,7 @@ public class WattnGame extends Game {
             player.setHandcards(handCards);
 
             // send message to client with handcards
-            Packets.Responses.SendHandCards request = new Packets.Responses.SendHandCards();
+            Responses.SendHandCards request = new Responses.SendHandCards();
             request.cards = handCards;
             request.playerID = player.getClientConnection().getID();
             player.getClientConnection().sendTCP(request);

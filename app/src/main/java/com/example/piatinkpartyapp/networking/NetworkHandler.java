@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp.networking;
 import com.esotericsoftware.kryo.Kryo;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 
 public class NetworkHandler {
@@ -16,29 +17,33 @@ public class NetworkHandler {
     public static void register(Kryo kryo) {
 
 
-        kryo.register(Packets.Requests.SendToAllChatMessage.class);
-        kryo.register(Packets.Responses.ReceiveToAllChatMessage.class);
+        kryo.register(Requests.SendToAllChatMessage.class);
+        kryo.register(Responses.ReceiveToAllChatMessage.class);
 
-        kryo.register(Packets.Requests.SendEndToEndChatMessage.class);
-        kryo.register(Packets.Responses.ReceiveEndToEndChatMessage.class);
+        kryo.register(Requests.SendEndToEndChatMessage.class);
+        kryo.register(Responses.ReceiveEndToEndChatMessage.class);
 
         //Requests
-        kryo.register(Packets.Requests.StartGameMessage.class);
-        kryo.register(Packets.Requests.PlayerSetCard.class);
+        kryo.register(Requests.StartGameMessage.class);
+        kryo.register(Requests.PlayerSetCard.class);
+        kryo.register(Requests.ForceVoting.class);
+        kryo.register(Requests.VoteForNextGame.class);
 
         //Responses
-        kryo.register(Packets.Responses.ConnectedSuccessfully.class);
-        kryo.register(Packets.Responses.SendHandCards.class);
-        kryo.register(Packets.Responses.NotifyPlayerYourTurn.class);
-        kryo.register(Packets.Responses.PlayerGetHandoutCard.class);
-        kryo.register(Packets.Responses.GameStartedClientMessage.class);
-        kryo.register(Packets.Responses.EndOfRound.class);
-        kryo.register(Packets.Responses.EndOfGame.class);
+        kryo.register(Responses.ConnectedSuccessfully.class);
+        kryo.register(Responses.SendHandCards.class);
+        kryo.register(Responses.NotifyPlayerYourTurn.class);
+        kryo.register(Responses.PlayerGetHandoutCard.class);
+        kryo.register(Responses.GameStartedClientMessage.class);
+        kryo.register(Responses.EndOfRound.class);
+        kryo.register(Responses.EndOfGame.class);
+        kryo.register(Responses.VoteForNextGame.class);
 
         // Other classes
         kryo.register(Card.class);
         kryo.register(CardValue.class);
         kryo.register(Symbol.class);
         kryo.register(java.util.ArrayList.class);
+        kryo.register(GameName.class);
     }
 }

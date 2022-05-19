@@ -11,7 +11,6 @@
         tools:ignore="ProtectedPermissions" />
 
     <uses-sdk
-        android:minSdkVersion="28"
         android:targetSdkVersion="32" />
     <application
         android:allowBackup="true"
