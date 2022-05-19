@@ -1,16 +1,22 @@
 plugins {
     id 'com.android.application'
+
+    //1. Jacoco plugin
+    id 'jacoco'
+    // sonarqube plugin
+    id 'org.sonarqube'
 }
 
 android {
-    compileSdk 31
+
+    compileSdk 32
 
     buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "com.example.piatinkpartyapp"
         minSdkVersion 28
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
@@ -30,16 +36,55 @@ android {
     buildFeatures {
         viewBinding true
     }
+    ////////// 4. add testOptions //////////
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+            finalizedBy jacocoTestReport
+        }
+    }
+}
+////////// 3. add jacocoTestReport task like so //////////
+task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+
+    reports {
+        xml.enabled true
+
+        //////////  5. xml.destination must be same as sonaqube property  //////////
+        xml.destination file("${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.from = files([mainSrc])
+    classDirectories.from = files([debugTree])
+    executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
+}
+
+////////// 2. move also sonarqube properties //////////
+sonarqube {
+    properties {
+        property "sonar.projectKey", "PiatnikParty"
+        property "sonar.organization", "SE2-GruppeA"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.java.coveragePlugin", "jacoco"
+
+        ////////// 5. property same as xml.destination of jacocoTestReport //////////
+        property "sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+    }
 }
 
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.32"
+    implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    implementation 'androidx.navigation:navigation-fragment:2.4.1'
-    implementation 'androidx.navigation:navigation-ui:2.4.1'
-    implementation 'androidx.navigation:navigation-runtime:2.4.1'
+    implementation 'androidx.navigation:navigation-fragment:2.4.2'
+    implementation 'androidx.navigation:navigation-ui:2.4.2'
+    implementation 'androidx.navigation:navigation-runtime:2.4.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
