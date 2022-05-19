@@ -1,5 +1,6 @@
 # PiatnikParty
 # Workflow
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SE2-GruppeA_PiatnikParty&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SE2-GruppeA_PiatnikParty)
 
 ## Branches
 - master \
