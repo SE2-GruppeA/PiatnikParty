@@ -95,8 +95,10 @@ public class GameClient {
                         handle_PlayerGetHandoutCard((Responses.PlayerGetHandoutCard) object);
                     } else if (object instanceof Responses.EndOfRound) {
                         handle_EndOfRound((Responses.EndOfRound) object);
-                    } else if(object instanceof Responses.VoteForNextGame){
+                    } else if (object instanceof Responses.VoteForNextGame){
                         handle_VoteForNextGame();
+                    } else if (object instanceof Responses.SendPlayedCardToAllPlayers) {
+                        handle_SendPlayedCardToAllPlayers((Responses.SendPlayedCardToAllPlayers) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -174,6 +176,16 @@ public class GameClient {
         } else {
             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
         }
+    }
+
+    private void handle_SendPlayedCardToAllPlayers(Responses.SendPlayedCardToAllPlayers object) {
+        Responses.SendPlayedCardToAllPlayers response = object;
+
+        Card cardPlayed = response.card;
+
+        LOG.info("Played card " + cardPlayed.getSymbol().toString() + cardPlayed.getCardValue().toString() + " from player: " + response.playerID + " was received");
+
+        //TODO: notify UI
     }
     /////////////////// END - Handler Methods !!! ///////////////////
 

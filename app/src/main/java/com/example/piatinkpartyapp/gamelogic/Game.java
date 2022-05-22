@@ -168,6 +168,8 @@ public class Game {
             player.setCardPlayed(card);
             LOG.info("set Playercard of player: " + player.getId() + " card: " +  card.getSymbol().toString() + card.getCardValue().toString());
 
+            sendPlayedCardToAllPlayers(playerID, card);
+
             player.removeHandcard(card);
             LOG.info("card removed from handcards");
 
@@ -260,6 +262,15 @@ public class Game {
     public void sendEndRoundMessageToPlayers(Player roundWinner) {
         for (Player player: players) {
             Responses.EndOfRound response = new Responses.EndOfRound();
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+
+    public void sendPlayedCardToAllPlayers(int playerId, Card card) {
+        for (Player player: players) {
+            Responses.SendPlayedCardToAllPlayers response = new Responses.SendPlayedCardToAllPlayers();
+            response.playerID = playerId;
+            response.card = card;
             player.getClientConnection().sendTCP(response);
         }
     }
