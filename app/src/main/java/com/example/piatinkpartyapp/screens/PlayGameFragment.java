@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnFragment;
-import com.example.piatinkpartyapp.networking.GameClient;
 import com.example.piatinkpartyapp.networking.NetworkHandler;
 
 /**
@@ -91,7 +90,7 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
         return root;
     }
 
-    private void waitForGameStart() {
+    private void atGameStart() {
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new SchnopsnFragment()).commit();
     }
@@ -105,13 +104,13 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
             NetworkHandler.GAMESERVER_IP =  editText.getText().toString();
 
             clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
-            clientViewModel.getConnectionState().observe(getActivity(), connectionState -> setConnectedSuccessfuly(connectionState));
-            clientViewModel.isGameStarted().observe(getActivity(), gameStarted -> waitForGameStart());
+            clientViewModel.getConnectionState().observe(getActivity(), connectionState -> displayConnectionState(connectionState));
+            clientViewModel.isGameStarted().observe(getActivity(), gameStarted -> atGameStart());
         }
 
     }
 
-    public void setConnectedSuccessfuly(boolean connectionSate) {
+    public void displayConnectionState(boolean connectionSate) {
         if(connectionSate) {
             textView.setText("Erforlgreich verbunden!!!");
         }else{

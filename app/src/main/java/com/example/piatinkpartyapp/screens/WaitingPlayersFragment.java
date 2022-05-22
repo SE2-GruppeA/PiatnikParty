@@ -81,15 +81,15 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
         clientViewModel.getConnectionState().observe(getActivity(), connectionState ->
-                waitForConnection(connectionState));
+                displayConnectionState(connectionState));
 
-        clientViewModel.isGameStarted().observe(getActivity(), isGameStarted -> waitForGameStart());
+        clientViewModel.isGameStarted().observe(getActivity(), isGameStarted -> atGameStart());
 
         // Inflate the layout for this fragment
         return view;
     }
 
-    private void waitForConnection(boolean connectionState) {
+    private void displayConnectionState(boolean connectionState) {
         if(connectionState == true){
             Toast.makeText(requireActivity().getApplicationContext(),"Verbindung zum Server erfolgreich", Toast.LENGTH_LONG).show();
         }else{
@@ -97,7 +97,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         }
     }
 
-    private void waitForGameStart(){
+    private void atGameStart(){
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new SchnopsnFragment()).commit();
     }

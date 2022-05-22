@@ -188,17 +188,19 @@ public class GameClient {
 
         LOG.info("Played card " + cardPlayed.getSymbol().toString() + cardPlayed.getCardValue().toString() + " from player: " + response.playerID + " was received");
 
-        //TODO: notify UI
+        //notify UI
+        playedCard.postValue(object);
     }
 
     private void handle_SendTrumpToAllPlayers(Responses.SendTrumpToAllPlayers object) {
         Responses.SendTrumpToAllPlayers response = object;
 
-        Symbol trump = response.trump;
+        Symbol currentTrump = response.trump;
 
         LOG.info("Trump: " + trump.toString() + " was sent to player!");
 
-        //TODO: notify UI
+        //notify UI
+        trump.postValue(currentTrump);
     }
     /////////////////// END - Handler Methods !!! ///////////////////
 
@@ -304,6 +306,8 @@ public class GameClient {
     private MutableLiveData<Card> handoutCard;
     private MutableLiveData<Boolean> endOfRound;
     private MutableLiveData<Boolean> voteForNextGame;
+    private MutableLiveData<Responses.SendPlayedCardToAllPlayers> playedCard;
+    private MutableLiveData<Symbol> trump;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -331,6 +335,14 @@ public class GameClient {
 
     public LiveData<Boolean> isVotingForNextGame() { return voteForNextGame; }
 
+    public LiveData<Responses.SendPlayedCardToAllPlayers> getPlayedCard(){
+        return playedCard;
+    }
+
+    public LiveData<Symbol> getTrump(){
+        return trump;
+    }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -339,6 +351,8 @@ public class GameClient {
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<>();
         voteForNextGame = new MutableLiveData<>();
+        playedCard = new MutableLiveData<Responses.SendPlayedCardToAllPlayers>();
+        trump = new MutableLiveData<>();
     }
 
     public void sendVoteForNextGame(GameName nextGame){
