@@ -103,7 +103,13 @@ public class Responses {
     }
 
     public static class EndOfRound {
+        public int playerID;
+
         public EndOfRound() { }
+
+        public EndOfRound(int playerID) {
+            this.playerID = playerID;
+        }
     }
 
     public static class EndOfGame {
@@ -133,6 +139,16 @@ public class Responses {
 
         public SendTrumpToAllPlayers(Symbol symbol) {
             this.trump = symbol;
+        }
+    }
+
+    public static class UpdatePointsWinnerPlayer {
+        public int totalPoints;
+
+        public UpdatePointsWinnerPlayer() { }
+
+        public UpdatePointsWinnerPlayer(int totalPoints) {
+            this.totalPoints = totalPoints;
         }
     }
 }

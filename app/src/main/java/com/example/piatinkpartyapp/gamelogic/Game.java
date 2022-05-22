@@ -222,8 +222,8 @@ public class Game {
         for (Player player: players) {
             winnerPlayer.addPoints(deck.cardPoints(player.getCardPlayed().getCardValue()));
             LOG.info("Points added to player: " + winnerPlayer.getId() + ". Points: " + deck.cardPoints(player.getCardPlayed().getCardValue()));
-
         }
+        sendPointsToWinnerPlayer(winnerPlayer);
     }
 
     public void startNewRoundSchnopsn(Player startPlayer) {
@@ -264,6 +264,7 @@ public class Game {
     public void sendEndRoundMessageToPlayers(Player roundWinner) {
         for (Player player: players) {
             Responses.EndOfRound response = new Responses.EndOfRound();
+            response.playerID = roundWinner.getId();
             player.getClientConnection().sendTCP(response);
         }
     }
@@ -283,5 +284,11 @@ public class Game {
             response.trump = symbol;
             player.getClientConnection().sendTCP(response);
         }
+    }
+
+    public void sendPointsToWinnerPlayer(Player winnerPlayer) {
+        Responses.UpdatePointsWinnerPlayer response = new Responses.UpdatePointsWinnerPlayer();
+        response.totalPoints = winnerPlayer.getPoints();
+        winnerPlayer.getClientConnection().sendTCP(response);
     }
 }
