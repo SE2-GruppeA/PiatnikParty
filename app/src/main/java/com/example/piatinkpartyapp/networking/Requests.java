@@ -57,26 +57,22 @@ public class Requests{
         }
     }
 
-    public static class PlayerSetSchlag {
-        int playerID;
+    public static class PlayerSetSchlag implements IPackets {
         CardValue schlag;
 
         public PlayerSetSchlag() { }
 
-        public PlayerSetSchlag(int playerID, CardValue schlag) {
-            this.playerID = playerID;
+        public PlayerSetSchlag(CardValue schlag) {
             this.schlag = schlag;
         }
     }
 
-    public static class PlayerSetTrump {
-        int playerID;
+    public static class PlayerSetTrump implements IPackets {
         Symbol trump;
 
         public PlayerSetTrump() { }
 
-        public PlayerSetTrump(int playerID,  Symbol trump) {
-            this.playerID = playerID;
+        public PlayerSetTrump(Symbol trump) {
             this.trump = trump;
         }
     }

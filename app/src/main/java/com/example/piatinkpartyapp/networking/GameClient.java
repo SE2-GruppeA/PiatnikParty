@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
@@ -250,6 +251,15 @@ public class GameClient {
         }).start();
     }
 
+    public void setSchlag(CardValue schlag) {
+        Requests.PlayerSetSchlag request = new Requests.PlayerSetSchlag(schlag);
+        sendPacket(request);
+    }
+
+    public void setTrump(Symbol trump) {
+        Requests.PlayerSetTrump request = new Requests.PlayerSetTrump(trump);
+        sendPacket(request);
+    }
 
     /////////////////// START - CHAT - LOGiC ///////////////////
 
