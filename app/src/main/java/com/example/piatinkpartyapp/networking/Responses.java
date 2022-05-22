@@ -151,4 +151,12 @@ public class Responses {
             this.totalPoints = totalPoints;
         }
     }
+
+    public static class NotifyPlayerToSetSchlag {
+        public NotifyPlayerToSetSchlag() { }
+    }
+
+    public static class NotifyPlayerToSetTrump {
+        public NotifyPlayerToSetTrump() { }
+    }
 }

@@ -1,7 +1,9 @@
 package com.example.piatinkpartyapp.networking;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.cards.Symbol;
 
 /*
 NOTES :
@@ -52,6 +54,30 @@ public class Requests{
         public PlayerSetCard(int playerID, Card card) {
             this.playerID = playerID;
             this.card = card;
+        }
+    }
+
+    public static class PlayerSetSchlag {
+        int playerID;
+        CardValue schlag;
+
+        public PlayerSetSchlag() { }
+
+        public PlayerSetSchlag(int playerID, CardValue schlag) {
+            this.playerID = playerID;
+            this.schlag = schlag;
+        }
+    }
+
+    public static class PlayerSetTrump {
+        int playerID;
+        Symbol trump;
+
+        public PlayerSetTrump() { }
+
+        public PlayerSetTrump(int playerID,  Symbol trump) {
+            this.playerID = playerID;
+            this.trump = trump;
         }
     }
 
