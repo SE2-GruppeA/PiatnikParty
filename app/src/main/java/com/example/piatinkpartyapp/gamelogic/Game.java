@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
+import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
@@ -111,6 +112,7 @@ public class Game {
             sendGameStartedMessageToClients();
             resetRoundFinished();
             sendHandCards();
+            sendTrumpToAllPlayers(deck.getTrump());
             setRoundStartPlayer(players.get(0));
             // notify first player that it is his turn
             notifyPlayerYourTurn(players.get(0));
@@ -271,6 +273,14 @@ public class Game {
             Responses.SendPlayedCardToAllPlayers response = new Responses.SendPlayedCardToAllPlayers();
             response.playerID = playerId;
             response.card = card;
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+
+    public void sendTrumpToAllPlayers(Symbol symbol) {
+        for (Player player: players) {
+            Responses.SendTrumpToAllPlayers response = new Responses.SendTrumpToAllPlayers();
+            response.trump = symbol;
             player.getClientConnection().sendTCP(response);
         }
     }

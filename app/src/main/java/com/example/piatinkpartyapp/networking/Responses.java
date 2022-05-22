@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.networking;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.Symbol;
 
 import java.util.ArrayList;
 
@@ -126,12 +127,12 @@ public class Responses {
     }
 
     public static class SendTrumpToAllPlayers {
-        public Card card;
+        public Symbol trump;
 
         public SendTrumpToAllPlayers() { }
 
-        public SendTrumpToAllPlayers(Card card) {
-            this.card = card;
+        public SendTrumpToAllPlayers(Symbol symbol) {
+            this.trump = symbol;
         }
     }
 }

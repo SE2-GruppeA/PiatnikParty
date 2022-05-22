@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 
 import java.io.IOException;
@@ -99,6 +100,8 @@ public class GameClient {
                         handle_VoteForNextGame();
                     } else if (object instanceof Responses.SendPlayedCardToAllPlayers) {
                         handle_SendPlayedCardToAllPlayers((Responses.SendPlayedCardToAllPlayers) object);
+                    } else if (object instanceof Responses.SendTrumpToAllPlayers) {
+                        handle_SendTrumpToAllPlayers((Responses.SendTrumpToAllPlayers) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -184,6 +187,16 @@ public class GameClient {
         Card cardPlayed = response.card;
 
         LOG.info("Played card " + cardPlayed.getSymbol().toString() + cardPlayed.getCardValue().toString() + " from player: " + response.playerID + " was received");
+
+        //TODO: notify UI
+    }
+
+    private void handle_SendTrumpToAllPlayers(Responses.SendTrumpToAllPlayers object) {
+        Responses.SendTrumpToAllPlayers response = object;
+
+        Symbol trump = response.trump;
+
+        LOG.info("Trump: " + trump.toString() + " was sent to player!");
 
         //TODO: notify UI
     }
