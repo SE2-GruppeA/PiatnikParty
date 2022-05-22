@@ -38,6 +38,8 @@ public class NetworkHandler {
         kryo.register(Responses.EndOfRound.class);
         kryo.register(Responses.EndOfGame.class);
         kryo.register(Responses.VoteForNextGame.class);
+        kryo.register(Responses.SendPlayedCardToAllPlayers.class);
+        kryo.register(Responses.SendTrumpToAllPlayers.class);
 
         // Other classes
         kryo.register(Card.class);

@@ -112,4 +112,26 @@ public class Responses {
     public static class VoteForNextGame implements IPackets {
         public VoteForNextGame() { }
     }
+
+    public static class SendPlayedCardToAllPlayers {
+        public int playerID;
+        public Card card;
+
+        public SendPlayedCardToAllPlayers() { }
+
+        public SendPlayedCardToAllPlayers(int playerID, Card card) {
+            this.playerID = playerID;
+            this.card = card;
+        }
+    }
+
+    public static class SendTrumpToAllPlayers {
+        public Card card;
+
+        public SendTrumpToAllPlayers() { }
+
+        public SendTrumpToAllPlayers(Card card) {
+            this.card = card;
+        }
+    }
 }
