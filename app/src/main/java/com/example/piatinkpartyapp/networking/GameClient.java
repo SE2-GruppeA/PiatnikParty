@@ -102,6 +102,10 @@ public class GameClient {
                         handle_SendPlayedCardToAllPlayers((Responses.SendPlayedCardToAllPlayers) object);
                     } else if (object instanceof Responses.SendTrumpToAllPlayers) {
                         handle_SendTrumpToAllPlayers((Responses.SendTrumpToAllPlayers) object);
+                    } else if (object instanceof Responses.NotifyPlayerToSetSchlag) {
+                        handle_NotifyPlayerToSetSchlag((Responses.NotifyPlayerToSetSchlag) object);
+                    } else if (object instanceof Responses.NotifyPlayerToSetTrump) {
+                        handle_NotifyPlayerToSetTrump((Responses.NotifyPlayerToSetTrump) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -201,6 +205,24 @@ public class GameClient {
 
         //notify UI
         trump.postValue(currentTrump);
+    }
+
+    private void handle_NotifyPlayerToSetSchlag(Responses.NotifyPlayerToSetSchlag object) {
+        Responses.NotifyPlayerToSetSchlag response =
+                object;
+
+        // notify UI: to set schlag
+
+        LOG.info("Please set schlag!");
+    }
+
+    private void handle_NotifyPlayerToSetTrump(Responses.NotifyPlayerToSetTrump object) {
+        Responses.NotifyPlayerToSetTrump response =
+                object;
+
+        // notify UI: to set trump
+
+        LOG.info("Please set trump!");
     }
     /////////////////// END - Handler Methods !!! ///////////////////
 
