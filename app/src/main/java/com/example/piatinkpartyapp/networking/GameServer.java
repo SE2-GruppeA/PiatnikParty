@@ -56,6 +56,7 @@ public class GameServer {
             @Override
             public void disconnected(Connection connection) {
                 super.disconnected(connection);
+                handle_disconnected(connection);
             }
 
             @Override
@@ -93,6 +94,12 @@ public class GameServer {
         game.addPlayer(connection, "test");
 
         connection.sendTCP(response);
+
+        //TODO: update teilnehmerliste (in clients stehen alle verbundenen clients)
+    }
+
+    private void handle_disconnected(Connection connection) {
+        //TODO: update teilnehmerliste (in clients stehen alle verbundenen clients)
     }
 
     private void handle_VoteForNextGame(Connection connection, Requests.VoteForNextGame object) {
