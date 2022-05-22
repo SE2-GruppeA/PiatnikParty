@@ -74,6 +74,10 @@ public class GameServer {
                         handle_ForceVoting(connection);
                     } else if(object instanceof  Requests.VoteForNextGame){
                         handle_VoteForNextGame(connection, (Requests.VoteForNextGame) object);
+                    } else if (object instanceof Requests.PlayerSetSchlag) {
+                        handle_PlayerSetSchlag(connection, (Requests.PlayerSetSchlag) object);
+                    } else if (object instanceof Requests.PlayerSetTrump) {
+                        handle_PlayerSetTrump(connection, (Requests.PlayerSetTrump) object);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -131,6 +135,20 @@ public class GameServer {
 
         LOG.info("Game started on server : " + NetworkHandler.GAMESERVER_IP +
                 ", Client ID started the game: " + connection.getID());
+    }
+
+    private void handle_PlayerSetSchlag(Connection connection, Requests.PlayerSetSchlag object) {
+        Requests.PlayerSetSchlag request =
+                object;
+
+        LOG.info("Schlag: " + request.schlag.toString() + " was set from Client ID: " + connection.getID());
+    }
+
+    private void handle_PlayerSetTrump(Connection connection, Requests.PlayerSetTrump object) {
+        Requests.PlayerSetTrump request =
+                object;
+
+        LOG.info("Trump: " + request.trump.toString() + " was set from Client ID: " + connection.getID());
     }
     /////////////////// END - Handler Methods !!! ///////////////////
 
