@@ -25,6 +25,16 @@ public class WattnGame extends Game {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
     public WattnGame(){resetWattnDeck();}
+    @Override
+    public void startGame(){
+        new Thread(()->{
+            sendGameStartedMessageToClients();
+            resetRoundFinished();
+            sendHandCards();
+            setRoundStartPlayer(players.get(0));
+            notifyPlayerYourTurn(players.get(0));
+        }).start();
+    }
 
     @Override
     public void resetSchnopsnDeck(){}
@@ -59,8 +69,10 @@ public class WattnGame extends Game {
     public Player getRoundWinnerPlayerSchnopsn(){return null;}
 
     public Player getRoundWinnerWattn(){
-        Player winningPlayer = this.roundStartPlayer;
+        Player winningPlayer = getRoundStartPlayer();
         Player currentPlayer = getNextPlayer(this.roundStartPlayer);
+        Log.e("!!",currentPlayer.getCardPlayed().getCardValue().toString() );
+        Log.e("!!", winningPlayer.toString());
         while (currentPlayer != this.roundStartPlayer) {
             //the player that plays the right card always wins the subround
             // first played card is right card
@@ -126,6 +138,8 @@ public class WattnGame extends Game {
             player.setCardPlayed(card);
             Log.e("##########", card.getCardValue() +" "+ card.getSymbol());
             LOG.info("set Playercard of player: " + player.getId() + " card: " +  card.getSymbol().toString() + card.getCardValue().toString());
+
+            sendPlayedCardToAllPlayers(playerID, card);
 
             player.removeHandcard(card);
             LOG.info("card removed from handcards");

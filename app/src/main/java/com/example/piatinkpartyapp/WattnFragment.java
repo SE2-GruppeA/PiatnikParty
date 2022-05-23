@@ -25,6 +25,7 @@ import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.cards.WattnDeck;
 import com.example.piatinkpartyapp.chat.ChatFragment;
 import com.example.piatinkpartyapp.networking.GameServer;
+import com.example.piatinkpartyapp.networking.Responses;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -47,8 +48,8 @@ public class WattnFragment extends Fragment implements View.OnClickListener {
         Boolean isMyTurn;
         Boolean schlagToSet;
         Boolean trumpToSet;
-public static ImageView currentCardPlayer1;
-public static ImageView currentCardPlayer2;
+public static ImageView currentCard1;
+public static ImageView currentCard2;
 public static WattnDeck deck;
         ArrayList<Card> handCards;
       public static  ArrayList<Card> currentCards;
@@ -123,7 +124,7 @@ private void startChatTestServer() {
         }
         }
 
-private void waitForMyTurn() {
+private void waitForMyTurn(Boolean isMyTurn) {
         if(isMyTurn) {
                 Toast.makeText(requireActivity().getApplicationContext(), "Du bist dran", Toast.LENGTH_SHORT).show();
                 this.isMyTurn = true;
@@ -131,16 +132,16 @@ private void waitForMyTurn() {
                 this.isMyTurn = false;
         }
         }
-        private void waitForTrump(){
-        if(trumpToSet && !this.schlagToSet){
+        private void waitForTrump(Boolean trumpToSet){
+        if(trumpToSet){
                 Toast.makeText(requireActivity().getApplicationContext(),"Mit Doppelklick Trumpf setzen",Toast.LENGTH_LONG).show();
                 this.trumpToSet = true;
         }else{
                 this.trumpToSet = false;
         }
 }
-        private void waitForHit(){
-        if(schlagToSet && this.trumpToSet){
+        private void waitForHit(Boolean schlagToSet){
+        if(schlagToSet){
                 Toast.makeText(requireActivity().getApplicationContext(),"mit doppelklick schlag setzen",Toast.LENGTH_LONG).show();
                 this.schlagToSet = true;
         }else{
@@ -208,9 +209,12 @@ private void initHandCardsViews(){
         //current cards
         currentCards = new ArrayList<>();
         currentCardImageViews = new ArrayList<>();
-        currentCardImageViews.add(currentCardPlayer1);
-        currentCardImageViews.add(currentCardPlayer2);
+        currentCardImageViews.add(currentCard1);
+        currentCardImageViews.add(currentCard2);
 
+        isMyTurn = false;
+        schlagToSet =true;
+        trumpToSet = true;
         }
 
 private void updateHandCards(ArrayList<Card> handCards) {
@@ -240,9 +244,10 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
         clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
-        clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn());
-        clientViewModel.schlagToSet().observe(getActivity(),schlagToSet -> waitForHit());
-        clientViewModel.trumpToSet().observe(getActivity(), trumpToSet -> waitForTrump());
+        clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn(isMyTurn));
+        clientViewModel.schlagToSet().observe(getActivity(),schlagToSet -> waitForHit(schlagToSet));
+        clientViewModel.trumpToSet().observe(getActivity(), trumpToSet -> waitForTrump(trumpToSet));
+        clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
        // clientViewModel.selectTrump().observe(getActivity(), selTrump -> selectTrump());
       // clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
 
@@ -282,8 +287,8 @@ private void addAllViews(View view) {
         handCardView3 = view.findViewById(R.id.card3);
         handCardView4 = view.findViewById(R.id.card4);
         handCardView5 = view.findViewById(R.id.card5);
-        currentCardPlayer1 = view.findViewById(R.id.currentCardPlayer1);
-        currentCardPlayer2 = view.findViewById(R.id.currentCardPlayer2);
+        currentCard1 = view.findViewById(R.id.currentCardPlayer1);
+        currentCard2 = view.findViewById(R.id.currentCardPlayer2);
      //   mixCardsBtn = view.findViewById(R.id.mixBtn);
         }
 
@@ -349,11 +354,18 @@ public static int getResId(String resName) {
         }
         }
 //play card from handcards, displayed & set to currentCard
-private static void play(Card c){
+private static void play(Card c, int position){
         String s = c.frontSide.toLowerCase(Locale.ROOT);
-        currentCards.add(c);
-        setCardImage(s, currentCardPlayer1);
+        if(position ==1) {
+                setCardImage(s, currentCard1);
+        }else if(position == 2){
+                setCardImage(s, currentCard2);
         }
+
+        }
+  private void setPlayedCard(Responses.SendPlayedCardToAllPlayers playedCard){
+        play(playedCard.card,playedCard.playerID);
+  }
 /*longonclicklistener to handcards
  * if longonclick to handcard, card gets played, if it is available (handcards showing the backside image are unavailable -checked via imageview description)*/
 private void handCardViewListener(ImageView handCardView){
@@ -361,7 +373,7 @@ private void handCardViewListener(ImageView handCardView){
 @Override
 public boolean onLongClick(View view) {
         //currenCard view is only to be visible if there is a played card - invisible by default
-        currentCardPlayer1.setVisibility(View.VISIBLE);
+        currentCard1.setVisibility(View.VISIBLE);
         //card only playable if it is availalbe (not showing its backside)
         if(!handCardView.getContentDescription().equals("backside")){
         String[] x = handCardView.getContentDescription().toString().split("_");
