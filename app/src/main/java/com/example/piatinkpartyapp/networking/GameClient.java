@@ -213,6 +213,9 @@ public class GameClient {
                 object;
 
         // notify UI: to set schlag
+       schlagToSet.postValue(true);
+
+
 
         LOG.info("Please set schlag!");
     }
@@ -222,7 +225,7 @@ public class GameClient {
                 object;
 
         // notify UI: to set trump
-
+        trumpToSet.postValue(true);
         LOG.info("Please set trump!");
     }
     /////////////////// END - Handler Methods !!! ///////////////////
@@ -340,6 +343,9 @@ public class GameClient {
     private MutableLiveData<Boolean> voteForNextGame;
     private MutableLiveData<Responses.SendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
+    private MutableLiveData<CardValue> schlag;
+    private MutableLiveData<Boolean> trumpToSet;
+    private MutableLiveData<Boolean> schlagToSet;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -374,6 +380,9 @@ public class GameClient {
     public LiveData<Symbol> getTrump(){
         return trump;
     }
+    public LiveData<Boolean> schlagtoSet(){return schlagToSet;}
+    public LiveData<Boolean> trumptoSet(){return trumpToSet;}
+
 
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
@@ -385,6 +394,9 @@ public class GameClient {
         voteForNextGame = new MutableLiveData<>();
         playedCard = new MutableLiveData<Responses.SendPlayedCardToAllPlayers>();
         trump = new MutableLiveData<>();
+        schlag = new MutableLiveData<>();
+        schlagToSet = new MutableLiveData<>();
+        trumpToSet = new MutableLiveData<>();
     }
 
     public void sendVoteForNextGame(GameName nextGame){

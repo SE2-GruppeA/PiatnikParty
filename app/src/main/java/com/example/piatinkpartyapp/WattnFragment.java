@@ -45,7 +45,8 @@ public class WattnFragment extends Fragment implements View.OnClickListener {
         Button voteBtn;
         Button mixCardsBtn;
         Boolean isMyTurn;
-
+        Boolean schlagToSet;
+        Boolean trumpToSet;
 public static ImageView currentCardPlayer1;
 public static ImageView currentCardPlayer2;
 public static WattnDeck deck;
@@ -130,6 +131,23 @@ private void waitForMyTurn() {
                 this.isMyTurn = false;
         }
         }
+        private void waitForTrump(){
+        if(trumpToSet && !this.schlagToSet){
+                Toast.makeText(requireActivity().getApplicationContext(),"Mit Doppelklick Trumpf setzen",Toast.LENGTH_LONG).show();
+                this.trumpToSet = true;
+        }else{
+                this.trumpToSet = false;
+        }
+}
+        private void waitForHit(){
+        if(schlagToSet && this.trumpToSet){
+                Toast.makeText(requireActivity().getApplicationContext(),"mit doppelklick schlag setzen",Toast.LENGTH_LONG).show();
+                this.schlagToSet = true;
+        }else{
+                this.schlagToSet = false;
+        }
+        }
+
         private Symbol selectTrump(){
                 final Symbol[] sym = {null};
                 int j = 0;
@@ -223,6 +241,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
         clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
         clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn());
+        clientViewModel.schlagToSet().observe(getActivity(),schlagToSet -> waitForHit());
+        clientViewModel.trumpToSet().observe(getActivity(), trumpToSet -> waitForTrump());
        // clientViewModel.selectTrump().observe(getActivity(), selTrump -> selectTrump());
       // clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
 
