@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Game {
+
     private int mainPlayerId;
     private Player roundStartPlayer;
     public ArrayList<Player> players = new ArrayList<>();

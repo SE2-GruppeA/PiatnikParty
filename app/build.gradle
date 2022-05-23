@@ -43,6 +43,7 @@ android {
             finalizedBy jacocoTestReport
         }
     }
+    namespace 'com.example.piatinkpartyapp'
 }
 ////////// 3. add jacocoTestReport task like so //////////
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
