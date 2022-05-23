@@ -9,6 +9,7 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.GameClient;
+import com.example.piatinkpartyapp.networking.Requests;
 import com.example.piatinkpartyapp.networking.Responses;
 
 import java.io.IOException;
@@ -85,6 +86,22 @@ public class ClientViewModel extends ViewModel {
 
     public LiveData<Symbol> getTrump() {
         return client.getTrump();
+    }
+
+    public LiveData<Integer> getPoints() {
+        return client.getPoints();
+    }
+
+    public LiveData<Boolean> isSetSchlag() {
+        return client.isSetSchlag();
+    }
+
+    public LiveData<Boolean> isSetTrump() {
+        return client.isSetTrump();
+    }
+
+    public void setTrump(Symbol trump) {
+        client.setTrump(trump);
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////
