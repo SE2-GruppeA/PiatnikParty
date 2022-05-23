@@ -2,7 +2,9 @@ package com.example.piatinkpartyapp.screens;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -33,6 +35,11 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
     private Window window;
     private int brightness;
     private TextView percentageView;
+
+    private SeekBar seekBarVolume;
+    private TextView percantageViewVolume;
+    private int volume;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,6 +92,53 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
         seekBar = (SeekBar) root.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(this);
 
+        seekBarVolume = (SeekBar) root.findViewById(R. id. seekBarVolume);
+        seekBarVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                Settings.System.canWrite(getContext());
+
+                if (i <= 1) {
+                    volume = 1;
+                } else {
+                    volume = i;
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                boolean grantPermissions = Settings.System.canWrite(getContext());
+                //Settings.ACTION_MANAGE_WRITE_SETTINGS;
+                AudioManager am = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+
+                if (!grantPermissions) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                    startActivity(intent);
+
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "The permissions could be granted", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Now you can change the screen brightness", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Screen brightness changed to " + volume, Toast.LENGTH_SHORT).show();
+
+                    Log.e("Error", "The permissions could be granted");
+                }
+
+                am.setStreamVolume(AudioManager.STREAM_MUSIC,volume,0);
+
+            }
+        });
+
+        seekBarVolume.setMax(100);
+
         percentageView = (TextView) root.findViewById(R.id.percentageView);
 
         contentResolver = requireActivity().getContentResolver();
@@ -125,6 +179,8 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
         float percentage = (brightness / (float) 100) * 100;
 
         percentageView.setText((int) percentage + " %");
+
+
     }
 
     @Override

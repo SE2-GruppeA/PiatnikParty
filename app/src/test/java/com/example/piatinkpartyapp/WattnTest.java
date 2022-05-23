@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class WattnTest {
+
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
@@ -36,6 +37,7 @@ public class WattnTest {
         // assertEquals(Symbol.HERZ, wg.deck.rightCard.symbol);
         //assertEquals(CardValue.ZEHN,wg.deck.rightCard.cardValue);
     }
+
     @Test
     public void getRightCard(){
         WattnGame wg = new WattnGame();
@@ -47,8 +49,9 @@ public class WattnTest {
         assertEquals(CardValue.KOENIG, wg.rightCard().getCardValue());
         assertEquals(Symbol.PICK, wg.rightCard().getSymbol());
     }
+
     @Test
-    public void testwithPlayersRightCard(){
+    public void testWithPlayersRightCard(){
         Player p1 = new Player();
         p1.setId(1);
         Player p2 = new Player();

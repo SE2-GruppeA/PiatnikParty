@@ -26,6 +26,8 @@ public class NetworkHandler {
         //Requests
         kryo.register(Requests.StartGameMessage.class);
         kryo.register(Requests.PlayerSetCard.class);
+        kryo.register(Requests.PlayerSetSchlag.class);
+        kryo.register(Requests.PlayerSetTrump.class);
         kryo.register(Requests.ForceVoting.class);
         kryo.register(Requests.VoteForNextGame.class);
 
@@ -38,6 +40,11 @@ public class NetworkHandler {
         kryo.register(Responses.EndOfRound.class);
         kryo.register(Responses.EndOfGame.class);
         kryo.register(Responses.VoteForNextGame.class);
+        kryo.register(Responses.SendPlayedCardToAllPlayers.class);
+        kryo.register(Responses.SendTrumpToAllPlayers.class);
+        kryo.register(Responses.UpdatePointsWinnerPlayer.class);
+        kryo.register(Responses.NotifyPlayerToSetSchlag.class);
+        kryo.register(Responses.NotifyPlayerToSetTrump.class);
 
         // Other classes
         kryo.register(Card.class);

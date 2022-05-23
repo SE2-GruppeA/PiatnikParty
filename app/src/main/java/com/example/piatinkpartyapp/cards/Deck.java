@@ -7,11 +7,45 @@ import java.util.Collections;
 /*Deck (Stapel) which provides cards to players
 * depended on game --> inheritance & number of players
 * contains cards*/
+
 public class Deck {
+
     GameName gameName;
     ArrayList<Card> cards = new ArrayList<>();
     public ArrayList<Card> deck;
     int players;
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
+
+    public GameName getGameName() {
+        return gameName;
+    }
+
+    public int getPlayers() {
+        return players;
+    }
+
+    public void setCards(ArrayList<Card> cards) {
+        this.cards = cards;
+    }
+
+    public void setDeck(ArrayList<Card> deck) {
+        this.deck = deck;
+    }
+
+    public void setGameName(GameName gameName) {
+        this.gameName = gameName;
+    }
+
+    public void setPlayers(int players) {
+        this.players = players;
+    }
 
     public Deck(GameName gameName, int players){
         this.gameName = gameName;
@@ -20,6 +54,7 @@ public class Deck {
         this.deck = mixCards();
 
     }
+
     /*creating cards of each symbol & card-value
     * to be contained in the deck later*/
     public ArrayList<Card> createCards(){
@@ -31,6 +66,7 @@ public class Deck {
         }
         return cards;
     }
+
     /*mixing order of cards in the deck
     * checking functionality via logcat since order of deck cards isnt visile in antoher way*/
     public ArrayList<Card> mixCards(){
@@ -39,6 +75,7 @@ public class Deck {
        // Log.d("after############",cards.toString());
         return cards;
     }
+
     /*each player can request handcards --> array of cards is returned
     * in basic case 5 cards special cases handled by inheritance with separate decks*/
     public ArrayList<Card> getHandCards(){
@@ -51,10 +88,11 @@ public class Deck {
         }
         return handCards;
     }
+
     /*take new card from deck - uppermost card, return if & afterwards remove it from deck to prevent duplicated cards
     * if deck is empty return null*/
-    public Card takeCard(){
-        if(deck.size() >0){
+    public Card takeCard() {
+        if(deck.size() >0) {
             Card c = deck.get(0);
             deck.remove(c);
             return c;

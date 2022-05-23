@@ -24,6 +24,14 @@ public class Player {
     public Player() {
     }
 
+    public ArrayList<Card> getCardsWon() {
+        return cardsWon;
+    }
+
+    public static Logger getLOG() {
+        return LOG;
+    }
+
     public Player(Connection connection, String playerName) {
         this.id = connection.getID();
         this.playerName = playerName;

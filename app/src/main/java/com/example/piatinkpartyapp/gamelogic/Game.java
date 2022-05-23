@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
+import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Game {
+
     private int mainPlayerId;
     private Player roundStartPlayer;
     public ArrayList<Player> players = new ArrayList<>();
@@ -111,6 +113,7 @@ public class Game {
             sendGameStartedMessageToClients();
             resetRoundFinished();
             sendHandCards();
+            sendTrumpToAllPlayers(deck.getTrump());
             setRoundStartPlayer(players.get(0));
             // notify first player that it is his turn
             notifyPlayerYourTurn(players.get(0));
@@ -168,6 +171,8 @@ public class Game {
             player.setCardPlayed(card);
             LOG.info("set Playercard of player: " + player.getId() + " card: " +  card.getSymbol().toString() + card.getCardValue().toString());
 
+            sendPlayedCardToAllPlayers(playerID, card);
+
             player.removeHandcard(card);
             LOG.info("card removed from handcards");
 
@@ -218,8 +223,8 @@ public class Game {
         for (Player player: players) {
             winnerPlayer.addPoints(deck.cardPoints(player.getCardPlayed().getCardValue()));
             LOG.info("Points added to player: " + winnerPlayer.getId() + ". Points: " + deck.cardPoints(player.getCardPlayed().getCardValue()));
-
         }
+        sendPointsToWinnerPlayer(winnerPlayer);
     }
 
     public void startNewRoundSchnopsn(Player startPlayer) {
@@ -260,7 +265,31 @@ public class Game {
     public void sendEndRoundMessageToPlayers(Player roundWinner) {
         for (Player player: players) {
             Responses.EndOfRound response = new Responses.EndOfRound();
+            response.playerID = roundWinner.getId();
             player.getClientConnection().sendTCP(response);
         }
+    }
+
+    public void sendPlayedCardToAllPlayers(int playerId, Card card) {
+        for (Player player: players) {
+            Responses.SendPlayedCardToAllPlayers response = new Responses.SendPlayedCardToAllPlayers();
+            response.playerID = playerId;
+            response.card = card;
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+
+    public void sendTrumpToAllPlayers(Symbol symbol) {
+        for (Player player: players) {
+            Responses.SendTrumpToAllPlayers response = new Responses.SendTrumpToAllPlayers();
+            response.trump = symbol;
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+
+    public void sendPointsToWinnerPlayer(Player winnerPlayer) {
+        Responses.UpdatePointsWinnerPlayer response = new Responses.UpdatePointsWinnerPlayer();
+        response.totalPoints = winnerPlayer.getPoints();
+        winnerPlayer.getClientConnection().sendTCP(response);
     }
 }
