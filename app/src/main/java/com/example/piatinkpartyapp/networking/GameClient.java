@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.example.piatinkpartyapp.SchlagSelect;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -265,11 +266,13 @@ public class GameClient {
     public void setSchlag(CardValue schlag) {
         Requests.PlayerSetSchlag request = new Requests.PlayerSetSchlag(schlag);
         sendPacket(request);
+        setSchlag.postValue(false);
     }
 
     public void setTrump(Symbol trump) {
         Requests.PlayerSetTrump request = new Requests.PlayerSetTrump(trump);
         sendPacket(request);
+        setTrump.postValue(false);
     }
 
     /////////////////// START - CHAT - LOGiC ///////////////////
@@ -412,6 +415,8 @@ public class GameClient {
         playedCard = new MutableLiveData<>();
         trump = new MutableLiveData<>();
         points = new MutableLiveData<>();
+        setTrump = new MutableLiveData<>();
+        setSchlag = new MutableLiveData<>();
     }
 
     public void sendVoteForNextGame(GameName nextGame){

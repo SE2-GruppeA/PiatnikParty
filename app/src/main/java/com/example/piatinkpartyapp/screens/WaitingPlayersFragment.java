@@ -116,11 +116,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         }
 
         ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, playerList);
-        // Set The Adapter
-        lvPlayers.setAdapter(arrayAdapter);
-
-
+                new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, playerList);
         lvPlayers.setAdapter(arrayAdapter);
     }
 
@@ -133,6 +129,9 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     }
 
     private void atGameStart(){
+        //close this fragment, or else the observer will trigger later again
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        //opening the game ui
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new SchnopsnFragment()).commit();
     }
@@ -143,7 +142,6 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         else if (view == BtnStartGame3) {
             clientViewModel.startGame();
-            //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
 
     }
