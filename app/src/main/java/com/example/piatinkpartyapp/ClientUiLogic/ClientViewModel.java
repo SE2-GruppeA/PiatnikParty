@@ -87,5 +87,17 @@ public class ClientViewModel extends ViewModel {
         return client.getTrump();
     }
 
+    public LiveData<Integer> getPoints() {
+        return client.getPoints();
+    }
+
+    public LiveData<Boolean> isSetSchlag() {
+        return client.isSetSchlag();
+    }
+
+    public LiveData<Boolean> isSetTrump() {
+        return client.isSetTrump();
+    }
+
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

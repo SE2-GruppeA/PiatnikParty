@@ -76,14 +76,14 @@
     <ImageView
         android:id="@+id/scoreImage"
         android:layout_width="153dp"
-        android:layout_height="90dp"
+        android:layout_height="181dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.982"
+        app:layout_constraintHorizontal_bias="0.957"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.049"
-        app:srcCompat="@drawable/punktestand" />
+        app:layout_constraintVertical_bias="0.06"
+        app:srcCompat="@drawable/score" />
 
     <ImageView
         android:id="@+id/arrowBtn"
@@ -172,7 +172,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.402"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/placeholder" />
 
     <ImageView
         android:id="@+id/currentCard2"
@@ -184,7 +184,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.402"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/placeholder" />
 
     <ImageView
         android:id="@+id/swapCard"
@@ -199,6 +199,7 @@
         app:layout_constraintVertical_bias="0.183"
         tools:srcCompat="@tools:sample/avatars" />
 
+
     <TextView
         android:id="@+id/scoreTxt"
         android:layout_width="wrap_content"
@@ -207,11 +208,10 @@
         android:textSize="58sp"
         app:layout_constraintBottom_toBottomOf="@+id/scoreImage"
         app:layout_constraintEnd_toEndOf="@+id/scoreImage"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="@+id/scoreImage"
         app:layout_constraintTop_toTopOf="@+id/scoreImage"
-        app:layout_constraintVertical_bias="1.0" />
-
+        app:layout_constraintVertical_bias="0.375" />
 
     <ImageView
         android:id="@+id/cardDeck"
@@ -231,15 +231,14 @@
 
     <ImageView
         android:id="@+id/imgTrump"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/placholder"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.976"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreImage"
-        app:layout_constraintVertical_bias="0.011" />
+        android:layout_width="36dp"
+        android:layout_height="35dp"
+        android:src="@drawable/placeholder"
+        app:layout_constraintBottom_toBottomOf="@+id/scoreImage"
+        app:layout_constraintEnd_toEndOf="@+id/scoreImage"
+        app:layout_constraintHorizontal_bias="0.76"
+        app:layout_constraintStart_toStartOf="@+id/scoreImage"
+        app:layout_constraintTop_toTopOf="@+id/scoreImage"
+        app:layout_constraintVertical_bias="0.794" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

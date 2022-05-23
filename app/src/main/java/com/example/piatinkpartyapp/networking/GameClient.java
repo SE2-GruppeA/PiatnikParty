@@ -107,6 +107,8 @@ public class GameClient {
                         handle_NotifyPlayerToSetSchlag((Responses.NotifyPlayerToSetSchlag) object);
                     } else if (object instanceof Responses.NotifyPlayerToSetTrump) {
                         handle_NotifyPlayerToSetTrump((Responses.NotifyPlayerToSetTrump) object);
+                    }else if(object instanceof Responses.UpdatePointsWinnerPlayer){
+                        handle_UpdatePointsWinnerPlayer((Responses.UpdatePointsWinnerPlayer) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -213,6 +215,7 @@ public class GameClient {
                 object;
 
         // notify UI: to set schlag
+        setSchlag.postValue(true);
 
         LOG.info("Please set schlag!");
     }
@@ -222,9 +225,17 @@ public class GameClient {
                 object;
 
         // notify UI: to set trump
+        setTrump.postValue(true);
 
         LOG.info("Please set trump!");
     }
+
+    private void handle_UpdatePointsWinnerPlayer(Responses.UpdatePointsWinnerPlayer object){
+        Responses.UpdatePointsWinnerPlayer response = object;
+
+        points.postValue(response.totalPoints);
+    }
+
     /////////////////// END - Handler Methods !!! ///////////////////
 
 
@@ -340,6 +351,9 @@ public class GameClient {
     private MutableLiveData<Boolean> voteForNextGame;
     private MutableLiveData<Responses.SendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
+    private MutableLiveData<Integer> points;
+    private MutableLiveData<Boolean> setSchlag;
+    private MutableLiveData<Boolean> setTrump;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -375,6 +389,18 @@ public class GameClient {
         return trump;
     }
 
+    public LiveData<Integer> getPoints() {
+        return points;
+    }
+
+    public LiveData<Boolean> isSetSchlag() {
+        return  setSchlag;
+    }
+
+    public LiveData<Boolean> isSetTrump() {
+        return setTrump;
+    }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -383,8 +409,9 @@ public class GameClient {
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<>();
         voteForNextGame = new MutableLiveData<>();
-        playedCard = new MutableLiveData<Responses.SendPlayedCardToAllPlayers>();
+        playedCard = new MutableLiveData<>();
         trump = new MutableLiveData<>();
+        points = new MutableLiveData<>();
     }
 
     public void sendVoteForNextGame(GameName nextGame){
