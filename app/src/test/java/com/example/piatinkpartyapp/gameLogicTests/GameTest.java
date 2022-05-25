@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp;
+package com.example.piatinkpartyapp.gameLogicTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -13,7 +13,7 @@ import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.gamelogic.Game;
 import com.example.piatinkpartyapp.gamelogic.Player;
 
-import org.junit.Rule;
+
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;

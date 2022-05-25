@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp;
+package com.example.piatinkpartyapp.gameLogicTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
