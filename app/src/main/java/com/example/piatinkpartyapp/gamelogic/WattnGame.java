@@ -70,10 +70,10 @@ public class WattnGame extends Game {
 
     public Player getRoundWinnerWattn(){
         Player winningPlayer = getRoundStartPlayer();
-        Player currentPlayer = getNextPlayer(this.roundStartPlayer);
+        Player currentPlayer = getNextPlayer(winningPlayer);
         Log.e("!!",currentPlayer.getCardPlayed().getCardValue().toString() );
         Log.e("!!", winningPlayer.toString());
-        while (currentPlayer != this.roundStartPlayer) {
+        while (currentPlayer != winningPlayer) {
             //the player that plays the right card always wins the subround
             // first played card is right card
             if(winningPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue() && winningPlayer.getCardPlayed().getSymbol() == deck.getRightCard().getSymbol()){
@@ -109,6 +109,7 @@ public class WattnGame extends Game {
                 LOG.info(winningPlayer + " won this game!");
             }
         }
+        LOG.info(winningPlayer + " won this round");
         return winningPlayer;
     }
     @Override
@@ -164,4 +165,12 @@ public class WattnGame extends Game {
         }).start();
     }
 
+    @Override
+    public void addPointsToWinnerPlayer(Player winnerPlayer) {
+
+            winnerPlayer.addPoints(1);
+            LOG.info("Points added to player: " + winnerPlayer.getId() + ". Points: " + 1);
+
+
+    }
 }
