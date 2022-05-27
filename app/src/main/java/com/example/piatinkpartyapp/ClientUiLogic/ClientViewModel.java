@@ -47,8 +47,8 @@ public class ClientViewModel extends ViewModel {
     public LiveData<Boolean> isMyTurn(){
         return client.isMyTurn();
     }
-    public LiveData<Boolean> schlagToSet(){return client.schlagtoSet();}
-    public LiveData<Boolean> trumpToSet(){return client.trumptoSet();}
+ //   public LiveData<Boolean> schlagToSet(){return client.schlagtoSet();}
+   // public LiveData<Boolean> trumpToSet(){return client.trumptoSet();}
 
     public LiveData<Boolean> isGameStarted(){
         return client.isGameStarted();
@@ -96,13 +96,13 @@ public class ClientViewModel extends ViewModel {
         return client.getPoints();
     }
 
-    public LiveData<Boolean> isSetSchlag() {
+  /*  public LiveData<Boolean> isSetSchlag() {
         return client.isSetSchlag();
     }
 
     public LiveData<Boolean> isSetTrump() {
         return client.isSetTrump();
-    }
+    }*/
 
     public void setTrump(Symbol trump) {
         client.setTrump(trump);

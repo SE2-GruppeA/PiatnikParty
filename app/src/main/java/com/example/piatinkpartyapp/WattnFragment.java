@@ -245,18 +245,18 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
         clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
         clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn(isMyTurn));
-        clientViewModel.schlagToSet().observe(getActivity(),schlagToSet -> waitForHit(schlagToSet));
-        clientViewModel.trumpToSet().observe(getActivity(), trumpToSet -> waitForTrump(trumpToSet));
+   //     clientViewModel.schlagToSet().observe(getActivity(),schlagToSet -> waitForHit(schlagToSet));
+     //   clientViewModel.trumpToSet().observe(getActivity(), trumpToSet -> waitForTrump(trumpToSet));
         clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
        // clientViewModel.selectTrump().observe(getActivity(), selTrump -> selectTrump());
-      // clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
-
+    //   clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
+        clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
         //initializeGame();
        //  deck = new WattnDeck(GameName.Wattn,2);
         return root;
         }
 
-/*private void getHandoutCard(Card c) {
+private void getHandoutCard(Card c) {
         handCards.add(c);
         for(ImageView i : handCardImageViews){
         if(i.getContentDescription().equals("backside")){
@@ -265,7 +265,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
         break;
         }
         }
-        }*/
+        }
 
 private void addOnclickHandlers() {
         arrowBtn.setOnClickListener(this);
@@ -406,5 +406,11 @@ private void goBack() {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
-
+        private void atRoundEnd(Boolean isEndOfRound) {
+                if(isEndOfRound){
+                        Toast.makeText(requireActivity().getApplicationContext(),
+                                "Runde ist zuende",
+                                Toast.LENGTH_SHORT).show();
+                }
+        }
         }
