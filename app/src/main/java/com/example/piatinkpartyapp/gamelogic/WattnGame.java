@@ -25,6 +25,16 @@ public class WattnGame extends Game {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
     public WattnGame(){resetWattnDeck();}
+    @Override
+    public void startGame(){
+        new Thread(()->{
+            sendGameStartedMessageToClients();
+            resetRoundFinished();
+            sendHandCards();
+            setRoundStartPlayer(players.get(0));
+            notifyPlayerYourTurn(players.get(0));
+        }).start();
+    }
 
     @Override
     public void resetSchnopsnDeck(){}
@@ -59,9 +69,11 @@ public class WattnGame extends Game {
     public Player getRoundWinnerPlayerSchnopsn(){return null;}
 
     public Player getRoundWinnerWattn(){
-        Player winningPlayer = this.roundStartPlayer;
-        Player currentPlayer = getNextPlayer(this.roundStartPlayer);
-        while (currentPlayer != this.roundStartPlayer) {
+        Player winningPlayer = getRoundStartPlayer();
+        Player currentPlayer = getNextPlayer(winningPlayer);
+        Log.e("!!",currentPlayer.getCardPlayed().getCardValue().toString() );
+        Log.e("!!", winningPlayer.toString());
+        while (currentPlayer != winningPlayer) {
             //the player that plays the right card always wins the subround
             // first played card is right card
             if(winningPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue() && winningPlayer.getCardPlayed().getSymbol() == deck.getRightCard().getSymbol()){
@@ -97,6 +109,7 @@ public class WattnGame extends Game {
                 LOG.info(winningPlayer + " won this game!");
             }
         }
+        LOG.info(winningPlayer + " won this round");
         return winningPlayer;
     }
     @Override
@@ -127,6 +140,8 @@ public class WattnGame extends Game {
             Log.e("##########", card.getCardValue() +" "+ card.getSymbol());
             LOG.info("set Playercard of player: " + player.getId() + " card: " +  card.getSymbol().toString() + card.getCardValue().toString());
 
+            sendPlayedCardToAllPlayers(playerID, card);
+
             player.removeHandcard(card);
             LOG.info("card removed from handcards");
 
@@ -150,4 +165,12 @@ public class WattnGame extends Game {
         }).start();
     }
 
+    @Override
+    public void addPointsToWinnerPlayer(Player winnerPlayer) {
+
+            winnerPlayer.addPoints(1);
+            LOG.info("Points added to player: " + winnerPlayer.getId() + ". Points: " + 1);
+
+
+    }
 }

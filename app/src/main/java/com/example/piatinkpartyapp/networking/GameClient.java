@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.example.piatinkpartyapp.SchlagSelect;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -108,8 +107,6 @@ public class GameClient {
                         handle_NotifyPlayerToSetSchlag((Responses.NotifyPlayerToSetSchlag) object);
                     } else if (object instanceof Responses.NotifyPlayerToSetTrump) {
                         handle_NotifyPlayerToSetTrump((Responses.NotifyPlayerToSetTrump) object);
-                    }else if(object instanceof Responses.UpdatePointsWinnerPlayer){
-                        handle_UpdatePointsWinnerPlayer((Responses.UpdatePointsWinnerPlayer) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -216,7 +213,6 @@ public class GameClient {
                 object;
 
         // notify UI: to set schlag
-        setSchlag.postValue(true);
 
         LOG.info("Please set schlag!");
     }
@@ -226,17 +222,9 @@ public class GameClient {
                 object;
 
         // notify UI: to set trump
-        setTrump.postValue(true);
 
         LOG.info("Please set trump!");
     }
-
-    private void handle_UpdatePointsWinnerPlayer(Responses.UpdatePointsWinnerPlayer object){
-        Responses.UpdatePointsWinnerPlayer response = object;
-
-        points.postValue(response.totalPoints);
-    }
-
     /////////////////// END - Handler Methods !!! ///////////////////
 
 
@@ -266,13 +254,11 @@ public class GameClient {
     public void setSchlag(CardValue schlag) {
         Requests.PlayerSetSchlag request = new Requests.PlayerSetSchlag(schlag);
         sendPacket(request);
-        setSchlag.postValue(false);
     }
 
     public void setTrump(Symbol trump) {
         Requests.PlayerSetTrump request = new Requests.PlayerSetTrump(trump);
         sendPacket(request);
-        setTrump.postValue(false);
     }
 
     /////////////////// START - CHAT - LOGiC ///////////////////
@@ -354,9 +340,6 @@ public class GameClient {
     private MutableLiveData<Boolean> voteForNextGame;
     private MutableLiveData<Responses.SendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
-    private MutableLiveData<Integer> points;
-    private MutableLiveData<Boolean> setSchlag;
-    private MutableLiveData<Boolean> setTrump;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -392,18 +375,6 @@ public class GameClient {
         return trump;
     }
 
-    public LiveData<Integer> getPoints() {
-        return points;
-    }
-
-    public LiveData<Boolean> isSetSchlag() {
-        return  setSchlag;
-    }
-
-    public LiveData<Boolean> isSetTrump() {
-        return setTrump;
-    }
-
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -412,11 +383,8 @@ public class GameClient {
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<>();
         voteForNextGame = new MutableLiveData<>();
-        playedCard = new MutableLiveData<>();
+        playedCard = new MutableLiveData<Responses.SendPlayedCardToAllPlayers>();
         trump = new MutableLiveData<>();
-        points = new MutableLiveData<>();
-        setTrump = new MutableLiveData<>();
-        setSchlag = new MutableLiveData<>();
     }
 
     public void sendVoteForNextGame(GameName nextGame){
