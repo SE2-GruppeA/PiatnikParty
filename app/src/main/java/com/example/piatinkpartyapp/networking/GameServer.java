@@ -115,6 +115,8 @@ public class GameServer {
     private void handle_VoteForNextGame(Connection connection, Requests.VoteForNextGame object) {
         LOG.info("Client " + connection.getID() + " voted for" +
                 object.gameName.toString());
+
+        game.handleVotingForNextGame(connection.getID(), object.gameName);
     }
 
     private void handle_ForceVoting(Connection connection) {
