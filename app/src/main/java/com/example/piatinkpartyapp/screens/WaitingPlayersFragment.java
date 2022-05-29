@@ -20,12 +20,8 @@ import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.NetworkHandler;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
@@ -141,7 +137,8 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         if (view == backBtn)
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         else if (view == BtnStartGame3) {
-            clientViewModel.startGame();
+            clientViewModel.forceVoting();
+            //clientViewModel.startGame();
         }
 
     }
