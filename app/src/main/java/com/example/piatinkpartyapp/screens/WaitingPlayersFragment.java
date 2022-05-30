@@ -130,8 +130,8 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         //opening the game ui
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
-               // new SchnopsnFragment()).commit();
-                new WattnFragment()).commit();
+                new SchnopsnFragment()).commit();
+               // new WattnFragment()).commit();
     }
 
     @Override
