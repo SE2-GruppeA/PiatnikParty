@@ -104,5 +104,8 @@ dependencies {
 
     //Used for networking
     implementation group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
+
+    //Used for displaying gifs
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 }
 

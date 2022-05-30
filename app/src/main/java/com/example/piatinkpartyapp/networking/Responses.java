@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.networking;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
 
 import java.util.ArrayList;
@@ -141,7 +142,11 @@ public class Responses {
             this.trump = symbol;
         }
     }
-
+    public static class SendSchlagToAllPlayers{
+        public CardValue schlag;
+        public SendSchlagToAllPlayers(){}
+        public SendSchlagToAllPlayers(CardValue cardValue){this.schlag=cardValue;}
+    }
     public static class UpdatePointsWinnerPlayer {
         public int totalPoints;
 

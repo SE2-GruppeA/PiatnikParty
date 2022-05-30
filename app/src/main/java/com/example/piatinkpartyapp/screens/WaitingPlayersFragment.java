@@ -16,16 +16,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnFragment;
+import com.example.piatinkpartyapp.WattnFragment;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.NetworkHandler;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
@@ -134,6 +131,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         //opening the game ui
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new SchnopsnFragment()).commit();
+               // new WattnFragment()).commit();
     }
 
     @Override
@@ -142,6 +140,9 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         else if (view == BtnStartGame3) {
             clientViewModel.startGame();
+
+            clientViewModel.forceVoting();
+
         }
 
     }

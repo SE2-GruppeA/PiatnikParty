@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_schnopsn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SchnopsnFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".WattnFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <Button
@@ -50,7 +49,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mix Cards"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.731"
@@ -161,43 +159,31 @@
         app:layout_constraintVertical_bias="0.954"
         app:srcCompat="@drawable/ic_launcher_background" />
 
-
     <ImageView
-        android:id="@+id/currentCard"
+        android:id="@+id/currentCardPlayer1"
         android:layout_width="100dp"
         android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.147"
+        app:layout_constraintHorizontal_bias="0.199"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.402"
-        app:srcCompat="@drawable/placeholder" />
-
+        app:layout_constraintVertical_bias="0.204"
+        app:srcCompat="@drawable/ic_launcher_background" />
     <ImageView
-        android:id="@+id/currentCard2"
+        android:id="@+id/currentCardPlayer2"
         android:layout_width="100dp"
         android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.342"
+        app:layout_constraintHorizontal_bias="0.299"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.402"
-        app:srcCompat="@drawable/placeholder" />
+        app:layout_constraintVertical_bias="0.204"
+        app:srcCompat="@drawable/ic_launcher_background" />
 
-    <ImageView
-        android:id="@+id/swapCard"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:rotation="90"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.601"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.183"
-        tools:srcCompat="@tools:sample/avatars" />
+
+
 
 
     <TextView
@@ -208,27 +194,10 @@
         android:textSize="58sp"
         app:layout_constraintBottom_toBottomOf="@+id/scoreImage"
         app:layout_constraintEnd_toEndOf="@+id/scoreImage"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="@+id/scoreImage"
         app:layout_constraintTop_toTopOf="@+id/scoreImage"
-        app:layout_constraintVertical_bias="0.375" />
-
-    <ImageView
-        android:id="@+id/cardDeck"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:rotation="0"
-        android:rotationX="0"
-        android:rotationY="0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.639"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.183"
-        app:srcCompat="@drawable/ic_launcher_background"
-        tools:srcCompat="@tools:sample/avatars[2]" />
-
+        app:layout_constraintVertical_bias="1.0" />
     <ImageView
         android:id="@+id/imgTrump"
         android:layout_width="36dp"
@@ -240,5 +209,8 @@
         app:layout_constraintStart_toStartOf="@+id/scoreImage"
         app:layout_constraintTop_toTopOf="@+id/scoreImage"
         app:layout_constraintVertical_bias="0.794" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
