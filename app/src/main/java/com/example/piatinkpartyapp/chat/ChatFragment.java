@@ -21,6 +21,9 @@ import com.example.piatinkpartyapp.utils.Utils;
  * create an instance of this fragment.
  */
 public class ChatFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG = "ChatFragment";
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -114,21 +117,25 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
     }
-
     private void onClick_SendChatMessage(View v) {
+        String msg = binding.etChatMessage.getText().toString();
         final ChatMessage newChatMessage = new ChatMessage(
                 model.getPlayerID(),
-                binding.etChatMessage.getText().toString(),
+                msg,
                 Utils.getDateAsString(),
                 ChatMessage.MessageType.IN
         );
+
+        CheatDialogFragment dialog = new CheatDialogFragment();
+        dialog.show(getFragmentManager(), "ChatDialogFragment");
+
         model.getChatMessages().getValue().add(newChatMessage);
         chatAdapter.notifyDataSetChanged();
         recyclerViewScrollDown();
         model.sendToAllChatMessage(newChatMessage.getMessage());
     }
 
-    private void recyclerViewScrollDown(){
-        binding.rvChatMessages.scrollToPosition(model.getChatMessages().getValue().size()-1);
+    private void recyclerViewScrollDown() {
+        binding.rvChatMessages.scrollToPosition(model.getChatMessages().getValue().size() - 1);
     }
 }
