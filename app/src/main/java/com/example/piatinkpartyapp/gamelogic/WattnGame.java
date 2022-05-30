@@ -33,8 +33,13 @@ public class WattnGame extends Game {
         return player;
     }
     public WattnGame(){resetWattnDeck();}
-    @Override
-    public void startGame(){
+    public void resetVotingFinished() {
+        for (Player player : players) {
+            player.setVotingFinished(false);
+        }
+    }
+
+    public void startGameWattn(){
     LOG.info("here");
         new Thread(()->{
             sendGameStartedMessageToClients();
