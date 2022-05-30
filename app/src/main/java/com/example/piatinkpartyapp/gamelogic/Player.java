@@ -2,6 +2,7 @@ package com.example.piatinkpartyapp.gamelogic;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.networking.GameServer;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class Player {
     private boolean roundFinished;
     private boolean cheaten;
     private Connection clientConnection;
+    private boolean votingFinished;
+    private GameName votingGame;
 
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
@@ -140,5 +143,21 @@ public class Player {
 
     public void setCardPlayed(Card cardPlayed) {
         this.cardPlayed = cardPlayed;
+    }
+
+    public boolean isVotingFinished() {
+        return votingFinished;
+    }
+
+    public void setVotingFinished(boolean votingFinished) {
+        this.votingFinished = votingFinished;
+    }
+
+    public GameName getVotingGame() {
+        return votingGame;
+    }
+
+    public void setVotingGame(GameName votingGame) {
+        this.votingGame = votingGame;
     }
 }
