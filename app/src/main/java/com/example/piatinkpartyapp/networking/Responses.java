@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.networking;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.Symbol;
 
 import java.util.ArrayList;
 
@@ -102,7 +103,13 @@ public class Responses {
     }
 
     public static class EndOfRound {
+        public int playerID;
+
         public EndOfRound() { }
+
+        public EndOfRound(int playerID) {
+            this.playerID = playerID;
+        }
     }
 
     public static class EndOfGame {
@@ -111,5 +118,45 @@ public class Responses {
 
     public static class VoteForNextGame implements IPackets {
         public VoteForNextGame() { }
+    }
+
+    public static class SendPlayedCardToAllPlayers {
+        public int playerID;
+        public Card card;
+
+        public SendPlayedCardToAllPlayers() { }
+
+        public SendPlayedCardToAllPlayers(int playerID, Card card) {
+            this.playerID = playerID;
+            this.card = card;
+        }
+    }
+
+    public static class SendTrumpToAllPlayers {
+        public Symbol trump;
+
+        public SendTrumpToAllPlayers() { }
+
+        public SendTrumpToAllPlayers(Symbol symbol) {
+            this.trump = symbol;
+        }
+    }
+
+    public static class UpdatePointsWinnerPlayer {
+        public int totalPoints;
+
+        public UpdatePointsWinnerPlayer() { }
+
+        public UpdatePointsWinnerPlayer(int totalPoints) {
+            this.totalPoints = totalPoints;
+        }
+    }
+
+    public static class NotifyPlayerToSetSchlag {
+        public NotifyPlayerToSetSchlag() { }
+    }
+
+    public static class NotifyPlayerToSetTrump {
+        public NotifyPlayerToSetTrump() { }
     }
 }

@@ -1,9 +1,11 @@
 package com.example.piatinkpartyapp.cards;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SchnopsnDeck extends Deck{
+public class SchnopsnDeck extends Deck {
+
     /*specialization of card-deck tailored for schnopsn
     * only 20 cards from less cardvalues
     * selected trump symbol
@@ -12,8 +14,13 @@ public class SchnopsnDeck extends Deck{
     HashMap<CardValue, Integer> point_map;
     ArrayList<CardValue> schnopsnCardValues;
 
-    /*exclude cardvalues 7 to 9*/
-    private ArrayList<CardValue> getSchnopsnCardValues(){
+    public SchnopsnDeck(GameName gameName, int players) {
+        super(gameName, players);
+        this.trump = selectTrump();
+    }
+
+    /* exclude cardvalues 7 to 9 */
+    public ArrayList<CardValue> getSchnopsnCardValues(){
         schnopsnCardValues = new ArrayList<>();
         for(CardValue v : CardValue.values()){
             if( v!= CardValue.SIEBEN && v!= CardValue.ACHT && v != CardValue.NEUN){
@@ -32,6 +39,7 @@ public class SchnopsnDeck extends Deck{
         }
         return cards;
     }
+
     public Symbol getTrump() {
         return trump;
     }
@@ -40,10 +48,6 @@ public class SchnopsnDeck extends Deck{
         return Symbol.randomSymbol();
     }
 
-    public SchnopsnDeck(GameName gameName, int players) {
-        super(gameName, players);
-        this.trump = selectTrump();
-    }
     /*get game points per cardvalue*/
     public Integer cardPoints(CardValue v) {
         Integer points = 0;
@@ -69,6 +73,7 @@ public class SchnopsnDeck extends Deck{
         }
         return points;
     }
+
     /*creation of full cardvalue point mapping*/
     public Map<CardValue, Integer> cardPoints() {
         point_map = new HashMap<CardValue, Integer>();
@@ -80,13 +85,13 @@ public class SchnopsnDeck extends Deck{
 
         return point_map;
     }
+
     /*in schopsn there is a swapping card showing its image half under the deck, its symbol is trump & it can be swapped against the trump UNTER during the game*/
     public Card swappingCard(){
         Card swappingCard = null;
         CardValue v = CardValue.randomValue();
         // as the random symbol might not be part of the schnopsnCardValue arraylist it needs to be check if it is part
         if(schnopsnCardValues.contains(v)){
-
             for(Card c : deck){
                 if(c.cardValue == v && c.symbol == trump){
                     swappingCard = c;
@@ -95,10 +100,71 @@ public class SchnopsnDeck extends Deck{
                 }
             }
 
-        }else { // if it isnt part, the function is called recurseivly again
+        } else { // if it isnt part, the function is called recurseivly again
             return swappingCard();
         }
         return  null;
+    }
+
+    @Override
+    public ArrayList<Card> getCards() {
+        return super.getCards();
+    }
+
+    @Override
+    public ArrayList<Card> getDeck() {
+        return super.getDeck();
+    }
+
+    @Override
+    public GameName getGameName() {
+        return super.getGameName();
+    }
+
+    @Override
+    public int getPlayers() {
+        return super.getPlayers();
+    }
+
+    @Override
+    public ArrayList<Card> getHandCards() {
+        return super.getHandCards();
+    }
+
+    public HashMap<CardValue, Integer> getPoint_map() {
+        return point_map;
+    }
+
+    @Override
+    public void setCards(ArrayList<Card> cards) {
+        super.setCards(cards);
+    }
+
+    @Override
+    public void setDeck(ArrayList<Card> deck) {
+        super.setDeck(deck);
+    }
+
+    @Override
+    public void setGameName(GameName gameName) {
+        super.setGameName(gameName);
+    }
+
+    @Override
+    public void setPlayers(int players) {
+        super.setPlayers(players);
+    }
+
+    public void setPoint_map(HashMap<CardValue, Integer> point_map) {
+        this.point_map = point_map;
+    }
+
+    public void setSchnopsnCardValues(ArrayList<CardValue> schnopsnCardValues) {
+        this.schnopsnCardValues = schnopsnCardValues;
+    }
+
+    public void setTrump(Symbol trump) {
+        this.trump = trump;
     }
 }
 

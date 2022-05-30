@@ -17,7 +17,7 @@ public class Card {
         this.symbol = symbol;
         this.cardValue = cardValue;
         this.backSide = "backside";
-        this.frontSide = symbol+"_"+cardValue;
+        this.frontSide = symbol + "_" + cardValue;
         this.cheated = false;
     }
 

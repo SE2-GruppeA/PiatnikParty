@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.GameClient;
+import com.example.piatinkpartyapp.networking.Responses;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,6 +77,14 @@ public class ClientViewModel extends ViewModel {
 
     public LiveData<Boolean> isEndOfRound(){
         return client.isEndOfRound();
+    }
+
+    public LiveData<Responses.SendPlayedCardToAllPlayers> getPlayedCard() {
+        return client.getPlayedCard();
+    }
+
+    public LiveData<Symbol> getTrump() {
+        return client.getTrump();
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

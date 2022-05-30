@@ -7,7 +7,9 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 
 import java.io.IOException;
@@ -95,8 +97,16 @@ public class GameClient {
                         handle_PlayerGetHandoutCard((Responses.PlayerGetHandoutCard) object);
                     } else if (object instanceof Responses.EndOfRound) {
                         handle_EndOfRound((Responses.EndOfRound) object);
-                    } else if(object instanceof Responses.VoteForNextGame){
+                    } else if (object instanceof Responses.VoteForNextGame){
                         handle_VoteForNextGame();
+                    } else if (object instanceof Responses.SendPlayedCardToAllPlayers) {
+                        handle_SendPlayedCardToAllPlayers((Responses.SendPlayedCardToAllPlayers) object);
+                    } else if (object instanceof Responses.SendTrumpToAllPlayers) {
+                        handle_SendTrumpToAllPlayers((Responses.SendTrumpToAllPlayers) object);
+                    } else if (object instanceof Responses.NotifyPlayerToSetSchlag) {
+                        handle_NotifyPlayerToSetSchlag((Responses.NotifyPlayerToSetSchlag) object);
+                    } else if (object instanceof Responses.NotifyPlayerToSetTrump) {
+                        handle_NotifyPlayerToSetTrump((Responses.NotifyPlayerToSetTrump) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -175,6 +185,46 @@ public class GameClient {
             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
         }
     }
+
+    private void handle_SendPlayedCardToAllPlayers(Responses.SendPlayedCardToAllPlayers object) {
+        Responses.SendPlayedCardToAllPlayers response = object;
+
+        Card cardPlayed = response.card;
+
+        LOG.info("Played card " + cardPlayed.getSymbol().toString() + cardPlayed.getCardValue().toString() + " from player: " + response.playerID + " was received");
+
+        //notify UI
+        playedCard.postValue(object);
+    }
+
+    private void handle_SendTrumpToAllPlayers(Responses.SendTrumpToAllPlayers object) {
+        Responses.SendTrumpToAllPlayers response = object;
+
+        Symbol currentTrump = response.trump;
+
+        LOG.info("Trump: " + trump.toString() + " was sent to player!");
+
+        //notify UI
+        trump.postValue(currentTrump);
+    }
+
+    private void handle_NotifyPlayerToSetSchlag(Responses.NotifyPlayerToSetSchlag object) {
+        Responses.NotifyPlayerToSetSchlag response =
+                object;
+
+        // notify UI: to set schlag
+
+        LOG.info("Please set schlag!");
+    }
+
+    private void handle_NotifyPlayerToSetTrump(Responses.NotifyPlayerToSetTrump object) {
+        Responses.NotifyPlayerToSetTrump response =
+                object;
+
+        // notify UI: to set trump
+
+        LOG.info("Please set trump!");
+    }
     /////////////////// END - Handler Methods !!! ///////////////////
 
 
@@ -201,6 +251,15 @@ public class GameClient {
         }).start();
     }
 
+    public void setSchlag(CardValue schlag) {
+        Requests.PlayerSetSchlag request = new Requests.PlayerSetSchlag(schlag);
+        sendPacket(request);
+    }
+
+    public void setTrump(Symbol trump) {
+        Requests.PlayerSetTrump request = new Requests.PlayerSetTrump(trump);
+        sendPacket(request);
+    }
 
     /////////////////// START - CHAT - LOGiC ///////////////////
 
@@ -279,6 +338,8 @@ public class GameClient {
     private MutableLiveData<Card> handoutCard;
     private MutableLiveData<Boolean> endOfRound;
     private MutableLiveData<Boolean> voteForNextGame;
+    private MutableLiveData<Responses.SendPlayedCardToAllPlayers> playedCard;
+    private MutableLiveData<Symbol> trump;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -306,6 +367,14 @@ public class GameClient {
 
     public LiveData<Boolean> isVotingForNextGame() { return voteForNextGame; }
 
+    public LiveData<Responses.SendPlayedCardToAllPlayers> getPlayedCard(){
+        return playedCard;
+    }
+
+    public LiveData<Symbol> getTrump(){
+        return trump;
+    }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -314,6 +383,8 @@ public class GameClient {
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<>();
         voteForNextGame = new MutableLiveData<>();
+        playedCard = new MutableLiveData<Responses.SendPlayedCardToAllPlayers>();
+        trump = new MutableLiveData<>();
     }
 
     public void sendVoteForNextGame(GameName nextGame){
