@@ -108,5 +108,7 @@ public class ClientViewModel extends ViewModel {
         client.setTrump(trump);
     }
 
+    public void setSchlag(CardValue schlag){client.setSchlag(schlag);}
+
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

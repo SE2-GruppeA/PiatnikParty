@@ -3,7 +3,9 @@ package com.example.piatinkpartyapp;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +13,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.cards.CardValue;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SchlagSelect#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SchlagSelect extends Fragment {
+public class SchlagSelect extends Fragment implements  View.OnClickListener{
 
     ImageButton btnSchlagSieben;
     ImageButton btnSchlagAcht;
@@ -74,7 +77,50 @@ public class SchlagSelect extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_schlag_select,container,false);
 
-        btnSchlagSieben = root.findViewById(R.id.btn)
-        return inflater.inflate(R.layout.fragment_schlag_select, container, false);
+        btnSchlagSieben = root.findViewById(R.id.btnSchlagSieben);
+        btnSchlagAcht = root.findViewById(R.id.btnSchlagAcht);
+        btnSchlagNeun = root.findViewById(R.id.btnSchlagNeun);
+        btnSchlagZehn = root.findViewById(R.id.btnSchlagZehn);
+        btnSchlagUnter = root.findViewById(R.id.btnSchlagUnter);
+        btnSchlagOber = root.findViewById(R.id.btnSchlagOber);
+        btnSchlagKoenig = root.findViewById(R.id.btnSchlagKoenig);
+        btnSchlagAss = root.findViewById(R.id.btnSchlagAss);
+
+        btnSchlagSieben.setOnClickListener(this);
+        btnSchlagAcht.setOnClickListener(this);
+        btnSchlagNeun.setOnClickListener(this);
+        btnSchlagZehn.setOnClickListener(this);
+        btnSchlagUnter.setOnClickListener(this);
+        btnSchlagOber.setOnClickListener(this);
+        btnSchlagKoenig.setOnClickListener(this);
+        btnSchlagAss.setOnClickListener(this);
+
+        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+        return root;
+    }
+    @Override
+    public void onClick(View view){
+        if(view == btnSchlagSieben){
+            setSchlag(CardValue.SIEBEN);
+        }else if(view == btnSchlagAcht){
+            setSchlag(CardValue.ACHT);
+        }else if(view == btnSchlagNeun){
+            setSchlag(CardValue.NEUN);
+        }else if(view == btnSchlagZehn){
+            setSchlag(CardValue.ZEHN);
+        }else if(view == btnSchlagUnter){
+            setSchlag(CardValue.UNTER);
+        }else if(view == btnSchlagOber){
+            setSchlag(CardValue.OBER);
+        }else if(view == btnSchlagKoenig){
+            setSchlag(CardValue.KOENIG);
+        }else if(view == btnSchlagAcht){
+            setSchlag(CardValue.ASS);
+        }
+    }
+
+    public void setSchlag(CardValue schlag){
+        clientViewModel.setSchlag(schlag);
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }
