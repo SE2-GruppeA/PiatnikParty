@@ -63,8 +63,8 @@ public class WattnGame extends Game {
 
         //deck.rightCard = deck.getRightCard();
         //  deck.setTrump(Symbol.randomSymbol());
-        LOG.info("hit is "+ deck.getHit());
-        LOG.info("trump is "+deck.getTrump());
+       // LOG.info("hit is "+ deck.getHit());
+        //LOG.info("trump is "+deck.getTrump());
         playerPoints.add(0);
         playerPoints.add(0);
     }
