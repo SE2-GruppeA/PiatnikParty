@@ -21,7 +21,6 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-
 public class CreateGameFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";

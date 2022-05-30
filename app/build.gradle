@@ -43,6 +43,7 @@ android {
             finalizedBy jacocoTestReport
         }
     }
+
     namespace 'com.example.piatinkpartyapp'
 }
 ////////// 3. add jacocoTestReport task like so //////////
@@ -86,6 +87,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.4.2'
     implementation 'androidx.navigation:navigation-runtime:2.4.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.test:runner:1.4.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
     testImplementation 'org.testng:testng:6.9.6'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
