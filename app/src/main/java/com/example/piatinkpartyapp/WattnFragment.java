@@ -253,9 +253,22 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
         clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
         //initializeGame();
        //  deck = new WattnDeck(GameName.Wattn,2);
+        clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
+        clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
+
         return root;
         }
+        private void playerSetSchlag(Boolean setSchlag) {
+                if(setSchlag){
+                        requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new SchlagSelect()).commit();
+                }
+        }
 
+        private void playerSetTrump(Boolean setTrump) {
+                if(setTrump){
+                        requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new TrumpSelect()).commit();
+                }
+        }
 private void getHandoutCard(Card c) {
         handCards.add(c);
         for(ImageView i : handCardImageViews){

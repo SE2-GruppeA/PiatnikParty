@@ -119,6 +119,7 @@ public class GameServer {
 
         players.postValue(wattnGame.getPlayers());
         players.postValue(game.getPlayers());
+
     }
 
     private void handle_VoteForNextGame(Connection connection, Requests.VoteForNextGame object) {
@@ -159,14 +160,16 @@ public class GameServer {
         Requests.PlayerSetSchlag request =
                 object;
 
-        LOG.info("Schlag: " + request.schlag.toString() + " was set from Client ID: " + connection.getID());
+        wattnGame.deck.setHit(request.schlag);
+        LOG.info("Schlag: " + wattnGame.deck.getHit()+ " was set from Client ID: " + connection.getID());
     }
 
     private void handle_PlayerSetTrump(Connection connection, Requests.PlayerSetTrump object) {
         Requests.PlayerSetTrump request =
                 object;
 
-        LOG.info("Trump: " + request.trump.toString() + " was set from Client ID: " + connection.getID());
+        wattnGame.deck.setTrump(request.trump);
+        LOG.info("Trump: " + wattnGame.deck.getTrump() + " was set from Client ID: " + connection.getID());
     }
     /////////////////// END - Handler Methods !!! ///////////////////
 

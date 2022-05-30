@@ -354,6 +354,7 @@ public class GameClient {
     private MutableLiveData<Boolean> voteForNextGame;
     private MutableLiveData<Responses.SendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
+    private MutableLiveData<CardValue> schlag;
     private MutableLiveData<Integer> points;
     private MutableLiveData<Boolean> setSchlag;
     private MutableLiveData<Boolean> setTrump;
@@ -391,6 +392,7 @@ public class GameClient {
     public LiveData<Symbol> getTrump(){
         return trump;
     }
+    public LiveData<CardValue> getSchlag(){return schlag;}
 
     public LiveData<Integer> getPoints() {
         return points;
@@ -414,6 +416,7 @@ public class GameClient {
         voteForNextGame = new MutableLiveData<>();
         playedCard = new MutableLiveData<>();
         trump = new MutableLiveData<>();
+        schlag = new MutableLiveData<>();
         points = new MutableLiveData<>();
         setTrump = new MutableLiveData<>();
         setSchlag = new MutableLiveData<>();

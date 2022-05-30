@@ -50,8 +50,8 @@ public class WattnGame extends Game {
     public void resetWattnDeck(){
         deck = new WattnDeck(GameName.Wattn,2);
         //setting hit & trump randomly 4 testing because UI isn't connected to game logic via live data yet
-        deck.setHit(CardValue.randomValue());
-        deck.setTrump(Symbol.randomSymbol());
+     //   deck.setHit(CardValue.randomValue());
+       // deck.setTrump(Symbol.randomSymbol());
         // deck.setHit(CardValue.ZEHN);
         //deck.setTrump(Symbol.HERZ);
 
@@ -145,6 +145,11 @@ public class WattnGame extends Game {
             request.cards = handCards;
             request.playerID = player.getClientConnection().getID();
             player.getClientConnection().sendTCP(request);
+            if(player.getId() == 1){
+                player.getClientConnection().sendTCP(new Responses.NotifyPlayerToSetSchlag());
+            }else if(player.getId() == 2){
+                player.getClientConnection().sendTCP(new Responses.NotifyPlayerToSetTrump());
+            }
         }
     }
     @Override
