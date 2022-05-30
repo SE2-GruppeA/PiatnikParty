@@ -1,7 +1,5 @@
 package com.example.piatinkpartyapp.ClientUiLogic;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -18,9 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ClientViewModel extends ViewModel {
-    private static final String TAG = "ClientViewModel";
-
-
     private GameClient client = GameClient.getInstance();
 
     public ClientViewModel() throws IOException { }
@@ -30,14 +25,6 @@ public class ClientViewModel extends ViewModel {
     }
 
     ////////////// START - Chat UI - LOGiC //////////////
-    // by default false !
-    public Boolean firstTimeOpenedChatFragment = false;
-
-
-    public int counter = 0;
-    public int expectedCounterForCheatWindow;
-    public String cheatCode;
-
     public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() { return client.getChatMessages(); }
 
     public void sendToAllChatMessage(String message) {
@@ -115,12 +102,6 @@ public class ClientViewModel extends ViewModel {
 
     public void setTrump(Symbol trump) {
         client.setTrump(trump);
-    }
-
-    public void cheat() {
-        //todo: implement client code
-        Log.d(TAG, "YOU ARE CHEATING NOW");
-
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////
