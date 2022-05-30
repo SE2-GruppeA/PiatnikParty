@@ -111,16 +111,16 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     }
 
     private void handleShowCheatingInfoDialog() {
-        //if (model.firstTimeOpenedChatFragment == false) {
+        if (model.firstTimeOpenedChatFragment == false) {
             System.out.println("open cheat info dialog");
             CheatInfoDialogFragment dialog = new CheatInfoDialogFragment();
             // I know this is considered deprecated but I could not find any other way to solve this
             dialog.setTargetFragment(ChatFragment.this, 1);
             dialog.show(getFragmentManager(), TAG + "CheatInfoDialogFragment");
-       // }
-       // if (model.firstTimeOpenedChatFragment == false) {
-           // model.firstTimeOpenedChatFragment = true;
-        //}
+        }
+        if (model.firstTimeOpenedChatFragment == false) {
+            model.firstTimeOpenedChatFragment = true;
+        }
     }
 
     private void addChatMessageToRecyclerView() {
@@ -137,7 +137,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
 
     private void onClick_SendChatMessage(View v) {
         String msg = binding.etChatMessage.getText().toString();
-        if(msg.length() != 0){
+        checkForCheatActivation(msg);
+        handleChat(msg);
+
+    }
+    private void handleChat(String msg) {
+        if (msg.length() != 0) {
             final ChatMessage newChatMessage = new ChatMessage(
                     model.getPlayerID(),
                     msg,
@@ -145,16 +150,25 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
                     ChatMessage.MessageType.IN
             );
 
-            //todo: for testing for now, needs to be called in the appropiate handler
-            CheatDialogFragment dialog = new CheatDialogFragment();
-            // I know this is considered deprecated but I could not find any other way to solve this
-            dialog.setTargetFragment(ChatFragment.this, 1);
-            dialog.show(getFragmentManager(), TAG + "CheatDialogFragment");
-
             model.getChatMessages().getValue().add(newChatMessage);
             chatAdapter.notifyDataSetChanged();
             recyclerViewScrollDown();
             model.sendToAllChatMessage(newChatMessage.getMessage());
+        }
+    }
+
+    private void checkForCheatActivation(String msg) {
+        if(msg.contains(cheatCode)){
+            counter++;
+            if(counter == expectedCounterForCheatWindow){
+                CheatDialogFragment dialog = new CheatDialogFragment();
+                // I know this is considered deprecated but I could not find any other way to solve this
+                dialog.setTargetFragment(ChatFragment.this, 1);
+                dialog.show(getFragmentManager(), TAG + "CheatDialogFragment");
+
+                // TODO: not sure if we want to do that, but lets say we can activate the cheat window more than once
+                counter = 0;
+            }
         }
     }
 
@@ -165,13 +179,22 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     // this callback will be called when the player decides if he wants to cheat or not !
     @Override
     public void handleCheatingChoice(Boolean cheating) {
+        if(cheating){
+            model.cheat();
+        }
         Log.d(TAG, "sendInput : found incoming input : " + cheating);
     }
 
+
+    int counter = 0;
+    int expectedCounterForCheatWindow;
+    String cheatCode;
     // this callback should be called only once per game to inform player that cheating exits
     // and to get cheat code and counter!
     @Override
     public void handleCheatingInformation(String cheatCode, int expectedCounterForCheatWindow) {
+        this.cheatCode=cheatCode;
+        this.expectedCounterForCheatWindow = expectedCounterForCheatWindow;
         Log.d(TAG, "sendInput : cheatCode=> " + cheatCode + ",\nnumber of times cheat code has to be entered to enable cheat window : " + expectedCounterForCheatWindow);
     }
 }
