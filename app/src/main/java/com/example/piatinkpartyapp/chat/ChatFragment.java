@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.chat;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import com.example.piatinkpartyapp.utils.Utils;
  * Use the {@link ChatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatFragment extends Fragment implements View.OnClickListener {
+public class ChatFragment extends Fragment implements View.OnClickListener, CheatDialogFragment.CheatDialogOutputHandler {
     private static final String TAG = "ChatFragment";
 
 
@@ -127,6 +128,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         );
 
         CheatDialogFragment dialog = new CheatDialogFragment();
+        // I know this is considered deprecated but I could not find any other way to solve this
+        dialog.setTargetFragment(ChatFragment.this, 1);
         dialog.show(getFragmentManager(), "ChatDialogFragment");
 
         model.getChatMessages().getValue().add(newChatMessage);
@@ -137,5 +140,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
     private void recyclerViewScrollDown() {
         binding.rvChatMessages.scrollToPosition(model.getChatMessages().getValue().size() - 1);
+    }
+
+    // this callback will be called when the player decides if he wants to cheat or not !
+    @Override
+    public void handleCheatingChoice(Boolean cheating) {
+        Log.d(TAG, "sendInput : found incoming input : " + cheating);
     }
 }

@@ -16,9 +16,16 @@ import androidx.fragment.app.DialogFragment;
 import com.example.piatinkpartyapp.R;
 
 public class CheatDialogFragment extends DialogFragment {
+    public interface CheatDialogOutputHandler {
+        void handleCheatingChoice(Boolean cheating);
+    }
+
+    public CheatDialogOutputHandler cheatDialogOutputHandler;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
 
         final View customLayout = getLayoutInflater().inflate(R.layout.fragment_cheating, null);
 
@@ -31,10 +38,22 @@ public class CheatDialogFragment extends DialogFragment {
                 .setMessage("Willst du wirklich cheaten ?\nEinmal ein Cheater immer ein Cheater ! \uD83D\uDE08\uD83D\uDE08 ")
                 .setPositiveButton("Ja, ich will cheaten !", (dialog, which) -> {
                     System.out.println("cheating");
+                    cheatDialogOutputHandler.handleCheatingChoice(true);
                 })
                 .setNegativeButton("Nein, nie im Leben", (dialog, which) -> {
                     System.out.println("not cheating");
+                    cheatDialogOutputHandler.handleCheatingChoice(false);
                 })
                 .create();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            cheatDialogOutputHandler = (CheatDialogOutputHandler) getTargetFragment();
+        } catch (ClassCastException e) {
+            Log.e("CheatDialog", "onAttach: ClassCastExcetption: " + e.getMessage());
+        }
     }
 }
