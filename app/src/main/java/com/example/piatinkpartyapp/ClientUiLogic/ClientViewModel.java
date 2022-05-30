@@ -33,6 +33,11 @@ public class ClientViewModel extends ViewModel {
     // by default false !
     public Boolean firstTimeOpenedChatFragment = false;
 
+
+    public int counter = 0;
+    public int expectedCounterForCheatWindow;
+    public String cheatCode;
+
     public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() { return client.getChatMessages(); }
 
     public void sendToAllChatMessage(String message) {

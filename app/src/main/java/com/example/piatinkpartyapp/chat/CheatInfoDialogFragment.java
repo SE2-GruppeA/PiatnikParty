@@ -16,12 +16,13 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.piatinkpartyapp.R;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 public class CheatInfoDialogFragment extends DialogFragment {
-    private static final String[] emojis = new String[]{"\uD83D\uDE05", "\uD83D\uDE02", "\uD83D\uDE1B", "\uD83D\uDE0B", "\uD83E\uDD2B", "\uD83E\uDD2D"};
-
+    private static final String[] emojis = new String[]{"\uD83D\uDE05", "\uD83E\uDD29", "\uD83D\uDE0A", "\uD83D\uDE02", "\uD83D\uDE1B", "\uD83D\uDE0B", "\uD83E\uDD2B", "\uD83E\uDD2D"};
+    private Random r = new Random();
 
     public interface CheatDialogInformationHandler {
         void handleCheatingInformation(String cheatCode, int expectedCounterForCheatWindow);
@@ -32,10 +33,11 @@ public class CheatInfoDialogFragment extends DialogFragment {
 
     private String getPersonalRandomCheatCode() {
         // +1 is to make it inclusive
-        int numberOfEmojis = ThreadLocalRandom.current().nextInt(1, 3 + 1);
+        int numberOfEmojis = r.nextInt(3 - 1 + 1) + 1;
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < numberOfEmojis; i++) {
-            sb.append(emojis[ThreadLocalRandom.current().nextInt(0, emojis.length)]);
+            sb.append(emojis[r.nextInt(emojis.length)]);
         }
         return sb.toString();
     }
@@ -59,7 +61,7 @@ public class CheatInfoDialogFragment extends DialogFragment {
                 .setTitle("Informationen für das Cheaten!")
                 .setView(myScroll)
                 .setMessage("Wie in den meisten Spielen kannst du auch hier cheaten." +
-                        " Ob du das willst hängt von dir ab?"  +
+                        " Ob du das willst hängt von dir ab?" +
                         "\n\nUm das Cheat Window einzuschalten musst du den Cheat Code " + expectedCounterForCheatWindow + " mal in den Chat eingeben." +
                         "\n\nDein Cheat Code lautet: " + cheatCode +
                         "\n\nACHTUNG : Du musst dir den Cheat Code merken ! Er wird dir nicht wieder angezeigt !")

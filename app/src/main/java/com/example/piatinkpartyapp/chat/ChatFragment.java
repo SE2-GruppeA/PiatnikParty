@@ -158,16 +158,16 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     }
 
     private void checkForCheatActivation(String msg) {
-        if(msg.contains(cheatCode)){
-            counter++;
-            if(counter == expectedCounterForCheatWindow){
+        if(msg.contains(model.cheatCode)){
+            model.counter++;
+            if(model.counter == model.expectedCounterForCheatWindow){
                 CheatDialogFragment dialog = new CheatDialogFragment();
                 // I know this is considered deprecated but I could not find any other way to solve this
                 dialog.setTargetFragment(ChatFragment.this, 1);
                 dialog.show(getFragmentManager(), TAG + "CheatDialogFragment");
 
                 // TODO: not sure if we want to do that, but lets say we can activate the cheat window more than once
-                counter = 0;
+                model.counter = 0;
             }
         }
     }
@@ -181,20 +181,18 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     public void handleCheatingChoice(Boolean cheating) {
         if(cheating){
             model.cheat();
+            //todo: implement clebreation
+            //cheatCelebrationWindow();
         }
         Log.d(TAG, "sendInput : found incoming input : " + cheating);
     }
 
-
-    int counter = 0;
-    int expectedCounterForCheatWindow;
-    String cheatCode;
     // this callback should be called only once per game to inform player that cheating exits
     // and to get cheat code and counter!
     @Override
     public void handleCheatingInformation(String cheatCode, int expectedCounterForCheatWindow) {
-        this.cheatCode=cheatCode;
-        this.expectedCounterForCheatWindow = expectedCounterForCheatWindow;
+        model.cheatCode=cheatCode;
+        model.expectedCounterForCheatWindow = expectedCounterForCheatWindow;
         Log.d(TAG, "sendInput : cheatCode=> " + cheatCode + ",\nnumber of times cheat code has to be entered to enable cheat window : " + expectedCounterForCheatWindow);
     }
 }
