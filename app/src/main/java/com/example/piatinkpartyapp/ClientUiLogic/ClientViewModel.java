@@ -1,10 +1,13 @@
 package com.example.piatinkpartyapp.ClientUiLogic;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
@@ -16,6 +19,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ClientViewModel extends ViewModel {
+    private static final String TAG = "ClientViewModel";
+
+
     private GameClient client = GameClient.getInstance();
 
     public ClientViewModel() throws IOException { }
@@ -25,6 +31,14 @@ public class ClientViewModel extends ViewModel {
     }
 
     ////////////// START - Chat UI - LOGiC //////////////
+    // by default false !
+    public Boolean firstTimeOpenedChatFragment = false;
+
+
+    public int counter = 0;
+    public int expectedCounterForCheatWindow;
+    public String cheatCode;
+
     public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() { return client.getChatMessages(); }
 
     public void sendToAllChatMessage(String message) {
@@ -92,17 +106,25 @@ public class ClientViewModel extends ViewModel {
         return client.getPoints();
     }
 
-    public LiveData<Boolean> isSetSchlag() {
-        return client.isSetSchlag();
-    }
-
-    public LiveData<Boolean> isSetTrump() {
-        return client.isSetTrump();
-    }
+    public LiveData<Boolean> schlagToSet(){return client.isSetSchlag();}
+    public LiveData<Boolean> trumpToSet(){return client.isSetTrump();}
 
     public void setTrump(Symbol trump) {
         client.setTrump(trump);
     }
 
+    public void cheat() {
+        //todo: implement client code
+        Log.d(TAG, "YOU ARE CHEATING NOW");
+
+    }
+    public void setSchlag(CardValue schlag){client.setSchlag(schlag);}
+    public LiveData<CardValue> getSchlag(){return client.getSchlag();}
+    public LiveData<Boolean> isSetSchlag() {
+        return client.isSetSchlag();
+    }
+    public LiveData<Boolean> isSetTrump() {
+        return client.isSetTrump();
+    }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }
