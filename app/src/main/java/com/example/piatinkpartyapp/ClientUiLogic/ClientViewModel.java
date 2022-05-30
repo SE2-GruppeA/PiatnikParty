@@ -25,6 +25,9 @@ public class ClientViewModel extends ViewModel {
     }
 
     ////////////// START - Chat UI - LOGiC //////////////
+    // by default false !
+    public Boolean firstTimeOpenedChatFragment = false;
+
     public MutableLiveData<ArrayList<ChatMessage>> getChatMessages() { return client.getChatMessages(); }
 
     public void sendToAllChatMessage(String message) {

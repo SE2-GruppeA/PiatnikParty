@@ -21,7 +21,7 @@ import com.example.piatinkpartyapp.utils.Utils;
  * Use the {@link ChatFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatFragment extends Fragment implements View.OnClickListener, CheatDialogFragment.CheatDialogOutputHandler {
+public class ChatFragment extends Fragment implements View.OnClickListener, CheatDialogFragment.CheatDialogOutputHandler, CheatInfoDialogFragment.CheatDialogInformationHandler {
     private static final String TAG = "ChatFragment";
 
 
@@ -95,6 +95,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
          */
         model = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
+
+        handleShowCheatingInfoDialog();
+
         // NOTE - IMPORTANT : instantiate adapter, then define observer, else exception !
         chatAdapter = new ChatAdapter(model.getChatMessages().getValue());
         setUpChatRecyclerView();
@@ -105,6 +108,19 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
          */
         model.getChatMessages().observe(getActivity(), newMessage -> addChatMessageToRecyclerView());
         return binding.getRoot();
+    }
+
+    private void handleShowCheatingInfoDialog() {
+        //if (model.firstTimeOpenedChatFragment == false) {
+            System.out.println("open cheat info dialog");
+            CheatInfoDialogFragment dialog = new CheatInfoDialogFragment();
+            // I know this is considered deprecated but I could not find any other way to solve this
+            dialog.setTargetFragment(ChatFragment.this, 1);
+            dialog.show(getFragmentManager(), TAG + "CheatInfoDialogFragment");
+       // }
+       // if (model.firstTimeOpenedChatFragment == false) {
+           // model.firstTimeOpenedChatFragment = true;
+        //}
     }
 
     private void addChatMessageToRecyclerView() {
@@ -118,24 +134,28 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
     }
+
     private void onClick_SendChatMessage(View v) {
         String msg = binding.etChatMessage.getText().toString();
-        final ChatMessage newChatMessage = new ChatMessage(
-                model.getPlayerID(),
-                msg,
-                Utils.getDateAsString(),
-                ChatMessage.MessageType.IN
-        );
+        if(msg.length() != 0){
+            final ChatMessage newChatMessage = new ChatMessage(
+                    model.getPlayerID(),
+                    msg,
+                    Utils.getDateAsString(),
+                    ChatMessage.MessageType.IN
+            );
 
-        CheatDialogFragment dialog = new CheatDialogFragment();
-        // I know this is considered deprecated but I could not find any other way to solve this
-        dialog.setTargetFragment(ChatFragment.this, 1);
-        dialog.show(getFragmentManager(), "ChatDialogFragment");
+            //todo: for testing for now, needs to be called in the appropiate handler
+            CheatDialogFragment dialog = new CheatDialogFragment();
+            // I know this is considered deprecated but I could not find any other way to solve this
+            dialog.setTargetFragment(ChatFragment.this, 1);
+            dialog.show(getFragmentManager(), TAG + "CheatDialogFragment");
 
-        model.getChatMessages().getValue().add(newChatMessage);
-        chatAdapter.notifyDataSetChanged();
-        recyclerViewScrollDown();
-        model.sendToAllChatMessage(newChatMessage.getMessage());
+            model.getChatMessages().getValue().add(newChatMessage);
+            chatAdapter.notifyDataSetChanged();
+            recyclerViewScrollDown();
+            model.sendToAllChatMessage(newChatMessage.getMessage());
+        }
     }
 
     private void recyclerViewScrollDown() {
@@ -146,5 +166,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     @Override
     public void handleCheatingChoice(Boolean cheating) {
         Log.d(TAG, "sendInput : found incoming input : " + cheating);
+    }
+
+    // this callback should be called only once per game to inform player that cheating exits
+    // and to get cheat code and counter!
+    @Override
+    public void handleCheatingInformation(String cheatCode, int expectedCounterForCheatWindow) {
+        Log.d(TAG, "sendInput : cheatCode=> " + cheatCode + ",\nnumber of times cheat code has to be entered to enable cheat window : " + expectedCounterForCheatWindow);
     }
 }
