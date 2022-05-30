@@ -1,9 +1,13 @@
 package com.example.piatinkpartyapp.networking;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.example.piatinkpartyapp.gamelogic.Game;
+import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.utils.Utils;
 
 import java.io.IOException;
@@ -99,11 +103,13 @@ public class GameServer {
 
         connection.sendTCP(response);
 
-        //TODO: update teilnehmerliste (in clients stehen alle verbundenen clients)
+        //update teilnehmerliste (in clients stehen alle verbundenen clients)
+        players.postValue(game.getPlayers());
     }
 
     private void handle_disconnected(Connection connection) {
-        //TODO: update teilnehmerliste (in clients stehen alle verbundenen clients)
+        //update teilnehmerliste (in clients stehen alle verbundenen clients)
+        players.postValue(game.getPlayers());
     }
 
     private void handle_VoteForNextGame(Connection connection, Requests.VoteForNextGame object) {
@@ -193,4 +199,13 @@ public class GameServer {
         executorService.execute(() -> server.sendToAllTCP(response));
     }
     /////////////////// END - Generic Send Methods! ///////////////////
+
+    /////////////////// START - Lobby player List! ///////////////////
+    private MutableLiveData<ArrayList<Player>> players = new MutableLiveData<ArrayList<Player>>();
+
+    public LiveData<ArrayList<Player>> getPlayers(){
+        return players;
+    }
+
+    //////////////////// END - Lobby player List! ////////////////////
 }

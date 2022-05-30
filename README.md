@@ -1,6 +1,6 @@
 # PiatnikParty
 # Workflow
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SE2-GruppeA_PiatnikParty&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SE2-GruppeA_PiatnikParty)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SE2-GruppeA_PiatnikParty&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SE2-GruppeA_PiatnikParty)  [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=SE2-GruppeA_PiatnikParty&metric=coverage)](https://sonarcloud.io/summary/new_code?id=SE2-GruppeA_PiatnikParty)  [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SE2-GruppeA_PiatnikParty&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=SE2-GruppeA_PiatnikParty)  [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=SE2-GruppeA_PiatnikParty&metric=bugs)](https://sonarcloud.io/summary/new_code?id=SE2-GruppeA_PiatnikParty)  [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=SE2-GruppeA_PiatnikParty&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=SE2-GruppeA_PiatnikParty)
 
 ## Branches
 - master \
@@ -25,7 +25,3 @@ Tine Šimenc: Developer, Tester
 Benedikt Senitza: Software-Architekt
 
 Anton Serschen: Tester, Stellvertretender UI-Manager
-
-## Daily Diaries
-
-Valon Berisa: https://aauklagenfurt-my.sharepoint.com/:w:/g/personal/valberisa_edu_aau_at/ETvxCkYEKQhEmAmfD1LYOMQBLb6wrnmxU1NxdGishLTKeA?e=IAfeSV

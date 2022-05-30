@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,9 +16,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnFragment;
+import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.networking.GameServer;
+import com.example.piatinkpartyapp.networking.NetworkHandler;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
@@ -26,6 +35,9 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
     Button backBtn;
     Button BtnStartGame3;
+
+    TextView txtIP;
+    ListView lvPlayers;
 
     private String mParam1;
     private String mParam2;
@@ -71,6 +83,11 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         BtnStartGame3 = (Button) view.findViewById(R.id.BtnStartGame3);
         BtnStartGame3.setOnClickListener(this);
 
+        txtIP = view.findViewById(R.id.txtIP);
+        txtIP.setText(NetworkHandler.GAMESERVER_IP);
+
+        lvPlayers = view.findViewById(R.id.lvPlayers);
+
         //test for gameserver start -> needs relocation
         server = new GameServer();
         try {
@@ -85,8 +102,22 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
         clientViewModel.isGameStarted().observe(getActivity(), isGameStarted -> atGameStart());
 
+        server.getPlayers().observe(getActivity(), players -> updatePlayers(players));
+
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void updatePlayers(ArrayList<Player> players) {
+        ArrayList<String> playerList = new ArrayList<>();
+
+        for(Player p:players){
+            playerList.add(p.getPlayerName());
+        }
+
+        ArrayAdapter<String> arrayAdapter =
+                new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, playerList);
+        lvPlayers.setAdapter(arrayAdapter);
     }
 
     private void displayConnectionState(boolean connectionState) {
@@ -98,6 +129,9 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     }
 
     private void atGameStart(){
+        //close this fragment, or else the observer will trigger later again
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        //opening the game ui
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new SchnopsnFragment()).commit();
     }
@@ -108,7 +142,6 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         else if (view == BtnStartGame3) {
             clientViewModel.startGame();
-            //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
 
     }
