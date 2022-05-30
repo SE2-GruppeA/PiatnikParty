@@ -182,11 +182,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         clientViewModel.isVotingForNextGame().observe(getActivity(), votingForNextGame -> voteForNextGame(votingForNextGame));
         clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
         clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
-        clientViewModel.getTrump().observe(getActivity(), trump -> setTrump(trump));
         clientViewModel.getPoints().observe(getActivity(), points -> setScorePoints(points));
        // clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
         //clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
-
+        clientViewModel.getTrump().observe(getActivity(), trump->setTrump(trump));
         //initializeGame();
         return root;
     }

@@ -102,6 +102,7 @@ public class SchlagSelect extends Fragment implements  View.OnClickListener{
     public void onClick(View view){
         if(view == btnSchlagSieben){
             setSchlag(CardValue.SIEBEN);
+          //  getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }else if(view == btnSchlagAcht){
             setSchlag(CardValue.ACHT);
         }else if(view == btnSchlagNeun){
@@ -114,13 +115,14 @@ public class SchlagSelect extends Fragment implements  View.OnClickListener{
             setSchlag(CardValue.OBER);
         }else if(view == btnSchlagKoenig){
             setSchlag(CardValue.KOENIG);
-        }else if(view == btnSchlagAcht){
+        }else if(view == btnSchlagAss){
             setSchlag(CardValue.ASS);
         }
     }
 
     public void setSchlag(CardValue schlag){
-        clientViewModel.setSchlag(schlag);
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        clientViewModel.setSchlag(schlag);
+
     }
 }

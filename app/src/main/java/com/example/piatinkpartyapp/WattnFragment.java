@@ -39,6 +39,7 @@ public class WattnFragment extends Fragment implements View.OnClickListener {
         ImageView handCardView3;
         ImageView handCardView4;
         ImageView handCardView5;
+        ImageView imgTrump;
 
         ImageButton exitBtn;
         TextView scoreTxt;
@@ -131,7 +132,7 @@ private void waitForMyTurn(Boolean isMyTurn) {
         }else{
                 this.isMyTurn = false;
         }
-        }
+        }/*
         private void waitForTrump(Boolean trumpToSet){
         if(trumpToSet){
                 Toast.makeText(requireActivity().getApplicationContext(),"Mit Doppelklick Trumpf setzen",Toast.LENGTH_LONG).show();
@@ -163,13 +164,13 @@ private void waitForMyTurn(Boolean isMyTurn) {
                                         if (System.currentTimeMillis() - doubleClickLastTime < 300) {
                                                 doubleClickLastTime = 0L;
                                                 //    if (deck.getHit() == null) {
-                                       /* String[] desc = handCardView.getContentDescription().toString().split("_");
+                                       *//* String[] desc = handCardView.getContentDescription().toString().split("_");
                                         for (CardValue v : CardValue.values()) {
                                                 if (v.name().equals(desc[1])) {
                                                         deck.setHit(v);
 
                                                 }
-                                        }*/
+                                        }*//*
                                                 // } else if (deck.getTrump() == null) {
                                                 Toast.makeText(getActivity(), "test works",Toast.LENGTH_LONG).show();
                                                 String[] desc = imageView.getContentDescription().toString().split("_");
@@ -192,12 +193,12 @@ private void waitForMyTurn(Boolean isMyTurn) {
                         });
                 }
                 return sym[0];
-        }
+        }*/
 
 
-private void showTrump(Symbol trump){
+/*private void showTrump(Symbol trump){
         Toast.makeText(requireActivity().getApplicationContext(), "Trump is "+ trump, Toast.LENGTH_LONG).show();
-}
+}*/
 private void initHandCardsViews(){
         handCardImageViews = new ArrayList<>();
         handCardImageViews.add(handCardView1);
@@ -245,18 +246,26 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
         clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
         clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn(isMyTurn));
-   //     clientViewModel.schlagToSet().observe(getActivity(),schlagToSet -> waitForHit(schlagToSet));
-     //   clientViewModel.trumpToSet().observe(getActivity(), trumpToSet -> waitForTrump(trumpToSet));
+
         clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
-       // clientViewModel.selectTrump().observe(getActivity(), selTrump -> selectTrump());
-    //   clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
+
         clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
-        //initializeGame();
-       //  deck = new WattnDeck(GameName.Wattn,2);
+
         clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
         clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
 
+        clientViewModel.getTrump().observe(getActivity(), trump->setTrump(trump));
+        clientViewModel.getPoints().observe(getActivity(),points->setScorePoints(points));
         return root;
+        }
+        private void setTrump(Symbol trump) {
+                String symbol = trump.toString();
+                Integer rid = getResId(symbol.toLowerCase(Locale.ROOT));
+                imgTrump.setImageResource(rid);
+                imgTrump.setContentDescription(symbol);
+        }
+        private void setScorePoints(Integer points) {
+                scoreTxt.setText(points.toString());
         }
         private void playerSetSchlag(Boolean setSchlag) {
                 if(setSchlag){
@@ -267,6 +276,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
         private void playerSetTrump(Boolean setTrump) {
                 if(setTrump){
                         requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new TrumpSelect()).commit();
+
                 }
         }
 private void getHandoutCard(Card c) {
@@ -302,7 +312,8 @@ private void addAllViews(View view) {
         handCardView5 = view.findViewById(R.id.card5);
         currentCard1 = view.findViewById(R.id.currentCardPlayer1);
         currentCard2 = view.findViewById(R.id.currentCardPlayer2);
-     //   mixCardsBtn = view.findViewById(R.id.mixBtn);
+        imgTrump = view.findViewById(R.id.imgTrump);
+          mixCardsBtn = view.findViewById(R.id.mixBtn);
         }
 
 @Override

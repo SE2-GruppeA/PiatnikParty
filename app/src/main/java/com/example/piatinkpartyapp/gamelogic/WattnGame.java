@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp.gamelogic;
 import android.util.Log;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -77,10 +78,9 @@ public class WattnGame extends Game {
     public Player getRoundWinnerPlayerSchnopsn(){return null;}
 
     public Player getRoundWinnerWattn(){
-        Log.e("!!!!!!!!!!!!!!", "hereeeeeee");
-        LOG.info("WWWWWTTTTTTTTTTTTFFFFFFFFFFF");
-        Player winningPlayer = getRoundStartPlayer();
-        winningPlayer = players.get(0);
+
+     //   Player winningPlayer = getRoundStartPlayer();
+        Player winningPlayer = players.get(0);
         LOG.info(winningPlayer.toString());
         LOG.info(players.get(0).toString());
         Player currentPlayer = getNextPlayer(winningPlayer);
@@ -126,11 +126,7 @@ public class WattnGame extends Game {
             currentPlayer = getNextPlayer(currentPlayer);
 
         }
-       /* for(Integer p : playerPoints){
-            if(p==3){
 
-            }
-        }*/
        Log.e("22", winningPlayer + " won this round");
         return winningPlayer;
     }
@@ -201,7 +197,7 @@ public class WattnGame extends Game {
             winnerPlayer.addPoints(1);
          //   LOG.info("Points added to player: " + winnerPlayer.getId() + ". Points: " + 1);
         Log.e("22", "Points added to player: " + winnerPlayer.getId() + ". Points: " + winnerPlayer.getPoints());
-
+        sendPointsToWinnerPlayer(winnerPlayer);
     }
 @Override
     public Player getNextPlayer(Player player) {
@@ -234,7 +230,7 @@ public class WattnGame extends Game {
             } else {
                 resetRoundFinished();
                 resetPlayedCard();
-                handoutCard();
+
                 setRoundStartPlayer(startPlayer);
                 notifyPlayerYourTurn(startPlayer);
             }
@@ -245,5 +241,28 @@ public class WattnGame extends Game {
         for (Player player: players) {
             player.setRoundFinished(false);
         }
+    }
+    @Override
+    public void sendEndRoundMessageToPlayers(Player roundWinner){
+        for (Player player: players) {
+            Responses.EndOfRound response = new Responses.EndOfRound();
+            response.playerID = roundWinner.getId();
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+    @Override
+    public void sendTrumpToAllPlayers(Symbol symbol) {
+        for (Player player: players) {
+            Responses.SendTrumpToAllPlayers response = new Responses.SendTrumpToAllPlayers();
+            response.trump = symbol;
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+    public void sendSchlagToAllPlayers(CardValue schlag){
+    for(Player player: players){
+        Responses.SendSchlagToAllPlayers response = new Responses.SendSchlagToAllPlayers();
+        response.schlag = schlag;
+        player.getClientConnection().sendTCP(response);
+    }
     }
 }
