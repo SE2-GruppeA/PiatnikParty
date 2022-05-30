@@ -103,18 +103,18 @@ public class GameServer {
         response.playerID = connection.getID();
 
         game.addPlayer(connection, "test");
-        wattnGame.addPlayer(connection, "test");
+      //  wattnGame.addPlayer(connection, "test");
         connection.sendTCP(response);
 
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
         players.postValue(game.getPlayers());
-        players.postValue(wattnGame.getPlayers());
+        //players.postValue(wattnGame.getPlayers());
     }
 
     private void handle_disconnected(Connection connection) {
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
         players.postValue(game.getPlayers());
-        players.postValue(wattnGame.getPlayers());
+        //players.postValue(wattnGame.getPlayers());
     }
 
     private void handle_VoteForNextGame(Connection connection, Requests.VoteForNextGame object) {
@@ -122,7 +122,7 @@ public class GameServer {
                 object.gameName.toString());
 
         game.handleVotingForNextGame(connection.getID(), object.gameName);
-        wattnGame.handleVotingForNextGame(connection.getID(),object.gameName);
+       // wattnGame.handleVotingForNextGame(connection.getID(),object.gameName);
     }
 
     private void handle_ForceVoting(Connection connection) {
@@ -142,12 +142,12 @@ public class GameServer {
 
         LOG.info("Card: " + request.card.getSymbol().toString() + request.card.getCardValue().toString() + " was set from Client ID: " + connection.getID());
         game.setCard(connection.getID(), request.card);
-        wattnGame.setCard(connection.getID(),request.card);
+    //    wattnGame.setCard(connection.getID(),request.card);
     }
 
     private void handle_StartGameMessage(Connection connection) {
         game.startGameSchnopsn();
-        wattnGame.startGameWattn();
+      //  wattnGame.startGameWattn();
 
         LOG.info("Game started on server : " + NetworkHandler.GAMESERVER_IP +
                 ", Client ID started the game: " + connection.getID());

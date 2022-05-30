@@ -117,10 +117,13 @@ public class Game {
     public void startGameSchnopsn() {
         new Thread(() -> {
             AusgabeTest();
-            resetSchnopsnDeck();
+           // resetSchnopsnDeck();
+            deck = new SchnopsnDeck(GameName.Schnopsn,2);
             sendGameStartedMessageToClients();
             resetRoundFinished();
             sendHandCards();
+          //  sendTrumpToAllPlayers(this.deck.getTrump());
+
             sendTrumpToAllPlayers(deck.getTrump());
             setRoundStartPlayer(players.get(0));
             // notify first player that it is his turn
