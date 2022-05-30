@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.gamelogic;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.minlog.Log;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.networking.GameServer;
@@ -47,6 +48,9 @@ public class Player {
     }
 
     public void removeHandcard(Card card) {
+        LOG.info(card.getSymbol().toString());
+        LOG.info(card.getCardValue().toString());
+        Log.error(this.handcards.toString());
         LOG.info("remove card: " +  card.getSymbol().toString() + card.getCardValue().toString());
         if (handcards.contains(card)) {
             handcards.remove(card);

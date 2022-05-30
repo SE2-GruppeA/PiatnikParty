@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.SchnopsnFragment;
+import com.example.piatinkpartyapp.WattnFragment;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -83,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(a);*/
 
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content,
-                new SchnopsnFragment()).commit();
+       /* getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new SchnopsnFragment()).commit();*/
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new WattnFragment()).commit();
     }
 }
