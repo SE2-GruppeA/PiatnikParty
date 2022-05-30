@@ -93,8 +93,8 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
     private void atGameStart() {
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
-                //new SchnopsnFragment()).commit();
-                new WattnFragment()).commit();
+                new SchnopsnFragment()).commit();
+                //new WattnFragment()).commit();
     }
 
     @Override
