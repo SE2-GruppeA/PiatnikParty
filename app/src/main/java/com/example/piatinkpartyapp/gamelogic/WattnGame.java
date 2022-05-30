@@ -89,8 +89,8 @@ public class WattnGame extends Game {
         LOG.info(winningPlayer.toString());
         LOG.info(players.get(0).toString());
         Player currentPlayer = getNextPlayer(winningPlayer);
-        Log.e("!!",currentPlayer.getCardPlayed().getCardValue().toString() );
-        Log.e("!!", winningPlayer.toString());
+//        Log.e("!!",currentPlayer.getCardPlayed().getCardValue().toString() );
+//        Log.e("!!", winningPlayer.toString());
         while (currentPlayer != winningPlayer) {
             //the player that plays the right card always wins the subround
             // first played card is right card
@@ -132,7 +132,7 @@ public class WattnGame extends Game {
 
         }
 
-       Log.e("22", winningPlayer + " won this round");
+//       Log.e("22", winningPlayer + " won this round");
         return winningPlayer;
     }
     @Override
