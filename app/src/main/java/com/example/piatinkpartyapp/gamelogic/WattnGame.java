@@ -89,8 +89,7 @@ public class WattnGame extends Game {
         LOG.info(winningPlayer.toString());
         LOG.info(players.get(0).toString());
         Player currentPlayer = getNextPlayer(winningPlayer);
-//        Log.e("!!",currentPlayer.getCardPlayed().getCardValue().toString() );
-//        Log.e("!!", winningPlayer.toString());
+
         while (currentPlayer != winningPlayer) {
             //the player that plays the right card always wins the subround
             // first played card is right card
@@ -124,7 +123,7 @@ public class WattnGame extends Game {
             playerPoints.set(winningPlayer.getId()-1,p);
             if(winningPlayer.getPoints() == 3){
                 LOG.info(winningPlayer + " won this game!");
-                Log.e("2222222222222", winningPlayer + " won this wattn game");
+
                 sendEndRoundMessageToPlayers(players.get(0));
                 return winningPlayer;
             }
@@ -140,7 +139,7 @@ public class WattnGame extends Game {
         for (Player player: players) {
             ArrayList<Card> handCards = deck.getHandCards();
             player.setHandcards(handCards);
-            Log.e("11",player.getHandcards().toString());
+
             // send message to client with handcards
             Responses.SendHandCards request = new Responses.SendHandCards();
             request.cards = handCards;
@@ -157,18 +156,18 @@ public class WattnGame extends Game {
     public void setCard(int playerID, Card card) {
        // Player player = getPlayerByID(playerID);
         Player player = players.get(playerID-1);
-        Log.e("1111111",player.getHandcards().toString());
+
         //only for testing
         //Card card2 = player.getHandcards().get(0);
 
         new Thread(()->{
 
-            Log.e("!!", player.getHandcards().toString());
+
             player.setRoundFinished(true);
             LOG.info("setRoundFinished = true");
 
             player.setCardPlayed(card);
-            Log.e("##########", card.getCardValue() +" "+ card.getSymbol());
+
             LOG.info("set Playercard of player: " + player.getId() + " card: " +  card.getSymbol().toString() + card.getCardValue().toString());
 
             sendPlayedCardToAllPlayers(playerID, card);
@@ -201,7 +200,7 @@ public class WattnGame extends Game {
 
             winnerPlayer.addPoints(1);
          //   LOG.info("Points added to player: " + winnerPlayer.getId() + ". Points: " + 1);
-        Log.e("22", "Points added to player: " + winnerPlayer.getId() + ". Points: " + winnerPlayer.getPoints());
+
         sendPointsToWinnerPlayer(winnerPlayer);
     }
 @Override
