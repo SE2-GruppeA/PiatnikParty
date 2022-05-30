@@ -35,7 +35,7 @@ public class CheatDialogFragment extends DialogFragment {
         return new AlertDialog.Builder(requireContext())
                 .setView(customLayout)
                 .setTitle("Achtung ! - Cheat Window")
-                .setMessage("Willst du wirklich cheaten ?\nEinmal ein Cheater immer ein Cheater ! \uD83D\uDE08\uD83D\uDE08 ")
+                .setMessage("Du hast das Cheat Window akktiviert!\nWillst du wirklich cheaten ?\nEinmal ein Cheater immer ein Cheater ! \uD83D\uDE08\uD83D\uDE08 ")
                 .setPositiveButton("Ja, ich will cheaten !", (dialog, which) -> {
                     System.out.println("cheating");
                     cheatDialogOutputHandler.handleCheatingChoice(true);
