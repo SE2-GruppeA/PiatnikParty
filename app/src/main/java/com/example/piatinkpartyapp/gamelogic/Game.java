@@ -114,9 +114,10 @@ public class Game {
     }
 
     // start the game
-    public void startGame() {
+    public void startGameSchnopsn() {
         new Thread(() -> {
             AusgabeTest();
+            resetSchnopsnDeck();
             sendGameStartedMessageToClients();
             resetRoundFinished();
             sendHandCards();
@@ -322,7 +323,7 @@ public class Game {
             switch (winnerGame) {
                 case Schnopsn:
                     //start schnopsn
-                    startGame();
+                    startGameSchnopsn();
                     break;
                 case Wattn:
                     //start wattn

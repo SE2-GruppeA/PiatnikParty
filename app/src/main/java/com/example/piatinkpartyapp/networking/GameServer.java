@@ -139,7 +139,7 @@ public class GameServer {
     }
 
     private void handle_StartGameMessage(Connection connection) {
-        game.startGame();
+        game.startGameSchnopsn();
 
         LOG.info("Game started on server : " + NetworkHandler.GAMESERVER_IP +
                 ", Client ID started the game: " + connection.getID());
