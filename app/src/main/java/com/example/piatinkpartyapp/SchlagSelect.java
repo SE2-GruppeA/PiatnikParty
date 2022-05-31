@@ -122,7 +122,7 @@ public class SchlagSelect extends Fragment implements  View.OnClickListener{
 
     public void setSchlag(CardValue schlag){
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        clientViewModel.setSchlag(schlag);
+        //clientViewModel.setSchlag(schlag);
 
     }
 }

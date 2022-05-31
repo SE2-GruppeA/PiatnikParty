@@ -45,37 +45,42 @@ android {
     }
     namespace 'com.example.piatinkpartyapp'
 }
-////////// 3. add jacocoTestReport task like so //////////
-task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+    ////////// 3. add jacocoTestReport task like so //////////
+    task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 
-    reports {
-        xml.enabled true
+        reports {
+            xml.enabled true
 
-        //////////  5. xml.destination must be same as sonaqube property  //////////
-        xml.destination file("${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+            //////////  5. xml.destination must be same as sonaqube property  //////////
+            xml.destination file("${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+        }
+
+
+        def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+        def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
+        def mainSrc = "${project.projectDir}/src/main/java"
+
+        sourceDirectories.from = files([mainSrc])
+        classDirectories.from = files([debugTree])
+        executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
     }
 
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
-    def mainSrc = "${project.projectDir}/src/main/java"
+    ////////// 2. move also sonarqube properties //////////
+    sonarqube {
+        properties {
+            property "sonar.projectKey", "SE2-GruppeA_PiatnikParty"
+            property "sonar.organization", "se2-gruppea"
+            property "sonar.host.url", "https://sonarcloud.io"
+            property "sonar.java.coveragePlugin", "jacoco"
 
-    sourceDirectories.from = files([mainSrc])
-    classDirectories.from = files([debugTree])
-    executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
-}
+            ////////// 5. property same as xml.destination of jacocoTestReport //////////
+            property "sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
 
-////////// 2. move also sonarqube properties //////////
-sonarqube {
-    properties {
-        property "sonar.projectKey", "SE2-GruppeA_PiatnikParty"
-        property "sonar.organization", "se2-gruppea"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.java.coveragePlugin", "jacoco"
-
-        ////////// 5. property same as xml.destination of jacocoTestReport //////////
-        property "sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+            //https://stackoverflow.com/questions/27033757/exclude-packages-from-jacoco-report-using-sonarrunner-and-gradle#comment69974453_27446082
+            //Excluding code from sonar checks
+            property "sonar.exclusion", "**/com/example/piatinkpartyapp/screens"
+        }
     }
-}
 
 dependencies {
 
