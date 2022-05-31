@@ -75,6 +75,10 @@ sonarqube {
 
         ////////// 5. property same as xml.destination of jacocoTestReport //////////
         property "sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+
+        //Excluding some packages from sonarcloud coverage
+        //https://stackoverflow.com/questions/27033757/exclude-packages-from-jacoco-report-using-sonarrunner-and-gradle#comment69974453_27446082
+        property "sonar.exclusions", "${project.projectDir}com/example/piatinkpartyapp/screens"
     }
 }
 
