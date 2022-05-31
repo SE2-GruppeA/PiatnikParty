@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
@@ -105,13 +106,8 @@ public class ClientViewModel extends ViewModel {
         return client.getPoints();
     }
 
-    public LiveData<Boolean> isSetSchlag() {
-        return client.isSetSchlag();
-    }
-
-    public LiveData<Boolean> isSetTrump() {
-        return client.isSetTrump();
-    }
+    public LiveData<Boolean> schlagToSet(){return client.isSetSchlag();}
+    public LiveData<Boolean> trumpToSet(){return client.isSetTrump();}
 
     public void setTrump(Symbol trump) {
         client.setTrump(trump);
@@ -122,6 +118,13 @@ public class ClientViewModel extends ViewModel {
         Log.d(TAG, "YOU ARE CHEATING NOW");
 
     }
-
+    public void setSchlag(CardValue schlag){client.setSchlag(schlag);}
+    public LiveData<CardValue> getSchlag(){return client.getSchlag();}
+    public LiveData<Boolean> isSetSchlag() {
+        return client.isSetSchlag();
+    }
+    public LiveData<Boolean> isSetTrump() {
+        return client.isSetTrump();
+    }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

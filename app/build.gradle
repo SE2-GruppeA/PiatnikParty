@@ -43,6 +43,7 @@ android {
             finalizedBy jacocoTestReport
         }
     }
+
     namespace 'com.example.piatinkpartyapp'
 }
 ////////// 3. add jacocoTestReport task like so //////////
@@ -74,6 +75,10 @@ sonarqube {
 
         ////////// 5. property same as xml.destination of jacocoTestReport //////////
         property "sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+
+        //Excluding some packages from sonarcloud coverage
+        //https://stackoverflow.com/questions/27033757/exclude-packages-from-jacoco-report-using-sonarrunner-and-gradle#comment69974453_27446082
+        property "sonar.exclusions", "${project.projectDir}com/example/piatinkpartyapp/screens"
     }
 }
 
@@ -86,6 +91,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.4.2'
     implementation 'androidx.navigation:navigation-runtime:2.4.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.test:runner:1.4.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
     testImplementation 'org.testng:testng:6.9.6'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
