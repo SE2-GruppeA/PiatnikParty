@@ -99,7 +99,7 @@ public class Responses {
         }
     }
 
-    public static class GameStartedClientMessage {
+    public static class GameStartedClientMessage implements IPackets {
         public GameStartedClientMessage() { }
     }
 
@@ -163,5 +163,9 @@ public class Responses {
 
     public static class NotifyPlayerToSetTrump {
         public NotifyPlayerToSetTrump() { }
+    }
+
+    public static class SchnopsnStartedClientMessage implements IPackets {
+        public SchnopsnStartedClientMessage() { }
     }
 }

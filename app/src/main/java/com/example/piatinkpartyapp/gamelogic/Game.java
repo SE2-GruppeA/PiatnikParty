@@ -88,7 +88,7 @@ public class Game {
     public void sendGameStartedMessageToClients() {
         for (Player player : lobby.getPlayers()) {
             // send message to client that game has started
-            Responses.GameStartedClientMessage request = new Responses.GameStartedClientMessage();
+            Responses.SchnopsnStartedClientMessage request = new Responses.SchnopsnStartedClientMessage();
             player.getClientConnection().sendTCP(request);
         }
     }

@@ -45,6 +45,7 @@ public class NetworkHandler {
         kryo.register(Responses.UpdatePointsWinnerPlayer.class);
         kryo.register(Responses.NotifyPlayerToSetSchlag.class);
         kryo.register(Responses.NotifyPlayerToSetTrump.class);
+        kryo.register(Responses.SchnopsnStartedClientMessage.class);
 
         // Other classes
         kryo.register(Card.class);

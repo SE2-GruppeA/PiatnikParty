@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.example.piatinkpartyapp.SchlagSelect;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -108,8 +107,10 @@ public class GameClient {
                         handle_NotifyPlayerToSetSchlag((Responses.NotifyPlayerToSetSchlag) object);
                     } else if (object instanceof Responses.NotifyPlayerToSetTrump) {
                         handle_NotifyPlayerToSetTrump((Responses.NotifyPlayerToSetTrump) object);
-                    }else if(object instanceof Responses.UpdatePointsWinnerPlayer){
+                    } else if(object instanceof Responses.UpdatePointsWinnerPlayer){
                         handle_UpdatePointsWinnerPlayer((Responses.UpdatePointsWinnerPlayer) object);
+                    } else if (object instanceof Responses.SchnopsnStartedClientMessage) {
+                        handle_SchnopsnStartedClientMessage((Responses.SchnopsnStartedClientMessage) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -173,6 +174,17 @@ public class GameClient {
 
         LOG.info("Game started by server");
     }
+
+    private void handle_SchnopsnStartedClientMessage(Responses.SchnopsnStartedClientMessage object) {
+        Responses.SchnopsnStartedClientMessage response =
+                object;
+
+        // notify UI: game has started
+        gameStarted.postValue(true);
+
+        LOG.info("Game started by server");
+    }
+
 
     private void handle_ConnectedSuccessfully(Responses.ConnectedSuccessfully object) {
         Responses.ConnectedSuccessfully response =

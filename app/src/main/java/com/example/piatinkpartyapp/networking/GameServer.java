@@ -149,11 +149,21 @@ public class GameServer {
     }
 
     private void handle_StartGameMessage(Connection connection) {
-        game.startGameSchnopsn();
+
+        // zu testen, danach soll nur Tisch geöffnet werden
+        //lobby.currentGame = new SchnopsnGame(lobby);
+        //lobby.currentGame.startGameSchnopsn();
       //  wattnGame.startGameWattn();
 
         LOG.info("Game started on server : " + NetworkHandler.GAMESERVER_IP +
                 ", Client ID started the game: " + connection.getID());
+
+        // Message to all Players that game has started to open the gamefragment in order to open voting
+        Responses.GameStartedClientMessage response = new Responses.GameStartedClientMessage();
+        sendPacketToAll(response);
+
+        // Message to all Players to open the voting
+        handle_ForceVoting(connection);
     }
 
     private void handle_PlayerSetSchlag(Connection connection, Requests.PlayerSetSchlag object) {
