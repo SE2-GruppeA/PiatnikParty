@@ -182,7 +182,7 @@ public class GameClient {
         // notify UI: game has started
         gameStarted.postValue(true);
 
-        LOG.info("Game started by server");
+        LOG.info("Schnopsn Game started by server after voting");
     }
 
 

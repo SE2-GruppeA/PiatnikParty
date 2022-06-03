@@ -63,7 +63,6 @@ public class Lobby {
             switch (winnerGame) {
                 case Schnopsn:
                     //start schnopsn
-                    //startGameSchnopsn();
                     currentGame = new SchnopsnGame(this);
                     currentGame.startGameSchnopsn();
                     break;
