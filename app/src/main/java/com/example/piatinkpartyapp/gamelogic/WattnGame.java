@@ -1,21 +1,7 @@
 package com.example.piatinkpartyapp.gamelogic;
 
-import android.util.Log;
-
-import com.esotericsoftware.kryonet.Connection;
-import com.example.piatinkpartyapp.R;
-import com.example.piatinkpartyapp.cards.Card;
-import com.example.piatinkpartyapp.cards.CardValue;
-import com.example.piatinkpartyapp.cards.GameName;
-import com.example.piatinkpartyapp.cards.Symbol;
-import com.example.piatinkpartyapp.cards.WattnDeck;
-import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 public class WattnGame extends Game {
-    private int mainPlayerId;
+/*    private int mainPlayerId;
     public Player roundStartPlayer;
     // public ArrayList<Player> players = new ArrayList<>();
     public ArrayList<Integer> playerPoints = new ArrayList<>();
@@ -269,4 +255,5 @@ public class WattnGame extends Game {
         player.getClientConnection().sendTCP(response);
     }
     }
+    */
 }

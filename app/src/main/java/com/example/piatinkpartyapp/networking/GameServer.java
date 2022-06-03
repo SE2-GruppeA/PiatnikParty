@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.example.piatinkpartyapp.gamelogic.Game;
+import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.gamelogic.WattnGame;
 import com.example.piatinkpartyapp.utils.Utils;
@@ -23,6 +24,7 @@ public class GameServer {
 
     private Server server;
     private ArrayList<Connection> clients = new ArrayList<>();
+    private Lobby lobby;
     private Game game;
     private WattnGame wattnGame;
     private ExecutorService executorService;
@@ -42,6 +44,7 @@ public class GameServer {
             // create new Game
             game = new Game();
             wattnGame = new WattnGame();
+            lobby = new Lobby();
             startListener();
         });
     }
@@ -102,18 +105,18 @@ public class GameServer {
         response.isConnected = clients.contains(connection) ? false : clients.add(connection);
         response.playerID = connection.getID();
 
-        game.addPlayer(connection, "test");
+        lobby.addPlayer(connection, "test");
       //  wattnGame.addPlayer(connection, "test");
         connection.sendTCP(response);
 
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
-        players.postValue(game.getPlayers());
+        players.postValue(lobby.getPlayers());
         //players.postValue(wattnGame.getPlayers());
     }
 
     private void handle_disconnected(Connection connection) {
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
-        players.postValue(game.getPlayers());
+        players.postValue(lobby.getPlayers());
         //players.postValue(wattnGame.getPlayers());
     }
 
@@ -121,7 +124,7 @@ public class GameServer {
         LOG.info("Client " + connection.getID() + " voted for" +
                 object.gameName.toString());
 
-        game.handleVotingForNextGame(connection.getID(), object.gameName);
+        lobby.handleVotingForNextGame(connection.getID(), object.gameName);
        // wattnGame.handleVotingForNextGame(connection.getID(),object.gameName);
     }
 
@@ -141,7 +144,7 @@ public class GameServer {
                 object;
 
         LOG.info("Card: " + request.card.getSymbol().toString() + request.card.getCardValue().toString() + " was set from Client ID: " + connection.getID());
-        game.setCard(connection.getID(), request.card);
+        lobby.currentGame.setCard(connection.getID(), request.card);
     //    wattnGame.setCard(connection.getID(),request.card);
     }
 
@@ -156,16 +159,17 @@ public class GameServer {
     private void handle_PlayerSetSchlag(Connection connection, Requests.PlayerSetSchlag object) {
         Requests.PlayerSetSchlag request =
                 object;
-        wattnGame.deck.setHit(request.schlag);
-        LOG.info("Schlag: " + wattnGame.deck.getHit() + " was set from Client ID: " + connection.getID());
+        //wattnGame.deck.setHit(request.schlag);
+        //LOG.info("Schlag: " + wattnGame.deck.getHit() + " was set from Client ID: " + connection.getID());
     }
 
     private void handle_PlayerSetTrump(Connection connection, Requests.PlayerSetTrump object) {
         Requests.PlayerSetTrump request =
                 object;
-        wattnGame.deck.setTrump(request.trump);
-        LOG.info("Trump: " + wattnGame.deck.getTrump() + " was set from Client ID: " + connection.getID());
+        //wattnGame.deck.setTrump(request.trump);
+        //LOG.info("Trump: " + wattnGame.deck.getTrump() + " was set from Client ID: " + connection.getID());
     }
+
     /////////////////// END - Handler Methods !!! ///////////////////
 
 
