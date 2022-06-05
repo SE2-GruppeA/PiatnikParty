@@ -5,6 +5,7 @@
     android:id="@+id/fragment_schnopsn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     tools:context=".SchnopsnFragment">
 
     <!-- TODO: Update blank fragment layout -->

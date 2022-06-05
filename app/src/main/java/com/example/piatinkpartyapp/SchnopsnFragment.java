@@ -3,9 +3,12 @@ package com.example.piatinkpartyapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -25,6 +28,7 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatFragment;
+import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
@@ -186,8 +190,18 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
        // clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
         //clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
         clientViewModel.getTrump().observe(getActivity(), trump->setTrump(trump));
+
+        //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
+        clientViewModel.getChatMessages().observe(getActivity(), message -> notifyNewMessage(message));
+
         //initializeGame();
         return root;
+    }
+
+    private void notifyNewMessage(ArrayList<ChatMessage> message) {
+        if(message.size() > 0){
+            arrowBtn.setImageResource(getResId("arrow_new_message"));
+        }
     }
 
     private void playerSetSchlag(Boolean setSchlag) {
@@ -273,6 +287,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view == arrowBtn) {
+            //convert arrow back, if a new message was received indicated by the red circle
+            arrowBtn.setImageResource(getResId("arrow"));
             showSideDrawer();
         } else if (view == exitBtn) {
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
