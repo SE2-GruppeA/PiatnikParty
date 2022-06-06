@@ -164,4 +164,8 @@ public class Player {
     public void setVotingGame(GameName votingGame) {
         this.votingGame = votingGame;
     }
+
+    public void setCardsWon(ArrayList<Card> cardsWon) {
+        this.cardsWon = cardsWon;
+    }
 }

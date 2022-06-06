@@ -25,6 +25,90 @@ public class HosnObe extends Game {
     }
 
     @Override
+    public Player getRoundStartPlayer() {
+        return roundStartPlayer;
+    }
+
+    @Override
+    public GameName getWinnerGameOfVoting() {
+        return super.getWinnerGameOfVoting();
+    }
+
+    public static Logger getLOG() {
+        return LOG;
+    }
+
+    @Override
+    public Integer getMainPlayerId() {
+        return super.getMainPlayerId();
+    }
+
+    @Override
+    public Player getPlayerByID(int playerID) {
+        return super.getPlayerByID(playerID);
+    }
+
+    @Override
+    public Player getRoundWinnerPlayerSchnopsn() {
+        return super.getRoundWinnerPlayerSchnopsn();
+    }
+
+    public ArrayList<Integer> getPlayerPoints() {
+        return playerPoints;
+    }
+
+    @Override
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public WattnDeck getDeck() {
+        return deck;
+    }
+
+    @Override
+    public void sendGameStartedMessageToClients() {
+        super.sendGameStartedMessageToClients();
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
+    }
+
+    public void setDeck(WattnDeck deck) {
+        this.deck = deck;
+    }
+
+    @Override
+    public void setMainPlayerId(Integer mainPlayerId) {
+        super.setMainPlayerId(mainPlayerId);
+    }
+
+    @Override
+    public void sendHandCards() {
+        super.sendHandCards();
+    }
+
+    @Override
+    public void sendPlayedCardToAllPlayers(int playerId, Card card) {
+        super.sendPlayedCardToAllPlayers(playerId, card);
+    }
+
+    @Override
+    public void sendPointsToWinnerPlayer(Player winnerPlayer) {
+        super.sendPointsToWinnerPlayer(winnerPlayer);
+    }
+
+    public void setPlayerPoints(ArrayList<Integer> playerPoints) {
+        this.playerPoints = playerPoints;
+    }
+
+    @Override
+    public void setRoundStartPlayer(Player roundStartPlayer) {
+        this.roundStartPlayer = roundStartPlayer;
+    }
+
+    @Override
     public Player addPlayer(Connection connection, String playerName) {
         Player player = new Player(connection, playerName);
         players.add(player);
@@ -62,17 +146,17 @@ public class HosnObe extends Game {
         super.resetRoundFinished();
     }
 
+    @Override
+    public boolean checkIfAllPlayersFinishedVoting() {
+        return super.checkIfAllPlayersFinishedVoting();
+    }
+
     public Player getRoundWinnerHosnObe() {
 
         Player roundWinner = players.get(0);
-        LOG.info("HosnObe roundWinner: " + roundWinner.toString());
-        LOG.info(players.get(0).toString());
         Player currentPlayer = getNextPlayer(roundWinner);
 
-
-
-
-        return roundStartPlayer;
+        return roundWinner;
     }
 
     public void setHandCards() {
@@ -157,5 +241,17 @@ public class HosnObe extends Game {
         for (int i = 0; i <= numberOfPlayers; i++) {
             playerPoints.add(i);
         }
+    }
+
+    public void startNewRoundHosnObe(Player startPlayer) {
+
+        Thread thread;
+        thread = new Thread(() -> {
+            if (startPlayer.getPoints() >= 3 ) {
+                sendEndRoundMessageToPlayers(startPlayer);
+            } else {
+                resetRoundFinished();
+            }
+        }).start();
     }
 }

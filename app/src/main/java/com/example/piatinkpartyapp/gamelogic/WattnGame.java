@@ -25,13 +25,18 @@ public class WattnGame extends Game {
 
     //logging for testing purposes
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
-@Override
+
+    @Override
     public Player addPlayer(Connection connection, String playerName) {
         Player player = new Player(connection, playerName);
         players.add(player);
         return player;
     }
-    public WattnGame(){resetWattnDeck();}
+
+    public WattnGame() {
+        resetWattnDeck();
+    }
+
     public void resetVotingFinished() {
         for (Player player : players) {
             player.setVotingFinished(false);
@@ -67,21 +72,27 @@ public class WattnGame extends Game {
         playerPoints.add(0);
         playerPoints.add(0);
     }
+
     public CardValue setHit(CardValue cv){
         this.deck.setHit(cv);
         return cv;
     }
+
     public Symbol setTrump(Symbol s){
         this.deck.setTrump(s);
         return s;
     }
+
     public Card rightCard(){
         return this.deck.getRightCard();
     }
-    @Override
-    public Player getRoundWinnerPlayerSchnopsn(){return null;}
 
-    public Player getRoundWinnerWattn(){
+    @Override
+    public Player getRoundWinnerPlayerSchnopsn() {
+        return null;
+    }
+
+    public Player getRoundWinnerWattn() {
 
      //   Player winningPlayer = getRoundStartPlayer();
         Player winningPlayer = players.get(0);
