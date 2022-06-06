@@ -1,9 +1,6 @@
 package com.example.piatinkpartyapp.gamelogic;
 
-import android.util.Log;
-
 import com.esotericsoftware.kryonet.Connection;
-import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -14,6 +11,7 @@ import com.example.piatinkpartyapp.networking.Responses;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
+
 public class WattnGame extends Game {
     private int mainPlayerId;
     public Player roundStartPlayer;
@@ -269,4 +267,5 @@ public class WattnGame extends Game {
         player.getClientConnection().sendTCP(response);
     }
     }
+
 }
