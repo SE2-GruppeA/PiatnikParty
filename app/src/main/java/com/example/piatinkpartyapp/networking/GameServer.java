@@ -88,6 +88,8 @@ public class GameServer {
                         handle_PlayerSetSchlag(connection, (Requests.PlayerSetSchlag) object);
                     } else if (object instanceof Requests.PlayerSetTrump) {
                         handle_PlayerSetTrump(connection, (Requests.PlayerSetTrump) object);
+                    } else if(object instanceof Requests.PlayerRequestsCheat){
+                        handle_PlayerRequestsCheat(connection, (Requests.PlayerRequestsCheat) object);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -178,6 +180,14 @@ public class GameServer {
                 object;
         //wattnGame.deck.setTrump(request.trump);
         //LOG.info("Trump: " + wattnGame.deck.getTrump() + " was set from Client ID: " + connection.getID());
+    }
+
+    private void handle_PlayerRequestsCheat(Connection connection, Requests.PlayerRequestsCheat object) {
+        Requests.PlayerRequestsCheat request = object;
+
+        LOG.info("Client " + connection.getID() + " requested cheating");
+
+        lobby.currentGame.givePlayerBestCard(connection.getID());
     }
 
     /////////////////// END - Handler Methods !!! ///////////////////

@@ -453,5 +453,13 @@ public class GameClient {
         LOG.info("Voting force message has been sent to the server");
     }
 
+    public void cheatRequest() {
+        Requests.PlayerRequestsCheat request = new Requests.PlayerRequestsCheat();
+
+        sendPacket(request);
+
+        LOG.info("CheatRequest was sent");
+    }
+
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

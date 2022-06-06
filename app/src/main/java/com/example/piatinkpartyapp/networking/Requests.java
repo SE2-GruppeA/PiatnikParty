@@ -93,4 +93,10 @@ public class Requests{
             this.gameName = nextGame;
         }
     }
+
+    public static class PlayerRequestsCheat implements IPackets {
+        public PlayerRequestsCheat(){
+
+        }
+    }
 }

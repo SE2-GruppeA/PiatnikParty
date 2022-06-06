@@ -30,6 +30,7 @@ public class NetworkHandler {
         kryo.register(Requests.PlayerSetTrump.class);
         kryo.register(Requests.ForceVoting.class);
         kryo.register(Requests.VoteForNextGame.class);
+        kryo.register(Requests.PlayerRequestsCheat.class);
 
         //Responses
         kryo.register(Responses.ConnectedSuccessfully.class);

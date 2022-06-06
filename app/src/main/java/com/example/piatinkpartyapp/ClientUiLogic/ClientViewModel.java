@@ -126,5 +126,9 @@ public class ClientViewModel extends ViewModel {
     public LiveData<Boolean> isSetTrump() {
         return client.isSetTrump();
     }
+
+    public void cheatRequest() {
+        client.cheatRequest();
+    }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

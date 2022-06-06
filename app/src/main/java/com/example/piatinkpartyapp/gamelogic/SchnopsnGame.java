@@ -1,8 +1,10 @@
 package com.example.piatinkpartyapp.gamelogic;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
+import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
@@ -49,11 +51,47 @@ public class SchnopsnGame extends Game {
             player.setHandcards(handCards);
 
             // send message to client with handcards
-            Responses.SendHandCards request = new Responses.SendHandCards();
-            request.cards = handCards;
-            request.playerID = player.getClientConnection().getID();
-            player.getClientConnection().sendTCP(request);
+           sendHandCardsToPlayer(handCards, player);
         }
+    }
+
+    public void sendHandCardsToPlayer(ArrayList<Card> handCards, Player player){
+        Responses.SendHandCards request = new Responses.SendHandCards();
+        request.cards = handCards;
+        request.playerID = player.getClientConnection().getID();
+        player.getClientConnection().sendTCP(request);
+    }
+
+    //used for cheating; gives player best card
+    @Override
+    public void givePlayerBestCard(int playerId) {
+        switch (deck.getTrump()){
+            case HERZ:
+                sendPlayerBestCard(playerId, new Card(Symbol.HERZ, CardValue.ASS));
+                break;
+            case PICK:
+                sendPlayerBestCard(playerId, new Card(Symbol.PICK, CardValue.ASS));
+                break;
+            case KARO:
+                sendPlayerBestCard(playerId, new Card(Symbol.KARO, CardValue.ASS));
+                break;
+            case KREUZ:
+                sendPlayerBestCard(playerId, new Card(Symbol.KREUZ, CardValue.ASS));
+                break;
+        }
+    }
+
+    //replaces the first hand card with the best card in the game
+    public void sendPlayerBestCard(int playerId, Card card){
+        ArrayList<Card> currentHandCards = lobby.getPlayerByID(playerId).getHandcards();
+        Player player = lobby.getPlayerByID(playerId);
+
+        //replaces first card with the best card
+        currentHandCards.set(0, card);
+        player.setHandcards(currentHandCards);
+
+        //sends new handcards to the player
+        sendHandCardsToPlayer(currentHandCards, player);
     }
 
     // Player set card

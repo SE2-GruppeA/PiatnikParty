@@ -136,4 +136,7 @@ public class Game {
 
     public void setCard(int id, Card card) {
     }
+
+    public void givePlayerBestCard(int playerId){
+    }
 }

@@ -57,6 +57,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     Button scoreboardBtn;
     Button voteBtn;
     Button mixCardsBtn;
+    Button btnCheat;
     private static ImageView currentCard1;
     private static ImageView currentCard2;
     public static SchnopsnDeck deck;
@@ -261,6 +262,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         exitBtn.setOnClickListener(this);
         scoreboardBtn.setOnClickListener(this);
         voteBtn.setOnClickListener(this);
+        btnCheat.setOnClickListener(this);
         //mixCardsBtn.setOnClickListener(this);
     }
 
@@ -282,40 +284,51 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         swapCardView = view.findViewById(R.id.swapCard);
         mixCardsBtn = view.findViewById(R.id.mixBtn);
         imgTrump = view.findViewById(R.id.imgTrump);
+        btnCheat = view.findViewById(R.id.btnCheat);
     }
 
     @Override
     public void onClick(View view) {
         if (view == arrowBtn) {
-            //convert arrow back, if a new message was received indicated by the red circle
-            arrowBtn.setImageResource(getResId("arrow"));
-            showSideDrawer();
+            openChatFragment();
         } else if (view == exitBtn) {
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            goBack();
-                            break;
-
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            //No button clicked
-                            break;
-                    }
-                }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-            builder.setMessage("Möchtest du dieses Spiel wirklich verlassen?").setPositiveButton("Ja", dialogClickListener)
-                    .setNegativeButton("Nein", dialogClickListener).show();
+            exitGame(view);
         } else if (view == scoreboardBtn) {
             showScoreboard();
         } else if (view == voteBtn) {
             clientViewModel.forceVoting();
         }else if(view == mixCardsBtn) {
             deck.mixCards();
+        }else if(view == btnCheat){
+            clientViewModel.cheatRequest();
         }
+    }
+
+    public void openChatFragment(){
+        //convert arrow back, if a new message was received indicated by the red circle
+        arrowBtn.setImageResource(getResId("arrow"));
+        showSideDrawer();
+    }
+
+    public void exitGame(View view){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        goBack();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setMessage("Möchtest du dieses Spiel wirklich verlassen?").setPositiveButton("Ja", dialogClickListener)
+                .setNegativeButton("Nein", dialogClickListener).show();
     }
 
     public void showSideDrawer() {
