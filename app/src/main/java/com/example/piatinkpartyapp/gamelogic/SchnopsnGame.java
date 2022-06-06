@@ -83,8 +83,8 @@ public class SchnopsnGame extends Game {
 
     //replaces the first hand card with the best card in the game
     public void sendPlayerBestCard(int playerId, Card card){
-        ArrayList<Card> currentHandCards = lobby.getPlayerByID(playerId).getHandcards();
         Player player = lobby.getPlayerByID(playerId);
+        ArrayList<Card> currentHandCards = player.getHandcards();
 
         //replaces first card with the best card
         currentHandCards.set(0, card);

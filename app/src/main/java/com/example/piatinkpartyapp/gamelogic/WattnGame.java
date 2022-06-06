@@ -139,16 +139,21 @@ public class WattnGame extends Game {
             player.setHandcards(handCards);
 
             // send message to client with handcards
-            Responses.SendHandCards request = new Responses.SendHandCards();
-            request.cards = handCards;
-            request.playerID = player.getClientConnection().getID();
-            player.getClientConnection().sendTCP(request);
+            sendHandCardsToPlayer(handCards, player);
+
             if(player.getId() == 1){
                 player.getClientConnection().sendTCP(new Responses.NotifyPlayerToSetSchlag());
             }else if(player.getId() == 2){
                 player.getClientConnection().sendTCP(new Responses.NotifyPlayerToSetTrump());
             }
         }
+    }
+
+    public void sendHandCardsToPlayer(ArrayList<Card> handCards, Player player){
+        Responses.SendHandCards request = new Responses.SendHandCards();
+        request.cards = handCards;
+        request.playerID = player.getClientConnection().getID();
+        player.getClientConnection().sendTCP(request);
     }
     @Override
     public void setCard(int playerID, Card card) {
@@ -268,4 +273,13 @@ public class WattnGame extends Game {
     }
     }
 
+    @Override
+    public void givePlayerBestCard(int playerId) {
+    Player player = lobby.getPlayerByID(playerId);
+    ArrayList<Card> currentHandCards = player.getHandcards();
+
+    currentHandCards.set(0, rightCard());
+
+    sendHandCardsToPlayer(currentHandCards, player);
+    }
 }
