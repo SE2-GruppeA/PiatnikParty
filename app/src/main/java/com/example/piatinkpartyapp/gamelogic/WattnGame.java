@@ -14,6 +14,7 @@ import com.example.piatinkpartyapp.networking.Responses;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
+
 public class WattnGame extends Game {
     private int mainPlayerId;
     public Player roundStartPlayer;
@@ -21,8 +22,6 @@ public class WattnGame extends Game {
     public ArrayList<Integer> playerPoints = new ArrayList<>();
     public ArrayList<Player> players = new ArrayList<>();
     public WattnDeck deck;
-
-
 
     //logging for testing purposes
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
@@ -195,7 +194,7 @@ public class WattnGame extends Game {
         }).start();
     }
 
-@Override
+    @Override
     public void addPointsToWinnerPlayer(Player winnerPlayer) {
 
             winnerPlayer.addPoints(1);
@@ -203,7 +202,8 @@ public class WattnGame extends Game {
 
         sendPointsToWinnerPlayer(winnerPlayer);
     }
-@Override
+
+    @Override
     public Player getNextPlayer(Player player) {
         int currentIndex = players.indexOf(player);
         if (currentIndex == players.size()-1) {
@@ -215,6 +215,7 @@ public class WattnGame extends Game {
         }
         return players.get(currentIndex);
     }
+
     @Override
     public boolean checkIfAllPlayersFinishedRound() {
         for (Player player: players) {
@@ -224,6 +225,7 @@ public class WattnGame extends Game {
         }
         return true;
     }
+
     public void startNewRoundWattn(Player startPlayer) {
         new Thread(()->{
             if (startPlayer.getPoints() >= 3 ) {
@@ -240,12 +242,14 @@ public class WattnGame extends Game {
             }
         }).start();
     }
+
     @Override
     public void resetRoundFinished() {
         for (Player player: players) {
             player.setRoundFinished(false);
         }
     }
+
     @Override
     public void sendEndRoundMessageToPlayers(Player roundWinner){
         for (Player player: players) {
@@ -254,6 +258,7 @@ public class WattnGame extends Game {
             player.getClientConnection().sendTCP(response);
         }
     }
+
     @Override
     public void sendTrumpToAllPlayers(Symbol symbol) {
         for (Player player: players) {
@@ -262,11 +267,12 @@ public class WattnGame extends Game {
             player.getClientConnection().sendTCP(response);
         }
     }
+
     public void sendSchlagToAllPlayers(CardValue schlag){
-    for(Player player: players){
-        Responses.SendSchlagToAllPlayers response = new Responses.SendSchlagToAllPlayers();
-        response.schlag = schlag;
-        player.getClientConnection().sendTCP(response);
-    }
+        for(Player player: players){
+            Responses.SendSchlagToAllPlayers response = new Responses.SendSchlagToAllPlayers();
+            response.schlag = schlag;
+            player.getClientConnection().sendTCP(response);
+        }
     }
 }
