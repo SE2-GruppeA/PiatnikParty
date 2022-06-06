@@ -188,15 +188,45 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
         clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
         clientViewModel.getPoints().observe(getActivity(), points -> setScorePoints(points));
-       // clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
-        //clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
+        clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
+        clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
         clientViewModel.getTrump().observe(getActivity(), trump->setTrump(trump));
 
         //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
         clientViewModel.getChatMessages().observe(getActivity(), message -> notifyNewMessage(message));
 
+        //when a game is started, the client gets notified
+        clientViewModel.isSchnopsnStarted().observe(getActivity(), started -> initializeSchnopsn(started));
+        clientViewModel.isWattnStarted().observe(getActivity(), started -> initializeWattn(started));
+        clientViewModel.isPensionistlnStarted().observe(getActivity(), started -> initializePensionistln(started));
+        clientViewModel.isHosnObeStarted().observe(getActivity(), started -> initializeHosnObe(started));
+
         //initializeGame();
         return root;
+    }
+
+    private void initializeHosnObe(Boolean started) {
+        if(started){
+
+        }
+    }
+
+    private void initializePensionistln(Boolean started) {
+        if(started){
+
+        }
+    }
+
+    private void initializeWattn(Boolean started) {
+        if(started){
+
+        }
+    }
+
+    private void initializeSchnopsn(Boolean started) {
+        if(started){
+
+        }
     }
 
     private void notifyNewMessage(ArrayList<ChatMessage> message) {

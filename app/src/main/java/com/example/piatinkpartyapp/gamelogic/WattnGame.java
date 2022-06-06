@@ -24,7 +24,7 @@ public class WattnGame extends Game {
 
     //logging for testing purposes
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
-@Override
+/*@Override
     public Player addPlayer(Connection connection, String playerName) {
         Player player = new Player(connection, playerName);
         players.add(player);
@@ -281,5 +281,5 @@ public class WattnGame extends Game {
     currentHandCards.set(0, rightCard());
 
     sendHandCardsToPlayer(currentHandCards, player);
-    }
+    }*/
 }

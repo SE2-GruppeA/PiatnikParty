@@ -111,6 +111,8 @@ public class GameClient {
                         handle_UpdatePointsWinnerPlayer((Responses.UpdatePointsWinnerPlayer) object);
                     } else if (object instanceof Responses.SchnopsnStartedClientMessage) {
                         handle_SchnopsnStartedClientMessage((Responses.SchnopsnStartedClientMessage) object);
+                    } else if (object instanceof Responses.WattnStartedClientMessage){
+                        handle_WattnStartedClientMessage((Responses.WattnStartedClientMessage) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -180,11 +182,52 @@ public class GameClient {
                 object;
 
         // notify UI: game has started
-        gameStarted.postValue(true);
+        schnopsnStarted.postValue(true);
+        wattnStarted.setValue(false);
+        pensionistlnStarted.setValue(false);
+        hosnObeStarted.setValue(false);
 
         LOG.info("Schnopsn Game started by server after voting");
     }
 
+    private void handle_WattnStartedClientMessage(Responses.WattnStartedClientMessage object) {
+        Responses.WattnStartedClientMessage response =
+                object;
+
+        // notify UI: game has started
+        schnopsnStarted.setValue(false);
+        wattnStarted.postValue(true);
+        pensionistlnStarted.setValue(false);
+        hosnObeStarted.setValue(false);
+
+        LOG.info("Wattn Game started by server after voting");
+    }
+
+    private void handle_PensionistlnStartedClientMessage(Responses.PensionistlnStartedClientMessage object) {
+        Responses.PensionistlnStartedClientMessage response =
+                object;
+
+        // notify UI: game has started
+        schnopsnStarted.setValue(false);
+        wattnStarted.setValue(false);
+        pensionistlnStarted.postValue(true);
+        hosnObeStarted.setValue(false);
+
+        LOG.info("Pensionistln Game started by server after voting");
+    }
+
+    private void handle_HosnObeStartedClientMessage(Responses.HosnObeStartedClientMessage object) {
+        Responses.HosnObeStartedClientMessage response =
+                object;
+
+        // notify UI: game has started
+        schnopsnStarted.setValue(false);
+        wattnStarted.setValue(false);
+        pensionistlnStarted.setValue(false);
+        hosnObeStarted.postValue(true);
+
+        LOG.info("Hosn Obe Game started by server after voting");
+    }
 
     private void handle_ConnectedSuccessfully(Responses.ConnectedSuccessfully object) {
         Responses.ConnectedSuccessfully response =
@@ -370,6 +413,10 @@ public class GameClient {
     private MutableLiveData<Integer> points;
     private MutableLiveData<Boolean> setSchlag;
     private MutableLiveData<Boolean> setTrump;
+    private MutableLiveData<Boolean> schnopsnStarted;
+    private MutableLiveData<Boolean> wattnStarted;
+    private MutableLiveData<Boolean> pensionistlnStarted;
+    private MutableLiveData<Boolean> hosnObeStarted;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -404,6 +451,7 @@ public class GameClient {
     public LiveData<Symbol> getTrump(){
         return trump;
     }
+
     public LiveData<CardValue> getSchlag(){return schlag;}
 
     public LiveData<Integer> getPoints() {
@@ -416,6 +464,22 @@ public class GameClient {
 
     public LiveData<Boolean> isSetTrump() {
         return setTrump;
+    }
+
+    public LiveData<Boolean> isSchnopsnStarted() {
+        return schnopsnStarted;
+    }
+
+    public LiveData<Boolean> isWattnStarted() {
+        return wattnStarted;
+    }
+
+    public LiveData<Boolean> isPensionistlnStarted() {
+        return pensionistlnStarted;
+    }
+
+    public LiveData<Boolean> isHosnObeStarted() {
+        return hosnObeStarted;
     }
 
     private void initLiveDataMainGameUIs(){
@@ -432,6 +496,10 @@ public class GameClient {
         points = new MutableLiveData<>();
         setTrump = new MutableLiveData<>();
         setSchlag = new MutableLiveData<>();
+        schnopsnStarted = new MutableLiveData<>();
+        wattnStarted = new MutableLiveData<>();
+        pensionistlnStarted = new MutableLiveData<>();
+        hosnObeStarted = new MutableLiveData<>();
     }
 
     public void sendVoteForNextGame(GameName nextGame){
