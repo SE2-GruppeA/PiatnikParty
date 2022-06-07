@@ -14,23 +14,23 @@ import java.util.logging.Logger;
 
 public class WattnGame extends Game {
 
-    private WattnDeck deck;
+    public WattnDeck deck;
     //logging for testing purposes
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
     public WattnGame(Lobby l){
         lobby = l;
-        resetWattnDeck(l.getPlayers().size());
+      //  resetWattnDeck(l.getPlayers().size());
 
     }
     public void resetWattnDeck(Integer numberOfPlayers){
-        //Todo: get Number of players?
         deck = new WattnDeck(GameName.Wattn,numberOfPlayers);
     }
     //starting the game
     @Override
     public void startGameWattn(){
         new Thread(()->{
+            resetWattnDeck(lobby.getPlayers().size());
             sendGameStartedMessageToClients();
             resetRoundFinished();
             sendHandCards();
@@ -132,27 +132,29 @@ public class WattnGame extends Game {
             // first played card is right card
             LOG.info(winningPlayer.getCardPlayed().getCardValue().toString());
             LOG.info(currentPlayer.getCardPlayed().getCardValue().toString());
-            if(winningPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue() && winningPlayer.getCardPlayed().getSymbol() == deck.getRightCard().getSymbol()){
+            LOG.info(deck.toString());
+            LOG.info(this.deck.getRightCard().getCardValue().toString());
+            if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getRightCard().getCardValue() && winningPlayer.getCardPlayed().getSymbol() == deck.getRightCard().getSymbol()){
                 winningPlayer = winningPlayer;
             }
             //second played card is right card
-            else if(currentPlayer.getCardPlayed().getSymbol() == deck.getRightCard().getSymbol() && currentPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue()){
+            else if(currentPlayer.getCardPlayed().getSymbol() == this.deck.getRightCard().getSymbol() && currentPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue()){
                 winningPlayer = currentPlayer;
 
             } //hit case - first played hit wins
-            else if(winningPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue() ){
+            else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getRightCard().getCardValue() ){
                 winningPlayer = winningPlayer;
             }//hit case - hit wins
-            else if(currentPlayer.getCardPlayed().getCardValue() ==deck.getHit() && winningPlayer.getCardPlayed() != deck.getRightCard()){
+            else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && winningPlayer.getCardPlayed() != this.deck.getRightCard()){
 
                 winningPlayer = currentPlayer;
             } // trump case - higher trump wins
-            else if(winningPlayer.getCardPlayed().getSymbol() == deck.getTrump()){
-                if(currentPlayer.getCardPlayed().getSymbol() == deck.getTrump() && deck.cardPoints(currentPlayer.getCardPlayed().cardValue) > deck.cardPoints(winningPlayer.getCardPlayed().cardValue)){
+            else if(winningPlayer.getCardPlayed().getSymbol() == this.deck.getTrump()){
+                if(currentPlayer.getCardPlayed().getSymbol() == this.deck.getTrump() && this.deck.cardPoints(currentPlayer.getCardPlayed().cardValue) > this.deck.cardPoints(winningPlayer.getCardPlayed().cardValue)){
                     winningPlayer = currentPlayer;
                 }
                 //default cases: if same colour higher value wins, if trump & other value trump wins
-            }else if(currentPlayer.getCardPlayed().getSymbol() == deck.getTrump() || (winningPlayer.getCardPlayed().getSymbol() == currentPlayer.getCardPlayed().getSymbol() && deck.cardPoints(currentPlayer.getCardPlayed().cardValue) > deck.cardPoints(winningPlayer.getCardPlayed().cardValue))){
+            }else if(currentPlayer.getCardPlayed().getSymbol() == this.deck.getTrump() || (winningPlayer.getCardPlayed().getSymbol() == currentPlayer.getCardPlayed().getSymbol() && this.deck.cardPoints(currentPlayer.getCardPlayed().cardValue) > this.deck.cardPoints(winningPlayer.getCardPlayed().cardValue))){
                 winningPlayer = currentPlayer;
             }
             /*Integer p = playerPoints.get(winningPlayer.getId()-1);
