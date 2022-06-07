@@ -1,6 +1,5 @@
 package com.example.piatinkpartyapp.ClientUiLogic;
 
-import android.hardware.camera2.params.BlackLevelPattern;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -109,12 +108,10 @@ public class ClientViewModel extends ViewModel {
     public LiveData<Boolean> schlagToSet(){return client.isSetSchlag();}
     public LiveData<Boolean> trumpToSet(){return client.isSetTrump();}
 
-    public void setSetTrump(MutableLiveData<Boolean> setTrump) {
-        client.setSetTrump(setTrump);
-    }
-    public void setTrump(Symbol trump){
+    public void setTrump(Symbol trump) {
         client.setTrump(trump);
     }
+
     public void cheat() {
         //todo: implement client code
         Log.d(TAG, "YOU ARE CHEATING NOW");

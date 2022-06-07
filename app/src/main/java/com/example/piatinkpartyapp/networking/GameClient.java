@@ -119,6 +119,10 @@ public class GameClient {
                         handle_SchnopsnStartedClientMessage((Responses.SchnopsnStartedClientMessage) object);
                     } else if (object instanceof Responses.WattnStartedClientMessage){
                         handle_WattnStartedClientMessage((Responses.WattnStartedClientMessage) object);
+                    } else if (object instanceof Responses.PensionistlnStartedClientMessage){
+                        handle_PensionistlnStartedClientMessage((Responses.PensionistlnStartedClientMessage) object);
+                    } else if (object instanceof Responses.HosnObeStartedClientMessage){
+                        handle_HosnObeStartedClientMessage((Responses.HosnObeStartedClientMessage) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
