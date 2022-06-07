@@ -133,7 +133,9 @@ public class Game {
 
     public void startGameSchnopsn() {
     }
+    public void startGameWattn(){
 
+    }
     public void setCard(int id, Card card) {
     }
 
