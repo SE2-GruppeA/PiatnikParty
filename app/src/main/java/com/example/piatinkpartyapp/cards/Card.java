@@ -1,4 +1,7 @@
 package com.example.piatinkpartyapp.cards;
+
+import androidx.annotation.Nullable;
+
 /*Card objects needed for game play
 * each card is defined by a symbol & card value
 * strings for front & backside define the picture that should be shown per card
@@ -43,5 +46,25 @@ public class Card {
 
     public void setCheated(Boolean cheated) {
         this.cheated = cheated;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Card){
+            Card comp = (Card) obj;
+            if (symbol == comp.symbol && cardValue == comp.cardValue && backSide.equals(comp.backSide) &&
+            frontSide.equals(comp.frontSide) && cheated == comp.cheated){
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            return false;
+        }
     }
 }
