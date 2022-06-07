@@ -1,5 +1,7 @@
 package com.example.piatinkpartyapp;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.esotericsoftware.kryonet.Client;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
@@ -11,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.verification.Times;
 
 public class GameClientTest {
 
@@ -41,5 +42,26 @@ public class GameClientTest {
         req.setCard(card);
         Mockito.verify(client, Mockito.times(1)).sendTCP(req);
     }
+
+    @Test
+    public void testSetSchlag(){
+        MutableLiveData<Boolean> schlag = Mockito.mock(MutableLiveData.class);
+        this.gameClient.setSetSchlag(schlag);
+        this.gameClient.setSchlag(CardValue.ACHT);
+        Requests.PlayerSetSchlag req = new Requests.PlayerSetSchlag(CardValue.ACHT);
+        Mockito.verify(client,Mockito.times(1)).sendTCP(req);
+    }
+
+    @Test
+    public void testSetTrump(){
+        MutableLiveData<Boolean> setTrump = Mockito.mock(MutableLiveData.class);
+        this.gameClient.setSetTrump(setTrump);
+        this.gameClient.setTrump(Symbol.HERZ);
+        Requests.PlayerSetTrump req = new Requests.PlayerSetTrump(Symbol.HERZ);
+
+        Mockito.verify(client,Mockito.times(1)).sendTCP(req);
+    }
+
+
 
 }

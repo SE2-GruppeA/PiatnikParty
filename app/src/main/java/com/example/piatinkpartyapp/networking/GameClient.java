@@ -508,6 +508,15 @@ public class GameClient {
         hosnObeStarted = new MutableLiveData<>();
     }
 
+
+    public void setSetTrump(MutableLiveData<Boolean> trump) {
+        this.setTrump = trump;
+    }
+
+    public void setSetSchlag(MutableLiveData<Boolean> setSchlag) {
+        this.setSchlag = setSchlag;
+    }
+
     public void sendVoteForNextGame(GameName nextGame){
         Requests.VoteForNextGame request =
                 new Requests.VoteForNextGame(nextGame);
