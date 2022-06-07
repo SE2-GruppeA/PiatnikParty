@@ -1,5 +1,7 @@
 package com.example.piatinkpartyapp.gamelogic;
 
+import android.util.Log;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
@@ -129,7 +131,9 @@ public class WattnGame extends Game {
             LOG.info(winningPlayer.getCardPlayed().getCardValue().toString());
             LOG.info(currentPlayer.getCardPlayed().getCardValue().toString());
             LOG.info(deck.toString());
-            LOG.info(this.deck.getRightCard().getCardValue().toString());
+
+            LOG.info(this.deck.getTrump().toString());
+            LOG.info(this.deck.getHit().toString());
             if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getRightCard().getCardValue() && winningPlayer.getCardPlayed().getSymbol() == deck.getRightCard().getSymbol()){
                 winningPlayer = winningPlayer;
             }
@@ -171,9 +175,29 @@ public class WattnGame extends Game {
 
 
     public void addPointsToWinnerPlayer(Player winnerPlayer) {
+         if(lobby.getPlayers().size()==3 && (winnerPlayer.getId() == 2 || winnerPlayer.getId() == 3)){
+            lobby.getPlayerByID(2).addPoints(1);
+            sendPointsToWinnerPlayer(lobby.getPlayerByID(2));
+            lobby.getPlayerByID(3).addPoints(1);
+            sendPointsToWinnerPlayer(lobby.getPlayerByID(3));
+        }else if(lobby.getPlayers().size()== 4){
+             if(winnerPlayer.getId() == 1 || winnerPlayer.getId() == 3){
+                 lobby.getPlayerByID(1).addPoints(1);
+                 sendPointsToWinnerPlayer(lobby.getPlayerByID(1));
+                 lobby.getPlayerByID(3).addPoints(1);
+                 sendPointsToWinnerPlayer(lobby.getPlayerByID(3));
+             }else if(winnerPlayer.getId() == 2 || winnerPlayer.getId() == 4){
+                 lobby.getPlayerByID(2).addPoints(1);
+                 sendPointsToWinnerPlayer(lobby.getPlayerByID(2));
+                 lobby.getPlayerByID(4).addPoints(1);
+                 sendPointsToWinnerPlayer(lobby.getPlayerByID(4));
+             }
+         }else {
+             winnerPlayer.addPoints(1);
+             sendPointsToWinnerPlayer(winnerPlayer);
+         }
 
-        winnerPlayer.addPoints(1);
-        sendPointsToWinnerPlayer(winnerPlayer);
+
     }
 
     public void startNewRoundWattn(Player startPlayer) {
