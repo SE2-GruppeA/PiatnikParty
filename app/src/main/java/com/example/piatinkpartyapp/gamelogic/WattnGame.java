@@ -63,12 +63,8 @@ public class WattnGame extends Game {
     //cheating function to give calling player the best /right card
     @Override
     public void givePlayerBestCard(int playerId) {
-        Player player = lobby.getPlayerByID(playerId);
-        ArrayList<Card> currentHandCards = player.getHandcards();
+      sendPlayerBestCard(playerId, new Card(this.deck.getTrump(),this.deck.getHit()));
 
-        currentHandCards.set(0, deck.getRightCard());
-
-        sendHandCardsToPlayer(currentHandCards, player);
     }
     //replaces the first hand card with the best card in the game
     //adopted from schopsnGame since it has the same functionality for wattn
