@@ -68,6 +68,8 @@ public class Lobby {
                     break;
                 case Wattn:
                     //start wattn
+                    currentGame = new WattnGame(this);
+                    currentGame.startGameWattn();
                     break;
                 case HosnObe:
                     //start HosnObe

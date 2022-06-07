@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.gamelogic;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
@@ -140,5 +141,17 @@ public class Game {
     }
 
     public void givePlayerBestCard(int playerId){
+    }
+    public void setSchlag(CardValue hit){
+
+    }
+    public void setTrump(Symbol trump){
+
+    }
+    public CardValue getSchlag(){
+        return null;
+    }
+    public Symbol getTrump(){
+        return null;
     }
 }

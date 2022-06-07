@@ -197,6 +197,27 @@ public class WattnGame extends Game {
             }
         }).start();
     }
+    @Override
+    public void setSchlag(CardValue cv){
+        this.deck.setHit(cv);
+
+    }
+    @Override
+    public void setTrump(Symbol s){
+        this.deck.setTrump(s);
+
+    }
+    public Card rightCard(){
+        return this.deck.getRightCard();
+    }
+    @Override
+    public Symbol getTrump(){
+        return deck.getTrump();
+    }
+    @Override
+    public CardValue getSchlag(){
+        return deck.getHit();
+    }
    /* public void resetVotingFinished() {
         for (Player player : players) {
             player.setVotingFinished(false);
@@ -216,17 +237,7 @@ public class WattnGame extends Game {
     public void resetSchnopsnDeck(){}
     //2 players for beginning
 
-    public CardValue setHit(CardValue cv){
-        this.deck.setHit(cv);
-        return cv;
-    }
-    public Symbol setTrump(Symbol s){
-        this.deck.setTrump(s);
-        return s;
-    }
-    public Card rightCard(){
-        return this.deck.getRightCard();
-    }
+
     @Override
     public Player getRoundWinnerPlayerSchnopsn(){return null;}
 
