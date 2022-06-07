@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -112,28 +114,6 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         //set fullscreen and landscape mode
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        //todo: remove, but used for testing
-        //startChatTestServer();
-        //System.out.println("pepep");
-    }
-
-
-
-    /*
-    Only used for testing so I can create a client on same device to connect to
-     */
-    GameServer s;
-    private void startChatTestServer() {
-        s = new GameServer();
-        try {
-            s.startNewGameServer();
-            Thread.sleep(2000);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void waitForMyTurn(Boolean isMyTurn) {
@@ -179,27 +159,31 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         addOnclickHandlers();
         initHandCardsViews();
 
-        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+        //checks if the layout is already landscape
+        //if it would not be in landscape mode some dialogs would get displayed twice
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
 
-        clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
-        clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn(isMyTurn));
-        clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
-        clientViewModel.isVotingForNextGame().observe(getActivity(), votingForNextGame -> voteForNextGame(votingForNextGame));
-        clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
-        clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
-        clientViewModel.getPoints().observe(getActivity(), points -> setScorePoints(points));
-        clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
-        clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
-        clientViewModel.getTrump().observe(getActivity(), trump->setTrump(trump));
+            clientViewModel.getHandCards().observe(getViewLifecycleOwner(), handCards -> updateHandCards(handCards));
+            clientViewModel.isMyTurn().observe(getViewLifecycleOwner(), isMyTurn -> waitForMyTurn(isMyTurn));
+            clientViewModel.getHandoutCard().observe(getViewLifecycleOwner(), card -> getHandoutCard(card));
+            clientViewModel.isVotingForNextGame().observe(getViewLifecycleOwner(), votingForNextGame -> voteForNextGame(votingForNextGame));
+            clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), isEndOfRound -> atRoundEnd(isEndOfRound));
+            clientViewModel.getPlayedCard().observe(getViewLifecycleOwner(), playedCard -> setPlayedCard(playedCard));
+            clientViewModel.getPoints().observe(getViewLifecycleOwner(), points -> setScorePoints(points));
+            clientViewModel.isSetTrump().observe(getViewLifecycleOwner(), setTrump -> playerSetTrump(setTrump));
+            clientViewModel.isSetSchlag().observe(getViewLifecycleOwner(), setSchlag -> playerSetSchlag(setSchlag));
+            clientViewModel.getTrump().observe(getViewLifecycleOwner(), trump -> setTrump(trump));
 
-        //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
-        clientViewModel.getChatMessages().observe(getActivity(), message -> notifyNewMessage(message));
+            //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
+            clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
 
-        //when a game is started, the client gets notified
-        clientViewModel.isSchnopsnStarted().observe(getActivity(), started -> initializeSchnopsn(started));
-        clientViewModel.isWattnStarted().observe(getActivity(), started -> initializeWattn(started));
-        clientViewModel.isPensionistlnStarted().observe(getActivity(), started -> initializePensionistln(started));
-        clientViewModel.isHosnObeStarted().observe(getActivity(), started -> initializeHosnObe(started));
+            //when a game is started, the client gets notified
+            clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), started -> initializeSchnopsn(started));
+            clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), started -> initializeWattn(started));
+            clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), started -> initializePensionistln(started));
+            clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
+        }
 
         //initializeGame();
         return root;
@@ -225,8 +209,15 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
 
     private void initializeSchnopsn(Boolean started) {
         if(started){
+            resetImageView(currentCard1);
+            resetImageView(currentCard2);
 
+            scoreTxt.setText("0");
         }
+    }
+
+    private void resetImageView(ImageView imageView){
+        imageView.setImageResource(getResId("placeholder"));
     }
 
     private void notifyNewMessage(ArrayList<ChatMessage> message) {

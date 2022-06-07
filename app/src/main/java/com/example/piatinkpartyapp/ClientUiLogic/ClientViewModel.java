@@ -109,7 +109,7 @@ public class ClientViewModel extends ViewModel {
     public LiveData<Boolean> trumpToSet(){return client.isSetTrump();}
 
     public void setTrump(Symbol trump) {
-        client.setSetTrump(trump);
+        client.setTrump(trump);
     }
 
     public void cheat() {

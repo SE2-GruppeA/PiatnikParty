@@ -43,7 +43,7 @@ public class GameServer {
             }
             // create new Game
             game = new Game();
-            wattnGame = new WattnGame();
+
             lobby = new Lobby();
             startListener();
         });
@@ -171,15 +171,17 @@ public class GameServer {
     private void handle_PlayerSetSchlag(Connection connection, Requests.PlayerSetSchlag object) {
         Requests.PlayerSetSchlag request =
                 object;
+        lobby.currentGame.setSchlag(request.schlag);
         //wattnGame.deck.setHit(request.schlag);
-        //LOG.info("Schlag: " + wattnGame.deck.getHit() + " was set from Client ID: " + connection.getID());
+        LOG.info("Schlag: " + lobby.currentGame.getSchlag() + " was set from Client ID: " + connection.getID());
     }
 
     private void handle_PlayerSetTrump(Connection connection, Requests.PlayerSetTrump object) {
         Requests.PlayerSetTrump request =
                 object;
+        lobby.currentGame.setTrump(request.trump);
         //wattnGame.deck.setTrump(request.trump);
-        //LOG.info("Trump: " + wattnGame.deck.getTrump() + " was set from Client ID: " + connection.getID());
+        LOG.info("Trump: " + lobby.currentGame.getTrump() + " was set from Client ID: " + connection.getID());
     }
 
     private void handle_PlayerRequestsCheat(Connection connection, Requests.PlayerRequestsCheat object) {
