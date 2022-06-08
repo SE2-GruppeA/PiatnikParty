@@ -123,6 +123,8 @@ public class GameClient {
                         handle_PensionistlnStartedClientMessage((Responses.PensionistlnStartedClientMessage) object);
                     } else if (object instanceof Responses.HosnObeStartedClientMessage){
                         handle_HosnObeStartedClientMessage((Responses.HosnObeStartedClientMessage) object);
+                    }else if(object instanceof Responses.playerDisconnected){
+                        handle_PlayerDisconnected((Responses.playerDisconnected)object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -300,6 +302,11 @@ public class GameClient {
         Responses.UpdatePointsWinnerPlayer response = object;
 
         points.postValue(response.totalPoints);
+    }
+
+    private void handle_PlayerDisconnected(Responses.playerDisconnected object){
+        LOG.info("PLayer has disconected ID:" + object.playerID);
+        //TODO: notify the UI that a player disconected from the game
     }
 
     /////////////////// END - Handler Methods !!! ///////////////////

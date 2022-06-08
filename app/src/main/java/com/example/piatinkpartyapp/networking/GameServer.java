@@ -119,6 +119,12 @@ public class GameServer {
     private void handle_disconnected(Connection connection) {
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
         players.postValue(lobby.getPlayers());
+
+        //When the Player disconnects the message is send to all other players.
+        Responses.playerDisconnected response = new Responses.playerDisconnected();
+        response.playerID = connection.getID();
+        sendPacketToAll(response);
+
         //players.postValue(wattnGame.getPlayers());
     }
 

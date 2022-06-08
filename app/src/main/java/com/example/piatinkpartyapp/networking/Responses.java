@@ -180,4 +180,14 @@ public class Responses {
     public static class HosnObeStartedClientMessage implements IPackets {
         public HosnObeStartedClientMessage() { }
     }
+
+    public static class playerDisconnected implements IPackets{
+        public int playerID;
+
+        public playerDisconnected() { }
+
+        public playerDisconnected(int playerID) {
+            this.playerID = playerID;
+        }
+    }
 }
