@@ -94,7 +94,7 @@ public class TrumpSelect extends Fragment implements View.OnClickListener {
         }else if(view == btnTrumpKaro){
             setTrump(Symbol.KARO);
         }else if(view == btnTrumpKreuz){
-            setTrump(Symbol.KARO);
+            setTrump(Symbol.KREUZ);
         }else if(view == btnTrumpPick){
             setTrump(Symbol.PICK);
         }

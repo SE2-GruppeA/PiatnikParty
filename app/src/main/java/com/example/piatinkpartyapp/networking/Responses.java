@@ -99,7 +99,7 @@ public class Responses {
         }
     }
 
-    public static class GameStartedClientMessage {
+    public static class GameStartedClientMessage implements IPackets {
         public GameStartedClientMessage() { }
     }
 
@@ -163,5 +163,31 @@ public class Responses {
 
     public static class NotifyPlayerToSetTrump {
         public NotifyPlayerToSetTrump() { }
+    }
+
+    public static class SchnopsnStartedClientMessage implements IPackets {
+        public SchnopsnStartedClientMessage() { }
+    }
+
+    public static class WattnStartedClientMessage implements IPackets {
+        public WattnStartedClientMessage() { }
+    }
+
+    public static class PensionistlnStartedClientMessage implements IPackets {
+        public PensionistlnStartedClientMessage() { }
+    }
+
+    public static class HosnObeStartedClientMessage implements IPackets {
+        public HosnObeStartedClientMessage() { }
+    }
+
+    public static class playerDisconnected implements IPackets{
+        public int playerID;
+
+        public playerDisconnected() { }
+
+        public playerDisconnected(int playerID) {
+            this.playerID = playerID;
+        }
     }
 }

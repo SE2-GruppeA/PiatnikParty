@@ -77,14 +77,14 @@ public class SchlagSelect extends Fragment implements  View.OnClickListener{
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_schlag_select,container,false);
 
-        btnSchlagSieben = root.findViewById(R.id.btnSchlagSieben);
-        btnSchlagAcht = root.findViewById(R.id.btnSchlagAcht);
-        btnSchlagNeun = root.findViewById(R.id.btnSchlagNeun);
-        btnSchlagZehn = root.findViewById(R.id.btnSchlagZehn);
-        btnSchlagUnter = root.findViewById(R.id.btnSchlagUnter);
-        btnSchlagOber = root.findViewById(R.id.btnSchlagOber);
-        btnSchlagKoenig = root.findViewById(R.id.btnSchlagKoenig);
-        btnSchlagAss = root.findViewById(R.id.btnSchlagAss);
+        btnSchlagSieben = root.findViewById(R.id.btnSieben);
+        btnSchlagAcht = root.findViewById(R.id.btnAcht);
+        btnSchlagNeun = root.findViewById(R.id.btnNeun);
+        btnSchlagZehn = root.findViewById(R.id.btnZehn);
+        btnSchlagUnter = root.findViewById(R.id.btnUnter);
+        btnSchlagOber = root.findViewById(R.id.btnOber);
+        btnSchlagKoenig = root.findViewById(R.id.btnKoenig);
+        btnSchlagAss = root.findViewById(R.id.btnAss);
 
         btnSchlagSieben.setOnClickListener(this);
         btnSchlagAcht.setOnClickListener(this);

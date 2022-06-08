@@ -12,7 +12,6 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.GameClient;
-import com.example.piatinkpartyapp.networking.Requests;
 import com.example.piatinkpartyapp.networking.Responses;
 
 import java.io.IOException;
@@ -126,5 +125,24 @@ public class ClientViewModel extends ViewModel {
     public LiveData<Boolean> isSetTrump() {
         return client.isSetTrump();
     }
+    public LiveData<Boolean> isSchnopsnStarted() {
+        return client.isSchnopsnStarted();
+    }
+    public LiveData<Boolean> isWattnStarted() {
+        return client.isWattnStarted();
+    }
+    public LiveData<Boolean> isPensionistlnStarted() {
+        return client.isPensionistlnStarted();
+    }
+    public LiveData<Boolean> isHosnObeStarted() {
+        return client.isHosnObeStarted();
+    }
+
+    public void cheatRequest() {
+        client.cheatRequest();
+    }
+
+
+
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

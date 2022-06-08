@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.screens;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,12 +25,11 @@ import com.example.piatinkpartyapp.networking.NetworkHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 
 public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "isGameStarted";
 
     Button backBtn;
     Button BtnStartGame3;
@@ -36,21 +37,21 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     TextView txtIP;
     ListView lvPlayers;
 
-    private String mParam1;
-    private String mParam2;
-
     GameServer server;
     ClientViewModel clientViewModel;
 
+    //indicates whether the SchnopsnFragment was called or not
+    private Boolean isGameStarted;
+
     public WaitingPlayersFragment() {
         // Required empty public constructor
+        isGameStarted = false;
     }
 
-    public static WaitingPlayersFragment newInstance(String param1, String param2) {
+    public static WaitingPlayersFragment newInstance(Boolean isGameStarted) {
         WaitingPlayersFragment fragment = new WaitingPlayersFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putBoolean(ARG_PARAM1, isGameStarted);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,9 +59,8 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        if (savedInstanceState != null) {
+            isGameStarted = savedInstanceState.getBoolean(ARG_PARAM1);
         }
     }
 
@@ -93,13 +93,15 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
             e.printStackTrace();
         }
 
-        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
-        clientViewModel.getConnectionState().observe(getActivity(), connectionState ->
-                displayConnectionState(connectionState));
+        if(!isGameStarted) {
+            clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+            clientViewModel.getConnectionState().observe(getActivity(), connectionState ->
+                    displayConnectionState(connectionState));
 
-        clientViewModel.isGameStarted().observe(getActivity(), isGameStarted -> atGameStart());
+            clientViewModel.isGameStarted().observe(getActivity(), isGameStarted -> atGameStart());
 
-        server.getPlayers().observe(getActivity(), players -> updatePlayers(players));
+            server.getPlayers().observe(getActivity(), players -> updatePlayers(players));
+        }
 
         // Inflate the layout for this fragment
         return view;
@@ -126,12 +128,19 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     }
 
     private void atGameStart(){
-        //close this fragment, or else the observer will trigger later again
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        isGameStarted = true;
+
         //opening the game ui
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new SchnopsnFragment()).commit();
                // new WattnFragment()).commit();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        //sets the variable if the SchnopsnFragment was opened, so it wont get opened a second time
+        outState.putBoolean(ARG_PARAM1, true);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -140,9 +149,6 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         else if (view == BtnStartGame3) {
             clientViewModel.startGame();
-
-            clientViewModel.forceVoting();
-
         }
 
     }

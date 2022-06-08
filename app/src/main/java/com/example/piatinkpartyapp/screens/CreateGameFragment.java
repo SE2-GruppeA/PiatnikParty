@@ -72,8 +72,7 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
         //creates an instance of gameclient
         //needs to be relocated !!!
 
-        Context context = requireContext().getApplicationContext();
-        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wm = (WifiManager) getActivity().getSystemService(getActivity().WIFI_SERVICE);
         String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
         NetworkHandler.GAMESERVER_IP = ip;
 

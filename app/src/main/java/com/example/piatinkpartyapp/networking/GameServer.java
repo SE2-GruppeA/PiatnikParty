@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.example.piatinkpartyapp.gamelogic.Game;
+import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.gamelogic.WattnGame;
 import com.example.piatinkpartyapp.utils.Utils;
@@ -23,6 +24,7 @@ public class GameServer {
 
     private Server server;
     private ArrayList<Connection> clients = new ArrayList<>();
+    private Lobby lobby;
     private Game game;
     private WattnGame wattnGame;
     private ExecutorService executorService;
@@ -41,7 +43,8 @@ public class GameServer {
             }
             // create new Game
             game = new Game();
-            wattnGame = new WattnGame();
+
+            lobby = new Lobby();
             startListener();
         });
     }
@@ -85,6 +88,8 @@ public class GameServer {
                         handle_PlayerSetSchlag(connection, (Requests.PlayerSetSchlag) object);
                     } else if (object instanceof Requests.PlayerSetTrump) {
                         handle_PlayerSetTrump(connection, (Requests.PlayerSetTrump) object);
+                    } else if(object instanceof Requests.PlayerRequestsCheat){
+                        handle_PlayerRequestsCheat(connection, (Requests.PlayerRequestsCheat) object);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -102,18 +107,24 @@ public class GameServer {
         response.isConnected = clients.contains(connection) ? false : clients.add(connection);
         response.playerID = connection.getID();
 
-        game.addPlayer(connection, "test");
+        lobby.addPlayer(connection, "test");
       //  wattnGame.addPlayer(connection, "test");
         connection.sendTCP(response);
 
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
-        players.postValue(game.getPlayers());
+        players.postValue(lobby.getPlayers());
         //players.postValue(wattnGame.getPlayers());
     }
 
     private void handle_disconnected(Connection connection) {
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
-        players.postValue(game.getPlayers());
+        players.postValue(lobby.getPlayers());
+
+        //When the Player disconnects the message is send to all other players.
+        Responses.playerDisconnected response = new Responses.playerDisconnected();
+        response.playerID = connection.getID();
+        sendPacketToAll(response);
+
         //players.postValue(wattnGame.getPlayers());
     }
 
@@ -121,7 +132,7 @@ public class GameServer {
         LOG.info("Client " + connection.getID() + " voted for" +
                 object.gameName.toString());
 
-        game.handleVotingForNextGame(connection.getID(), object.gameName);
+        lobby.handleVotingForNextGame(connection.getID(), object.gameName);
        // wattnGame.handleVotingForNextGame(connection.getID(),object.gameName);
     }
 
@@ -141,31 +152,52 @@ public class GameServer {
                 object;
 
         LOG.info("Card: " + request.card.getSymbol().toString() + request.card.getCardValue().toString() + " was set from Client ID: " + connection.getID());
-        game.setCard(connection.getID(), request.card);
+        lobby.currentGame.setCard(connection.getID(), request.card);
     //    wattnGame.setCard(connection.getID(),request.card);
     }
 
     private void handle_StartGameMessage(Connection connection) {
-        game.startGameSchnopsn();
+
+        // zu testen, danach soll nur Tisch geöffnet werden
+        //lobby.currentGame = new SchnopsnGame(lobby);
+        //lobby.currentGame.startGameSchnopsn();
       //  wattnGame.startGameWattn();
 
         LOG.info("Game started on server : " + NetworkHandler.GAMESERVER_IP +
                 ", Client ID started the game: " + connection.getID());
+
+        // Message to all Players that game has started to open the gamefragment in order to open voting
+        Responses.GameStartedClientMessage response = new Responses.GameStartedClientMessage();
+        sendPacketToAll(response);
+
+        // Message to all Players to open the voting
+        handle_ForceVoting(connection);
     }
 
     private void handle_PlayerSetSchlag(Connection connection, Requests.PlayerSetSchlag object) {
         Requests.PlayerSetSchlag request =
                 object;
-        wattnGame.deck.setHit(request.schlag);
-        LOG.info("Schlag: " + wattnGame.deck.getHit() + " was set from Client ID: " + connection.getID());
+        lobby.currentGame.setSchlag(request.schlag);
+        //wattnGame.deck.setHit(request.schlag);
+        LOG.info("Schlag: " + lobby.currentGame.getSchlag() + " was set from Client ID: " + connection.getID());
     }
 
     private void handle_PlayerSetTrump(Connection connection, Requests.PlayerSetTrump object) {
         Requests.PlayerSetTrump request =
                 object;
-        wattnGame.deck.setTrump(request.trump);
-        LOG.info("Trump: " + wattnGame.deck.getTrump() + " was set from Client ID: " + connection.getID());
+        lobby.currentGame.setTrump(request.trump);
+        //wattnGame.deck.setTrump(request.trump);
+        LOG.info("Trump: " + lobby.currentGame.getTrump() + " was set from Client ID: " + connection.getID());
     }
+
+    private void handle_PlayerRequestsCheat(Connection connection, Requests.PlayerRequestsCheat object) {
+        Requests.PlayerRequestsCheat request = object;
+
+        LOG.info("Client " + connection.getID() + " requested cheating");
+
+        lobby.currentGame.givePlayerBestCard(connection.getID());
+    }
+
     /////////////////// END - Handler Methods !!! ///////////////////
 
 

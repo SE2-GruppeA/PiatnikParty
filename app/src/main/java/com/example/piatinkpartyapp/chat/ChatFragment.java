@@ -158,6 +158,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     }
 
     private void checkForCheatActivation(String msg) {
+        //TODO: cheatCode is null, app crashes when sending a message
         if(msg.contains(model.cheatCode)){
             model.counter++;
             if(model.counter == model.expectedCounterForCheatWindow){
