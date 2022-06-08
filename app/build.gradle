@@ -105,5 +105,9 @@ dependencies {
 
     //Used for displaying gifs
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+
+    implementation 'nl.dionsegijn:konfetti-xml:2.0.2'
+
 }
 
