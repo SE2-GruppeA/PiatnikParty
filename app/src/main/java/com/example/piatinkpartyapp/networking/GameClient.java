@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.example.piatinkpartyapp.SchlagSelect;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -26,6 +25,12 @@ public class GameClient {
     private Client client;
     private ExecutorService executorService;
     int x = 11;
+
+    //for testing purposes
+    public GameClient(Client client){
+        this.client = client;
+        this.executorService = Executors.newFixedThreadPool(1);
+    }
 
     public GameClient(String gameServer_IP) {
         initLiveData();
@@ -108,8 +113,18 @@ public class GameClient {
                         handle_NotifyPlayerToSetSchlag((Responses.NotifyPlayerToSetSchlag) object);
                     } else if (object instanceof Responses.NotifyPlayerToSetTrump) {
                         handle_NotifyPlayerToSetTrump((Responses.NotifyPlayerToSetTrump) object);
-                    }else if(object instanceof Responses.UpdatePointsWinnerPlayer){
+                    } else if(object instanceof Responses.UpdatePointsWinnerPlayer){
                         handle_UpdatePointsWinnerPlayer((Responses.UpdatePointsWinnerPlayer) object);
+                    } else if (object instanceof Responses.SchnopsnStartedClientMessage) {
+                        handle_SchnopsnStartedClientMessage((Responses.SchnopsnStartedClientMessage) object);
+                    } else if (object instanceof Responses.WattnStartedClientMessage){
+                        handle_WattnStartedClientMessage((Responses.WattnStartedClientMessage) object);
+                    } else if (object instanceof Responses.PensionistlnStartedClientMessage){
+                        handle_PensionistlnStartedClientMessage((Responses.PensionistlnStartedClientMessage) object);
+                    } else if (object instanceof Responses.HosnObeStartedClientMessage){
+                        handle_HosnObeStartedClientMessage((Responses.HosnObeStartedClientMessage) object);
+                    }else if(object instanceof Responses.playerDisconnected){
+                        handle_PlayerDisconnected((Responses.playerDisconnected)object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -174,6 +189,58 @@ public class GameClient {
         LOG.info("Game started by server");
     }
 
+    private void handle_SchnopsnStartedClientMessage(Responses.SchnopsnStartedClientMessage object) {
+        Responses.SchnopsnStartedClientMessage response =
+                object;
+
+        // notify UI: game has started
+        schnopsnStarted.postValue(true);
+        wattnStarted.setValue(false);
+        pensionistlnStarted.setValue(false);
+        hosnObeStarted.setValue(false);
+
+        LOG.info("Schnopsn Game started by server after voting");
+    }
+
+    private void handle_WattnStartedClientMessage(Responses.WattnStartedClientMessage object) {
+        Responses.WattnStartedClientMessage response =
+                object;
+
+        // notify UI: game has started
+        schnopsnStarted.setValue(false);
+        wattnStarted.postValue(true);
+        pensionistlnStarted.setValue(false);
+        hosnObeStarted.setValue(false);
+
+        LOG.info("Wattn Game started by server after voting");
+    }
+
+    private void handle_PensionistlnStartedClientMessage(Responses.PensionistlnStartedClientMessage object) {
+        Responses.PensionistlnStartedClientMessage response =
+                object;
+
+        // notify UI: game has started
+        schnopsnStarted.setValue(false);
+        wattnStarted.setValue(false);
+        pensionistlnStarted.postValue(true);
+        hosnObeStarted.setValue(false);
+
+        LOG.info("Pensionistln Game started by server after voting");
+    }
+
+    private void handle_HosnObeStartedClientMessage(Responses.HosnObeStartedClientMessage object) {
+        Responses.HosnObeStartedClientMessage response =
+                object;
+
+        // notify UI: game has started
+        schnopsnStarted.setValue(false);
+        wattnStarted.setValue(false);
+        pensionistlnStarted.setValue(false);
+        hosnObeStarted.postValue(true);
+
+        LOG.info("Hosn Obe Game started by server after voting");
+    }
+
     private void handle_ConnectedSuccessfully(Responses.ConnectedSuccessfully object) {
         Responses.ConnectedSuccessfully response =
                 object;
@@ -235,6 +302,11 @@ public class GameClient {
         Responses.UpdatePointsWinnerPlayer response = object;
 
         points.postValue(response.totalPoints);
+    }
+
+    private void handle_PlayerDisconnected(Responses.playerDisconnected object){
+        LOG.info("PLayer has disconected ID:" + object.playerID);
+        //TODO: notify the UI that a player disconected from the game
     }
 
     /////////////////// END - Handler Methods !!! ///////////////////
@@ -354,9 +426,14 @@ public class GameClient {
     private MutableLiveData<Boolean> voteForNextGame;
     private MutableLiveData<Responses.SendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
+    private MutableLiveData<CardValue> schlag;
     private MutableLiveData<Integer> points;
     private MutableLiveData<Boolean> setSchlag;
     private MutableLiveData<Boolean> setTrump;
+    private MutableLiveData<Boolean> schnopsnStarted;
+    private MutableLiveData<Boolean> wattnStarted;
+    private MutableLiveData<Boolean> pensionistlnStarted;
+    private MutableLiveData<Boolean> hosnObeStarted;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -392,6 +469,8 @@ public class GameClient {
         return trump;
     }
 
+    public LiveData<CardValue> getSchlag(){return schlag;}
+
     public LiveData<Integer> getPoints() {
         return points;
     }
@@ -404,6 +483,22 @@ public class GameClient {
         return setTrump;
     }
 
+    public LiveData<Boolean> isSchnopsnStarted() {
+        return schnopsnStarted;
+    }
+
+    public LiveData<Boolean> isWattnStarted() {
+        return wattnStarted;
+    }
+
+    public LiveData<Boolean> isPensionistlnStarted() {
+        return pensionistlnStarted;
+    }
+
+    public LiveData<Boolean> isHosnObeStarted() {
+        return hosnObeStarted;
+    }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -414,9 +509,23 @@ public class GameClient {
         voteForNextGame = new MutableLiveData<>();
         playedCard = new MutableLiveData<>();
         trump = new MutableLiveData<>();
+        schlag = new MutableLiveData<>();
         points = new MutableLiveData<>();
         setTrump = new MutableLiveData<>();
         setSchlag = new MutableLiveData<>();
+        schnopsnStarted = new MutableLiveData<>();
+        wattnStarted = new MutableLiveData<>();
+        pensionistlnStarted = new MutableLiveData<>();
+        hosnObeStarted = new MutableLiveData<>();
+    }
+
+
+    public void setSetTrump(MutableLiveData<Boolean> trump) {
+        this.setTrump = trump;
+    }
+
+    public void setSetSchlag(MutableLiveData<Boolean> setSchlag) {
+        this.setSchlag = setSchlag;
     }
 
     public void sendVoteForNextGame(GameName nextGame){
@@ -436,6 +545,14 @@ public class GameClient {
         sendPacket(request);
 
         LOG.info("Voting force message has been sent to the server");
+    }
+
+    public void cheatRequest() {
+        Requests.PlayerRequestsCheat request = new Requests.PlayerRequestsCheat();
+
+        sendPacket(request);
+
+        LOG.info("CheatRequest was sent");
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

@@ -1,6 +1,7 @@
 package com.example.piatinkpartyapp.networking;
 
 import com.example.piatinkpartyapp.cards.Card;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
 
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class Responses {
         }
     }
 
-    public static class GameStartedClientMessage {
+    public static class GameStartedClientMessage implements IPackets {
         public GameStartedClientMessage() { }
     }
 
@@ -141,7 +142,11 @@ public class Responses {
             this.trump = symbol;
         }
     }
-
+    public static class SendSchlagToAllPlayers{
+        public CardValue schlag;
+        public SendSchlagToAllPlayers(){}
+        public SendSchlagToAllPlayers(CardValue cardValue){this.schlag=cardValue;}
+    }
     public static class UpdatePointsWinnerPlayer {
         public int totalPoints;
 
@@ -158,5 +163,31 @@ public class Responses {
 
     public static class NotifyPlayerToSetTrump {
         public NotifyPlayerToSetTrump() { }
+    }
+
+    public static class SchnopsnStartedClientMessage implements IPackets {
+        public SchnopsnStartedClientMessage() { }
+    }
+
+    public static class WattnStartedClientMessage implements IPackets {
+        public WattnStartedClientMessage() { }
+    }
+
+    public static class PensionistlnStartedClientMessage implements IPackets {
+        public PensionistlnStartedClientMessage() { }
+    }
+
+    public static class HosnObeStartedClientMessage implements IPackets {
+        public HosnObeStartedClientMessage() { }
+    }
+
+    public static class playerDisconnected implements IPackets{
+        public int playerID;
+
+        public playerDisconnected() { }
+
+        public playerDisconnected(int playerID) {
+            this.playerID = playerID;
+        }
     }
 }

@@ -3,9 +3,13 @@ package com.example.piatinkpartyapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -25,6 +29,7 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatFragment;
+import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
@@ -32,6 +37,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +59,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     Button scoreboardBtn;
     Button voteBtn;
     Button mixCardsBtn;
+    Button btnCheat;
     private static ImageView currentCard1;
     private static ImageView currentCard2;
     public static SchnopsnDeck deck;
@@ -107,28 +114,6 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         //set fullscreen and landscape mode
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        //todo: remove, but used for testing
-        //startChatTestServer();
-        //System.out.println("pepep");
-    }
-
-
-
-    /*
-    Only used for testing so I can create a client on same device to connect to
-     */
-    GameServer s;
-    private void startChatTestServer() {
-        s = new GameServer();
-        try {
-            s.startNewGameServer();
-            Thread.sleep(2000);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void waitForMyTurn(Boolean isMyTurn) {
@@ -174,21 +159,71 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         addOnclickHandlers();
         initHandCardsViews();
 
-        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+        //checks if the layout is already landscape
+        //if it would not be in landscape mode some dialogs would get displayed twice
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
 
-        clientViewModel.getHandCards().observe(getActivity(), handCards -> updateHandCards(handCards));
-        clientViewModel.isMyTurn().observe(getActivity(), isMyTurn -> waitForMyTurn(isMyTurn));
-        clientViewModel.getHandoutCard().observe(getActivity(), card -> getHandoutCard(card));
-        clientViewModel.isVotingForNextGame().observe(getActivity(), votingForNextGame -> voteForNextGame(votingForNextGame));
-        clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
-        clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
-        clientViewModel.getTrump().observe(getActivity(), trump -> setTrump(trump));
-        clientViewModel.getPoints().observe(getActivity(), points -> setScorePoints(points));
-        clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
-        clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
+            clientViewModel.getHandCards().observe(getViewLifecycleOwner(), handCards -> updateHandCards(handCards));
+            clientViewModel.isMyTurn().observe(getViewLifecycleOwner(), isMyTurn -> waitForMyTurn(isMyTurn));
+            clientViewModel.getHandoutCard().observe(getViewLifecycleOwner(), card -> getHandoutCard(card));
+            clientViewModel.isVotingForNextGame().observe(getViewLifecycleOwner(), votingForNextGame -> voteForNextGame(votingForNextGame));
+            clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), isEndOfRound -> atRoundEnd(isEndOfRound));
+            clientViewModel.getPlayedCard().observe(getViewLifecycleOwner(), playedCard -> setPlayedCard(playedCard));
+            clientViewModel.getPoints().observe(getViewLifecycleOwner(), points -> setScorePoints(points));
+            clientViewModel.isSetTrump().observe(getViewLifecycleOwner(), setTrump -> playerSetTrump(setTrump));
+            clientViewModel.isSetSchlag().observe(getViewLifecycleOwner(), setSchlag -> playerSetSchlag(setSchlag));
+            clientViewModel.getTrump().observe(getViewLifecycleOwner(), trump -> setTrump(trump));
+
+            //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
+            clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
+
+            //when a game is started, the client gets notified
+            clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), started -> initializeSchnopsn(started));
+            clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), started -> initializeWattn(started));
+            clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), started -> initializePensionistln(started));
+            clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
+        }
 
         //initializeGame();
         return root;
+    }
+
+    private void initializeHosnObe(Boolean started) {
+        if(started){
+
+        }
+    }
+
+    private void initializePensionistln(Boolean started) {
+        if(started){
+
+        }
+    }
+
+    private void initializeWattn(Boolean started) {
+        if(started){
+
+        }
+    }
+
+    private void initializeSchnopsn(Boolean started) {
+        if(started){
+            resetImageView(currentCard1);
+            resetImageView(currentCard2);
+
+            scoreTxt.setText("0");
+        }
+    }
+
+    private void resetImageView(ImageView imageView){
+        imageView.setImageResource(getResId("placeholder"));
+    }
+
+    private void notifyNewMessage(ArrayList<ChatMessage> message) {
+        if(message.size() > 0){
+            arrowBtn.setImageResource(getResId("arrow_new_message"));
+        }
     }
 
     private void playerSetSchlag(Boolean setSchlag) {
@@ -248,6 +283,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         exitBtn.setOnClickListener(this);
         scoreboardBtn.setOnClickListener(this);
         voteBtn.setOnClickListener(this);
+        btnCheat.setOnClickListener(this);
         //mixCardsBtn.setOnClickListener(this);
     }
 
@@ -269,38 +305,51 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         swapCardView = view.findViewById(R.id.swapCard);
         mixCardsBtn = view.findViewById(R.id.mixBtn);
         imgTrump = view.findViewById(R.id.imgTrump);
+        btnCheat = view.findViewById(R.id.btnCheat);
     }
 
     @Override
     public void onClick(View view) {
         if (view == arrowBtn) {
-            showSideDrawer();
+            openChatFragment();
         } else if (view == exitBtn) {
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            goBack();
-                            break;
-
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            //No button clicked
-                            break;
-                    }
-                }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-            builder.setMessage("Möchtest du dieses Spiel wirklich verlassen?").setPositiveButton("Ja", dialogClickListener)
-                    .setNegativeButton("Nein", dialogClickListener).show();
+            exitGame(view);
         } else if (view == scoreboardBtn) {
             showScoreboard();
         } else if (view == voteBtn) {
             clientViewModel.forceVoting();
         }else if(view == mixCardsBtn) {
             deck.mixCards();
+        }else if(view == btnCheat){
+            clientViewModel.cheatRequest();
         }
+    }
+
+    public void openChatFragment(){
+        //convert arrow back, if a new message was received indicated by the red circle
+        arrowBtn.setImageResource(getResId("arrow"));
+        showSideDrawer();
+    }
+
+    public void exitGame(View view){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        goBack();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setMessage("Möchtest du dieses Spiel wirklich verlassen?").setPositiveButton("Ja", dialogClickListener)
+                .setNegativeButton("Nein", dialogClickListener).show();
     }
 
     public void showSideDrawer() {
