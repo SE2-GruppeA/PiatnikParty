@@ -179,4 +179,7 @@ public class Requests{
 
         }
     }
+    public static class MixCardsRequest implements IPackets{
+        public MixCardsRequest(){}
+    }
 }

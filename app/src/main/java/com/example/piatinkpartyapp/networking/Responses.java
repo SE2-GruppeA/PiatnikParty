@@ -190,4 +190,8 @@ public class Responses {
             this.playerID = playerID;
         }
     }
+
+    public static class mixedCards implements IPackets{
+        public mixedCards(){}
+    }
 }
