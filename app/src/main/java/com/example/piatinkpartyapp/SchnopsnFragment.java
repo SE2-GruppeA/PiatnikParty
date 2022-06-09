@@ -86,6 +86,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     private float mAccel;
     private float mAccelCurrent;
     private float mAccelLast;
+    Boolean mixedCards;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -138,6 +139,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     private final SensorEventListener mSensorListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
+            mixedCards = false;
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
@@ -146,7 +148,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
             float delta = mAccelCurrent-mAccelLast;
             mAccel = mAccel *0.9f +delta;
             if(mAccel > 12){
+                mixedCards = true;
                 Toast.makeText(getContext(), "shake detected",Toast.LENGTH_LONG).show();
+                mixCards(mixedCards);
             }
         }
 
@@ -166,6 +170,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         super.onPause();
     }
 
+    private void mixCards(Boolean mixedCards){
+        if(mixedCards){
+            this.mixedCards = true;
+            Toast.makeText(requireActivity().getApplicationContext(), "die Karten des Stapels wurden neu gemischt!",Toast.LENGTH_LONG).show();
+        }
+
+    }
     private void waitForMyTurn(Boolean isMyTurn) {
         if(isMyTurn) {
             Toast.makeText(requireActivity().getApplicationContext(), "Du bist dran", Toast.LENGTH_SHORT).show();
@@ -233,6 +244,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
             clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), started -> initializeWattn(started));
             clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), started -> initializePensionistln(started));
             clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
+
+            //shaking phone to mix cards
+            //todo invoke mixCards method
+         //  clientViewModel.mixedCards().observe(getViewLifecycleOwner(), mixedCards -> mixCards());
         }
 
         //initializeGame();

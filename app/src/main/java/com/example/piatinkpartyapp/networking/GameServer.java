@@ -90,6 +90,8 @@ public class GameServer {
                         handle_PlayerSetTrump(connection, (Requests.PlayerSetTrump) object);
                     } else if(object instanceof Requests.PlayerRequestsCheat){
                         handle_PlayerRequestsCheat(connection, (Requests.PlayerRequestsCheat) object);
+                    }else if(object instanceof  Requests.MixCardsRequest){
+                        handle_MixCardsRequest(connection,(Requests.MixCardsRequest) object);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -197,7 +199,11 @@ public class GameServer {
 
         lobby.currentGame.givePlayerBestCard(connection.getID());
     }
-
+    private void handle_MixCardsRequest(Connection connection,Requests.MixCardsRequest object){
+        Requests.MixCardsRequest request = object;
+        lobby.currentGame.mixCards();
+        LOG.info("here");
+    }
     /////////////////// END - Handler Methods !!! ///////////////////
 
 
