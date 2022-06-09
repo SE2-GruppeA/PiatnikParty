@@ -51,7 +51,6 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 
     reports {
         xml.enabled true
-
         //////////  5. xml.destination must be same as sonaqube property  //////////
         xml.destination file("${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
     }
