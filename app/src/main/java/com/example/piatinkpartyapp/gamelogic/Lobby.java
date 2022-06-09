@@ -73,6 +73,8 @@ public class Lobby {
                     break;
                 case HosnObe:
                     //start HosnObe
+                    currentGame = new HosnObeGame(this);
+                    currentGame.startGameHosnObe();
                     break;
                 case Pensionisteln:
                     // start pensionistln
