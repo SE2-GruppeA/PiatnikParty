@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.hardware.SensorEventListener;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -39,6 +40,14 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Logger;
 
+//sensoric for shake event
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import java.util.Objects;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SchnopsnFragment#newInstance} factory method to
@@ -71,6 +80,12 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     //indicates the clients turn, so they can not
     //play cards when its false
     Boolean isMyTurn;
+
+    //sensorics
+    private SensorManager mSensorManager;
+    private float mAccel;
+    private float mAccelCurrent;
+    private float mAccelLast;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -110,10 +125,45 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        //sensorics
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        Objects.requireNonNull(mSensorManager).registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        mAccel = 10f;
+        mAccelCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelLast = SensorManager.GRAVITY_EARTH;
         //set fullscreen and landscape mode
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+    private final SensorEventListener mSensorListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            float x = sensorEvent.values[0];
+            float y = sensorEvent.values[1];
+            float z = sensorEvent.values[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt((double)(x*x + y*y +z*z));
+            float delta = mAccelCurrent-mAccelLast;
+            mAccel = mAccel *0.9f +delta;
+            if(mAccel > 12){
+                Toast.makeText(getContext(), "shake detected",Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
+        }
+    };
+    @Override
+    public void onResume(){
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
+        super.onResume();
+    }
+    @Override
+    public  void onPause(){
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
     }
 
     private void waitForMyTurn(Boolean isMyTurn) {
