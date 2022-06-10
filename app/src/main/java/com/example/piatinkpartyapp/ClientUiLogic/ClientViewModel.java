@@ -145,6 +145,9 @@ public class ClientViewModel extends ViewModel {
         client.cheatRequest();
     }
 
+    public void exposePossibleCheater(String playerId) {
+        client.exposePossibleCheater(playerId);
+    }
 
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

@@ -31,6 +31,7 @@ public class NetworkHandler {
         kryo.register(Requests.ForceVoting.class);
         kryo.register(Requests.VoteForNextGame.class);
         kryo.register(Requests.PlayerRequestsCheat.class);
+        kryo.register(Requests.ExposePossibleCheater.class);
 
         //Responses
         kryo.register(Responses.ConnectedSuccessfully.class);

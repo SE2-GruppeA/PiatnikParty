@@ -117,7 +117,8 @@ public class ExposeCheaterFragment extends Fragment implements View.OnClickListe
         TextView textView = (TextView)spinner_playerIds.getSelectedView();
         String playerId = textView.getText().toString();
 
-        //todo: clientViewModel.exposePossibleCheater(playerId);
+        //todo: live data
+        clientViewModel.exposePossibleCheater(playerId);
     }
 
     public void closeVotingDialog(){

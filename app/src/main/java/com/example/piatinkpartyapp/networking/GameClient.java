@@ -584,5 +584,10 @@ public class GameClient {
         LOG.info("CheatRequest was sent");
     }
 
+    public void exposePossibleCheater(String playerId) {
+        Requests.ExposePossibleCheater request = new Requests.ExposePossibleCheater(playerId);
+        sendPacket(request);
+        LOG.info("ExposePossibleCheater Request was sent for playerID : " + playerId);
+    }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

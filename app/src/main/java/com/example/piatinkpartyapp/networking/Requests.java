@@ -13,7 +13,19 @@ NOTES :
     then we also need an  empty constructor, else Kryonet throws an Exception !!!!
  */
 
-public class Requests{
+public class Requests {
+    public static class ExposePossibleCheater implements IPackets {
+        String playerId;
+
+        public ExposePossibleCheater() {
+
+        }
+
+        public ExposePossibleCheater(String playerId) {
+            this.playerId = playerId;
+        }
+    }
+
     public static class SendEndToEndChatMessage implements IPackets {
         String message;
         int from;
@@ -53,9 +65,9 @@ public class Requests{
 
         @Override
         public boolean equals(@Nullable Object obj) {
-            if (obj instanceof StartGameMessage){
+            if (obj instanceof StartGameMessage) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
         }
@@ -65,15 +77,17 @@ public class Requests{
         int playerID;
         Card card;
 
-        public PlayerSetCard() { }
+        public PlayerSetCard() {
+        }
 
-        public Card getCard(){
+        public Card getCard() {
             return card;
         }
 
-        public void setCard(Card card){
-            this.card=card;
+        public void setCard(Card card) {
+            this.card = card;
         }
+
         public PlayerSetCard(int playerID, Card card) {
             this.playerID = playerID;
             this.card = card;
@@ -86,14 +100,14 @@ public class Requests{
 
         @Override
         public boolean equals(@Nullable Object obj) {
-            if (obj instanceof PlayerSetCard){
+            if (obj instanceof PlayerSetCard) {
                 PlayerSetCard comp = (PlayerSetCard) obj;
-                if (playerID == comp.playerID && card.equals(comp.card)){
+                if (playerID == comp.playerID && card.equals(comp.card)) {
                     return true;
-                }else {
+                } else {
                     return false;
                 }
-            }else {
+            } else {
                 return false;
             }
         }
@@ -102,7 +116,8 @@ public class Requests{
     public static class PlayerSetSchlag implements IPackets {
         CardValue schlag;
 
-        public PlayerSetSchlag() { }
+        public PlayerSetSchlag() {
+        }
 
         public PlayerSetSchlag(CardValue schlag) {
             this.schlag = schlag;
@@ -115,14 +130,14 @@ public class Requests{
 
         @Override
         public boolean equals(@Nullable Object obj) {
-            if(obj instanceof PlayerSetSchlag){
+            if (obj instanceof PlayerSetSchlag) {
                 PlayerSetSchlag comp = (PlayerSetSchlag) obj;
-                if(schlag == comp.schlag){
+                if (schlag == comp.schlag) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
-            }else{
+            } else {
                 return false;
             }
         }
@@ -131,7 +146,8 @@ public class Requests{
     public static class PlayerSetTrump implements IPackets {
         Symbol trump;
 
-        public PlayerSetTrump() { }
+        public PlayerSetTrump() {
+        }
 
         public PlayerSetTrump(Symbol trump) {
             this.trump = trump;
@@ -144,14 +160,14 @@ public class Requests{
 
         @Override
         public boolean equals(@Nullable Object obj) {
-            if(obj instanceof PlayerSetTrump){
+            if (obj instanceof PlayerSetTrump) {
                 PlayerSetTrump comp = (PlayerSetTrump) obj;
-                if(trump == comp.trump){
+                if (trump == comp.trump) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
-            }else{
+            } else {
                 return false;
             }
         }
@@ -161,13 +177,15 @@ public class Requests{
     //in the final game this is not needed as at the end of each game
     //a vote will happen
     public static class ForceVoting implements IPackets {
-        public ForceVoting() {}
+        public ForceVoting() {
+        }
     }
 
     public static class VoteForNextGame implements IPackets {
         GameName gameName;
 
-        public VoteForNextGame() {}
+        public VoteForNextGame() {
+        }
 
         public VoteForNextGame(GameName nextGame) {
             this.gameName = nextGame;
@@ -175,11 +193,13 @@ public class Requests{
     }
 
     public static class PlayerRequestsCheat implements IPackets {
-        public PlayerRequestsCheat(){
+        public PlayerRequestsCheat() {
 
         }
     }
-    public static class MixCardsRequest implements IPackets{
-        public MixCardsRequest(){}
+
+    public static class MixCardsRequest implements IPackets {
+        public MixCardsRequest() {
+        }
     }
 }

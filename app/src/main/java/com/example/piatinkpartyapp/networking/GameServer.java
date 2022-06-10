@@ -92,6 +92,8 @@ public class GameServer {
                         handle_PlayerRequestsCheat(connection, (Requests.PlayerRequestsCheat) object);
                     }else if(object instanceof  Requests.MixCardsRequest){
                         handle_MixCardsRequest(connection,(Requests.MixCardsRequest) object);
+                    }else if(object instanceof  Requests.ExposePossibleCheater){
+                        handle_exposePossibleCheater(connection,(Requests.ExposePossibleCheater) object);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -99,6 +101,21 @@ public class GameServer {
                 }
             }
         });
+    }
+
+    private void handle_exposePossibleCheater(Connection connection, Requests.ExposePossibleCheater object) {
+        String playerId = object.playerId;
+
+        // todo: Implement gamelogic: how explained down below (Maybe Anton or Bene)!
+        /**
+         * gameLogic.exposePossibleCheater(playerId)
+         * return true if player really cheater with response expossedPlayer
+         *
+         * return false, and also trigger a lose 10 points or smth response because exposing players
+         * comes with risks !
+         */
+
+        // todo: Also add live data !
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////
