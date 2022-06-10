@@ -11,12 +11,12 @@
         android:layout_weight="1">
 
     </pl.droidsonroids.gif.GifImageView>
+
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="150dp"
         android:layout_height="85dp"
         android:src="@drawable/angel"
         android:layout_weight="1">
-
     </pl.droidsonroids.gif.GifImageView>
 
 </LinearLayout>

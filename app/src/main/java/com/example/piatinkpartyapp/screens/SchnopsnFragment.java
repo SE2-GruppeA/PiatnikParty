@@ -32,6 +32,7 @@ import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatFragment;
 import com.example.piatinkpartyapp.chat.ChatMessage;
+import com.example.piatinkpartyapp.chat.ExposeCheaterFragment;
 import com.example.piatinkpartyapp.chat.ExposeDialogFragment;
 import com.example.piatinkpartyapp.networking.Responses;
 
@@ -344,6 +345,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         scoreboardBtn.setOnClickListener(this);
         voteBtn.setOnClickListener(this);
         btnCheat.setOnClickListener(this);
+        btnExpose.setOnClickListener(this);
         //mixCardsBtn.setOnClickListener(this);
     }
 
@@ -367,6 +369,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         imgTrump = view.findViewById(R.id.imgTrump);
         btnCheat = view.findViewById(R.id.btnCheat);
         btnExpose = view.findViewById(R.id.btnExpose);
+
+
     }
 
     @Override
@@ -383,11 +387,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             deck.mixCards();
         }else if(view == btnCheat){
             //clientViewModel.cheatRequest();
-            openExposeDialog();
         }
         else if(view == btnExpose){
-            // todo: Komischerweise wird die Funktion nicht getriggert
-            System.out.println("Hello Expose");
             openExposeDialog();
         }
     }
@@ -402,9 +403,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void handleExpose(Boolean doExpose) {
         Log.d(TAG, "Expose ? " + doExpose);
-
         if(doExpose){
-            // todo: openExposeCheaterFragment(); or Dialog
+            // open new fragment !
+            requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new ExposeCheaterFragment()).commit();
         }
     }
 
