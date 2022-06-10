@@ -1,36 +1,49 @@
 package com.example.piatinkpartyapp.cardsTests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.example.piatinkpartyapp.cards.Deck;
 import com.example.piatinkpartyapp.cards.GameName;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DeckTest {
+    private GameName gameName;
+    private int players;
+    private Deck deck;
+
+    @BeforeEach
+    public void init(){
+        gameName = GameName.Schnopsn;
+        players = 2;
+        deck = new Deck(gameName, players);
+    }
+
+    @AfterEach
+    public void cleaer(){
+        gameName = null;
+        deck = null;
+    }
 
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void testCreateCards(){
+        //Testing if the deck is created
+        deck.createCards();
+        assertNotNull(deck);
     }
 
     @Test
     public void testGetHandCards() {
-
-        GameName gameName = GameName.Schnopsn;
-        int players = 2;
-
-        Deck deck = new Deck(gameName, players);
-        deck.getHandCards();
+        assertNotNull(deck.getHandCards());
     }
 
     @Test
-    public void testTakeCards() {
-
-        GameName gameName = GameName.Schnopsn;
-        int players = 2;
-
-        Deck deck = new Deck(gameName, players);
+    public void testTakeCard() {
+        // Testing if a card is taken from the deck
+        assertNotEquals(deck,deck.takeCard());
 
     }
 }
