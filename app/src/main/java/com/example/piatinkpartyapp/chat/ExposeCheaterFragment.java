@@ -101,7 +101,7 @@ public class ExposeCheaterFragment extends Fragment implements View.OnClickListe
         spinner_playerIds.setAdapter(adapter);
 
         // default first player, so we don't have to do null checks
-        spinner_playerIds.setSelection(0);
+        spinner_playerIds.setSelection(1);
     }
 
     @Override
