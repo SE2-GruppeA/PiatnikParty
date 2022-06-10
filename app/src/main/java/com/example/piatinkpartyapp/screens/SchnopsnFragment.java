@@ -34,6 +34,7 @@ import com.example.piatinkpartyapp.chat.ChatFragment;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.chat.ExposeCheaterFragment;
 import com.example.piatinkpartyapp.chat.ExposeDialogFragment;
+import com.example.piatinkpartyapp.chat.IsCheaterDialogFragment;
 import com.example.piatinkpartyapp.networking.Responses;
 
 import java.lang.reflect.Field;
@@ -132,6 +133,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
+
     private final SensorEventListener mSensorListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
@@ -140,12 +142,12 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
             mAccelLast = mAccelCurrent;
-            mAccelCurrent = (float) Math.sqrt((double)(x*x + y*y +z*z));
-            float delta = mAccelCurrent-mAccelLast;
-            mAccel = mAccel *0.9f +delta;
-            if(mAccel > 12){
+            mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            float delta = mAccelCurrent - mAccelLast;
+            mAccel = mAccel * 0.9f + delta;
+            if (mAccel > 12) {
                 mixedCards = true;
-                Toast.makeText(getContext(), "shake detected",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "shake detected", Toast.LENGTH_LONG).show();
                 mixCards(mixedCards);
             }
         }
@@ -155,34 +157,37 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
         }
     };
+
     @Override
-    public void onResume(){
-        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
+    public void onResume() {
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         super.onResume();
     }
+
     @Override
-    public  void onPause(){
+    public void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
         super.onPause();
     }
 
-    private void mixCards(Boolean mixedCards){
-        if(mixedCards){
+    private void mixCards(Boolean mixedCards) {
+        if (mixedCards) {
             this.mixedCards = true;
-            Toast.makeText(requireActivity().getApplicationContext(), "die Karten des Stapels wurden neu gemischt!",Toast.LENGTH_LONG).show();
+            Toast.makeText(requireActivity().getApplicationContext(), "die Karten des Stapels wurden neu gemischt!", Toast.LENGTH_LONG).show();
         }
 
     }
+
     private void waitForMyTurn(Boolean isMyTurn) {
-        if(isMyTurn) {
+        if (isMyTurn) {
             Toast.makeText(requireActivity().getApplicationContext(), "Du bist dran", Toast.LENGTH_SHORT).show();
             this.isMyTurn = true;
-        }else{
+        } else {
             this.isMyTurn = false;
         }
     }
 
-    private void initHandCardsViews(){
+    private void initHandCardsViews() {
         handCardImageViews = new ArrayList<>();
         handCardImageViews.add(handCardView1);
         handCardImageViews.add(handCardView2);
@@ -197,9 +202,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
         int j = 0;
         //set onclickListeners to handcards
-        for(ImageView imageView:handCardImageViews){
+        for (ImageView imageView : handCardImageViews) {
 
-            setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT),imageView);
+            setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
             j++;
             handCardViewListener(imageView);
         }
@@ -218,7 +223,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
         //checks if the layout is already landscape
         //if it would not be in landscape mode some dialogs would get displayed twice
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
 
             clientViewModel.getHandCards().observe(getViewLifecycleOwner(), handCards -> updateHandCards(handCards));
@@ -243,7 +248,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
             //shaking phone to mix cards
             //todo invoke mixCards method
-         //  clientViewModel.mixedCards().observe(getViewLifecycleOwner(), mixedCards -> mixCards());
+            //  clientViewModel.mixedCards().observe(getViewLifecycleOwner(), mixedCards -> mixCards());
         }
 
         //initializeGame();
@@ -251,25 +256,25 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void initializeHosnObe(Boolean started) {
-        if(started){
+        if (started) {
 
         }
     }
 
     private void initializePensionistln(Boolean started) {
-        if(started){
+        if (started) {
 
         }
     }
 
     private void initializeWattn(Boolean started) {
-        if(started){
+        if (started) {
 
         }
     }
 
     private void initializeSchnopsn(Boolean started) {
-        if(started){
+        if (started) {
             resetImageView(currentCard1);
             resetImageView(currentCard2);
 
@@ -277,24 +282,24 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    private void resetImageView(ImageView imageView){
+    private void resetImageView(ImageView imageView) {
         imageView.setImageResource(getResId("placeholder"));
     }
 
     private void notifyNewMessage(ArrayList<ChatMessage> message) {
-        if(message.size() > 0){
+        if (message.size() > 0) {
             arrowBtn.setImageResource(getResId("arrow_new_message"));
         }
     }
 
     private void playerSetSchlag(Boolean setSchlag) {
-        if(setSchlag){
+        if (setSchlag) {
             requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new SchlagSelect()).commit();
         }
     }
 
     private void playerSetTrump(Boolean setTrump) {
-        if(setTrump){
+        if (setTrump) {
             requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new TrumpSelect()).commit();
         }
     }
@@ -315,7 +320,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void atRoundEnd(Boolean isEndOfRound) {
-        if(isEndOfRound){
+        if (isEndOfRound) {
             Toast.makeText(requireActivity().getApplicationContext(),
                     "Runde ist zuende",
                     Toast.LENGTH_SHORT).show();
@@ -323,16 +328,16 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void voteForNextGame(Boolean votingForNextGame) {
-        if(votingForNextGame) {
+        if (votingForNextGame) {
             showVote();
         }
     }
 
     private void getHandoutCard(Card c) {
         handCards.add(c);
-        for(ImageView i : handCardImageViews){
-            if(i.getContentDescription().equals("backside")){
-                setCardImage(c.frontSide.toLowerCase(Locale.ROOT),i);
+        for (ImageView i : handCardImageViews) {
+            if (i.getContentDescription().equals("backside")) {
+                setCardImage(c.frontSide.toLowerCase(Locale.ROOT), i);
                 i.setContentDescription(c.frontSide.toLowerCase(Locale.ROOT));
                 break;
             }
@@ -383,14 +388,28 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             showScoreboard();
         } else if (view == voteBtn) {
             clientViewModel.forceVoting();
-        }else if(view == mixCardsBtn) {
+        } else if (view == mixCardsBtn) {
             deck.mixCards();
-        }else if(view == btnCheat){
-            //clientViewModel.cheatRequest();
-        }
-        else if(view == btnExpose){
+        } else if (view == btnCheat) {
+            clientViewModel.cheatRequest();
+        } else if (view == btnExpose) {
             openExposeDialog();
         }
+    }
+
+    // todo: isCheater comes from LiveData
+    private void isCheaterLiveDataHandler(boolean isCheater) {
+        IsCheaterDialogFragment dialog;
+
+        if (isCheater) {
+            dialog = new IsCheaterDialogFragment(true);
+        } else {
+            dialog = new IsCheaterDialogFragment(false);
+        }
+
+        // I know this is considered deprecated but I could not find any other way to solve this
+        dialog.setTargetFragment(SchnopsnFragment.this, 1);
+        dialog.show(getFragmentManager(), TAG + " IsCheaterDialogFragment");
     }
 
     private void openExposeDialog() {
@@ -403,19 +422,19 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void handleExpose(Boolean doExpose) {
         Log.d(TAG, "Expose ? " + doExpose);
-        if(doExpose){
+        if (doExpose) {
             // open new fragment !
             requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new ExposeCheaterFragment()).commit();
         }
     }
 
-    public void openChatFragment(){
+    public void openChatFragment() {
         //convert arrow back, if a new message was received indicated by the red circle
         arrowBtn.setImageResource(getResId("arrow"));
         showSideDrawer();
     }
 
-    public void exitGame(View view){
+    public void exitGame(View view) {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -448,51 +467,54 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new VotingDialog()).commit();
     }
 
-    private static void setCardImage(String cardName, ImageView imgview){
+    private static void setCardImage(String cardName, ImageView imgview) {
         Integer rid = getResId(cardName);
         imgview.setImageResource(rid);
         imgview.setContentDescription(cardName);
     }
+
     public static int getResId(String resName) {
 
         try {
 
             Field idField = R.drawable.class.getDeclaredField(resName);
-            Log.d("##############",idField.getName());
+            Log.d("##############", idField.getName());
             return idField.getInt(idField);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
     }
+
     //play card from handcards, displayed & set to currentCard
-    private static void play(Card c, int position){
+    private static void play(Card c, int position) {
         String s = c.frontSide.toLowerCase(Locale.ROOT);
 
-        if(position == 1) {
+        if (position == 1) {
             setCardImage(s, currentCard1);
-        }else if(position == 2){
+        } else if (position == 2) {
             setCardImage(s, currentCard2);
         }
     }
+
     /*longonclicklistener to handcards
      * if longonclick to handcard, card gets played, if it is available (handcards showing the backside image are unavailable -checked via imageview description)*/
-    private void handCardViewListener(ImageView handCardView){
+    private void handCardViewListener(ImageView handCardView) {
         handCardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 //cards can only be played if it is the clients turn
-                if(isMyTurn){
+                if (isMyTurn) {
                     //currenCard view is only to be visible if there is a played card - invisible by default
                     currentCard1.setVisibility(View.VISIBLE);
                     //card only playable if it is availalbe (not showing its backside)
-                    if(!handCardView.getContentDescription().equals("backside")){
+                    if (!handCardView.getContentDescription().equals("backside")) {
                         String[] x = handCardView.getContentDescription().toString().split("_");
 
                         //select selected card form handcards array list
                         Card c = new Card(Symbol.randomSymbol(), CardValue.ACHT);
-                        for(Card d : handCards){
-                            if(d.symbol.name().equals(x[0].toUpperCase(Locale.ROOT)) && d.cardValue.name().equals(x[1].toUpperCase(Locale.ROOT))){
+                        for (Card d : handCards) {
+                            if (d.symbol.name().equals(x[0].toUpperCase(Locale.ROOT)) && d.cardValue.name().equals(x[1].toUpperCase(Locale.ROOT))) {
                                 c = handCards.get(handCards.indexOf(d));
                             }
                         }
@@ -501,9 +523,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
                         //play(c);
                         clientViewModel.setCard(c);
                         handCards.remove(c);
-                        setCardImage("backside",handCardView);
+                        setCardImage("backside", handCardView);
                     }
-                }else{
+                } else {
                     Toast.makeText(requireActivity().getApplicationContext(),
                             "Warte auf deine Runde",
                             Toast.LENGTH_SHORT).show();

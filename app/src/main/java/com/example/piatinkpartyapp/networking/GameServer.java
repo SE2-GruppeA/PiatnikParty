@@ -121,9 +121,11 @@ public class GameServer {
         // todo: Also add live data !
         /**
          * gameLogic.exposePossibleCheater(playerId)
-         * return true if player really cheater with response expossedPlayer
          *
-         * return false, and also trigger a lose 10 points or smth response because exposing players
+         * return true if player really cheater with response isCheater(true);
+         * also trigger cheater to lose -20 points (he got +10 when cheating, so he is only losing -10)
+         *
+         * return false, and also trigger a lose -10 points with response isCheater(false)
          * comes with risks !
          */
         return true;

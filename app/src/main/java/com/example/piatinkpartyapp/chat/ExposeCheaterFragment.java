@@ -109,11 +109,11 @@ public class ExposeCheaterFragment extends Fragment implements View.OnClickListe
         if(view == closeExposeBtn){
             closeVotingDialog();
         } if(view == exposeBtn){
-            doExpose();
+            exposePossibleCheater();
         }
     }
 
-    private void doExpose() {
+    private void exposePossibleCheater() {
         TextView textView = (TextView)spinner_playerIds.getSelectedView();
         String playerId = textView.getText().toString();
 
