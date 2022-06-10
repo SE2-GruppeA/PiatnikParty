@@ -3,23 +3,19 @@ package com.example.piatinkpartyapp.gameLogicTests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
-import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.gamelogic.Game;
+import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
-
 
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-
 public class GameTest {
-/*
+
 
     @Test
     public void addition_isCorrect() {
@@ -44,7 +40,9 @@ public class GameTest {
         Card card1 = new Card(symbol, cardValue1);
         Card card2 = new Card(symbol2, cardValue2);
 
+        Lobby lobby = new Lobby();
         Game game = new Game();
+        game.lobby = lobby;
         Player player = new Player();
         Player player2 = new Player();
         player.setId(playerId);
@@ -74,7 +72,10 @@ public class GameTest {
         Card card1 = new Card(symbol, cardValue1);
         Card card2 = new Card(symbol2, cardValue2);
 
+        Lobby lobby = new Lobby();
         Game game = new Game();
+        game.lobby = lobby;
+
         Player player = new Player();
         Player player2 = new Player();
         player.setId(playerId);
@@ -99,7 +100,9 @@ public class GameTest {
     @Test
     public void getRoundWinnerPlayerSchnopsnTest() {
 
+        Lobby lobby = new Lobby();
         Game game = new Game();
+        game.lobby = lobby;
 
         Player winnerPlayer = new Player();
         Player currentPlayer = new Player();
@@ -118,7 +121,5 @@ public class GameTest {
         assertNotNull(winnerPlayer.getCardPlayed());
         assertNotNull(currentPlayer.getCardPlayed());
     }
-
-*/
 
 }

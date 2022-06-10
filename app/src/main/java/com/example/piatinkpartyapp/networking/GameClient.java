@@ -313,12 +313,17 @@ public class GameClient {
     }
     // Call this method from client to start a game
     public void startGame() {
+        /*
         new Thread(()->{
+
             client.sendTCP(new Requests.StartGameMessage());
         }).start();
+        */
+        sendPacket(new Requests.StartGameMessage());
     }
 
     public void setCard(Card card) {
+        /*
         new Thread(()->{
             Requests.PlayerSetCard request = new Requests.PlayerSetCard();
             request.card =  card;
@@ -326,6 +331,13 @@ public class GameClient {
             //player should not play a card if it is not their turn
             myTurn.postValue(false);
         }).start();
+        */
+        Requests.PlayerSetCard request = new Requests.PlayerSetCard();
+        request.card =  card;
+        sendPacket(request);
+
+        myTurn.postValue(false);
+
     }
 
     public void setSchlag(CardValue schlag) {

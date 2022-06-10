@@ -42,7 +42,7 @@ public class Requests{
         }
     }
 
-    public static class StartGameMessage {
+    public static class StartGameMessage implements IPackets {
         public StartGameMessage() {
         }
 
@@ -61,7 +61,7 @@ public class Requests{
         }
     }
 
-    public static class PlayerSetCard {
+    public static class PlayerSetCard implements IPackets {
         int playerID;
         Card card;
 
