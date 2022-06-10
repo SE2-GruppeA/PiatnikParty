@@ -1,15 +1,18 @@
 package com.example.piatinkpartyapp.chat;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
@@ -79,17 +82,42 @@ public class ExposeCheaterFragment extends Fragment implements View.OnClickListe
         exposeBtn.setOnClickListener(this);
 
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+
         spinner_playerIds = (Spinner) root.findViewById(R.id.spinner_playerIds);
+        setUpSpinner();
 
         return root;
     }
 
+    private void setUpSpinner() {
+        // todo : optional get player id's but for now it's fine
+        String[] arraySpinner = new String[] {
+                "1", "2", "3", "4"
+        };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_selectable_list_item, arraySpinner);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_playerIds.setAdapter(adapter);
+
+        // default first player, so we don't have to do null checks
+        spinner_playerIds.setSelection(0);
+    }
 
     @Override
     public void onClick(View view) {
         if(view == closeExposeBtn){
             closeVotingDialog();
+        } if(view == exposeBtn){
+            doExpose();
         }
+    }
+
+    private void doExpose() {
+        TextView textView = (TextView)spinner_playerIds.getSelectedView();
+        String playerId = textView.getText().toString();
+
+        //todo: clientViewModel.exposePossibleCheater(playerId);
     }
 
     public void closeVotingDialog(){
