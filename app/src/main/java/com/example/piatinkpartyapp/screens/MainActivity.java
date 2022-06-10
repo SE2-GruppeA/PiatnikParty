@@ -7,8 +7,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.piatinkpartyapp.R;
-import com.example.piatinkpartyapp.SchnopsnFragment;
-import com.example.piatinkpartyapp.WattnFragment;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

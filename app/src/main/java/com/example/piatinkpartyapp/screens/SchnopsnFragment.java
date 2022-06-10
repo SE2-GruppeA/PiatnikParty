@@ -1,15 +1,13 @@
-package com.example.piatinkpartyapp;
+package com.example.piatinkpartyapp.screens;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.os.Build;
+import android.hardware.SensorEventListener;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -24,20 +22,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatFragment;
 import com.example.piatinkpartyapp.chat.ChatMessage;
-import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.logging.Logger;
+
+//sensoric for shake event
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,6 +75,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     //indicates the clients turn, so they can not
     //play cards when its false
     Boolean isMyTurn;
+
+    //sensorics
+    private SensorManager mSensorManager;
+    private float mAccel;
+    private float mAccelCurrent;
+    private float mAccelLast;
+    Boolean mixedCards;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -110,12 +121,57 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        //sensorics
+        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        Objects.requireNonNull(mSensorManager).registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        mAccel = 10f;
+        mAccelCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelLast = SensorManager.GRAVITY_EARTH;
         //set fullscreen and landscape mode
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
+    private final SensorEventListener mSensorListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            mixedCards = false;
+            float x = sensorEvent.values[0];
+            float y = sensorEvent.values[1];
+            float z = sensorEvent.values[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt((double)(x*x + y*y +z*z));
+            float delta = mAccelCurrent-mAccelLast;
+            mAccel = mAccel *0.9f +delta;
+            if(mAccel > 12){
+                mixedCards = true;
+                Toast.makeText(getContext(), "shake detected",Toast.LENGTH_LONG).show();
+                mixCards(mixedCards);
+            }
+        }
 
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
+        }
+    };
+    @Override
+    public void onResume(){
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
+        super.onResume();
+    }
+    @Override
+    public  void onPause(){
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
+    }
+
+    private void mixCards(Boolean mixedCards){
+        if(mixedCards){
+            this.mixedCards = true;
+            Toast.makeText(requireActivity().getApplicationContext(), "die Karten des Stapels wurden neu gemischt!",Toast.LENGTH_LONG).show();
+        }
+
+    }
     private void waitForMyTurn(Boolean isMyTurn) {
         if(isMyTurn) {
             Toast.makeText(requireActivity().getApplicationContext(), "Du bist dran", Toast.LENGTH_SHORT).show();
@@ -183,6 +239,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
             clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), started -> initializeWattn(started));
             clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), started -> initializePensionistln(started));
             clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
+
+            //shaking phone to mix cards
+            //todo invoke mixCards method
+         //  clientViewModel.mixedCards().observe(getViewLifecycleOwner(), mixedCards -> mixCards());
         }
 
         //initializeGame();

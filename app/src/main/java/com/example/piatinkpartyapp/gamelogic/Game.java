@@ -154,4 +154,8 @@ public class Game {
     public Symbol getTrump(){
         return null;
     }
+
+    public void mixCards(){
+
+    }
 }
