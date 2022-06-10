@@ -51,6 +51,7 @@ public class NetworkHandler {
         kryo.register(Responses.WattnStartedClientMessage.class);
         kryo.register(Responses.PensionistlnStartedClientMessage.class);
         kryo.register(Responses.HosnObeStartedClientMessage.class);
+        kryo.register(Responses.IsCheater.class);
 
         // Other classes
         kryo.register(Card.class);

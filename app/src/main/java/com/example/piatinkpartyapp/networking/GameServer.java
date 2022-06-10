@@ -106,7 +106,19 @@ public class GameServer {
     private void handle_exposePossibleCheater(Connection connection, Requests.ExposePossibleCheater object) {
         String playerId = object.playerId;
 
+        Responses.IsCheater response = new Responses.IsCheater();
+        if(isCheater(playerId)){
+            response.isCheater = true;
+        }else{
+            response.isCheater = false;
+        }
+        connection.sendTCP(response);
+    }
+
+    //todo: Add this function to gamelogic itself, it's just here so i can build the handler above !
+    private boolean isCheater(String playerId) {
         // todo: Implement gamelogic: how explained down below (Maybe Anton or Bene)!
+        // todo: Also add live data !
         /**
          * gameLogic.exposePossibleCheater(playerId)
          * return true if player really cheater with response expossedPlayer
@@ -114,8 +126,7 @@ public class GameServer {
          * return false, and also trigger a lose 10 points or smth response because exposing players
          * comes with risks !
          */
-
-        // todo: Also add live data !
+        return true;
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////

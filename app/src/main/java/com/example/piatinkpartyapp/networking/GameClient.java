@@ -128,6 +128,8 @@ public class GameClient {
                         handle_PlayerDisconnected((Responses.playerDisconnected)object);
                     }else if(object instanceof  Responses.mixedCards){
                         handle_MixedCards((Responses.mixedCards)object);
+                    }else if(object instanceof  Responses.IsCheater){
+                        handle_isCheater((Responses.IsCheater)object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -137,6 +139,15 @@ public class GameClient {
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////
+    private void handle_isCheater(Responses.IsCheater object) {
+        // todo: handle live data and update ui
+        boolean isCheater = object.isCheater;
+        /**
+         * If isCheater == true, einfach normal anzeigen das man einen cheater exposed hat
+         * If false, anzeigen das man -10 punkte verloren hat.
+         */
+    }
+
     private void handle_VoteForNextGame() {
         voteForNextGame.postValue(true);
         LOG.info("VoteForNextGame received from the server");
