@@ -199,4 +199,16 @@ public class SchnopsnGame extends Game {
             }
         }
     }
+
+    //mix cards in deck
+    @Override
+    public void mixCards(){
+        LOG.info("before mixing");
+        LOG.info(deck.toString());
+        deck.mixCards();
+        LOG.info("after mixing");
+        LOG.info(deck.toString());
+        Responses.mixedCards response = new Responses.mixedCards();
+        lobby.getPlayerByID(1).getClientConnection().sendTCP(response);
+    }
 }

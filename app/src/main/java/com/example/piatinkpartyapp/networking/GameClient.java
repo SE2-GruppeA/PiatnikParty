@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -125,6 +126,8 @@ public class GameClient {
                         handle_HosnObeStartedClientMessage((Responses.HosnObeStartedClientMessage) object);
                     }else if(object instanceof Responses.playerDisconnected){
                         handle_PlayerDisconnected((Responses.playerDisconnected)object);
+                    }else if(object instanceof  Responses.mixedCards){
+                        handle_MixedCards((Responses.mixedCards)object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -309,6 +312,10 @@ public class GameClient {
         //TODO: notify the UI that a player disconected from the game
     }
 
+    //mixed cards
+    private void handle_MixedCards(Responses.mixedCards object){
+        LOG.info("mixed cards");
+    }
     /////////////////// END - Handler Methods !!! ///////////////////
 
 
@@ -335,6 +342,12 @@ public class GameClient {
         }).start();
     }
 
+    public void mixCards(){
+        Requests.MixCardsRequest request = new Requests.MixCardsRequest();
+        sendPacket(request);
+        mixedCards.postValue(true);
+
+    }
     public void setSchlag(CardValue schlag) {
         Requests.PlayerSetSchlag request = new Requests.PlayerSetSchlag(schlag);
         sendPacket(request);
@@ -434,7 +447,7 @@ public class GameClient {
     private MutableLiveData<Boolean> wattnStarted;
     private MutableLiveData<Boolean> pensionistlnStarted;
     private MutableLiveData<Boolean> hosnObeStarted;
-
+    private MutableLiveData<Boolean> mixedCards;
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
     }
@@ -447,6 +460,9 @@ public class GameClient {
         return myTurn;
     }
 
+    public LiveData<Boolean> mixedCards(){
+        return mixedCards;
+    }
     public LiveData<Boolean> isGameStarted(){
         return gameStarted;
     }
@@ -503,6 +519,7 @@ public class GameClient {
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
         myTurn = new MutableLiveData<>();
+        mixedCards = new MutableLiveData<>();
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<>();
