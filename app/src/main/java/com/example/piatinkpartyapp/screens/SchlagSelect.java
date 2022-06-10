@@ -1,9 +1,7 @@
-package com.example.piatinkpartyapp;
+package com.example.piatinkpartyapp.screens;
 
-import android.media.Image;
 import android.os.Bundle;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.CardValue;
 
 /**
