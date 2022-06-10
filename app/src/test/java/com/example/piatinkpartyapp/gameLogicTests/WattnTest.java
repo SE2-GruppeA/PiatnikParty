@@ -1,5 +1,4 @@
-/*
-package com.example.piatinkpartyapp.gameLogicTests;
+/*package com.example.piatinkpartyapp.gameLogicTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,13 +13,11 @@ import org.junit.jupiter.api.Test;
 
 
 
-
-/**
+*//**
  * Example local unit test, which will execute on the development machine (host).
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
-
-
+ *//*
 public class WattnTest {
 
     @Test
@@ -284,5 +281,4 @@ public class WattnTest {
         assertEquals(p2, winner);
 
     }
-}
-*/
+}*/
