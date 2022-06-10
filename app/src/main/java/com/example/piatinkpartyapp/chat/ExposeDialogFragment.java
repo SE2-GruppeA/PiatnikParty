@@ -21,6 +21,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class ExposeDialogFragment extends DialogFragment {
+    public interface ExposeDialogHandler {
+        void handleExpose(Boolean doExpose);
+    }
+
+    public ExposeDialogHandler exposeDialogHandler;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -43,9 +49,21 @@ public class ExposeDialogFragment extends DialogFragment {
                                 "\n\nWenn der Spieler doch nicht cheatet, werden die Punkte abgezogen !" +
                                 "\n\nÜbe die Funktionalität mit bedacht aus !")
                 .setNegativeButton("Exposen ", (dialog, which) -> {
+                    exposeDialogHandler.handleExpose(true);
                 })
                 .setPositiveButton("Lieber nicht ! \uD83D\uDE05 ", (dialog, which) -> {
+                    exposeDialogHandler.handleExpose(false);
                 })
                 .create();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            exposeDialogHandler = (ExposeDialogHandler) getTargetFragment();
+        } catch (ClassCastException e) {
+            Log.e("ExposeDialog", "onAttach: ClassCastExcetption: " + e.getMessage());
+        }
     }
 }

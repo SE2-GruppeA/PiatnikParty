@@ -1,15 +1,15 @@
 package com.example.piatinkpartyapp.screens;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
@@ -29,18 +32,12 @@ import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatFragment;
 import com.example.piatinkpartyapp.chat.ChatMessage;
+import com.example.piatinkpartyapp.chat.ExposeDialogFragment;
 import com.example.piatinkpartyapp.networking.Responses;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
-
-//sensoric for shake event
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorManager;
-
 import java.util.Objects;
 
 /**
@@ -48,7 +45,9 @@ import java.util.Objects;
  * Use the {@link SchnopsnFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SchnopsnFragment extends Fragment implements View.OnClickListener {
+public class SchnopsnFragment extends Fragment implements View.OnClickListener, ExposeDialogFragment.ExposeDialogHandler {
+    private static final String TAG = "SchnopsnFragment";
+
     ImageView arrowBtn;
     ImageView handCardView1;
     ImageView handCardView2;
@@ -64,6 +63,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
     Button voteBtn;
     Button mixCardsBtn;
     Button btnCheat;
+    Button btnExpose;
     private static ImageView currentCard1;
     private static ImageView currentCard2;
     public static SchnopsnDeck deck;
@@ -366,6 +366,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         mixCardsBtn = view.findViewById(R.id.mixBtn);
         imgTrump = view.findViewById(R.id.imgTrump);
         btnCheat = view.findViewById(R.id.btnCheat);
+        btnExpose = view.findViewById(R.id.btnExpose);
     }
 
     @Override
@@ -381,7 +382,29 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener {
         }else if(view == mixCardsBtn) {
             deck.mixCards();
         }else if(view == btnCheat){
-            clientViewModel.cheatRequest();
+            //clientViewModel.cheatRequest();
+            openExposeDialog();
+        }
+        else if(view == btnExpose){
+            // todo: Komischerweise wird die Funktion nicht getriggert
+            System.out.println("Hello Expose");
+            openExposeDialog();
+        }
+    }
+
+    private void openExposeDialog() {
+        ExposeDialogFragment dialog = new ExposeDialogFragment();
+        // I know this is considered deprecated but I could not find any other way to solve this
+        dialog.setTargetFragment(SchnopsnFragment.this, 1);
+        dialog.show(getFragmentManager(), TAG + " CheatDialogFragment");
+    }
+
+    @Override
+    public void handleExpose(Boolean doExpose) {
+        Log.d(TAG, "Expose ? " + doExpose);
+
+        if(doExpose){
+            // todo: openExposeCheaterFragment(); or Dialog
         }
     }
 
