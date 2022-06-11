@@ -142,14 +142,14 @@ public class Game {
     }
 
     public void addPointsAndUpdateScoreboard(Player winnerPlayer, int pointScoreboardAdd) {
-        winnerPlayer.addPointsScoreboard(pointScoreboardAdd);
+        lobby.getPlayerByID(winnerPlayer.getId()).addPointsScoreboard(pointScoreboardAdd);
 
         sendMessageUpdateScoreboard();
     }
 
     public void sendMessageUpdateScoreboard() {
         Responses.UpdateScoreboard response = new Responses.UpdateScoreboard();
-        response.players = lobby.players;
+        //response.lobby = lobby;
 
         for (Player player : lobby.getPlayers()) {
             player.getClientConnection().sendTCP(response);

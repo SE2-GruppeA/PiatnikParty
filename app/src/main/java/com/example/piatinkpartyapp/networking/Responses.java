@@ -3,7 +3,6 @@ package com.example.piatinkpartyapp.networking;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
-import com.example.piatinkpartyapp.gamelogic.Player;
 
 import java.util.ArrayList;
 
@@ -246,13 +245,13 @@ public class Responses {
     }
 
     public static class UpdateScoreboard {
-        public ArrayList<Player> players;
+        //public Lobby lobby;
 
         public UpdateScoreboard() {
         }
-
-        public UpdateScoreboard(ArrayList<Player> players) {
-            this.players = players;
-        }
+/*
+        public UpdateScoreboard(Lobby lobby) {
+            this.lobby = lobby;
+        }*/
     }
 }

@@ -334,7 +334,7 @@ public class GameClient {
     private void handle_SendRoundWinnerPlayerToAllPlayers(Responses.SendRoundWinnerPlayerToAllPlayers object) {
         Responses.SendRoundWinnerPlayerToAllPlayers response = object;
 
-        LOG.info("Player: " + response.winnerPlayerID + "has won the round!");
+        LOG.info("Player: " + response.winnerPlayerID + " has won the round!");
     }
 
     private void handle_UpdateScoreboard(Responses.UpdateScoreboard object) {

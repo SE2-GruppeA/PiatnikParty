@@ -1,10 +1,18 @@
 package com.example.piatinkpartyapp.networking;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Server;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.cards.WattnDeck;
+import com.example.piatinkpartyapp.gamelogic.Lobby;
+import com.example.piatinkpartyapp.gamelogic.Player;
+import com.example.piatinkpartyapp.gamelogic.SchnopsnGame;
+import com.example.piatinkpartyapp.gamelogic.WattnGame;
 
 public class NetworkHandler {
 
@@ -54,6 +62,8 @@ public class NetworkHandler {
         kryo.register(Responses.IsCheater.class);
         kryo.register(Responses.SendRoundWinnerPlayerToAllPlayers.class);
         kryo.register(Responses.UpdateScoreboard.class);
+        kryo.register(Responses.playerDisconnected.class);
+
 
         // Other classes
         kryo.register(Card.class);
@@ -61,5 +71,14 @@ public class NetworkHandler {
         kryo.register(Symbol.class);
         kryo.register(java.util.ArrayList.class);
         kryo.register(GameName.class);
+        kryo.register(Player.class);
+        kryo.register(Connection.class);
+        kryo.register(Server.class);
+        kryo.register(Connection[].class);
+        kryo.register(Lobby.class);
+        kryo.register(SchnopsnGame.class);
+        kryo.register(SchnopsnDeck.class);
+        kryo.register(WattnGame.class);
+        kryo.register(WattnDeck.class);
     }
 }
