@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -130,6 +129,10 @@ public class GameClient {
                         handle_MixedCards((Responses.mixedCards)object);
                     }else if(object instanceof  Responses.IsCheater){
                         handle_isCheater((Responses.IsCheater)object);
+                    } else if (object instanceof Responses.SendRoundWinnerPlayerToAllPlayers) {
+                        handle_SendRoundWinnerPlayerToAllPlayers((Responses.SendRoundWinnerPlayerToAllPlayers) object);
+                    } else if (object instanceof Responses.UpdateScoreboard) {
+                        handle_UpdateScoreboard((Responses.UpdateScoreboard) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -326,6 +329,18 @@ public class GameClient {
     //mixed cards
     private void handle_MixedCards(Responses.mixedCards object){
         LOG.info("mixed cards");
+    }
+
+    private void handle_SendRoundWinnerPlayerToAllPlayers(Responses.SendRoundWinnerPlayerToAllPlayers object) {
+        Responses.SendRoundWinnerPlayerToAllPlayers response = object;
+
+        LOG.info("Player: " + response.winnerPlayerID + "has won the round!");
+    }
+
+    private void handle_UpdateScoreboard(Responses.UpdateScoreboard object) {
+        Responses.UpdateScoreboard response = object;
+
+        LOG.info("Update Scoreboard!");
     }
     /////////////////// END - Handler Methods !!! ///////////////////
 

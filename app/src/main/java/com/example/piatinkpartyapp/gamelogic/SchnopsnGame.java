@@ -124,6 +124,8 @@ public class SchnopsnGame extends Game {
                 addPointsToWinnerPlayer(roundWonPlayer);
                 LOG.info("Points added to winner player: " + roundWonPlayer.getId() + ". Points: " + roundWonPlayer.getPoints());
 
+                sendRoundWinnerPlayerToAllPlayers(roundWonPlayer);
+
                 //TODO: check if one player have enough points
                 startNewRoundSchnopsn(roundWonPlayer);
             } else {
@@ -167,13 +169,10 @@ public class SchnopsnGame extends Game {
 
     public void startNewRoundSchnopsn(Player startPlayer) {
         new Thread(() -> {
-            if (startPlayer.getPoints() >= 66) {
-                // if the player gets at least 66 points then the player wins
-                // TODO: test if player can win on other places? wenn 20 oder 40 angesagt wird?
+            if (startPlayer.getPoints() >= 66 || startPlayer.getHandcards().isEmpty()) {
+                // if the player gets at least 66 points then the player wins or if handcards are empty, the player that won the last "Stich" wins the round
                 sendEndRoundMessageToPlayers(startPlayer);
-            } else if (startPlayer.getHandcards().isEmpty()) {
-                // if handcards are empty, the player that won the last "Stich" wins the round
-                sendEndRoundMessageToPlayers(startPlayer);
+                addPointsAndUpdateScoreboard(startPlayer, 1);
             } else {
                 resetRoundFinished();
                 resetPlayedCard();

@@ -132,6 +132,30 @@ public class Game {
         winnerPlayer.getClientConnection().sendTCP(response);
     }
 
+    public void sendRoundWinnerPlayerToAllPlayers(Player winnerPlayer) {
+        Responses.SendRoundWinnerPlayerToAllPlayers response = new Responses.SendRoundWinnerPlayerToAllPlayers();
+        response.winnerPlayerID = winnerPlayer.getId();
+
+        for (Player player : lobby.getPlayers()) {
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+
+    public void addPointsAndUpdateScoreboard(Player winnerPlayer, int pointScoreboardAdd) {
+        winnerPlayer.addPointsScoreboard(pointScoreboardAdd);
+
+        sendMessageUpdateScoreboard();
+    }
+
+    public void sendMessageUpdateScoreboard() {
+        Responses.UpdateScoreboard response = new Responses.UpdateScoreboard();
+        response.players = lobby.players;
+
+        for (Player player : lobby.getPlayers()) {
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+
     public void startGameSchnopsn() {
     }
     public void startGameWattn(){

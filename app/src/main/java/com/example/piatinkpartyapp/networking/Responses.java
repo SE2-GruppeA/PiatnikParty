@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp.networking;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.gamelogic.Player;
 
 import java.util.ArrayList;
 
@@ -230,6 +231,28 @@ public class Responses {
 
     public static class mixedCards implements IPackets {
         public mixedCards() {
+        }
+    }
+
+    public static class SendRoundWinnerPlayerToAllPlayers {
+        public int winnerPlayerID;
+
+        public SendRoundWinnerPlayerToAllPlayers() {
+        }
+
+        public SendRoundWinnerPlayerToAllPlayers(int winnerPlayerID) {
+            this.winnerPlayerID = winnerPlayerID;
+        }
+    }
+
+    public static class UpdateScoreboard {
+        public ArrayList<Player> players;
+
+        public UpdateScoreboard() {
+        }
+
+        public UpdateScoreboard(ArrayList<Player> players) {
+            this.players = players;
         }
     }
 }
