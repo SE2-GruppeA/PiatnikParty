@@ -148,7 +148,7 @@ public class GameServer {
         response.isConnected = clients.contains(connection) ? false : clients.add(connection);
         response.playerID = connection.getID();
 
-        lobby.addPlayer(connection, "test");
+        lobby.addPlayer(connection, "Player " + connection.getID());
       //  wattnGame.addPlayer(connection, "test");
         connection.sendTCP(response);
 
