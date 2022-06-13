@@ -156,8 +156,18 @@ public class Game {
         }
     }
 
-    public void startGameSchnopsn() {
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void startGameSchnopsn() {
+
+    }
+
     public void startGameWattn(){
 
     }
@@ -167,24 +177,30 @@ public class Game {
     }
 
     public void setCard(int id, Card card) {
+
     }
 
     public void givePlayerBestCard(int playerId){
+
     }
+
     public void setSchlag(CardValue hit){
 
     }
+
     public void setTrump(Symbol trump){
 
     }
+
     public CardValue getSchlag(){
         return null;
     }
+
     public Symbol getTrump(){
         return null;
     }
 
-    public void mixCards(){
+    public void mixCards() {
 
     }
 }
