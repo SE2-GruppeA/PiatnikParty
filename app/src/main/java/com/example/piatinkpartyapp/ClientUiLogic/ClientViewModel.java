@@ -91,7 +91,7 @@ public class ClientViewModel extends ViewModel {
         client.sendVoteForNextGame(nextGame);
     }
 
-    public LiveData<Boolean> isEndOfRound(){
+    public LiveData<Integer> isEndOfRound(){
         return client.isEndOfRound();
     }
 
@@ -147,6 +147,14 @@ public class ClientViewModel extends ViewModel {
 
     public void exposePossibleCheater(String playerId) {
         client.exposePossibleCheater(playerId);
+    }
+
+    public void notifyVote() {
+        client.notifyVote();
+    }
+
+    public LiveData<Integer> getWinnerId() {
+        return client.getWinnerId();
     }
 
 

@@ -24,6 +24,7 @@
         android:background="#00FFFFFF"
         android:scaleType="centerCrop"
         android:src="@drawable/close"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.768"

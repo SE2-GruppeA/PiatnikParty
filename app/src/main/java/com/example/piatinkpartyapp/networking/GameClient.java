@@ -161,7 +161,7 @@ public class GameClient {
                 object;
 
         // notify UI: round of player is over
-        endOfRound.postValue(true);
+        endOfRound.postValue(response.playerID);
 
         LOG.info("End of round!");
     }
@@ -334,6 +334,8 @@ public class GameClient {
     private void handle_SendRoundWinnerPlayerToAllPlayers(Responses.SendRoundWinnerPlayerToAllPlayers object) {
         Responses.SendRoundWinnerPlayerToAllPlayers response = object;
 
+        winnerId.postValue(response.winnerPlayerID);
+
         LOG.info("Player: " + response.winnerPlayerID + " has won the round!");
     }
 
@@ -473,7 +475,7 @@ public class GameClient {
     private MutableLiveData<Boolean> myTurn;
     private MutableLiveData<Boolean> gameStarted;
     private MutableLiveData<Card> handoutCard;
-    private MutableLiveData<Boolean> endOfRound;
+    private MutableLiveData<Integer> endOfRound;
     private MutableLiveData<Boolean> voteForNextGame;
     private MutableLiveData<Responses.SendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
@@ -486,6 +488,8 @@ public class GameClient {
     private MutableLiveData<Boolean> pensionistlnStarted;
     private MutableLiveData<Boolean> hosnObeStarted;
     private MutableLiveData<Boolean> mixedCards;
+    private MutableLiveData<Integer> winnerId;
+
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
     }
@@ -505,7 +509,7 @@ public class GameClient {
         return gameStarted;
     }
 
-    public LiveData<Boolean> isEndOfRound() {
+    public LiveData<Integer> isEndOfRound() {
         return endOfRound;
     }
 
@@ -553,6 +557,8 @@ public class GameClient {
         return hosnObeStarted;
     }
 
+    public LiveData<Integer> getWinnerId() { return winnerId; }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -560,7 +566,7 @@ public class GameClient {
         mixedCards = new MutableLiveData<>();
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
-        endOfRound = new MutableLiveData<>();
+        endOfRound = new MutableLiveData<Integer>();
         voteForNextGame = new MutableLiveData<>();
         playedCard = new MutableLiveData<>();
         trump = new MutableLiveData<>();
@@ -572,6 +578,7 @@ public class GameClient {
         wattnStarted = new MutableLiveData<>();
         pensionistlnStarted = new MutableLiveData<>();
         hosnObeStarted = new MutableLiveData<>();
+        winnerId = new MutableLiveData<>();
     }
 
 
@@ -614,6 +621,10 @@ public class GameClient {
         Requests.ExposePossibleCheater request = new Requests.ExposePossibleCheater(playerId);
         sendPacket(request);
         LOG.info("ExposePossibleCheater Request was sent for playerID : " + playerId);
+    }
+
+    public void notifyVote() {
+        voteForNextGame.postValue(true);
     }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }
