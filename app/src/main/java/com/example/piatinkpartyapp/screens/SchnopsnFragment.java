@@ -30,11 +30,11 @@ import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
-import com.example.piatinkpartyapp.chat.ChatFragment;
+import com.example.piatinkpartyapp.chat.fragments.ChatFragment;
 import com.example.piatinkpartyapp.chat.ChatMessage;
-import com.example.piatinkpartyapp.chat.ExposeCheaterFragment;
-import com.example.piatinkpartyapp.chat.ExposeDialogFragment;
-import com.example.piatinkpartyapp.chat.IsCheaterDialogFragment;
+import com.example.piatinkpartyapp.chat.fragments.ExposeCheaterFragment;
+import com.example.piatinkpartyapp.chat.fragments.ExposeDialogFragment;
+import com.example.piatinkpartyapp.chat.fragments.IsCheaterDialogFragment;
 import com.example.piatinkpartyapp.networking.Responses;
 
 import java.lang.reflect.Field;

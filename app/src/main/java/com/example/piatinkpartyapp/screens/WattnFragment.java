@@ -24,7 +24,7 @@ import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.cards.WattnDeck;
-import com.example.piatinkpartyapp.chat.ChatFragment;
+import com.example.piatinkpartyapp.chat.fragments.ChatFragment;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
