@@ -1,8 +1,5 @@
 package com.example.piatinkpartyapp.gamelogic;
 
-import android.util.Log;
-
-import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -81,6 +78,7 @@ public class WattnGame extends Game {
         //sends new handcards to the player
         sendHandCardsToPlayer(currentHandCards, player);
     }
+
     @Override
     public void setCard(int playerID, Card card) {
 

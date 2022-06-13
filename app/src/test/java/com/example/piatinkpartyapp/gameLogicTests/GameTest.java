@@ -101,4 +101,16 @@ public class GameTest {
         assertNotNull(winnerPlayer.getCardPlayed());
         assertNotNull(currentPlayer.getCardPlayed());
     }
+
+    @Test
+    public void testConstructor() {
+        Game game = new Game();
+        assertNotNull(game);
+    }
+
+    @Test
+    public void testGetLobby() {
+        Game game = new Game();
+        assertEquals(game.lobby, game.getLobby());
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp.chat;
+package com.example.piatinkpartyapp.chat.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;

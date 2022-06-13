@@ -32,20 +32,21 @@ public class WattnDeck extends Deck {
     }
 
     public Card lastCard(){
-        if(deck.size() >=1){
+        if(deck.size() >=1) {
             return deck.get(deck.size() - 1);
         }
         return  null;
     }
-    //highest card in game
+
     public Card getRightCard(){
-        for(Card c : deck){
+        for (Card c : deck) {
             if(c.cardValue == getHit() && c.symbol == getTrump()){
                 return c;
             }
         }
         return null;
     }
+
     public Integer cardPoints(CardValue v){
         Integer points = 0;
         if(v.equals(getHit())){
