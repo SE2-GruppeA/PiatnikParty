@@ -133,6 +133,8 @@ public class GameClient {
                         handle_SendRoundWinnerPlayerToAllPlayers((Responses.SendRoundWinnerPlayerToAllPlayers) object);
                     } else if (object instanceof Responses.UpdateScoreboard) {
                         handle_UpdateScoreboard((Responses.UpdateScoreboard) object);
+                    }else if(object instanceof  Responses.SendSchlagToAllPlayers){
+                        handle_SendSchlagToAllPlayers((Responses.SendSchlagToAllPlayers) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -294,6 +296,12 @@ public class GameClient {
         //notify UI
         trump.postValue(currentTrump);
     }
+    private void handle_SendSchlagToAllPlayers(Responses.SendSchlagToAllPlayers object){
+        Responses.SendSchlagToAllPlayers response = object;
+        CardValue currentSchlag = response.schlag;
+        LOG.info("Schlag: "+ schlag.toString() + "was sent to player!");
+        schlag.postValue(currentSchlag);
+    }
 
     private void handle_NotifyPlayerToSetSchlag(Responses.NotifyPlayerToSetSchlag object) {
         Responses.NotifyPlayerToSetSchlag response =
@@ -396,12 +404,14 @@ public class GameClient {
         Requests.PlayerSetSchlag request = new Requests.PlayerSetSchlag(schlag);
         sendPacket(request);
         setSchlag.postValue(false);
+
     }
 
     public void setTrump(Symbol trump) {
         Requests.PlayerSetTrump request = new Requests.PlayerSetTrump(trump);
         sendPacket(request);
         setTrump.postValue(false);
+
     }
 
     /////////////////// START - CHAT - LOGiC ///////////////////

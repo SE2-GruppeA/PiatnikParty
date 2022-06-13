@@ -220,11 +220,13 @@ public class WattnGame extends Game {
     @Override
     public void setSchlag(CardValue cv){
         this.deck.setHit(cv);
+        sendSchlagToAllPlayers(cv);
 
     }
     @Override
     public void setTrump(Symbol s){
         this.deck.setTrump(s);
+        sendTrumpToAllPlayers(s);
 
     }
     public Card rightCard(){

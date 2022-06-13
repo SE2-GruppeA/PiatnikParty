@@ -59,6 +59,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     ImageView cardDeckView;
     ImageView swapCardView;
     ImageView imgTrump;
+    ImageView imgSchlag;
 
     ImageButton exitBtn;
     TextView scoreTxt;
@@ -243,6 +244,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.isSetTrump().observe(getViewLifecycleOwner(), setTrump -> playerSetTrump(setTrump));
             clientViewModel.isSetSchlag().observe(getViewLifecycleOwner(), setSchlag -> playerSetSchlag(setSchlag));
             clientViewModel.getTrump().observe(getViewLifecycleOwner(), trump -> setTrump(trump));
+            clientViewModel.getSchlag().observe(getViewLifecycleOwner(), schlag ->setSchlag(schlag));
             clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), winnerId -> showWinner(winnerId));
 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
@@ -314,6 +316,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         if (setTrump) {
             requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new TrumpSelect()).commit();
         }
+       /* if(clientViewModel.getTrump().getValue()!=null){
+            setTrump(clientViewModel.getTrump().getValue());
+        }*/
+
     }
 
     private void setScorePoints(Integer points) {
@@ -325,6 +331,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         Integer rid = getResId(symbol.toLowerCase(Locale.ROOT));
         imgTrump.setImageResource(rid);
         imgTrump.setContentDescription(symbol);
+    }
+    private void setSchlag(CardValue schlag){
+        String s= schlag.toString();
+        Integer rid = getResId(s.toLowerCase(Locale.ROOT));
+        imgSchlag.setImageResource(rid);
+        imgSchlag.setContentDescription(s);
+
     }
 
     private void setPlayedCard(Responses.SendPlayedCardToAllPlayers playedCard) {
@@ -382,6 +395,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         swapCardView = view.findViewById(R.id.swapCard);
         mixCardsBtn = view.findViewById(R.id.mixBtn);
         imgTrump = view.findViewById(R.id.imgTrump);
+        imgSchlag = view.findViewById(R.id.imgSchlag);
         btnCheat = view.findViewById(R.id.btnCheat);
         btnExpose = view.findViewById(R.id.btnExpose);
 

@@ -210,7 +210,7 @@ public class GameServer {
         Requests.PlayerSetSchlag request =
                 object;
         lobby.currentGame.setSchlag(request.schlag);
-        //wattnGame.deck.setHit(request.schlag);
+
         LOG.info("Schlag: " + lobby.currentGame.getSchlag() + " was set from Client ID: " + connection.getID());
     }
 
@@ -218,7 +218,8 @@ public class GameServer {
         Requests.PlayerSetTrump request =
                 object;
         lobby.currentGame.setTrump(request.trump);
-        //wattnGame.deck.setTrump(request.trump);
+
+
         LOG.info("Trump: " + lobby.currentGame.getTrump() + " was set from Client ID: " + connection.getID());
     }
 
