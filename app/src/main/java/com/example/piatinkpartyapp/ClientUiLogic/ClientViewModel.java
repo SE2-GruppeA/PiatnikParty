@@ -60,6 +60,8 @@ public class ClientViewModel extends ViewModel {
         return client.isMyTurn();
     }
 
+    public LiveData<Boolean>mixedCards(){return client.mixedCards();}
+
     public LiveData<Boolean> isGameStarted(){
         return client.isGameStarted();
     }
@@ -89,7 +91,7 @@ public class ClientViewModel extends ViewModel {
         client.sendVoteForNextGame(nextGame);
     }
 
-    public LiveData<Boolean> isEndOfRound(){
+    public LiveData<Integer> isEndOfRound(){
         return client.isEndOfRound();
     }
 
@@ -138,10 +140,22 @@ public class ClientViewModel extends ViewModel {
         return client.isHosnObeStarted();
     }
 
+
     public void cheatRequest() {
         client.cheatRequest();
     }
 
+    public void exposePossibleCheater(String playerId) {
+        client.exposePossibleCheater(playerId);
+    }
+
+    public void notifyVote() {
+        client.notifyVote();
+    }
+
+    public LiveData<Integer> getWinnerId() {
+        return client.getWinnerId();
+    }
 
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

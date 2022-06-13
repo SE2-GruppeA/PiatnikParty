@@ -3,7 +3,6 @@ package com.example.piatinkpartyapp.gameLogicTests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
@@ -13,25 +12,20 @@ import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.gamelogic.Game;
 import com.example.piatinkpartyapp.gamelogic.Player;
 
-
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-
 public class GameTest {
-/*
-
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
 
     @Test
     public void constructorTest() {
         Game game = new Game();
-        SchnopsnDeck deck;
+        GameName Schnopsn = null;
+        SchnopsnDeck deck = new SchnopsnDeck(Schnopsn,4);
+        assertNotNull(deck);
+        assertNotNull(game);
     }
 
+    @Test
     public void setCard() {
 
         int playerId = 1;
@@ -44,14 +38,10 @@ public class GameTest {
         Card card1 = new Card(symbol, cardValue1);
         Card card2 = new Card(symbol2, cardValue2);
 
-        Game game = new Game();
         Player player = new Player();
         Player player2 = new Player();
         player.setId(playerId);
         player2.setId(playerId + 1);
-
-        game.lobby.players.add(player);
-        game.lobby.players.add(player2);
 
         player.setCardPlayed(card1);
         player2.setCardPlayed(card2);
@@ -74,14 +64,10 @@ public class GameTest {
         Card card1 = new Card(symbol, cardValue1);
         Card card2 = new Card(symbol2, cardValue2);
 
-        Game game = new Game();
         Player player = new Player();
         Player player2 = new Player();
         player.setId(playerId);
         player2.setId(playerId + 1);
-
-        game.lobby.players.add(player);
-        game.lobby.players.add(player2);
 
         player.setCardPlayed(card1);
         player2.setCardPlayed(card2);
@@ -107,9 +93,6 @@ public class GameTest {
         winnerPlayer.setId(1);
         currentPlayer.setId(2);
 
-        game.lobby.players.add(winnerPlayer);
-        game.lobby.players.add(currentPlayer);
-
         assertNotEquals(winnerPlayer.getId(), currentPlayer.getId());
 
         winnerPlayer.setCardPlayed(new Card(Symbol.KARO, CardValue.ZEHN));
@@ -119,6 +102,15 @@ public class GameTest {
         assertNotNull(currentPlayer.getCardPlayed());
     }
 
-*/
+    @Test
+    public void testConstructor() {
+        Game game = new Game();
+        assertNotNull(game);
+    }
 
+    @Test
+    public void testGetLobby() {
+        Game game = new Game();
+        assertEquals(game.lobby, game.getLobby());
+    }
 }

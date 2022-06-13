@@ -13,6 +13,7 @@ public class Player {
     private Integer id;
     private String playerName;
     private int points = 0;
+    private int pointsScoreboard = 0;
     private ArrayList<Card> handcards;
     private ArrayList<Card> cardsWon;
     private Card cardPlayed;
@@ -76,6 +77,14 @@ public class Player {
         points = 0;
     }
 
+    public void addPointsScoreboard(int pointsWon) {
+        pointsScoreboard = pointsScoreboard + pointsWon;
+    }
+
+    public void resetPointsScoreboard() {
+        pointsScoreboard = 0;
+    }
+
     // Generated functions
     public void setId(Integer id) {
         this.id = id;
@@ -123,6 +132,10 @@ public class Player {
 
     public int getPoints() {
         return points;
+    }
+
+    public int getPointsScoreboard() {
+        return pointsScoreboard;
     }
 
     public boolean isFinished() {

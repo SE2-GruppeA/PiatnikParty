@@ -90,6 +90,10 @@ public class GameServer {
                         handle_PlayerSetTrump(connection, (Requests.PlayerSetTrump) object);
                     } else if(object instanceof Requests.PlayerRequestsCheat){
                         handle_PlayerRequestsCheat(connection, (Requests.PlayerRequestsCheat) object);
+                    }else if(object instanceof  Requests.MixCardsRequest){
+                        handle_MixCardsRequest(connection,(Requests.MixCardsRequest) object);
+                    }else if(object instanceof  Requests.ExposePossibleCheater){
+                        handle_exposePossibleCheater(connection,(Requests.ExposePossibleCheater) object);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -97,6 +101,34 @@ public class GameServer {
                 }
             }
         });
+    }
+
+    private void handle_exposePossibleCheater(Connection connection, Requests.ExposePossibleCheater object) {
+        String playerId = object.playerId;
+
+        Responses.IsCheater response = new Responses.IsCheater();
+        if(isCheater(playerId)){
+            response.isCheater = true;
+        }else{
+            response.isCheater = false;
+        }
+        connection.sendTCP(response);
+    }
+
+    //todo: Add this function to gamelogic itself, it's just here so i can build the handler above !
+    private boolean isCheater(String playerId) {
+        // todo: Implement gamelogic: how explained down below (Maybe Anton or Bene)!
+        // todo: Also add live data !
+        /**
+         * gameLogic.exposePossibleCheater(playerId)
+         *
+         * return true if player really cheater with response isCheater(true);
+         * also trigger cheater to lose -20 points (he got +10 when cheating, so he is only losing -10)
+         *
+         * return false, and also trigger a lose -10 points with response isCheater(false)
+         * comes with risks !
+         */
+        return true;
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////
@@ -197,7 +229,11 @@ public class GameServer {
 
         lobby.currentGame.givePlayerBestCard(connection.getID());
     }
-
+    private void handle_MixCardsRequest(Connection connection,Requests.MixCardsRequest object){
+        Requests.MixCardsRequest request = object;
+        lobby.currentGame.mixCards();
+        LOG.info("here");
+    }
     /////////////////// END - Handler Methods !!! ///////////////////
 
 

@@ -132,8 +132,42 @@ public class Game {
         winnerPlayer.getClientConnection().sendTCP(response);
     }
 
-    public void startGameSchnopsn() {
+    public void sendRoundWinnerPlayerToAllPlayers(Player winnerPlayer) {
+        Responses.SendRoundWinnerPlayerToAllPlayers response = new Responses.SendRoundWinnerPlayerToAllPlayers();
+        response.winnerPlayerID = winnerPlayer.getId();
+
+        for (Player player : lobby.getPlayers()) {
+            player.getClientConnection().sendTCP(response);
+        }
     }
+
+    public void addPointsAndUpdateScoreboard(Player winnerPlayer, int pointScoreboardAdd) {
+        lobby.getPlayerByID(winnerPlayer.getId()).addPointsScoreboard(pointScoreboardAdd);
+
+        sendMessageUpdateScoreboard();
+    }
+
+    public void sendMessageUpdateScoreboard() {
+        Responses.UpdateScoreboard response = new Responses.UpdateScoreboard();
+        //response.lobby = lobby;
+
+        for (Player player : lobby.getPlayers()) {
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void startGameSchnopsn() {
+
+    }
+
     public void startGameWattn(){
 
     }
@@ -143,20 +177,30 @@ public class Game {
     }
 
     public void setCard(int id, Card card) {
+
     }
 
     public void givePlayerBestCard(int playerId){
+
     }
+
     public void setSchlag(CardValue hit){
 
     }
+
     public void setTrump(Symbol trump){
 
     }
+
     public CardValue getSchlag(){
         return null;
     }
+
     public Symbol getTrump(){
         return null;
+    }
+
+    public void mixCards() {
+
     }
 }

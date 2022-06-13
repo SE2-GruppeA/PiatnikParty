@@ -12,11 +12,23 @@ NOTES :
     then we also need an  empty constructor, else Kryonet throws an Exception !!!!
  */
 public class Responses {
+    public static class IsCheater implements IPackets {
+        boolean isCheater;
+
+        public IsCheater() {
+        }
+
+        public IsCheater(boolean isCheater) {
+            this.isCheater = isCheater;
+        }
+    }
+
     public static class ConnectedSuccessfully {
         int playerID;
         boolean isConnected;
 
-        public ConnectedSuccessfully() { }
+        public ConnectedSuccessfully() {
+        }
 
         public ConnectedSuccessfully(int playerID, boolean isConnected) {
             this.playerID = playerID;
@@ -50,6 +62,7 @@ public class Responses {
             this.to = to;
         }
     }
+
     public static class ReceiveToAllChatMessage implements IPackets {
         String message;
         String date;
@@ -69,7 +82,8 @@ public class Responses {
         public int playerID;
         public ArrayList<Card> cards;
 
-        public SendHandCards() { }
+        public SendHandCards() {
+        }
 
         public SendHandCards(int playerID, ArrayList<Card> cards) {
             this.playerID = playerID;
@@ -80,7 +94,8 @@ public class Responses {
     public static class NotifyPlayerYourTurn {
         public int playerID;
 
-        public NotifyPlayerYourTurn() { }
+        public NotifyPlayerYourTurn() {
+        }
 
         public NotifyPlayerYourTurn(int playerID) {
             this.playerID = playerID;
@@ -91,7 +106,8 @@ public class Responses {
         public int playerID;
         public Card card;
 
-        public PlayerGetHandoutCard() { }
+        public PlayerGetHandoutCard() {
+        }
 
         public PlayerGetHandoutCard(int playerID, Card card) {
             this.playerID = playerID;
@@ -100,13 +116,15 @@ public class Responses {
     }
 
     public static class GameStartedClientMessage implements IPackets {
-        public GameStartedClientMessage() { }
+        public GameStartedClientMessage() {
+        }
     }
 
     public static class EndOfRound {
         public int playerID;
 
-        public EndOfRound() { }
+        public EndOfRound() {
+        }
 
         public EndOfRound(int playerID) {
             this.playerID = playerID;
@@ -114,18 +132,21 @@ public class Responses {
     }
 
     public static class EndOfGame {
-        public EndOfGame() { }
+        public EndOfGame() {
+        }
     }
 
     public static class VoteForNextGame implements IPackets {
-        public VoteForNextGame() { }
+        public VoteForNextGame() {
+        }
     }
 
     public static class SendPlayedCardToAllPlayers {
         public int playerID;
         public Card card;
 
-        public SendPlayedCardToAllPlayers() { }
+        public SendPlayedCardToAllPlayers() {
+        }
 
         public SendPlayedCardToAllPlayers(int playerID, Card card) {
             this.playerID = playerID;
@@ -136,21 +157,30 @@ public class Responses {
     public static class SendTrumpToAllPlayers {
         public Symbol trump;
 
-        public SendTrumpToAllPlayers() { }
+        public SendTrumpToAllPlayers() {
+        }
 
         public SendTrumpToAllPlayers(Symbol symbol) {
             this.trump = symbol;
         }
     }
-    public static class SendSchlagToAllPlayers{
+
+    public static class SendSchlagToAllPlayers {
         public CardValue schlag;
-        public SendSchlagToAllPlayers(){}
-        public SendSchlagToAllPlayers(CardValue cardValue){this.schlag=cardValue;}
+
+        public SendSchlagToAllPlayers() {
+        }
+
+        public SendSchlagToAllPlayers(CardValue cardValue) {
+            this.schlag = cardValue;
+        }
     }
+
     public static class UpdatePointsWinnerPlayer {
         public int totalPoints;
 
-        public UpdatePointsWinnerPlayer() { }
+        public UpdatePointsWinnerPlayer() {
+        }
 
         public UpdatePointsWinnerPlayer(int totalPoints) {
             this.totalPoints = totalPoints;
@@ -158,36 +188,70 @@ public class Responses {
     }
 
     public static class NotifyPlayerToSetSchlag {
-        public NotifyPlayerToSetSchlag() { }
+        public NotifyPlayerToSetSchlag() {
+        }
     }
 
     public static class NotifyPlayerToSetTrump {
-        public NotifyPlayerToSetTrump() { }
+        public NotifyPlayerToSetTrump() {
+        }
     }
 
     public static class SchnopsnStartedClientMessage implements IPackets {
-        public SchnopsnStartedClientMessage() { }
+        public SchnopsnStartedClientMessage() {
+        }
     }
 
     public static class WattnStartedClientMessage implements IPackets {
-        public WattnStartedClientMessage() { }
+        public WattnStartedClientMessage() {
+        }
     }
 
     public static class PensionistlnStartedClientMessage implements IPackets {
-        public PensionistlnStartedClientMessage() { }
+        public PensionistlnStartedClientMessage() {
+        }
     }
 
     public static class HosnObeStartedClientMessage implements IPackets {
-        public HosnObeStartedClientMessage() { }
+        public HosnObeStartedClientMessage() {
+        }
     }
 
-    public static class playerDisconnected implements IPackets{
+    public static class playerDisconnected implements IPackets {
         public int playerID;
 
-        public playerDisconnected() { }
+        public playerDisconnected() {
+        }
 
         public playerDisconnected(int playerID) {
             this.playerID = playerID;
         }
+    }
+
+    public static class mixedCards implements IPackets {
+        public mixedCards() {
+        }
+    }
+
+    public static class SendRoundWinnerPlayerToAllPlayers {
+        public int winnerPlayerID;
+
+        public SendRoundWinnerPlayerToAllPlayers() {
+        }
+
+        public SendRoundWinnerPlayerToAllPlayers(int winnerPlayerID) {
+            this.winnerPlayerID = winnerPlayerID;
+        }
+    }
+
+    public static class UpdateScoreboard {
+        //public Lobby lobby;
+
+        public UpdateScoreboard() {
+        }
+/*
+        public UpdateScoreboard(Lobby lobby) {
+            this.lobby = lobby;
+        }*/
     }
 }
