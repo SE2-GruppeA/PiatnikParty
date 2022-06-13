@@ -69,6 +69,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     Button btnExpose;
     private static ImageView currentCard1;
     private static ImageView currentCard2;
+    private static ImageView currentCard3;
+    private static ImageView currentCard4;
     public static SchnopsnDeck deck;
     ArrayList<Card> handCards;
 
@@ -275,7 +277,11 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private void initializeWattn(Boolean started) {
         if (started) {
-
+            resetImageView(currentCard1);
+            resetImageView(currentCard2);
+            resetImageView(currentCard3);
+            resetImageView(currentCard4);
+            scoreTxt.setText("0");
         }
     }
 
@@ -371,6 +377,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         cardDeckView = view.findViewById(R.id.cardDeck);
         currentCard1 = view.findViewById(R.id.currentCard);
         currentCard2 = view.findViewById(R.id.currentCard2);
+        currentCard3 = view.findViewById(R.id.currentCardPlayer3);
+        currentCard4 = view.findViewById(R.id.currentCardPlayer4);
         swapCardView = view.findViewById(R.id.swapCard);
         mixCardsBtn = view.findViewById(R.id.mixBtn);
         imgTrump = view.findViewById(R.id.imgTrump);
@@ -496,6 +504,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             setCardImage(s, currentCard1);
         } else if (position == 2) {
             setCardImage(s, currentCard2);
+        }else if(position == 3){
+            setCardImage(s,currentCard3);
+        }else if(position == 4){
+            setCardImage(s, currentCard4);
         }
     }
 

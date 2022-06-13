@@ -238,6 +238,15 @@ public class WattnGame extends Game {
     public CardValue getSchlag(){
         return deck.getHit();
     }
+
+    @Override
+    public void sendGameStartedMessageToClients() {
+        for (Player player : lobby.getPlayers()) {
+            // send message to client that game has started
+            Responses.WattnStartedClientMessage request = new Responses.WattnStartedClientMessage();
+            player.getClientConnection().sendTCP(request);
+        }
+    }
    /* public void resetVotingFinished() {
         for (Player player : players) {
             player.setVotingFinished(false);
