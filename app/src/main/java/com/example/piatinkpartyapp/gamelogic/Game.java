@@ -124,8 +124,16 @@ public class Game {
             response.trump = symbol;
             player.getClientConnection().sendTCP(response);
         }
+
     }
 
+    public void sendSchlagToAllPlayers(CardValue cardValue){
+        for(Player player: lobby.getPlayers()){
+            Responses.SendSchlagToAllPlayers response = new Responses.SendSchlagToAllPlayers(cardValue);
+            //response.schlag = cardValue;
+            player.getClientConnection().sendTCP(response);
+        }
+    }
     public void sendPointsToWinnerPlayer(Player winnerPlayer) {
         Responses.UpdatePointsWinnerPlayer response = new Responses.UpdatePointsWinnerPlayer();
         response.totalPoints = winnerPlayer.getPoints();

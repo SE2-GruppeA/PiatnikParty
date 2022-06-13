@@ -265,10 +265,13 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
         return root;
         }
         private void setTrump(Symbol trump) {
-                String symbol = trump.toString();
-                Integer rid = getResId(symbol.toLowerCase(Locale.ROOT));
-                imgTrump.setImageResource(rid);
-                imgTrump.setContentDescription(symbol);
+                if(!trumpToSet){
+                        String symbol = trump.toString();
+                        Integer rid = getResId(symbol.toLowerCase(Locale.ROOT));
+                        imgTrump.setImageResource(rid);
+                        imgTrump.setContentDescription(symbol);
+                }
+
         }
         private void setScorePoints(Integer points) {
                 scoreTxt.setText(points.toString());

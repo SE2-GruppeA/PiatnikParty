@@ -222,11 +222,13 @@ public class WattnGame extends Game {
     @Override
     public void setSchlag(CardValue cv){
         this.deck.setHit(cv);
+        sendSchlagToAllPlayers(cv);
 
     }
     @Override
     public void setTrump(Symbol s){
         this.deck.setTrump(s);
+        sendTrumpToAllPlayers(s);
 
     }
     public Card rightCard(){
@@ -239,6 +241,15 @@ public class WattnGame extends Game {
     @Override
     public CardValue getSchlag(){
         return deck.getHit();
+    }
+
+    @Override
+    public void sendGameStartedMessageToClients() {
+        for (Player player : lobby.getPlayers()) {
+            // send message to client that game has started
+            Responses.WattnStartedClientMessage request = new Responses.WattnStartedClientMessage();
+            player.getClientConnection().sendTCP(request);
+        }
     }
    /* public void resetVotingFinished() {
         for (Player player : players) {

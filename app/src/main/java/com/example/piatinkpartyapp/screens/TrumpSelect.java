@@ -103,6 +103,7 @@ public class TrumpSelect extends Fragment implements View.OnClickListener {
 
     public void setTrump(Symbol trump){
         clientViewModel.setTrump(trump);
+
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }
