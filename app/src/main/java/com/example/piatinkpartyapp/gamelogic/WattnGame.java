@@ -107,8 +107,8 @@ public class WattnGame extends Game {
 
                 addPointsToWinnerPlayer(roundWonPlayer);
                 LOG.info("Points added to winner player: " + roundWonPlayer.getId() + ". Points: " + roundWonPlayer.getPoints());
+                sendRoundWinnerPlayerToAllPlayers(roundWonPlayer);
 
-                //TODO: check if one player have enough points
                 startNewRoundWattn(roundWonPlayer);
             } else {
                 // Nächsten Spieler benachrichtigen dass er dran ist

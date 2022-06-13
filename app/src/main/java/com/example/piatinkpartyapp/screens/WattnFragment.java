@@ -52,6 +52,8 @@ public class WattnFragment extends Fragment implements View.OnClickListener {
         Boolean trumpToSet;
 public static ImageView currentCard1;
 public static ImageView currentCard2;
+public static ImageView currentCard3;
+public  static ImageView currentCard4;
 public static WattnDeck deck;
         ArrayList<Card> handCards;
       public static  ArrayList<Card> currentCards;
@@ -213,6 +215,8 @@ private void initHandCardsViews(){
         currentCardImageViews = new ArrayList<>();
         currentCardImageViews.add(currentCard1);
         currentCardImageViews.add(currentCard2);
+        currentCardImageViews.add(currentCard3);
+        currentCardImageViews.add(currentCard4);
 
         isMyTurn = false;
         schlagToSet =true;
@@ -313,6 +317,8 @@ private void addAllViews(View view) {
         handCardView5 = view.findViewById(R.id.card5);
         currentCard1 = view.findViewById(R.id.currentCardPlayer1);
         currentCard2 = view.findViewById(R.id.currentCardPlayer2);
+        currentCard3 = view.findViewById(R.id.currentCardPlayer3);
+        currentCard4 = view.findViewById(R.id.currentCardPlayer4);
         imgTrump = view.findViewById(R.id.imgTrump);
           mixCardsBtn = view.findViewById(R.id.mixBtn);
         }
@@ -385,9 +391,12 @@ private static void play(Card c, int position){
                 setCardImage(s, currentCard1);
         }else if(position == 2){
                 setCardImage(s, currentCard2);
+        }else if(position == 3){
+                setCardImage(s,currentCard3);
+        }else if(position == 4){
+                setCardImage(s,currentCard4);
         }
-
-        }
+}
   private void setPlayedCard(Responses.SendPlayedCardToAllPlayers playedCard){
         play(playedCard.card,playedCard.playerID);
   }
