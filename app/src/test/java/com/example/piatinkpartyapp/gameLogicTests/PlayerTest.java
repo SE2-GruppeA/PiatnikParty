@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 public class PlayerTest {
 
-  /*  @Test
+  @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
@@ -25,5 +25,5 @@ public class PlayerTest {
         Player player = new Player();
         player.setPlayerName("John");
         assertEquals(0, player.getPoints());
-    }*/
+    }
 }
