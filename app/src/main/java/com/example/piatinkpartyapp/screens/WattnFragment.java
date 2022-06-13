@@ -250,7 +250,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
         clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
 
-        clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
+        //clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
 
         clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
         clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
@@ -431,11 +431,11 @@ private void goBack() {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
-        private void atRoundEnd(Boolean isEndOfRound) {
+        /*private void atRoundEnd(Boolean isEndOfRound) {
                 if(isEndOfRound){
                         Toast.makeText(requireActivity().getApplicationContext(),
                                 "Runde ist zuende",
                                 Toast.LENGTH_SHORT).show();
                 }
-        }
+        }*/
         }

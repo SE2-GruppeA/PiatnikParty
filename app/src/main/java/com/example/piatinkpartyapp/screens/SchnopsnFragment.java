@@ -230,12 +230,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.isMyTurn().observe(getViewLifecycleOwner(), isMyTurn -> waitForMyTurn(isMyTurn));
             clientViewModel.getHandoutCard().observe(getViewLifecycleOwner(), card -> getHandoutCard(card));
             clientViewModel.isVotingForNextGame().observe(getViewLifecycleOwner(), votingForNextGame -> voteForNextGame(votingForNextGame));
-            clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), isEndOfRound -> atRoundEnd(isEndOfRound));
+            clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), winner -> atRoundEnd(winner));
             clientViewModel.getPlayedCard().observe(getViewLifecycleOwner(), playedCard -> setPlayedCard(playedCard));
             clientViewModel.getPoints().observe(getViewLifecycleOwner(), points -> setScorePoints(points));
             clientViewModel.isSetTrump().observe(getViewLifecycleOwner(), setTrump -> playerSetTrump(setTrump));
             clientViewModel.isSetSchlag().observe(getViewLifecycleOwner(), setSchlag -> playerSetSchlag(setSchlag));
             clientViewModel.getTrump().observe(getViewLifecycleOwner(), trump -> setTrump(trump));
+            clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), winnerId -> showWinner(winnerId));
 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
@@ -319,12 +320,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         play(playedCard.card, playedCard.playerID);
     }
 
-    private void atRoundEnd(Boolean isEndOfRound) {
-        if (isEndOfRound) {
-            Toast.makeText(requireActivity().getApplicationContext(),
-                    "Runde ist zuende",
-                    Toast.LENGTH_SHORT).show();
-        }
+    private void atRoundEnd(Integer winner) {
+        showRoundWinner(winner);
     }
 
     private void voteForNextGame(Boolean votingForNextGame) {
@@ -539,5 +536,15 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+    }
+
+    private void showRoundWinner(Integer winnerID){
+        requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, WinnerFragment.newInstance("Player " + winnerID)).commit();
+    }
+
+    private void showWinner(Integer winnerID){
+        Toast.makeText(requireActivity().getApplicationContext(),
+                "Player " + winnerID + " hat den Stich bekommen",
+                Toast.LENGTH_SHORT).show();
     }
 }
