@@ -190,6 +190,33 @@ public class HosnObeGame extends Game {
         hosnObeDeck = new HosnObeDeck(GameName.HosnObe, numberOfPlayers);
     }
 
+
+    //Methode for mixing the Hosn Obe Game deck
+    public void mixCard(){
+        hosnObeDeck.mixCards();
+        Responses.mixedCards responses = new Responses.mixedCards();
+        lobby.getPlayerByID(1).getClientConnection().sendTCP(responses);
+    }
+
+    //Methode for handing out a Card
+    public void handoutCard(){
+        Card newCard;
+        for (Player player : lobby.getPlayers()) {
+            newCard = hosnObeDeck.takeCard();
+            if (newCard != null) {
+                player.addHandcard(newCard);
+
+                // send message with handout card to players
+                Responses.PlayerGetHandoutCard response = new Responses.PlayerGetHandoutCard();
+                response.playerID = player.getClientConnection().getID();
+                response.card = newCard;
+                player.getClientConnection().sendTCP(response);
+            }
+        }
+    }
+
+
+
     @Override
     public CardValue getSchlag() {
         return super.getSchlag();
@@ -239,37 +266,30 @@ public class HosnObeGame extends Game {
     public void sendPlayedCardToAllPlayers(int playerId, Card card) {
         super.sendPlayedCardToAllPlayers(playerId, card);
     }
-
     @Override
     public void sendPointsToWinnerPlayer(Player winnerPlayer) {
         super.sendPointsToWinnerPlayer(winnerPlayer);
     }
-
     @Override
     public void setSchlag(CardValue hit) {
         super.setSchlag(hit);
     }
-
     @Override
     public void setTrump(Symbol trump) {
         super.setTrump(trump);
     }
-
     @Override
     public void sendTrumpToAllPlayers(Symbol symbol) {
         super.sendTrumpToAllPlayers(symbol);
     }
-
     @Override
     public void resetPlayedCard() {
         super.resetPlayedCard();
     }
-
     @Override
     public void resetPlayerPoints() {
         super.resetPlayerPoints();
     }
-
     @Override
     public void resetRoundFinished() {
         super.resetRoundFinished();
