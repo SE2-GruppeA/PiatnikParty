@@ -40,6 +40,18 @@ public class HosnObeGame extends Game {
 
     public void addPointsToWinnerPlayer(Player winnerPlayer) {
 
+        if (lobby.getPlayers().size() == 2) {
+
+        } else if (lobby.getPlayers().size() == 3) {
+
+        } else if (lobby.getPlayers().size() == 4) {
+
+        } else {
+            winnerPlayer.addPoints(1);
+            sendPointsToWinnerPlayer(winnerPlayer);
+        }
+
+        /*
         if (lobby.getPlayers().size() == 3 && (winnerPlayer.getId() == 2 || winnerPlayer.getId() == 3)) {
             lobby.getPlayerByID(2).addPoints(1);
             sendPointsToWinnerPlayer(lobby.getPlayerByID(2));
@@ -64,6 +76,7 @@ public class HosnObeGame extends Game {
             winnerPlayer.addPoints(1);
             sendPointsToWinnerPlayer(winnerPlayer);
         }
+        */
     }
 
     public Player getRoundWinnerHosnObe() {
@@ -73,28 +86,36 @@ public class HosnObeGame extends Game {
 
         while (currentPlayer != this.roundStartPlayer) {
 
-            if (winningPlayer.getCardPlayed().getCardValue() == this.hosnObeDeck.getHighestCard().getCardValue() && winningPlayer.getCardPlayed().getSymbol() == hosnObeDeck.getHighestCard().getSymbol()) {
+            if (winningPlayer.getCardPlayed().getCardValue() == this.hosnObeDeck.getHighestCard().getCardValue()
+                    && winningPlayer.getCardPlayed().getSymbol() == hosnObeDeck.getHighestCard().getSymbol()) {
                 winningPlayer = winningPlayer;
             }
             //second played card is right card
-            else if (currentPlayer.getCardPlayed().getSymbol() == this.hosnObeDeck.getHighestCard().getSymbol() && currentPlayer.getCardPlayed().getCardValue() == hosnObeDeck.getHighestCard().getCardValue()) {
+            else if (currentPlayer.getCardPlayed().getSymbol() == this.hosnObeDeck.getHighestCard().getSymbol()
+                    && currentPlayer.getCardPlayed().getCardValue() == hosnObeDeck.getHighestCard().getCardValue()) {
                 winningPlayer = currentPlayer;
 
             } //hit case - first played hit wins
             else if (winningPlayer.getCardPlayed().getCardValue() == this.hosnObeDeck.getHighestCard().getCardValue() ){
                 winningPlayer = winningPlayer;
             }//hit case - hit wins
-            else if (currentPlayer.getCardPlayed().getCardValue() ==this.hosnObeDeck.getHit() && winningPlayer.getCardPlayed() != this.hosnObeDeck.getHighestCard()) {
+            else if (currentPlayer.getCardPlayed().getCardValue() ==this.hosnObeDeck.getHit()
+                    && winningPlayer.getCardPlayed() != this.hosnObeDeck.getHighestCard()) {
 
                 winningPlayer = currentPlayer;
             } // trump case - higher trump wins
             else if (winningPlayer.getCardPlayed().getSymbol() == this.hosnObeDeck.getTrump()){
-                if(currentPlayer.getCardPlayed().getSymbol() == this.hosnObeDeck.getTrump() && this.hosnObeDeck.cardPoints(currentPlayer.getCardPlayed().cardValue) > this.hosnObeDeck.cardPoints(winningPlayer.getCardPlayed().cardValue)) {
+                if(currentPlayer.getCardPlayed().getSymbol() == this.hosnObeDeck.getTrump()
+                        && this.hosnObeDeck.cardPoints(currentPlayer.getCardPlayed().cardValue) >
+                        this.hosnObeDeck.cardPoints(winningPlayer.getCardPlayed().cardValue)) {
                     winningPlayer = currentPlayer;
                 }
                 //default cases: if same colour higher value wins, if trump & other value trump wins
             }
-            else if(currentPlayer.getCardPlayed().getSymbol() == this.hosnObeDeck.getTrump() || (winningPlayer.getCardPlayed().getSymbol() == currentPlayer.getCardPlayed().getSymbol() && this.hosnObeDeck.cardPoints(currentPlayer.getCardPlayed().cardValue) > this.hosnObeDeck.cardPoints(winningPlayer.getCardPlayed().cardValue))){
+            else if(currentPlayer.getCardPlayed().getSymbol() == this.hosnObeDeck.getTrump()
+                    || (winningPlayer.getCardPlayed().getSymbol() == currentPlayer.getCardPlayed().getSymbol()
+                    && this.hosnObeDeck.cardPoints(currentPlayer.getCardPlayed().cardValue) >
+                    this.hosnObeDeck.cardPoints(winningPlayer.getCardPlayed().cardValue))) {
                 winningPlayer = currentPlayer;
             }
             /*Integer p = playerPoints.get(winningPlayer.getId()-1);
@@ -214,8 +235,6 @@ public class HosnObeGame extends Game {
             }
         }
     }
-
-
 
     @Override
     public CardValue getSchlag() {
