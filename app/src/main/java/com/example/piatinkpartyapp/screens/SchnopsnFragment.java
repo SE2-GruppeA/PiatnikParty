@@ -176,7 +176,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     private void mixCards(Boolean mixedCards) {
         if (mixedCards) {
             this.mixedCards = false;
-            this.cardsToMix = false; // da gemsicht wurde
+            mixedCards = false;// da gemsicht wurde
             Toast.makeText(requireActivity().getApplicationContext(), "die Karten des Stapels wurden neu gemischt!", Toast.LENGTH_LONG).show();
         }
 
@@ -252,8 +252,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
 
             //shaking phone to mix cards
-            //todo invoke mixCards method
-           //  clientViewModel.mixedCards().observe(getViewLifecycleOwner(), mixedCards -> mixCards(mixedCards));
+
             clientViewModel.mixedCards().observe(getViewLifecycleOwner(), mixedCards -> mixCards(mixedCards));
         }
 
