@@ -254,13 +254,14 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
         clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
 
-        //clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
+        clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), winner -> atRoundEnd(winner));
 
         clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
         clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
 
         clientViewModel.getTrump().observe(getActivity(), trump->setTrump(trump));
         clientViewModel.getPoints().observe(getActivity(),points->setScorePoints(points));
+        clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), winnerId->showWinner(winnerId));
         return root;
         }
         private void setTrump(Symbol trump) {
@@ -435,16 +436,21 @@ public boolean onLongClick(View view) {
 
         }
 
-private void goBack() {
-        //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        private void goBack() {
+                //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
-        /*private void atRoundEnd(Boolean isEndOfRound) {
-                if(isEndOfRound){
-                        Toast.makeText(requireActivity().getApplicationContext(),
-                                "Runde ist zuende",
-                                Toast.LENGTH_SHORT).show();
-                }
-        }*/
+        private void atRoundEnd(Integer winner) {
+                showRoundWinner(winner);
         }
+        private void showRoundWinner(Integer winnerID){
+                requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, WinnerFragment.newInstance("Player " + winnerID)).commit();
+        }
+        private void showWinner(Integer winnerID){
+                Toast.makeText(requireActivity().getApplicationContext(),
+                        "Player " + winnerID + " hat den Stich bekommen",
+                        Toast.LENGTH_SHORT).show();
+        }
+
+}

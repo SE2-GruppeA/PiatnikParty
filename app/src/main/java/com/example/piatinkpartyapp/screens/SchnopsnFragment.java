@@ -59,6 +59,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     ImageView cardDeckView;
     ImageView swapCardView;
     ImageView imgTrump;
+
     ImageButton exitBtn;
     TextView scoreTxt;
     Button scoreboardBtn;
