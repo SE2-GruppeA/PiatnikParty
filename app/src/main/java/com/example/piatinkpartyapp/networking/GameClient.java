@@ -125,6 +125,14 @@ public class GameClient {
                         handle_HosnObeStartedClientMessage((Responses.HosnObeStartedClientMessage) object);
                     }else if(object instanceof Responses.playerDisconnected){
                         handle_PlayerDisconnected((Responses.playerDisconnected)object);
+                    }else if(object instanceof  Responses.mixedCards){
+                        handle_MixedCards((Responses.mixedCards)object);
+                    }else if(object instanceof  Responses.IsCheater){
+                        handle_isCheater((Responses.IsCheater)object);
+                    } else if (object instanceof Responses.SendRoundWinnerPlayerToAllPlayers) {
+                        handle_SendRoundWinnerPlayerToAllPlayers((Responses.SendRoundWinnerPlayerToAllPlayers) object);
+                    } else if (object instanceof Responses.UpdateScoreboard) {
+                        handle_UpdateScoreboard((Responses.UpdateScoreboard) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -134,6 +142,15 @@ public class GameClient {
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////
+    private void handle_isCheater(Responses.IsCheater object) {
+        // todo: handle live data and update ui
+        boolean isCheater = object.isCheater;
+        /**
+         * If isCheater == true, einfach normal anzeigen das man einen cheater exposed hat
+         * If false, anzeigen das man -10 punkte verloren hat.
+         */
+    }
+
     private void handle_VoteForNextGame() {
         voteForNextGame.postValue(true);
         LOG.info("VoteForNextGame received from the server");
@@ -309,6 +326,22 @@ public class GameClient {
         //TODO: notify the UI that a player disconected from the game
     }
 
+    //mixed cards
+    private void handle_MixedCards(Responses.mixedCards object){
+        LOG.info("mixed cards");
+    }
+
+    private void handle_SendRoundWinnerPlayerToAllPlayers(Responses.SendRoundWinnerPlayerToAllPlayers object) {
+        Responses.SendRoundWinnerPlayerToAllPlayers response = object;
+
+        LOG.info("Player: " + response.winnerPlayerID + " has won the round!");
+    }
+
+    private void handle_UpdateScoreboard(Responses.UpdateScoreboard object) {
+        Responses.UpdateScoreboard response = object;
+
+        LOG.info("Update Scoreboard!");
+    }
     /////////////////// END - Handler Methods !!! ///////////////////
 
 
@@ -320,12 +353,17 @@ public class GameClient {
     }
     // Call this method from client to start a game
     public void startGame() {
+        /*
         new Thread(()->{
+
             client.sendTCP(new Requests.StartGameMessage());
         }).start();
+        */
+        sendPacket(new Requests.StartGameMessage());
     }
 
     public void setCard(Card card) {
+        /*
         new Thread(()->{
             Requests.PlayerSetCard request = new Requests.PlayerSetCard();
             request.card =  card;
@@ -333,8 +371,21 @@ public class GameClient {
             //player should not play a card if it is not their turn
             myTurn.postValue(false);
         }).start();
+        */
+        Requests.PlayerSetCard request = new Requests.PlayerSetCard();
+        request.card =  card;
+        sendPacket(request);
+
+        myTurn.postValue(false);
+
     }
 
+    public void mixCards(){
+        Requests.MixCardsRequest request = new Requests.MixCardsRequest();
+        sendPacket(request);
+        mixedCards.postValue(true);
+
+    }
     public void setSchlag(CardValue schlag) {
         Requests.PlayerSetSchlag request = new Requests.PlayerSetSchlag(schlag);
         sendPacket(request);
@@ -434,7 +485,7 @@ public class GameClient {
     private MutableLiveData<Boolean> wattnStarted;
     private MutableLiveData<Boolean> pensionistlnStarted;
     private MutableLiveData<Boolean> hosnObeStarted;
-
+    private MutableLiveData<Boolean> mixedCards;
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
     }
@@ -447,6 +498,9 @@ public class GameClient {
         return myTurn;
     }
 
+    public LiveData<Boolean> mixedCards(){
+        return mixedCards;
+    }
     public LiveData<Boolean> isGameStarted(){
         return gameStarted;
     }
@@ -503,6 +557,7 @@ public class GameClient {
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
         myTurn = new MutableLiveData<>();
+        mixedCards = new MutableLiveData<>();
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<>();
@@ -555,5 +610,10 @@ public class GameClient {
         LOG.info("CheatRequest was sent");
     }
 
+    public void exposePossibleCheater(String playerId) {
+        Requests.ExposePossibleCheater request = new Requests.ExposePossibleCheater(playerId);
+        sendPacket(request);
+        LOG.info("ExposePossibleCheater Request was sent for playerID : " + playerId);
+    }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

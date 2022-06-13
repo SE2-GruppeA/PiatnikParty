@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp;
+package com.example.piatinkpartyapp.screens;
 
 import android.os.Bundle;
 
@@ -8,23 +8,26 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
-import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.R;
+import com.example.piatinkpartyapp.cards.GameName;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TrumpSelect#newInstance} factory method to
+ * Use the {@link VotingDialog#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TrumpSelect extends Fragment implements View.OnClickListener {
-    ImageButton btnTrumpHerz;
-    ImageButton btnTrumpKaro;
-    ImageButton btnTrumpKreuz;
-    ImageButton btnTrumpPick;
-
+public class VotingDialog extends Fragment implements View.OnClickListener {
+    ImageButton closeVoteBtn;
     ClientViewModel clientViewModel;
+
+    Button schnopsnBtn;
+    Button wattenBtn;
+    Button hosnobeBtn;
+    Button pensionistlnBtn;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +38,7 @@ public class TrumpSelect extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    public TrumpSelect() {
+    public VotingDialog() {
         // Required empty public constructor
     }
 
@@ -45,11 +48,11 @@ public class TrumpSelect extends Fragment implements View.OnClickListener {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment TrumpSelect.
+     * @return A new instance of fragment VotingDialog.
      */
     // TODO: Rename and change types and number of parameters
-    public static TrumpSelect newInstance(String param1, String param2) {
-        TrumpSelect fragment = new TrumpSelect();
+    public static VotingDialog newInstance(String param1, String param2) {
+        VotingDialog fragment = new VotingDialog();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,17 +73,19 @@ public class TrumpSelect extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_trump_select, container, false);
+        View root = inflater.inflate(R.layout.fragment_voting_dialog, container, false);
 
-        btnTrumpHerz = root.findViewById(R.id.btnTrumpHerz);
-        btnTrumpKaro = root.findViewById(R.id.btnTrumpKaro);
-        btnTrumpKreuz = root.findViewById(R.id.btnTrumpKreuz);
-        btnTrumpPick = root.findViewById(R.id.btnTrumpPick);
+        closeVoteBtn = root.findViewById(R.id.closeVoteBtn);
+        schnopsnBtn = root.findViewById(R.id.schnappsenBtn);
+        wattenBtn = root.findViewById(R.id.wattenBtn);
+        pensionistlnBtn = root.findViewById(R.id.pensionistelnBtn);
+        hosnobeBtn = root.findViewById(R.id.hosnobeBtn);
 
-        btnTrumpHerz.setOnClickListener(this);
-        btnTrumpKaro.setOnClickListener(this);
-        btnTrumpKreuz.setOnClickListener(this);
-        btnTrumpPick.setOnClickListener(this);
+        closeVoteBtn.setOnClickListener(this);
+        schnopsnBtn.setOnClickListener(this);
+        wattenBtn.setOnClickListener(this);
+        pensionistlnBtn.setOnClickListener(this);
+        hosnobeBtn.setOnClickListener(this);
 
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
@@ -89,19 +94,24 @@ public class TrumpSelect extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if(view == btnTrumpHerz){
-            setTrump(Symbol.HERZ);
-        }else if(view == btnTrumpKaro){
-            setTrump(Symbol.KARO);
-        }else if(view == btnTrumpKreuz){
-            setTrump(Symbol.KREUZ);
-        }else if(view == btnTrumpPick){
-            setTrump(Symbol.PICK);
+        if(view == closeVoteBtn){
+            closeVotingDialog();
+        }else if(view == schnopsnBtn){
+            clientViewModel.voteForNextGame(GameName.Schnopsn);
+            closeVotingDialog();
+        }else if(view == wattenBtn){
+            clientViewModel.voteForNextGame(GameName.Wattn);
+            closeVotingDialog();
+        }else if(view == pensionistlnBtn){
+            clientViewModel.voteForNextGame(GameName.Pensionisteln);
+            closeVotingDialog();
+        }else if(view == hosnobeBtn){
+            clientViewModel.voteForNextGame(GameName.HosnObe);
+            closeVotingDialog();
         }
     }
 
-    public void setTrump(Symbol trump){
-        clientViewModel.setTrump(trump);
+    public void closeVotingDialog(){
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }

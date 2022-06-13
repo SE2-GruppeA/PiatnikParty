@@ -55,7 +55,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
         xml.destination file("${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
     }
 
-    def fileFilter = ['**/screens/**','**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def fileFilter = ['**/databinding/**','**/screens/**','**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
     def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
 
@@ -110,5 +110,9 @@ dependencies {
 
     //Used for displaying gifs
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+
+    implementation 'nl.dionsegijn:konfetti-xml:2.0.2'
+
 }
 

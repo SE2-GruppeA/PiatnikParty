@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp;
+package com.example.piatinkpartyapp.chat;
 
 import android.os.Bundle;
 
@@ -8,25 +8,26 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
-import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link VotingDialog#newInstance} factory method to
+ * Use the {@link ExposeCheaterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VotingDialog extends Fragment implements View.OnClickListener {
-    ImageButton closeVoteBtn;
+public class ExposeCheaterFragment extends Fragment implements View.OnClickListener {
+    ImageButton closeExposeBtn;
     ClientViewModel clientViewModel;
 
-    Button schnopsnBtn;
-    Button wattenBtn;
-    Button hosnobeBtn;
-    Button pensionistlnBtn;
+    Button exposeBtn;
+    Spinner spinner_playerIds;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,7 +38,7 @@ public class VotingDialog extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    public VotingDialog() {
+    public ExposeCheaterFragment() {
         // Required empty public constructor
     }
 
@@ -47,11 +48,11 @@ public class VotingDialog extends Fragment implements View.OnClickListener {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment VotingDialog.
+     * @return A new instance of fragment ExposeCheaterFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static VotingDialog newInstance(String param1, String param2) {
-        VotingDialog fragment = new VotingDialog();
+    public static ExposeCheaterFragment newInstance(String param1, String param2) {
+        ExposeCheaterFragment fragment = new ExposeCheaterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,42 +73,52 @@ public class VotingDialog extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_voting_dialog, container, false);
+        View root = inflater.inflate(R.layout.fragment_expose_cheater2, container, false);
 
-        closeVoteBtn = root.findViewById(R.id.closeVoteBtn);
-        schnopsnBtn = root.findViewById(R.id.schnappsenBtn);
-        wattenBtn = root.findViewById(R.id.wattenBtn);
-        pensionistlnBtn = root.findViewById(R.id.pensionistelnBtn);
-        hosnobeBtn = root.findViewById(R.id.hosnobeBtn);
+        closeExposeBtn = root.findViewById(R.id.closeExposeBtn);
+        exposeBtn = root.findViewById(R.id.exposeBtn);
 
-        closeVoteBtn.setOnClickListener(this);
-        schnopsnBtn.setOnClickListener(this);
-        wattenBtn.setOnClickListener(this);
-        pensionistlnBtn.setOnClickListener(this);
-        hosnobeBtn.setOnClickListener(this);
+        closeExposeBtn.setOnClickListener(this);
+        exposeBtn.setOnClickListener(this);
 
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+
+        spinner_playerIds = (Spinner) root.findViewById(R.id.spinner_playerIds);
+        setUpSpinner();
 
         return root;
     }
 
+    private void setUpSpinner() {
+        // todo : optional get player id's but for now it's fine
+        String[] arraySpinner = new String[] {
+                "1", "2", "3", "4"
+        };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_selectable_list_item, arraySpinner);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_playerIds.setAdapter(adapter);
+
+        // default first player, so we don't have to do null checks
+        spinner_playerIds.setSelection(1);
+    }
+
     @Override
     public void onClick(View view) {
-        if(view == closeVoteBtn){
+        if(view == closeExposeBtn){
             closeVotingDialog();
-        }else if(view == schnopsnBtn){
-            clientViewModel.voteForNextGame(GameName.Schnopsn);
-            closeVotingDialog();
-        }else if(view == wattenBtn){
-            clientViewModel.voteForNextGame(GameName.Wattn);
-            closeVotingDialog();
-        }else if(view == pensionistlnBtn){
-            clientViewModel.voteForNextGame(GameName.Pensionisteln);
-            closeVotingDialog();
-        }else if(view == hosnobeBtn){
-            clientViewModel.voteForNextGame(GameName.HosnObe);
-            closeVotingDialog();
+        } if(view == exposeBtn){
+            exposePossibleCheater();
         }
+    }
+
+    private void exposePossibleCheater() {
+        TextView textView = (TextView)spinner_playerIds.getSelectedView();
+        String playerId = textView.getText().toString();
+
+        //todo: live data
+        clientViewModel.exposePossibleCheater(playerId);
     }
 
     public void closeVotingDialog(){

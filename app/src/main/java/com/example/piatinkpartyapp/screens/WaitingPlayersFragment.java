@@ -1,7 +1,6 @@
 package com.example.piatinkpartyapp.screens;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +16,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
-import com.example.piatinkpartyapp.SchnopsnFragment;
-import com.example.piatinkpartyapp.WattnFragment;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.NetworkHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 
 public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
