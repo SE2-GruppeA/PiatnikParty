@@ -230,9 +230,10 @@ public class GameServer {
         lobby.currentGame.givePlayerBestCard(connection.getID());
     }
     private void handle_MixCardsRequest(Connection connection,Requests.MixCardsRequest object){
-        Requests.MixCardsRequest request = object;
+        Responses.mixedCards response = new Responses.mixedCards();
         lobby.currentGame.mixCards();
         LOG.info("here");
+        sendPacketToAll(response);
     }
     /////////////////// END - Handler Methods !!! ///////////////////
 

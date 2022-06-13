@@ -328,6 +328,10 @@ public class GameClient {
 
     //mixed cards
     private void handle_MixedCards(Responses.mixedCards object){
+        Responses.mixedCards response = object;
+        mixedCards.postValue(true);
+    //
+        //  mixCards();
         LOG.info("mixed cards");
     }
 
@@ -382,10 +386,10 @@ public class GameClient {
 
     }
 
-    public void mixCards(){
+   public void mixCards(){
         Requests.MixCardsRequest request = new Requests.MixCardsRequest();
         sendPacket(request);
-        mixedCards.postValue(true);
+       // mixedCards.postValue(true);
 
     }
     public void setSchlag(CardValue schlag) {
@@ -563,7 +567,7 @@ public class GameClient {
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
         myTurn = new MutableLiveData<>();
-        mixedCards = new MutableLiveData<>();
+        mixedCards = new MutableLiveData<Boolean>();
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<Integer>();

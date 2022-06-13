@@ -40,6 +40,7 @@ public class NetworkHandler {
         kryo.register(Requests.VoteForNextGame.class);
         kryo.register(Requests.PlayerRequestsCheat.class);
         kryo.register(Requests.ExposePossibleCheater.class);
+        kryo.register(Requests.MixCardsRequest.class);
 
         //Responses
         kryo.register(Responses.ConnectedSuccessfully.class);
@@ -63,6 +64,7 @@ public class NetworkHandler {
         kryo.register(Responses.SendRoundWinnerPlayerToAllPlayers.class);
         kryo.register(Responses.UpdateScoreboard.class);
         kryo.register(Responses.playerDisconnected.class);
+        kryo.register(Responses.mixedCards.class);
 
 
         // Other classes

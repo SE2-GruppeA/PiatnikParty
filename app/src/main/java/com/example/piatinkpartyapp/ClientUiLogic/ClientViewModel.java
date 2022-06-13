@@ -139,7 +139,7 @@ public class ClientViewModel extends ViewModel {
     public LiveData<Boolean> isHosnObeStarted() {
         return client.isHosnObeStarted();
     }
-
+    public void mixCards(){client.mixCards();}
 
     public void cheatRequest() {
         client.cheatRequest();

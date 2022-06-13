@@ -231,6 +231,7 @@ public class Responses {
     public static class mixedCards implements IPackets {
         public mixedCards() {
         }
+
     }
 
     public static class SendRoundWinnerPlayerToAllPlayers {
