@@ -65,6 +65,7 @@ public class NetworkHandler {
         kryo.register(Responses.UpdateScoreboard.class);
         kryo.register(Responses.playerDisconnected.class);
         kryo.register(Responses.mixedCards.class);
+        kryo.register(Responses.CheatingPenalty.class);
 
 
         // Other classes

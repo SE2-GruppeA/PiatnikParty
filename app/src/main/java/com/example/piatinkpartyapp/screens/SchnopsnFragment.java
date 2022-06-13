@@ -242,6 +242,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.isSetSchlag().observe(getViewLifecycleOwner(), setSchlag -> playerSetSchlag(setSchlag));
             clientViewModel.getTrump().observe(getViewLifecycleOwner(), trump -> setTrump(trump));
             clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), winnerId -> showWinner(winnerId));
+            clientViewModel.isCheaterExposed().observe(getViewLifecycleOwner(), isCheater -> showCheaterExposed(isCheater));
+            clientViewModel.isCheatingExposed().observe(getViewLifecycleOwner(), isCheating -> showCheatingExposed(isCheating));
 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
@@ -259,6 +261,26 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
         //initializeGame();
         return root;
+    }
+
+    private void showCheatingExposed(Boolean isCheating) {
+        if(isCheating){
+            Toast.makeText(requireActivity().getApplicationContext(),
+                    "Du wurdest beim cheaten erwischt! -20 Punkte",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showCheaterExposed(Boolean isCheater) {
+        if(isCheater){
+            Toast.makeText(requireActivity().getApplicationContext(),
+                    "Du hast einen Cheater entdeckt! Der Cheater wird bestraft!",
+                    Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(requireActivity().getApplicationContext(),
+                    "Das war kein Cheater! -10 Punkte",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initializeHosnObe(Boolean started) {

@@ -15,13 +15,13 @@ NOTES :
 
 public class Requests {
     public static class ExposePossibleCheater implements IPackets {
-        String playerId;
+        Integer playerId;
 
         public ExposePossibleCheater() {
 
         }
 
-        public ExposePossibleCheater(String playerId) {
+        public ExposePossibleCheater(Integer playerId) {
             this.playerId = playerId;
         }
     }

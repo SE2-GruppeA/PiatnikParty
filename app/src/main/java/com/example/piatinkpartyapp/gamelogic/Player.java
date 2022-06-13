@@ -150,6 +150,8 @@ public class Player {
         return cheaten;
     }
 
+    public void setCheaten(Boolean cheat) {this.cheaten = cheat; }
+
     public Connection getClientConnection() {
         return clientConnection;
     }

@@ -161,6 +161,8 @@ public class HosnObeGame extends Game {
         player.setHandcards(currentHandCards);
 
         sendHandCardsToPlayer(currentHandCards, player);
+
+        player.setCheaten(true);
     }
 
     @Override

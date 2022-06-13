@@ -104,10 +104,10 @@ public class GameServer {
     }
 
     private void handle_exposePossibleCheater(Connection connection, Requests.ExposePossibleCheater object) {
-        String playerId = object.playerId;
+        Integer playerId = object.playerId;
 
         Responses.IsCheater response = new Responses.IsCheater();
-        if(isCheater(playerId)){
+        if(isCheater(playerId, connection.getID())){
             response.isCheater = true;
         }else{
             response.isCheater = false;
@@ -116,9 +116,12 @@ public class GameServer {
     }
 
     //todo: Add this function to gamelogic itself, it's just here so i can build the handler above !
-    private boolean isCheater(String playerId) {
+    private boolean isCheater(Integer playerId, Integer exposerId) {
         // todo: Implement gamelogic: how explained down below (Maybe Anton or Bene)!
         // todo: Also add live data !
+
+        Boolean isCheater = lobby.currentGame.isPlayerCheater(playerId);
+
         /**
          * gameLogic.exposePossibleCheater(playerId)
          *
@@ -128,7 +131,13 @@ public class GameServer {
          * return false, and also trigger a lose -10 points with response isCheater(false)
          * comes with risks !
          */
-        return true;
+        if(isCheater){
+            lobby.currentGame.cheaterPenalty(playerId);
+        }else {
+            lobby.currentGame.punishWrongExposure(exposerId);
+        }
+
+        return isCheater;
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////

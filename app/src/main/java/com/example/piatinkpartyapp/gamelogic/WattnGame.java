@@ -77,6 +77,8 @@ public class WattnGame extends Game {
 
         //sends new handcards to the player
         sendHandCardsToPlayer(currentHandCards, player);
+
+        player.setCheaten(true);
     }
 
     @Override

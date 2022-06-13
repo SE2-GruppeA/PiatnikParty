@@ -92,6 +92,8 @@ public class SchnopsnGame extends Game {
 
         //sends new handcards to the player
         sendHandCardsToPlayer(currentHandCards, player);
+
+        player.setCheaten(true);
     }
 
     // Player set card

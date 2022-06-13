@@ -255,4 +255,8 @@ public class Responses {
             this.lobby = lobby;
         }*/
     }
+
+    public static class CheatingPenalty{
+        public CheatingPenalty(){}
+    }
 }

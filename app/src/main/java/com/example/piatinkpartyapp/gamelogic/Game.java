@@ -181,7 +181,7 @@ public class Game {
     }
 
     public void givePlayerBestCard(int playerId){
-
+        lobby.getPlayerByID(playerId).setCheaten(true);
     }
 
     public void setSchlag(CardValue hit){
@@ -202,5 +202,31 @@ public class Game {
 
     public void mixCards() {
 
+    }
+
+    public Boolean isPlayerCheater(Integer playerId) {
+        return lobby.getPlayerByID(playerId).isCheaten();
+    }
+
+    public void cheaterPenalty(Integer playerId) {
+        Player player = lobby.getPlayerByID(playerId);
+
+        if(player.isCheaten()){
+            player.addPoints(-20);
+        }
+
+        sendPenaltyMessageToPlayer(player);
+    }
+
+    public void sendPenaltyMessageToPlayer(Player player) {
+        Responses.CheatingPenalty response = new Responses.CheatingPenalty();
+        player.getClientConnection().sendTCP(response);
+        sendPointsToWinnerPlayer(player);
+    }
+
+    public void punishWrongExposure(Integer exposerId) {
+        Player player = lobby.getPlayerByID(exposerId);
+        player.addPoints(-10);
+        sendPointsToWinnerPlayer(player);
     }
 }

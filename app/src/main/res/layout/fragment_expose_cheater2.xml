@@ -11,7 +11,7 @@
         android:id="@+id/imageView3"
         android:layout_width="578dp"
         android:layout_height="333dp"
-        android:src="@drawable/voting"
+        android:src="@drawable/expose_cheater"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
