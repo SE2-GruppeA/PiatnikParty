@@ -71,48 +71,5 @@ public class HosnObeDeck extends Deck {
         return trump;
     }
 
-    @Override
-    public ArrayList<Card> getCards() {
-        return super.getCards();
-    }
 
-    @Override
-    public ArrayList<Card> getDeck() {
-        return super.getDeck();
-    }
-
-    @Override
-    public ArrayList<Card> getHandCards() {
-        return super.getHandCards();
-    }
-
-    @Override
-    public GameName getGameName() {
-        return super.getGameName();
-    }
-
-    @Override
-    public int getPlayers() {
-        return super.getPlayers();
-    }
-
-    @Override
-    public void setCards(ArrayList<Card> cards) {
-        super.setCards(cards);
-    }
-
-    @Override
-    public void setDeck(ArrayList<Card> deck) {
-        super.setDeck(deck);
-    }
-
-    @Override
-    public void setGameName(GameName gameName) {
-        super.setGameName(gameName);
-    }
-
-    @Override
-    public void setPlayers(int players) {
-        super.setPlayers(players);
-    }
 }
