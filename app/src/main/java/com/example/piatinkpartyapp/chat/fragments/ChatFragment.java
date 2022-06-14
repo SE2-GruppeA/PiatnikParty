@@ -32,6 +32,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private String mParam1;
+    private String mParam2;
+
     private FragmentChatBinding binding;
     private ClientViewModel model;
     private ChatAdapter chatAdapter;
@@ -62,9 +65,13 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            extracted();
         }
+    }
 
+    private void extracted() {
+        mParam1 = getArguments().getString(ARG_PARAM1);
+        mParam2 = getArguments().getString(ARG_PARAM2);
     }
 
     private void setUpChatRecyclerView() {
