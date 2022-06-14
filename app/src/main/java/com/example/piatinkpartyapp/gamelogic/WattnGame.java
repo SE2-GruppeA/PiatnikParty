@@ -19,7 +19,7 @@ public class WattnGame extends Game {
 
     public WattnGame(Lobby l){
         lobby = l;
-      //  resetWattnDeck(l.getPlayers().size());
+
 
     }
     public void resetWattnDeck(Integer numberOfPlayers){
@@ -257,87 +257,4 @@ public class WattnGame extends Game {
             player.getClientConnection().sendTCP(request);
         }
     }
-   /* public void resetVotingFinished() {
-        for (Player player : players) {
-            player.setVotingFinished(false);
-        }
-    }*/
-/*@Override
-    public Player addPlayer(Connection connection, String playerName) {
-        Player player = new Player(connection, playerName);
-        players.add(player);
-        return player;
-    }
-
-
-
-
-    @Override
-    public void resetSchnopsnDeck(){}
-    //2 players for beginning
-
-
-    @Override
-    public Player getRoundWinnerPlayerSchnopsn(){return null;}
-
-
-
-
-
-
-
-
-@Override
-    public Player getNextPlayer(Player player) {
-        int currentIndex = players.indexOf(player);
-        if (currentIndex == players.size()-1) {
-            currentIndex = 0;
-            //LOG.info("No next player! return first player");
-        } else {
-            currentIndex = currentIndex + 1;
-            //LOG.info("Index of next player: " + currentIndex);
-        }
-        return players.get(currentIndex);
-    }
-    @Override
-    public boolean checkIfAllPlayersFinishedRound() {
-        for (Player player: players) {
-            if (!player.isRoundFinished()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void resetRoundFinished() {
-        for (Player player: players) {
-            player.setRoundFinished(false);
-        }
-    }
-    @Override
-    public void sendEndRoundMessageToPlayers(Player roundWinner){
-        for (Player player: players) {
-            Responses.EndOfRound response = new Responses.EndOfRound();
-            response.playerID = roundWinner.getId();
-            player.getClientConnection().sendTCP(response);
-        }
-    }
-    @Override
-    public void sendTrumpToAllPlayers(Symbol symbol) {
-        for (Player player: players) {
-            Responses.SendTrumpToAllPlayers response = new Responses.SendTrumpToAllPlayers();
-            response.trump = symbol;
-            player.getClientConnection().sendTCP(response);
-        }
-    }
-    public void sendSchlagToAllPlayers(CardValue schlag){
-    for(Player player: players){
-        Responses.SendSchlagToAllPlayers response = new Responses.SendSchlagToAllPlayers();
-        response.schlag = schlag;
-        player.getClientConnection().sendTCP(response);
-    }
-    }
-
-  */
 }
