@@ -29,13 +29,13 @@ public class GameClientTest {
         this.gameClient = new GameClient(client);
     }
 
-/*    @Test
+    @Test
     public void testGameStartMessage(){
         this.gameClient.startGame();
         Mockito.verify(client,Mockito.times(1)).sendTCP(new Requests.StartGameMessage());
-    }*/
+    }
 
-   @Test
+    @Test
     public void testSetCorrectCard(){
         Card card = new Card(Symbol.HERZ, CardValue.ASS);
         this.gameClient.setCard(card);
@@ -43,7 +43,7 @@ public class GameClientTest {
         req.setCard(card);
         Mockito.verify(client, Mockito.times(1)).sendTCP(req);
     }
-/*
+
     @Test
     public void testSetSchlag(){
         MutableLiveData<Boolean> schlag = Mockito.mock(MutableLiveData.class);
@@ -61,6 +61,9 @@ public class GameClientTest {
         Requests.PlayerSetTrump req = new Requests.PlayerSetTrump(Symbol.HERZ);
 
         Mockito.verify(client,Mockito.times(1)).sendTCP(req);
-    }*/
+    }
+
+
+
 }
 

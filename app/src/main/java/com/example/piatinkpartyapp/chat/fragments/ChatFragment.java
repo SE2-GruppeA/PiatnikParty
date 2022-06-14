@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.chat.ChatAdapter;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.chat.CheatCelebrationFragment;
 import com.example.piatinkpartyapp.databinding.FragmentChatBinding;
-import com.example.piatinkpartyapp.screens.GameRulesFragment;
 import com.example.piatinkpartyapp.utils.Utils;
 
 /**
