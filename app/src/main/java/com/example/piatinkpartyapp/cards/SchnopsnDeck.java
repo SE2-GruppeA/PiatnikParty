@@ -11,7 +11,7 @@ public class SchnopsnDeck extends Deck {
     * selected trump symbol
     * map of points of each cardValue for easier point / win calculation*/
     Symbol trump;
-    HashMap<CardValue, Integer> point_map;
+    HashMap<CardValue, Integer> pointMap;
     ArrayList<CardValue> schnopsnCardValues;
 
     public SchnopsnDeck(GameName gameName, int players) {
@@ -76,14 +76,14 @@ public class SchnopsnDeck extends Deck {
 
     /*creation of full cardvalue point mapping*/
     public Map<CardValue, Integer> cardPoints() {
-        point_map = new HashMap<CardValue, Integer>();
+        pointMap = new HashMap<>();
         Integer points = 0;
         for (CardValue v : schnopsnCardValues) {
             points = cardPoints(v);
-            point_map.put(v, points);
+            pointMap.put(v, points);
         }
 
-        return point_map;
+        return pointMap;
     }
 
     /*in schopsn there is a swapping card showing its image half under the deck, its symbol is trump & it can be swapped against the trump UNTER during the game*/
@@ -107,13 +107,13 @@ public class SchnopsnDeck extends Deck {
     }
 
 
-    public HashMap<CardValue, Integer> getPoint_map() {
-        return point_map;
+    public HashMap<CardValue, Integer> getPointMap() {
+        return pointMap;
     }
 
 
-    public void setPoint_map(HashMap<CardValue, Integer> point_map) {
-        this.point_map = point_map;
+    public void setPointMap(HashMap<CardValue, Integer> point_map) {
+        this.pointMap = point_map;
     }
 
     public void setSchnopsnCardValues(ArrayList<CardValue> schnopsnCardValues) {

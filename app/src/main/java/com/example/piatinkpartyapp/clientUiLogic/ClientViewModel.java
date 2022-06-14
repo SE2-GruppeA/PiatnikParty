@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp.ClientUiLogic;
+package com.example.piatinkpartyapp.clientUiLogic;
 
 import android.util.Log;
 
@@ -23,6 +23,9 @@ public class ClientViewModel extends ViewModel {
 
     private GameClient client = GameClient.getInstance();
 
+    /*
+    // Don't know why this methode is empty
+     */
     public ClientViewModel() throws IOException { }
 
     public String getPlayerID() {
@@ -115,11 +118,10 @@ public class ClientViewModel extends ViewModel {
     }
 
     public void cheat() {
-        //todo: implement client code
         cheatRequest();
         Log.d(TAG, "YOU ARE CHEATING NOW");
-
     }
+
     public void setSchlag(CardValue schlag){client.setSchlag(schlag);}
     public LiveData<CardValue> getSchlag(){return client.getSchlag();}
     public LiveData<Boolean> isSetSchlag() {
