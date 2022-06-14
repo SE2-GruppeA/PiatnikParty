@@ -134,11 +134,16 @@ public class WattnGame extends Game {
 
             LOG.info(this.deck.getTrump().toString());
             LOG.info(this.deck.getHit().toString());
-            if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getRightCard().getCardValue() && winningPlayer.getCardPlayed().getSymbol() == deck.getRightCard().getSymbol()){
+
+            if (winningPlayer.getCardPlayed().getCardValue()
+                    == this.deck.getRightCard().getCardValue()
+                    && winningPlayer.getCardPlayed().getSymbol()
+                    == deck.getRightCard().getSymbol()){
                 winningPlayer = winningPlayer;
             }
+
             //second played card is right card
-            else if(currentPlayer.getCardPlayed().getSymbol() == this.deck.getRightCard().getSymbol() && currentPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue()){
+            else if (currentPlayer.getCardPlayed().getSymbol() == this.deck.getRightCard().getSymbol() && currentPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue()){
                 winningPlayer = currentPlayer;
 
             } //hit case - first played hit wins
