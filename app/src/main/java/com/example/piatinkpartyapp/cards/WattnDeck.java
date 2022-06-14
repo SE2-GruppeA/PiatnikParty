@@ -52,29 +52,29 @@ public class WattnDeck extends Deck {
         if(v.equals(getHit())){
             points = 100;
         }else{
-            switch (v.name()){
-                case("SIEBEN"):
+            switch (v){
+                case SIEBEN:
                     points = 1;
                     break;
-                case("ACHT"):
+                case ACHT:
                     points = 2;
                     break;
-                case("NEUN"):
+                case NEUN:
                     points = 3;
                     break;
-                case("ZEHN"):
+                case ZEHN:
                     points = 4;
                     break;
-                case("UNTER"):
+                case UNTER:
                     points = 5;
                     break;
-                case("OBER"):
+                case OBER:
                     points = 6;
                     break;
-                case("KOENIG"):
+                case KOENIG:
                     points = 7;
                     break;
-                case("ASS"):
+                case ASS:
                     points =8;
                     break;
                 default:

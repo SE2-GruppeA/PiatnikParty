@@ -70,9 +70,7 @@ public class Deck {
     /*mixing order of cards in the deck
     * checking functionality via logcat since order of deck cards isnt visile in antoher way*/
     public ArrayList<Card> mixCards(){
-       // Log.d("b4############",cards.toString());
         Collections.shuffle(cards);
-       // Log.d("after############",cards.toString());
         return cards;
     }
 

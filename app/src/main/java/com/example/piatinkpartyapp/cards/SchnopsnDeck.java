@@ -51,20 +51,20 @@ public class SchnopsnDeck extends Deck {
     /*get game points per cardvalue*/
     public Integer cardPoints(CardValue v) {
         Integer points = 0;
-        switch (v.name()) {
-            case ("ZEHN"):
+        switch (v) {
+            case ZEHN:
                 points = 10;
                 break;
-            case ("UNTER"):
+            case UNTER:
                 points = 2;
                 break;
-            case ("OBER"):
+            case OBER:
                 points = 3;
                 break;
-            case ("KOENIG"):
+            case KOENIG:
                 points = 4;
                 break;
-            case ("ASS"):
+            case ASS:
                 points = 11;
                 break;
             default:
@@ -106,54 +106,11 @@ public class SchnopsnDeck extends Deck {
         return  null;
     }
 
-    @Override
-    public ArrayList<Card> getCards() {
-        return super.getCards();
-    }
-
-    @Override
-    public ArrayList<Card> getDeck() {
-        return super.getDeck();
-    }
-
-    @Override
-    public GameName getGameName() {
-        return super.getGameName();
-    }
-
-    @Override
-    public int getPlayers() {
-        return super.getPlayers();
-    }
-
-    @Override
-    public ArrayList<Card> getHandCards() {
-        return super.getHandCards();
-    }
 
     public HashMap<CardValue, Integer> getPoint_map() {
         return point_map;
     }
 
-    @Override
-    public void setCards(ArrayList<Card> cards) {
-        super.setCards(cards);
-    }
-
-    @Override
-    public void setDeck(ArrayList<Card> deck) {
-        super.setDeck(deck);
-    }
-
-    @Override
-    public void setGameName(GameName gameName) {
-        super.setGameName(gameName);
-    }
-
-    @Override
-    public void setPlayers(int players) {
-        super.setPlayers(players);
-    }
 
     public void setPoint_map(HashMap<CardValue, Integer> point_map) {
         this.point_map = point_map;

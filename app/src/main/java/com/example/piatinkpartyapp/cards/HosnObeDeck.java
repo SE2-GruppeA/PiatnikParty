@@ -14,23 +14,23 @@ public class HosnObeDeck extends Deck {
 
     public int cardPoints(CardValue cardValue) {
         int points = 0;
-        switch (cardValue.name()) {
-            case ("SIEBEN"):
+        switch (cardValue) {
+            case SIEBEN:
                 points = 7;
                 break;
-            case ("ACHT"):
+            case ACHT:
                 points = 8;
                 break;
-            case ("NEUN"):
+            case NEUN:
                 points = 9;
                 break;
-            case ("ZEHN"):
-            case ("UNTER"):
-            case ("OBER"):
-            case ("KOENIG"):
+            case ZEHN:
+            case UNTER:
+            case OBER:
+            case KOENIG:
                 points = 10;
                 break;
-            case ("ASS"):
+            case ASS:
                 points = 11;
                 break;
             default:

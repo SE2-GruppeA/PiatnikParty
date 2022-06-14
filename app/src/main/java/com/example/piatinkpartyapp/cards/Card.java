@@ -57,12 +57,8 @@ public class Card {
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof Card){
             Card comp = (Card) obj;
-            if (symbol == comp.symbol && cardValue == comp.cardValue && backSide.equals(comp.backSide) &&
-            frontSide.equals(comp.frontSide) && cheated == comp.cheated){
-                return true;
-            }else {
-                return false;
-            }
+            return symbol == comp.symbol && cardValue == comp.cardValue && backSide.equals(comp.backSide) &&
+                    frontSide.equals(comp.frontSide) && cheated == comp.cheated;
         }else {
             return false;
         }
