@@ -34,6 +34,7 @@ public class SchnopsnGame extends Game {
             resetSchnopsnDeck();
             sendGameStartedMessageToClients();
             resetRoundFinished();
+            resetPlayerPoints();
             sendHandCards();
             //  sendTrumpToAllPlayers(this.deck.getTrump());
 
@@ -145,13 +146,15 @@ public class SchnopsnGame extends Game {
         while (currentPlayer != this.roundStartPlayer) {
             if (winnerPlayer.getCardPlayed().getSymbol() == deck.getTrump()) {
                 if (currentPlayer.getCardPlayed().getSymbol() == deck.getTrump()
-                        && deck.cardPoints(currentPlayer.getCardPlayed().getCardValue()) > deck.cardPoints(winnerPlayer.getCardPlayed().getCardValue())) {
+                        && deck.cardPoints(currentPlayer.getCardPlayed().getCardValue())
+                        > deck.cardPoints(winnerPlayer.getCardPlayed().getCardValue())) {
                     winnerPlayer = currentPlayer;
                 }
             } else {
                 if (currentPlayer.getCardPlayed().getSymbol() == deck.getTrump()
                         || (winnerPlayer.getCardPlayed().getSymbol() == currentPlayer.getCardPlayed().getSymbol()
-                        && deck.cardPoints(currentPlayer.getCardPlayed().getCardValue()) > deck.cardPoints(winnerPlayer.getCardPlayed().getCardValue()))) {
+                        && deck.cardPoints(currentPlayer.getCardPlayed().getCardValue())
+                        > deck.cardPoints(winnerPlayer.getCardPlayed().getCardValue()))) {
                     winnerPlayer = currentPlayer;
                 }
             }

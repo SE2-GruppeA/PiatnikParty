@@ -39,44 +39,10 @@ public class HosnObeGame extends Game {
     }
 
     public void addPointsToWinnerPlayer(Player winnerPlayer) {
-
-        if (lobby.getPlayers().size() == 2) {
-
-        } else if (lobby.getPlayers().size() == 3) {
-
-        } else if (lobby.getPlayers().size() == 4) {
-
-        } else {
+        for (Player player: lobby.getPlayers()) {
             winnerPlayer.addPoints(1);
-            sendPointsToWinnerPlayer(winnerPlayer);
         }
-
-        /*
-        if (lobby.getPlayers().size() == 3 && (winnerPlayer.getId() == 2 || winnerPlayer.getId() == 3)) {
-            lobby.getPlayerByID(2).addPoints(1);
-            sendPointsToWinnerPlayer(lobby.getPlayerByID(2));
-            lobby.getPlayerByID(3).addPoints(1);
-            sendPointsToWinnerPlayer(lobby.getPlayerByID(3));
-        }
-        else if (lobby.getPlayers().size() == 4) {
-            if (winnerPlayer.getId() == 1 || winnerPlayer.getId() == 3) {
-                lobby.getPlayerByID(1).addPoints(1);
-                sendPointsToWinnerPlayer(lobby.getPlayerByID(1));
-                lobby.getPlayerByID(3).addPoints(1);
-                sendPointsToWinnerPlayer(lobby.getPlayerByID(3));
-            }
-            else if (winnerPlayer.getId() == 2 || winnerPlayer.getId() == 4) {
-                lobby.getPlayerByID(2).addPoints(1);
-                sendPointsToWinnerPlayer(lobby.getPlayerByID(2));
-                lobby.getPlayerByID(4).addPoints(1);
-                sendPointsToWinnerPlayer(lobby.getPlayerByID(4));
-            }
-        }
-        else {
-            winnerPlayer.addPoints(1);
-            sendPointsToWinnerPlayer(winnerPlayer);
-        }
-        */
+        sendPointsToWinnerPlayer(winnerPlayer);
     }
 
     public Player getRoundWinnerHosnObe() {
