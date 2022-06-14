@@ -34,6 +34,7 @@ public class SchnopsnGame extends Game {
             resetSchnopsnDeck();
             sendGameStartedMessageToClients();
             resetRoundFinished();
+            resetPlayerPoints();
             sendHandCards();
             //  sendTrumpToAllPlayers(this.deck.getTrump());
 

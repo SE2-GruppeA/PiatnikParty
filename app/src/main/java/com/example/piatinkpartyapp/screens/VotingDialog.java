@@ -103,8 +103,8 @@ public class VotingDialog extends Fragment implements View.OnClickListener {
             clientViewModel.voteForNextGame(GameName.Wattn);
             closeVotingDialog();
         }else if(view == pensionistlnBtn){
-            clientViewModel.voteForNextGame(GameName.Pensionisteln);
-            closeVotingDialog();
+            //clientViewModel.voteForNextGame(GameName.Pensionisteln);
+            //closeVotingDialog();
         }else if(view == hosnobeBtn){
             clientViewModel.voteForNextGame(GameName.HosnObe);
             closeVotingDialog();

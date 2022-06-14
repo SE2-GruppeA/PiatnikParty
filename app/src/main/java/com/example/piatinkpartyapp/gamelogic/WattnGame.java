@@ -32,6 +32,7 @@ public class WattnGame extends Game {
             resetWattnDeck(lobby.getPlayers().size());
             sendGameStartedMessageToClients();
             resetRoundFinished();
+            resetPlayerPoints();
             sendHandCards();
             setRoundStartPlayer(lobby.getPlayers().get(0));
             notifyPlayerYourTurn(lobby.getPlayers().get(0));
