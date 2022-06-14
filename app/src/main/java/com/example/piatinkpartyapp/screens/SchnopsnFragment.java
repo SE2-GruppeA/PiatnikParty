@@ -24,7 +24,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
@@ -412,8 +412,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         cardDeckView = view.findViewById(R.id.cardDeck);
         currentCard1 = view.findViewById(R.id.currentCard);
         currentCard2 = view.findViewById(R.id.currentCard2);
-        currentCard3 = view.findViewById(R.id.currentCardPlayer3);
-        currentCard4 = view.findViewById(R.id.currentCardPlayer4);
+        currentCard3 = view.findViewById(R.id.currentCard3);
+        currentCard4 = view.findViewById(R.id.currentCard4);
         swapCardView = view.findViewById(R.id.swapCard);
         mixCardsBtn = view.findViewById(R.id.mixBtn);
         imgTrump = view.findViewById(R.id.imgTrump);

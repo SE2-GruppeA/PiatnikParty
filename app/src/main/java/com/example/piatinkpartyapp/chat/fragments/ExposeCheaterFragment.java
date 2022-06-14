@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 
 /**

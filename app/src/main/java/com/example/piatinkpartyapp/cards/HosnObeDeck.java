@@ -14,23 +14,23 @@ public class HosnObeDeck extends Deck {
 
     public int cardPoints(CardValue cardValue) {
         int points = 0;
-        switch (cardValue.name()) {
-            case ("SIEBEN"):
+        switch (cardValue) {
+            case SIEBEN:
                 points = 7;
                 break;
-            case ("ACHT"):
+            case ACHT:
                 points = 8;
                 break;
-            case ("NEUN"):
+            case NEUN:
                 points = 9;
                 break;
-            case ("ZEHN"):
-            case ("UNTER"):
-            case ("OBER"):
-            case ("KOENIG"):
+            case ZEHN:
+            case UNTER:
+            case OBER:
+            case KOENIG:
                 points = 10;
                 break;
-            case ("ASS"):
+            case ASS:
                 points = 11;
                 break;
             default:
@@ -71,48 +71,5 @@ public class HosnObeDeck extends Deck {
         return trump;
     }
 
-    @Override
-    public ArrayList<Card> getCards() {
-        return super.getCards();
-    }
 
-    @Override
-    public ArrayList<Card> getDeck() {
-        return super.getDeck();
-    }
-
-    @Override
-    public ArrayList<Card> getHandCards() {
-        return super.getHandCards();
-    }
-
-    @Override
-    public GameName getGameName() {
-        return super.getGameName();
-    }
-
-    @Override
-    public int getPlayers() {
-        return super.getPlayers();
-    }
-
-    @Override
-    public void setCards(ArrayList<Card> cards) {
-        super.setCards(cards);
-    }
-
-    @Override
-    public void setDeck(ArrayList<Card> deck) {
-        super.setDeck(deck);
-    }
-
-    @Override
-    public void setGameName(GameName gameName) {
-        super.setGameName(gameName);
-    }
-
-    @Override
-    public void setPlayers(int players) {
-        super.setPlayers(players);
-    }
 }

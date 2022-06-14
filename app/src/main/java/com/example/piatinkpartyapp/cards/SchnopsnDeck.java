@@ -11,7 +11,7 @@ public class SchnopsnDeck extends Deck {
     * selected trump symbol
     * map of points of each cardValue for easier point / win calculation*/
     Symbol trump;
-    HashMap<CardValue, Integer> point_map;
+    HashMap<CardValue, Integer> pointMap;
     ArrayList<CardValue> schnopsnCardValues;
 
     public SchnopsnDeck(GameName gameName, int players) {
@@ -51,20 +51,20 @@ public class SchnopsnDeck extends Deck {
     /*get game points per cardvalue*/
     public Integer cardPoints(CardValue v) {
         Integer points = 0;
-        switch (v.name()) {
-            case ("ZEHN"):
+        switch (v) {
+            case ZEHN:
                 points = 10;
                 break;
-            case ("UNTER"):
+            case UNTER:
                 points = 2;
                 break;
-            case ("OBER"):
+            case OBER:
                 points = 3;
                 break;
-            case ("KOENIG"):
+            case KOENIG:
                 points = 4;
                 break;
-            case ("ASS"):
+            case ASS:
                 points = 11;
                 break;
             default:
@@ -76,14 +76,14 @@ public class SchnopsnDeck extends Deck {
 
     /*creation of full cardvalue point mapping*/
     public Map<CardValue, Integer> cardPoints() {
-        point_map = new HashMap<CardValue, Integer>();
+        pointMap = new HashMap<>();
         Integer points = 0;
         for (CardValue v : schnopsnCardValues) {
             points = cardPoints(v);
-            point_map.put(v, points);
+            pointMap.put(v, points);
         }
 
-        return point_map;
+        return pointMap;
     }
 
     /*in schopsn there is a swapping card showing its image half under the deck, its symbol is trump & it can be swapped against the trump UNTER during the game*/
@@ -106,57 +106,14 @@ public class SchnopsnDeck extends Deck {
         return  null;
     }
 
-    @Override
-    public ArrayList<Card> getCards() {
-        return super.getCards();
+
+    public HashMap<CardValue, Integer> getPointMap() {
+        return pointMap;
     }
 
-    @Override
-    public ArrayList<Card> getDeck() {
-        return super.getDeck();
-    }
 
-    @Override
-    public GameName getGameName() {
-        return super.getGameName();
-    }
-
-    @Override
-    public int getPlayers() {
-        return super.getPlayers();
-    }
-
-    @Override
-    public ArrayList<Card> getHandCards() {
-        return super.getHandCards();
-    }
-
-    public HashMap<CardValue, Integer> getPoint_map() {
-        return point_map;
-    }
-
-    @Override
-    public void setCards(ArrayList<Card> cards) {
-        super.setCards(cards);
-    }
-
-    @Override
-    public void setDeck(ArrayList<Card> deck) {
-        super.setDeck(deck);
-    }
-
-    @Override
-    public void setGameName(GameName gameName) {
-        super.setGameName(gameName);
-    }
-
-    @Override
-    public void setPlayers(int players) {
-        super.setPlayers(players);
-    }
-
-    public void setPoint_map(HashMap<CardValue, Integer> point_map) {
-        this.point_map = point_map;
+    public void setPointMap(HashMap<CardValue, Integer> point_map) {
+        this.pointMap = point_map;
     }
 
     public void setSchnopsnCardValues(ArrayList<CardValue> schnopsnCardValues) {
