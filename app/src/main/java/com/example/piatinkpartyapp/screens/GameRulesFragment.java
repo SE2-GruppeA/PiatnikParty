@@ -17,6 +17,7 @@ import com.example.piatinkpartyapp.R;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class GameRulesFragment extends Fragment implements View.OnClickListener {
@@ -208,7 +209,8 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), desc, Toast.LENGTH_LONG).show();
+                String[] s = desc.split("_");
+                Toast.makeText(getContext(), s[0].toUpperCase(Locale.ROOT) + " " + s[1].toUpperCase(Locale.ROOT), Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -178,7 +178,7 @@
 
     <ImageView
         android:id="@+id/imageViewKaroSieben"
-        android:contentDescription="KARO SIEBEN"
+        android:contentDescription="karo_sieben"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -191,7 +191,7 @@
 
     <ImageView
         android:id="@+id/imageViewKreuzAcht"
-        android:contentDescription="KREUZ ACHT"
+        android:contentDescription="kreuz_acht"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -204,7 +204,7 @@
 
     <ImageView
         android:id="@+id/imageViewPickNeun"
-        android:contentDescription="PICK NEUN"
+        android:contentDescription="pick_neun"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -217,7 +217,7 @@
 
     <ImageView
         android:id="@+id/imageViewHerzZehn"
-        android:contentDescription="HERZ ZEHN"
+        android:contentDescription="herz_zehn"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -230,7 +230,7 @@
 
     <ImageView
         android:id="@+id/imageViewHerzUnter"
-        android:contentDescription="HERZ UNTER"
+        android:contentDescription="herz_unter"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -243,7 +243,7 @@
 
     <ImageView
         android:id="@+id/imageViewHerzOber"
-        android:contentDescription="HERZ OBER"
+        android:contentDescription="herz_ober"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -256,7 +256,7 @@
 
     <ImageView
         android:id="@+id/imageViewHerzKoenig"
-        android:contentDescription="HERZ KOENIG"
+        android:contentDescription="herz_koenig"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -269,7 +269,7 @@
 
     <ImageView
         android:id="@+id/imageViewHerzAss"
-        android:contentDescription="HERZ ASS"
+        android:contentDescription="herz_ass"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
