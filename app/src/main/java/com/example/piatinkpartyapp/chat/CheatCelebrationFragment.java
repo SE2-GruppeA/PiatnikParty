@@ -42,7 +42,7 @@ public class CheatCelebrationFragment extends DialogFragment {
         KonfettiView konfettiView = (KonfettiView) customLayout.findViewById(R.id.konfettiView);
 
         EmitterConfig emitterConfig = new Emitter(5L, TimeUnit.SECONDS).perSecond(50);
-        Party party = new PartyFactory(emitterConfig)
+/*        Party party = new PartyFactory(emitterConfig)
                 .angle(270)
                 .spread(90)
                 .setSpeedBetween(1f, 5f)
@@ -50,7 +50,7 @@ public class CheatCelebrationFragment extends DialogFragment {
                 .shapes(new Shape.Rectangle(0.2f), drawableShape)
                 .sizes(new Size(12, 5f, 0.2f))
                 .position(0.0, 0.0, 1.0, 0.0)
-                .build();
+                .build();*/
 
         for (int i = 0; i < 100; i++) {
             konfettiView.start(
@@ -69,25 +69,4 @@ public class CheatCelebrationFragment extends DialogFragment {
                 .setView(customLayout)
                 .create();
     }
-
-    /*
-    put in Fragment
-    public void cheatCelebrationWindow(){
-        new Thread(()->{
-            CheatCelebrationFragment dialog = new CheatCelebrationFragment();
-            // I know this is considered deprecated but I could not find any other way to solve this
-            dialog.setTargetFragment(ChatFragment.this, 1);
-            dialog.show(getFragmentManager(), TAG + "CheatDialogFragment");
-
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            dialog.dismiss();
-        }).start();
-
-    }
-     */
 }

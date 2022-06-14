@@ -34,7 +34,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
     }
 
     public void initAvailableColors() {
-        // TODO: if more players we need to somehow make this more cleaner !
         // color palette : https://colorhunt.co/palette
         availablePlayerColors = new Stack<>();
         availablePlayerColors.push("#7FB5FF");
@@ -43,7 +42,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
         availablePlayerColors.push("#EAEA7F");
     }
 
-    private void handle_PlayerColor(String playerName, ChatMessageViewHolder holder) {
+    private void handlePlayerColor(String playerName, ChatMessageViewHolder holder) {
         String playerColor = null;
         if (playerToColorMapper.containsKey(playerName)) {
             playerColor = playerToColorMapper.get(playerName);
@@ -94,9 +93,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
     }
 
     public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_ChatPlayerName;
-        private TextView tv_ChatMessage;
-        private TextView tv_ChatDate;
+        private TextView tvChatPlayerName;
+        private TextView tvChatMessage;
+        private TextView tvChatDate;
 
         public ChatMessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,17 +103,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
         }
 
         private void bindView() {
-            tv_ChatPlayerName = itemView.findViewById(R.id.tv_ChatPlayerName);
-            tv_ChatMessage = itemView.findViewById(R.id.tv_chatMessage);
-            tv_ChatDate = itemView.findViewById(R.id.tv_ChatDate);
+            tvChatPlayerName = itemView.findViewById(R.id.tv_ChatPlayerName);
+            tvChatMessage = itemView.findViewById(R.id.tv_chatMessage);
+            tvChatDate = itemView.findViewById(R.id.tv_ChatDate);
         }
 
         public void bindData(ChatMessage chatMessage, ChatMessageViewHolder holder) {
-            tv_ChatPlayerName.setText(chatMessage.getPlayerName());
-            tv_ChatMessage.setText(chatMessage.getMessage());
-            tv_ChatDate.setText(chatMessage.getDate());
+            tvChatPlayerName.setText(chatMessage.getPlayerName());
+            tvChatMessage.setText(chatMessage.getMessage());
+            tvChatDate.setText(chatMessage.getDate());
 
-            handle_PlayerColor(tv_ChatPlayerName.getText().toString(), holder);
+            handlePlayerColor(tvChatPlayerName.getText().toString(), holder);
         }
     }
     }

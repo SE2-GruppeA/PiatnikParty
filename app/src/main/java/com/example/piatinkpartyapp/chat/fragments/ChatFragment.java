@@ -28,14 +28,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     private static final String TAG = "ChatFragment";
 
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private FragmentChatBinding binding;
     private ClientViewModel model;
@@ -53,7 +48,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
      * @param param2 Parameter 2.
      * @return A new instance of fragment SideDrawer.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static ChatFragment newInstance(String param1, String param2) {
         ChatFragment fragment = new ChatFragment();
         Bundle args = new Bundle();
@@ -67,8 +62,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
 
     }
@@ -85,7 +79,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentChatBinding.inflate(inflater, container, false);
         binding.arrowBackBtn.setOnClickListener(this);
-        binding.button2.setOnClickListener(v -> onClick_SendChatMessage(v));
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChatFragment.this.onClick_SendChatMessage(v);
+            }
+        });
         /*
         ORDER OF THIS CODE IS IMPORTANT !!!!
 
@@ -114,14 +113,14 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     }
 
     private void handleShowCheatingInfoDialog() {
-        if (model.firstTimeOpenedChatFragment == false) {
+        if (!model.firstTimeOpenedChatFragment) {
             System.out.println("open cheat info dialog");
             CheatInfoDialogFragment dialog = new CheatInfoDialogFragment();
             // I know this is considered deprecated but I could not find any other way to solve this
             dialog.setTargetFragment(ChatFragment.this, 1);
             dialog.show(getFragmentManager(), TAG + "CheatInfoDialogFragment");
         }
-        if (model.firstTimeOpenedChatFragment == false) {
+        if (!model.firstTimeOpenedChatFragment) {
             model.firstTimeOpenedChatFragment = true;
         }
     }
@@ -161,7 +160,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     }
 
     private void checkForCheatActivation(String msg) {
-        //TODO: cheatCode is null, app crashes when sending a message
         if(msg.contains(model.cheatCode)){
             model.counter++;
             if(model.counter == model.expectedCounterForCheatWindow){
@@ -170,7 +168,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
                 dialog.setTargetFragment(ChatFragment.this, 1);
                 dialog.show(getFragmentManager(), TAG + "CheatDialogFragment");
 
-                // TODO: not sure if we want to do that, but lets say we can activate the cheat window more than once
                 model.counter = 0;
             }
         }
