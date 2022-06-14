@@ -133,6 +133,10 @@ public class GameClient {
                         handle_SendRoundWinnerPlayerToAllPlayers((Responses.SendRoundWinnerPlayerToAllPlayers) object);
                     } else if (object instanceof Responses.UpdateScoreboard) {
                         handle_UpdateScoreboard((Responses.UpdateScoreboard) object);
+                    } else if(object instanceof Responses.CheatingPenalty){
+                        handle_CheatingPenalty((Responses.CheatingPenalty) object);
+                    }else if(object instanceof  Responses.SendSchlagToAllPlayers){
+                        handle_SendSchlagToAllPlayers((Responses.SendSchlagToAllPlayers) object);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -145,10 +149,16 @@ public class GameClient {
     private void handle_isCheater(Responses.IsCheater object) {
         // todo: handle live data and update ui
         boolean isCheater = object.isCheater;
+
+        cheaterExposed.postValue(isCheater);
         /**
          * If isCheater == true, einfach normal anzeigen das man einen cheater exposed hat
          * If false, anzeigen das man -10 punkte verloren hat.
          */
+    }
+
+    private void handle_CheatingPenalty(Responses.CheatingPenalty object) {
+        cheatingExposed.postValue(true);
     }
 
     private void handle_VoteForNextGame() {
@@ -294,6 +304,12 @@ public class GameClient {
         //notify UI
         trump.postValue(currentTrump);
     }
+    private void handle_SendSchlagToAllPlayers(Responses.SendSchlagToAllPlayers object){
+        Responses.SendSchlagToAllPlayers response = object;
+        CardValue currentSchlag = response.schlag;
+        LOG.info("Schlag: "+ schlag.toString() + "was sent to player!");
+        schlag.postValue(currentSchlag);
+    }
 
     private void handle_NotifyPlayerToSetSchlag(Responses.NotifyPlayerToSetSchlag object) {
         Responses.NotifyPlayerToSetSchlag response =
@@ -328,6 +344,10 @@ public class GameClient {
 
     //mixed cards
     private void handle_MixedCards(Responses.mixedCards object){
+        Responses.mixedCards response = object;
+        mixedCards.postValue(true);
+    //
+        //  mixCards();
         LOG.info("mixed cards");
     }
 
@@ -382,10 +402,10 @@ public class GameClient {
 
     }
 
-    public void mixCards(){
+   public void mixCards(){
         Requests.MixCardsRequest request = new Requests.MixCardsRequest();
         sendPacket(request);
-        mixedCards.postValue(true);
+       // mixedCards.postValue(true);
 
     }
     public void setSchlag(CardValue schlag) {
@@ -489,6 +509,8 @@ public class GameClient {
     private MutableLiveData<Boolean> hosnObeStarted;
     private MutableLiveData<Boolean> mixedCards;
     private MutableLiveData<Integer> winnerId;
+    private MutableLiveData<Boolean> cheaterExposed;
+    private MutableLiveData<Boolean> cheatingExposed;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -559,11 +581,13 @@ public class GameClient {
 
     public LiveData<Integer> getWinnerId() { return winnerId; }
 
+    public LiveData<Boolean> isCheaterExposed() { return cheaterExposed; }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
         myTurn = new MutableLiveData<>();
-        mixedCards = new MutableLiveData<>();
+        mixedCards = new MutableLiveData<Boolean>();
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
         endOfRound = new MutableLiveData<Integer>();
@@ -579,6 +603,8 @@ public class GameClient {
         pensionistlnStarted = new MutableLiveData<>();
         hosnObeStarted = new MutableLiveData<>();
         winnerId = new MutableLiveData<>();
+        cheaterExposed = new MutableLiveData<>();
+        cheatingExposed = new MutableLiveData<>();
     }
 
 
@@ -617,7 +643,7 @@ public class GameClient {
         LOG.info("CheatRequest was sent");
     }
 
-    public void exposePossibleCheater(String playerId) {
+    public void exposePossibleCheater(Integer playerId) {
         Requests.ExposePossibleCheater request = new Requests.ExposePossibleCheater(playerId);
         sendPacket(request);
         LOG.info("ExposePossibleCheater Request was sent for playerID : " + playerId);
@@ -625,6 +651,10 @@ public class GameClient {
 
     public void notifyVote() {
         voteForNextGame.postValue(true);
+    }
+
+    public LiveData<Boolean> isCheatingExposed() {
+        return cheatingExposed;
     }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

@@ -92,6 +92,8 @@ public class SchnopsnGame extends Game {
 
         //sends new handcards to the player
         sendHandCardsToPlayer(currentHandCards, player);
+
+        player.setCheaten(true);
     }
 
     // Player set card
@@ -203,9 +205,10 @@ public class SchnopsnGame extends Game {
     @Override
     public void mixCards(){
         LOG.info("before mixing");
-        LOG.info(deck.toString());
+        LOG.info(deck.getDeck().get(0).toString());
         deck.mixCards();
         LOG.info("after mixing");
+        LOG.info(deck.getDeck().get(0).toString());
         LOG.info(deck.toString());
         Responses.mixedCards response = new Responses.mixedCards();
         lobby.getPlayerByID(1).getClientConnection().sendTCP(response);

@@ -62,9 +62,9 @@ public class CheatInfoDialogFragment extends DialogFragment {
                 .setView(myScroll)
                 .setMessage("Wie in den meisten Spielen kannst du auch hier cheaten." +
                         " Ob du das willst hängt von dir ab?" +
-                        "\n\nUm das Cheat Window einzuschalten musst du den Cheat Code " + expectedCounterForCheatWindow + " mal in den Chat eingeben." +
-                        "\n\nDein Cheat Code lautet: " + cheatCode +
-                        "\n\nACHTUNG : Du musst dir den Cheat Code merken ! Er wird dir nicht wieder angezeigt !")
+                        "\nUm das Cheat Window einzuschalten musst du den Cheat Code " + expectedCounterForCheatWindow + " mal in den Chat eingeben." +
+                        "\nDein Cheat Code lautet: " + cheatCode +
+                        "\nACHTUNG : Du musst dir den Cheat Code merken ! Er wird dir nicht wieder angezeigt !")
                 .setNeutralButton("Verstanden! ", (dialog, which) -> {
                     cheatDialogInformationHandler.handleCheatingInformation(cheatCode, expectedCounterForCheatWindow);
                 })

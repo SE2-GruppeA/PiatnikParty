@@ -46,8 +46,8 @@ public class ExposeDialogFragment extends DialogFragment {
                                 "\nDas ist hier auch der Fall" +
                                 "\nDenkst du das ein Spieler cheatet ?" +
                                 "\nDu kannst exposen, mit einem großen ABER !" +
-                                "\n\nWenn der Spieler doch nicht cheatet, werden die Punkte abgezogen !" +
-                                "\n\nÜbe die Funktionalität mit bedacht aus !")
+                                "\nWenn der Spieler doch nicht cheatet, werden die Punkte abgezogen !" +
+                                "\nÜbe die Funktionalität mit bedacht aus !")
                 .setNegativeButton("Exposen ", (dialog, which) -> {
                     exposeDialogHandler.handleExpose(true);
                 })

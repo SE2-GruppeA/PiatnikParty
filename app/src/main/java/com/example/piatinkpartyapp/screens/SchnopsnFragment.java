@@ -59,6 +59,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     ImageView cardDeckView;
     ImageView swapCardView;
     ImageView imgTrump;
+    ImageView imgSchlag;
+
     ImageButton exitBtn;
     TextView scoreTxt;
     Button scoreboardBtn;
@@ -68,6 +70,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     Button btnExpose;
     private static ImageView currentCard1;
     private static ImageView currentCard2;
+    private static ImageView currentCard3;
+    private static ImageView currentCard4;
     public static SchnopsnDeck deck;
     ArrayList<Card> handCards;
 
@@ -84,6 +88,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     private float mAccelCurrent;
     private float mAccelLast;
     Boolean mixedCards;
+    Boolean cardsToMix;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -146,9 +151,11 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta;
             if (mAccel > 12) {
-                mixedCards = true;
+                cardsToMix = true;
+
                 Toast.makeText(getContext(), "shake detected", Toast.LENGTH_LONG).show();
-                mixCards(mixedCards);
+                clientViewModel.mixCards();
+               // mixCards(cardsToMix);
             }
         }
 
@@ -172,7 +179,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private void mixCards(Boolean mixedCards) {
         if (mixedCards) {
-            this.mixedCards = true;
+            this.mixedCards = false;
+            mixedCards = false;// da gemsicht wurde
             Toast.makeText(requireActivity().getApplicationContext(), "die Karten des Stapels wurden neu gemischt!", Toast.LENGTH_LONG).show();
         }
 
@@ -236,7 +244,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.isSetTrump().observe(getViewLifecycleOwner(), setTrump -> playerSetTrump(setTrump));
             clientViewModel.isSetSchlag().observe(getViewLifecycleOwner(), setSchlag -> playerSetSchlag(setSchlag));
             clientViewModel.getTrump().observe(getViewLifecycleOwner(), trump -> setTrump(trump));
+            clientViewModel.getSchlag().observe(getViewLifecycleOwner(), schlag ->setSchlag(schlag));
             clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), winnerId -> showWinner(winnerId));
+            clientViewModel.isCheaterExposed().observe(getViewLifecycleOwner(), isCheater -> showCheaterExposed(isCheater));
+            clientViewModel.isCheatingExposed().observe(getViewLifecycleOwner(), isCheating -> showCheatingExposed(isCheating));
 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
@@ -248,12 +259,32 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
 
             //shaking phone to mix cards
-            //todo invoke mixCards method
-            //  clientViewModel.mixedCards().observe(getViewLifecycleOwner(), mixedCards -> mixCards());
+
+            clientViewModel.mixedCards().observe(getViewLifecycleOwner(), mixedCards -> mixCards(mixedCards));
         }
 
         //initializeGame();
         return root;
+    }
+
+    private void showCheatingExposed(Boolean isCheating) {
+        if(isCheating){
+            Toast.makeText(requireActivity().getApplicationContext(),
+                    "Du wurdest beim cheaten erwischt! -20 Punkte",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showCheaterExposed(Boolean isCheater) {
+        if(isCheater){
+            Toast.makeText(requireActivity().getApplicationContext(),
+                    "Du hast einen Cheater entdeckt! Der Cheater wird bestraft!",
+                    Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(requireActivity().getApplicationContext(),
+                    "Das war kein Cheater! -10 Punkte",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initializeHosnObe(Boolean started) {
@@ -270,7 +301,11 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private void initializeWattn(Boolean started) {
         if (started) {
-
+            resetImageView(currentCard1);
+            resetImageView(currentCard2);
+            resetImageView(currentCard3);
+            resetImageView(currentCard4);
+            scoreTxt.setText("0");
         }
     }
 
@@ -303,6 +338,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         if (setTrump) {
             requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new TrumpSelect()).commit();
         }
+       /* if(clientViewModel.getTrump().getValue()!=null){
+            setTrump(clientViewModel.getTrump().getValue());
+        }*/
+
     }
 
     private void setScorePoints(Integer points) {
@@ -314,6 +353,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         Integer rid = getResId(symbol.toLowerCase(Locale.ROOT));
         imgTrump.setImageResource(rid);
         imgTrump.setContentDescription(symbol);
+    }
+    private void setSchlag(CardValue schlag){
+        String s= schlag.toString();
+        Integer rid = getResId(s.toLowerCase(Locale.ROOT));
+        imgSchlag.setImageResource(rid);
+        imgSchlag.setContentDescription(s);
+
     }
 
     private void setPlayedCard(Responses.SendPlayedCardToAllPlayers playedCard) {
@@ -366,9 +412,12 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         cardDeckView = view.findViewById(R.id.cardDeck);
         currentCard1 = view.findViewById(R.id.currentCard);
         currentCard2 = view.findViewById(R.id.currentCard2);
+        currentCard3 = view.findViewById(R.id.currentCardPlayer3);
+        currentCard4 = view.findViewById(R.id.currentCardPlayer4);
         swapCardView = view.findViewById(R.id.swapCard);
         mixCardsBtn = view.findViewById(R.id.mixBtn);
         imgTrump = view.findViewById(R.id.imgTrump);
+        imgSchlag = view.findViewById(R.id.imgSchlag);
         btnCheat = view.findViewById(R.id.btnCheat);
         btnExpose = view.findViewById(R.id.btnExpose);
 
@@ -491,6 +540,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             setCardImage(s, currentCard1);
         } else if (position == 2) {
             setCardImage(s, currentCard2);
+        }else if(position == 3){
+            setCardImage(s,currentCard3);
+        }else if(position == 4){
+            setCardImage(s, currentCard4);
         }
     }
 

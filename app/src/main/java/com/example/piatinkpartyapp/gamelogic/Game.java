@@ -124,8 +124,16 @@ public class Game {
             response.trump = symbol;
             player.getClientConnection().sendTCP(response);
         }
+
     }
 
+    public void sendSchlagToAllPlayers(CardValue cardValue){
+        for(Player player: lobby.getPlayers()){
+            Responses.SendSchlagToAllPlayers response = new Responses.SendSchlagToAllPlayers(cardValue);
+            //response.schlag = cardValue;
+            player.getClientConnection().sendTCP(response);
+        }
+    }
     public void sendPointsToWinnerPlayer(Player winnerPlayer) {
         Responses.UpdatePointsWinnerPlayer response = new Responses.UpdatePointsWinnerPlayer();
         response.totalPoints = winnerPlayer.getPoints();
@@ -181,7 +189,7 @@ public class Game {
     }
 
     public void givePlayerBestCard(int playerId){
-
+        lobby.getPlayerByID(playerId).setCheaten(true);
     }
 
     public void setSchlag(CardValue hit){
@@ -202,5 +210,31 @@ public class Game {
 
     public void mixCards() {
 
+    }
+
+    public Boolean isPlayerCheater(Integer playerId) {
+        return lobby.getPlayerByID(playerId).isCheaten();
+    }
+
+    public void cheaterPenalty(Integer playerId) {
+        Player player = lobby.getPlayerByID(playerId);
+
+        if(player.isCheaten()){
+            player.addPoints(-20);
+        }
+
+        sendPenaltyMessageToPlayer(player);
+    }
+
+    public void sendPenaltyMessageToPlayer(Player player) {
+        Responses.CheatingPenalty response = new Responses.CheatingPenalty();
+        player.getClientConnection().sendTCP(response);
+        sendPointsToWinnerPlayer(player);
+    }
+
+    public void punishWrongExposure(Integer exposerId) {
+        Player player = lobby.getPlayerByID(exposerId);
+        player.addPoints(-10);
+        sendPointsToWinnerPlayer(player);
     }
 }

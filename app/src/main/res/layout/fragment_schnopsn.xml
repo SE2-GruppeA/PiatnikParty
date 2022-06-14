@@ -243,11 +243,24 @@
         app:layout_constraintTop_toTopOf="@+id/scoreImage"
         app:layout_constraintVertical_bias="0.794" />
 
+    <ImageView
+        android:id="@+id/imgSchlag"
+        android:layout_width="36dp"
+        android:layout_height="35dp"
+        android:src="@drawable/placeholder"
+        app:layout_constraintBottom_toBottomOf="@+id/scoreImage"
+        app:layout_constraintEnd_toEndOf="@+id/scoreImage"
+        app:layout_constraintHorizontal_bias="0.76"
+        app:layout_constraintStart_toStartOf="@+id/scoreImage"
+        app:layout_constraintTop_toTopOf="@+id/scoreImage"
+        app:layout_constraintVertical_bias="0.994" />
+
     <Button
         android:id="@+id/btnCheat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cheat"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.042"
@@ -259,12 +272,12 @@
         android:id="@+id/btnExpose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Expose"
+        android:text="Expose Cheater"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.215"
+        app:layout_constraintHorizontal_bias="0.025"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.955" />
+        app:layout_constraintVertical_bias="0.964" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

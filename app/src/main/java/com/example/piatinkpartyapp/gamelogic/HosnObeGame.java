@@ -161,6 +161,8 @@ public class HosnObeGame extends Game {
         player.setHandcards(currentHandCards);
 
         sendHandCardsToPlayer(currentHandCards, player);
+
+        player.setCheaten(true);
     }
 
     @Override
@@ -268,7 +270,11 @@ public class HosnObeGame extends Game {
 
     @Override
     public void sendGameStartedMessageToClients() {
-        super.sendGameStartedMessageToClients();
+        for (Player player : lobby.getPlayers()) {
+            // send message to client that game has started
+            Responses.HosnObeStartedClientMessage request = new Responses.HosnObeStartedClientMessage();
+            player.getClientConnection().sendTCP(request);
+        }
     }
 
     @Override

@@ -104,10 +104,10 @@ public class GameServer {
     }
 
     private void handle_exposePossibleCheater(Connection connection, Requests.ExposePossibleCheater object) {
-        String playerId = object.playerId;
+        Integer playerId = object.playerId;
 
         Responses.IsCheater response = new Responses.IsCheater();
-        if(isCheater(playerId)){
+        if(isCheater(playerId, connection.getID())){
             response.isCheater = true;
         }else{
             response.isCheater = false;
@@ -116,9 +116,12 @@ public class GameServer {
     }
 
     //todo: Add this function to gamelogic itself, it's just here so i can build the handler above !
-    private boolean isCheater(String playerId) {
+    private boolean isCheater(Integer playerId, Integer exposerId) {
         // todo: Implement gamelogic: how explained down below (Maybe Anton or Bene)!
         // todo: Also add live data !
+
+        Boolean isCheater = lobby.currentGame.isPlayerCheater(playerId);
+
         /**
          * gameLogic.exposePossibleCheater(playerId)
          *
@@ -128,7 +131,13 @@ public class GameServer {
          * return false, and also trigger a lose -10 points with response isCheater(false)
          * comes with risks !
          */
-        return true;
+        if(isCheater){
+            lobby.currentGame.cheaterPenalty(playerId);
+        }else {
+            lobby.currentGame.punishWrongExposure(exposerId);
+        }
+
+        return isCheater;
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////
@@ -139,7 +148,7 @@ public class GameServer {
         response.isConnected = clients.contains(connection) ? false : clients.add(connection);
         response.playerID = connection.getID();
 
-        lobby.addPlayer(connection, "test");
+        lobby.addPlayer(connection, "Player " + connection.getID());
       //  wattnGame.addPlayer(connection, "test");
         connection.sendTCP(response);
 
@@ -210,7 +219,7 @@ public class GameServer {
         Requests.PlayerSetSchlag request =
                 object;
         lobby.currentGame.setSchlag(request.schlag);
-        //wattnGame.deck.setHit(request.schlag);
+
         LOG.info("Schlag: " + lobby.currentGame.getSchlag() + " was set from Client ID: " + connection.getID());
     }
 
@@ -218,7 +227,8 @@ public class GameServer {
         Requests.PlayerSetTrump request =
                 object;
         lobby.currentGame.setTrump(request.trump);
-        //wattnGame.deck.setTrump(request.trump);
+
+
         LOG.info("Trump: " + lobby.currentGame.getTrump() + " was set from Client ID: " + connection.getID());
     }
 
@@ -230,9 +240,10 @@ public class GameServer {
         lobby.currentGame.givePlayerBestCard(connection.getID());
     }
     private void handle_MixCardsRequest(Connection connection,Requests.MixCardsRequest object){
-        Requests.MixCardsRequest request = object;
+        Responses.mixedCards response = new Responses.mixedCards();
         lobby.currentGame.mixCards();
         LOG.info("here");
+        sendPacketToAll(response);
     }
     /////////////////// END - Handler Methods !!! ///////////////////
 

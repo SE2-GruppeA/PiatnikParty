@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.piatinkpartyapp.ClientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.chat.ChatAdapter;
 import com.example.piatinkpartyapp.chat.ChatMessage;
+import com.example.piatinkpartyapp.chat.CheatCelebrationFragment;
 import com.example.piatinkpartyapp.databinding.FragmentChatBinding;
+import com.example.piatinkpartyapp.screens.GameRulesFragment;
 import com.example.piatinkpartyapp.utils.Utils;
 
 /**
@@ -184,10 +186,14 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     public void handleCheatingChoice(Boolean cheating) {
         if(cheating){
             model.cheat();
-            //todo: implement clebreation
-            //cheatCelebrationWindow();
+            cheatCelebrationWindow();
         }
         Log.d(TAG, "sendInput : found incoming input : " + cheating);
+    }
+
+    private void cheatCelebrationWindow() {
+        getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+                new CheatCelebrationFragment()).commit();
     }
 
     // this callback should be called only once per game to inform player that cheating exits

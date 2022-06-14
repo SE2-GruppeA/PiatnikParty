@@ -52,6 +52,8 @@ public class WattnFragment extends Fragment implements View.OnClickListener {
         Boolean trumpToSet;
 public static ImageView currentCard1;
 public static ImageView currentCard2;
+public static ImageView currentCard3;
+public  static ImageView currentCard4;
 public static WattnDeck deck;
         ArrayList<Card> handCards;
       public static  ArrayList<Card> currentCards;
@@ -213,6 +215,8 @@ private void initHandCardsViews(){
         currentCardImageViews = new ArrayList<>();
         currentCardImageViews.add(currentCard1);
         currentCardImageViews.add(currentCard2);
+        currentCardImageViews.add(currentCard3);
+        currentCardImageViews.add(currentCard4);
 
         isMyTurn = false;
         schlagToSet =true;
@@ -250,20 +254,24 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
         clientViewModel.getPlayedCard().observe(getActivity(), playedCard -> setPlayedCard(playedCard));
 
-        //clientViewModel.isEndOfRound().observe(getActivity(), isEndOfRound -> atRoundEnd(isEndOfRound));
+        clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), winner -> atRoundEnd(winner));
 
         clientViewModel.isSetTrump().observe(getActivity(), setTrump -> playerSetTrump(setTrump));
         clientViewModel.isSetSchlag().observe(getActivity(), setSchlag -> playerSetSchlag(setSchlag));
 
         clientViewModel.getTrump().observe(getActivity(), trump->setTrump(trump));
         clientViewModel.getPoints().observe(getActivity(),points->setScorePoints(points));
+        clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), winnerId->showWinner(winnerId));
         return root;
         }
         private void setTrump(Symbol trump) {
-                String symbol = trump.toString();
-                Integer rid = getResId(symbol.toLowerCase(Locale.ROOT));
-                imgTrump.setImageResource(rid);
-                imgTrump.setContentDescription(symbol);
+                if(!trumpToSet){
+                        String symbol = trump.toString();
+                        Integer rid = getResId(symbol.toLowerCase(Locale.ROOT));
+                        imgTrump.setImageResource(rid);
+                        imgTrump.setContentDescription(symbol);
+                }
+
         }
         private void setScorePoints(Integer points) {
                 scoreTxt.setText(points.toString());
@@ -313,6 +321,8 @@ private void addAllViews(View view) {
         handCardView5 = view.findViewById(R.id.card5);
         currentCard1 = view.findViewById(R.id.currentCardPlayer1);
         currentCard2 = view.findViewById(R.id.currentCardPlayer2);
+        currentCard3 = view.findViewById(R.id.currentCardPlayer3);
+        currentCard4 = view.findViewById(R.id.currentCardPlayer4);
         imgTrump = view.findViewById(R.id.imgTrump);
           mixCardsBtn = view.findViewById(R.id.mixBtn);
         }
@@ -385,9 +395,12 @@ private static void play(Card c, int position){
                 setCardImage(s, currentCard1);
         }else if(position == 2){
                 setCardImage(s, currentCard2);
+        }else if(position == 3){
+                setCardImage(s,currentCard3);
+        }else if(position == 4){
+                setCardImage(s,currentCard4);
         }
-
-        }
+}
   private void setPlayedCard(Responses.SendPlayedCardToAllPlayers playedCard){
         play(playedCard.card,playedCard.playerID);
   }
@@ -426,16 +439,21 @@ public boolean onLongClick(View view) {
 
         }
 
-private void goBack() {
-        //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        private void goBack() {
+                //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
-        /*private void atRoundEnd(Boolean isEndOfRound) {
-                if(isEndOfRound){
-                        Toast.makeText(requireActivity().getApplicationContext(),
-                                "Runde ist zuende",
-                                Toast.LENGTH_SHORT).show();
-                }
-        }*/
+        private void atRoundEnd(Integer winner) {
+                showRoundWinner(winner);
         }
+        private void showRoundWinner(Integer winnerID){
+                requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, WinnerFragment.newInstance("Player " + winnerID)).commit();
+        }
+        private void showWinner(Integer winnerID){
+                Toast.makeText(requireActivity().getApplicationContext(),
+                        "Player " + winnerID + " hat den Stich bekommen",
+                        Toast.LENGTH_SHORT).show();
+        }
+
+}

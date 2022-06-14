@@ -116,6 +116,7 @@ public class ClientViewModel extends ViewModel {
 
     public void cheat() {
         //todo: implement client code
+        cheatRequest();
         Log.d(TAG, "YOU ARE CHEATING NOW");
 
     }
@@ -139,13 +140,13 @@ public class ClientViewModel extends ViewModel {
     public LiveData<Boolean> isHosnObeStarted() {
         return client.isHosnObeStarted();
     }
-
+    public void mixCards(){client.mixCards();}
 
     public void cheatRequest() {
         client.cheatRequest();
     }
 
-    public void exposePossibleCheater(String playerId) {
+    public void exposePossibleCheater(Integer playerId) {
         client.exposePossibleCheater(playerId);
     }
 
@@ -157,6 +158,11 @@ public class ClientViewModel extends ViewModel {
         return client.getWinnerId();
     }
 
+    public LiveData<Boolean> isCheaterExposed() { return client.isCheaterExposed(); }
+
+    public LiveData<Boolean> isCheatingExposed() {
+        return client.isCheatingExposed();
+    }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

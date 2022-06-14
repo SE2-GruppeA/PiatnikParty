@@ -231,6 +231,7 @@ public class Responses {
     public static class mixedCards implements IPackets {
         public mixedCards() {
         }
+
     }
 
     public static class SendRoundWinnerPlayerToAllPlayers {
@@ -253,5 +254,9 @@ public class Responses {
         public UpdateScoreboard(Lobby lobby) {
             this.lobby = lobby;
         }*/
+    }
+
+    public static class CheatingPenalty{
+        public CheatingPenalty(){}
     }
 }
