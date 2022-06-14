@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_game_rules.xml" value="0.13802083333333334" />
         <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_play_game.xml" value="0.1" />
         <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_score_board.xml" value="0.1" />
         <entry key="..\:/PiatnikParty/app/src/main/res/layout/activity_main.xml" value="0.11302083333333333" />
