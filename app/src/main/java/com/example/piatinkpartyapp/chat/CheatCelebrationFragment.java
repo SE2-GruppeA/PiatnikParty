@@ -42,15 +42,6 @@ public class CheatCelebrationFragment extends DialogFragment {
         KonfettiView konfettiView = (KonfettiView) customLayout.findViewById(R.id.konfettiView);
 
         EmitterConfig emitterConfig = new Emitter(5L, TimeUnit.SECONDS).perSecond(50);
-/*        Party party = new PartyFactory(emitterConfig)
-                .angle(270)
-                .spread(90)
-                .setSpeedBetween(1f, 5f)
-                .timeToLive(2000L)
-                .shapes(new Shape.Rectangle(0.2f), drawableShape)
-                .sizes(new Size(12, 5f, 0.2f))
-                .position(0.0, 0.0, 1.0, 0.0)
-                .build();*/
 
         for (int i = 0; i < 100; i++) {
             konfettiView.start(

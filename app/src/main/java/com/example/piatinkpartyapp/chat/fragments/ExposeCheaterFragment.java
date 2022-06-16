@@ -27,16 +27,11 @@ public class ExposeCheaterFragment extends Fragment implements View.OnClickListe
     ClientViewModel clientViewModel;
 
     Button exposeBtn;
-    Spinner spinner_playerIds;
+    Spinner spinnerPlayerIds;
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public ExposeCheaterFragment() {
         // Required empty public constructor
@@ -50,7 +45,6 @@ public class ExposeCheaterFragment extends Fragment implements View.OnClickListe
      * @param param2 Parameter 2.
      * @return A new instance of fragment ExposeCheaterFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ExposeCheaterFragment newInstance(String param1, String param2) {
         ExposeCheaterFragment fragment = new ExposeCheaterFragment();
         Bundle args = new Bundle();
@@ -64,8 +58,8 @@ public class ExposeCheaterFragment extends Fragment implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -83,41 +77,40 @@ public class ExposeCheaterFragment extends Fragment implements View.OnClickListe
 
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
-        spinner_playerIds = (Spinner) root.findViewById(R.id.spinner_playerIds);
+        spinnerPlayerIds = (Spinner) root.findViewById(R.id.spinner_playerIds);
         setUpSpinner();
 
         return root;
     }
 
     private void setUpSpinner() {
-        // todo : optional get player id's but for now it's fine
         String[] arraySpinner = new String[] {
                 "1", "2", "3", "4"
         };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_selectable_list_item, arraySpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_selectable_list_item, arraySpinner);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_playerIds.setAdapter(adapter);
+        spinnerPlayerIds.setAdapter(adapter);
 
         // default first player, so we don't have to do null checks
-        spinner_playerIds.setSelection(1);
+        spinnerPlayerIds.setSelection(1);
     }
 
     @Override
     public void onClick(View view) {
         if(view == closeExposeBtn){
             closeVotingDialog();
-        } if(view == exposeBtn){
+        }
+        if(view == exposeBtn){
             exposePossibleCheater();
         }
     }
 
     private void exposePossibleCheater() {
-        TextView textView = (TextView)spinner_playerIds.getSelectedView();
+        TextView textView = (TextView) spinnerPlayerIds.getSelectedView();
         String playerId = textView.getText().toString();
 
-        //todo: live data
         clientViewModel.exposePossibleCheater(Integer.parseInt(playerId));
     }
 

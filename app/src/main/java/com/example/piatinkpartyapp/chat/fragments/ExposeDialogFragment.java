@@ -32,9 +32,6 @@ public class ExposeDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         final View customLayout = getLayoutInflater().inflate(R.layout.fragment_expose_cheater, null);
 
-        //Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
-        //customLayout.startAnimation(animShake);
-
         final ScrollView myScroll = new ScrollView(getContext());
         myScroll.addView(customLayout);
 
@@ -48,9 +45,8 @@ public class ExposeDialogFragment extends DialogFragment {
                                 "\nDu kannst exposen, mit einem großen ABER !" +
                                 "\nWenn der Spieler doch nicht cheatet, werden die Punkte abgezogen !" +
                                 "\nÜbe die Funktionalität mit bedacht aus !")
-                .setNegativeButton("Exposen ", (dialog, which) -> {
-                    exposeDialogHandler.handleExpose(true);
-                })
+
+                .setNegativeButton("Exposen ", (dialog, which) -> exposeDialogHandler.handleExpose(true))
                 .setPositiveButton("Lieber nicht ! \uD83D\uDE05 ", (dialog, which) -> {
                     exposeDialogHandler.handleExpose(false);
                 })

@@ -89,7 +89,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
         binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChatFragment.this.onClick_SendChatMessage(v);
+                ChatFragment.this.onClickSendChatMessage(v);
             }
         });
         /*
@@ -121,7 +121,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
 
     private void handleShowCheatingInfoDialog() {
         if (!model.firstTimeOpenedChatFragment) {
-            System.out.println("open cheat info dialog");
             CheatInfoDialogFragment dialog = new CheatInfoDialogFragment();
             // I know this is considered deprecated but I could not find any other way to solve this
             dialog.setTargetFragment(ChatFragment.this, 1);
@@ -144,12 +143,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
         }
     }
 
-    private void onClick_SendChatMessage(View v) {
+    private void onClickSendChatMessage(View v) {
         String msg = binding.etChatMessage.getText().toString();
         checkForCheatActivation(msg);
         handleChat(msg);
-
     }
+
     private void handleChat(String msg) {
         if (msg.length() != 0) {
             final ChatMessage newChatMessage = new ChatMessage(
