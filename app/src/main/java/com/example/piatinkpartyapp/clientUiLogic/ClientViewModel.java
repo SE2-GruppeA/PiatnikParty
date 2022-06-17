@@ -11,11 +11,14 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
+import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.networking.GameClient;
 import com.example.piatinkpartyapp.networking.Responses;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientViewModel extends ViewModel {
     private static final String TAG = "ClientViewModel";
@@ -160,10 +163,16 @@ public class ClientViewModel extends ViewModel {
         return client.getWinnerId();
     }
 
-    public LiveData<Boolean> isCheaterExposed() { return client.isCheaterExposed(); }
+    public LiveData<Boolean> isCheaterExposed() {
+        return client.isCheaterExposed();
+    }
 
     public LiveData<Boolean> isCheatingExposed() {
         return client.isCheatingExposed();
+    }
+
+    public LiveData<Map<String, Integer>> getPlayers() {
+        return client.getPlayers();
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

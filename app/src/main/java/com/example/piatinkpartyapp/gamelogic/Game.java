@@ -6,6 +6,9 @@ import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class Game {
@@ -156,12 +159,21 @@ public class Game {
     }
 
     public void sendMessageUpdateScoreboard() {
-        Responses.UpdateScoreboard response = new Responses.UpdateScoreboard();
-        //response.lobby = lobby;
+        Responses.UpdateScoreboard response = new Responses.UpdateScoreboard(getPlayerHashMap());
 
         for (Player player : lobby.getPlayers()) {
             player.getClientConnection().sendTCP(response);
         }
+    }
+
+    public HashMap<String, Integer> getPlayerHashMap(){
+        HashMap<String, Integer> playersHashMap = new HashMap<>();
+
+        for(Player player: lobby.getPlayers()){
+            playersHashMap.put(player.getPlayerName(), player.getPointsScoreboard());
+        }
+
+        return playersHashMap;
     }
 
     public void setLobby(Lobby lobby) {
