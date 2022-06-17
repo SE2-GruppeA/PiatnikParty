@@ -140,7 +140,8 @@ public class GameClient {
                         handle_SendSchlagToAllPlayers((Responses.SendSchlagToAllPlayers) object);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    LOG.info(e.toString());
                 }
             }
         });
