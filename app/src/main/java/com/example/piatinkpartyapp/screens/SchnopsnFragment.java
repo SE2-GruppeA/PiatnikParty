@@ -89,7 +89,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     private float mAccelLast;
     Boolean mixedCards;
     Boolean cardsToMix;
-    Boolean isWattn;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -204,7 +204,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         handCardImageViews.add(handCardView4);
         handCardImageViews.add(handCardView5);
         isMyTurn = false;
-        isWattn = true;
+
 
     }
 
@@ -212,23 +212,17 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         this.handCards = handCards;
 
         int j = 0;
-        //set onclickListeners to handcards
-        //hot fix for wattn
+
         for (ImageView imageView : handCardImageViews) {
             if(j<5) {
-          //      if (isWattn) {
+
                     if (!imageView.getContentDescription().equals("backside")) {
                         setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
                         j++;
                         handCardViewListener(imageView);
                     }
 
-             /*   } else {
-                    setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
-                    j++;
-                    handCardViewListener(imageView);
-                }*/
-            }
+              }
             }
 
 
@@ -324,7 +318,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             resetImageView(currentCard2);
             resetImageView(currentCard3);
             resetImageView(currentCard4);
-            isWattn = true;
+
             scoreTxt.setText("0");
         }
     }
@@ -335,7 +329,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             resetImageView(currentCard2);
 
             scoreTxt.setText("0");
-            isWattn = false;
+
         }
     }
 
