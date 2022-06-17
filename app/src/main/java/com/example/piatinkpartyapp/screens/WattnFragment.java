@@ -121,14 +121,12 @@ private void startChatTestServer() {
 
         try {
                 s.startNewGameServer();
+                Thread.sleep(2000);
         } catch (IOException e) {
                 e.printStackTrace();
-        }
-
-        try {
-                Thread.sleep(2000);
         } catch (InterruptedException e) {
-        //e.printStackTrace();
+                //e.printStackTrace();
+                Thread.currentThread().interrupt();
         }
 }
 
