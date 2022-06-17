@@ -46,7 +46,7 @@ public class GameClient {
             try {
                 client.connect(10000, NetworkHandler.GAMESERVER_IP, NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
             this.playerID = client.getID();
@@ -80,7 +80,7 @@ public class GameClient {
                 try {
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
                 super.disconnected(connection);
             }

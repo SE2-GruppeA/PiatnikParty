@@ -1,7 +1,6 @@
 package com.example.piatinkpartyapp.screens;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,7 +84,7 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
             Log.d("##############", idField.getName());
             return idField.getInt(idField);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return -1;
         }
     }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Toast;
 
 import androidx.lifecycle.ViewModel;
 
@@ -12,7 +11,6 @@ import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.networking.GameClient;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.NetworkHandler;
-import com.example.piatinkpartyapp.screens.MainActivity;
 import com.example.piatinkpartyapp.screens.WaitingPlayersFragment;
 
 import java.io.IOException;
@@ -34,7 +32,7 @@ public class GameViewModel extends ViewModel {
         try {
             server.startNewGameServer();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         client = new GameClient(ip);
