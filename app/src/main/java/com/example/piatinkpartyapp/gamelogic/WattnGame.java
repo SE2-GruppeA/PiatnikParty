@@ -137,21 +137,21 @@ public class WattnGame extends Game {
             LOG.info(this.deck.getHit().toString());
 
             if (winningPlayer.getCardPlayed().getCardValue()
-                    == this.deck.getRightCard().getCardValue()
+                    == this.deck.getHit()
                     && winningPlayer.getCardPlayed().getSymbol()
-                    == deck.getRightCard().getSymbol()){
+                    == deck.getTrump()){
                 winningPlayer = winningPlayer;
             }
 
             //second played card is right card
-            else if (currentPlayer.getCardPlayed().getSymbol() == this.deck.getRightCard().getSymbol() && currentPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue()){
+            else if (currentPlayer.getCardPlayed().getSymbol() == this.deck.getTrump() && currentPlayer.getCardPlayed().getCardValue() == deck.getHit()){
                 winningPlayer = currentPlayer;
 
             } //hit case - first played hit wins
-            else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getRightCard().getCardValue() ){
+            else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getHit() ){
                 winningPlayer = winningPlayer;
             }//hit case - hit wins
-            else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && winningPlayer.getCardPlayed() != this.deck.getRightCard()){
+            else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && (winningPlayer.getCardPlayed().getSymbol() != this.deck.getTrump() && winningPlayer.getCardPlayed().cardValue != this.deck.getHit())){
 
                 winningPlayer = currentPlayer;
             } // trump case - higher trump wins
