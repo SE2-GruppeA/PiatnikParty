@@ -14,4 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "PiatinkPartyApp"
 include ':app'
-include 'core'
