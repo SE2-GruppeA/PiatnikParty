@@ -19,7 +19,7 @@ public class WattnGame extends Game {
 
     public WattnGame(Lobby l){
         lobby = l;
-      //  resetWattnDeck(l.getPlayers().size());
+
 
     }
     public void resetWattnDeck(Integer numberOfPlayers){
@@ -73,6 +73,7 @@ public class WattnGame extends Game {
         ArrayList<Card> currentHandCards = player.getHandcards();
 
         //replaces first card with the best card
+
         currentHandCards.set(0, card);
         player.setHandcards(currentHandCards);
 
@@ -137,21 +138,21 @@ public class WattnGame extends Game {
             LOG.info(this.deck.getHit().toString());
 
             if (winningPlayer.getCardPlayed().getCardValue()
-                    == this.deck.getRightCard().getCardValue()
+                    == this.deck.getHit()
                     && winningPlayer.getCardPlayed().getSymbol()
-                    == deck.getRightCard().getSymbol()){
+                    == deck.getTrump()){
                 winningPlayer = winningPlayer;
             }
 
             //second played card is right card
-            else if (currentPlayer.getCardPlayed().getSymbol() == this.deck.getRightCard().getSymbol() && currentPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue()){
+            else if (currentPlayer.getCardPlayed().getSymbol() == this.deck.getTrump() && currentPlayer.getCardPlayed().getCardValue() == deck.getHit()){
                 winningPlayer = currentPlayer;
 
             } //hit case - first played hit wins
-            else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getRightCard().getCardValue() ){
+            else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getHit() ){
                 winningPlayer = winningPlayer;
             }//hit case - hit wins
-            else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && winningPlayer.getCardPlayed() != this.deck.getRightCard()){
+            else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && (winningPlayer.getCardPlayed().cardValue != this.deck.getHit())){
 
                 winningPlayer = currentPlayer;
             } // trump case - higher trump wins
@@ -170,6 +171,10 @@ public class WattnGame extends Game {
                 LOG.info(winningPlayer + " won this game!");
 
                 sendEndRoundMessageToPlayers(roundStartPlayer);
+                return winningPlayer;
+            }else if(winningPlayer.getPoints() < currentPlayer.getPoints()){
+                sendEndRoundMessageToPlayers(roundStartPlayer);
+                winningPlayer = currentPlayer;
                 return winningPlayer;
             }
             currentPlayer = getNextPlayer(currentPlayer);
@@ -210,7 +215,7 @@ public class WattnGame extends Game {
         new Thread(()->{
             if (startPlayer.getPoints() >= 3 ) {
                 // if the player gets at least 66 points then the player wins
-                // TODO: test if player can win on other places? wenn 20 oder 40 angesagt wird?
+
                 sendEndRoundMessageToPlayers(startPlayer);
 
             }else if(startPlayer.getHandcards().isEmpty()){
@@ -257,87 +262,4 @@ public class WattnGame extends Game {
             player.getClientConnection().sendTCP(request);
         }
     }
-   /* public void resetVotingFinished() {
-        for (Player player : players) {
-            player.setVotingFinished(false);
-        }
-    }*/
-/*@Override
-    public Player addPlayer(Connection connection, String playerName) {
-        Player player = new Player(connection, playerName);
-        players.add(player);
-        return player;
-    }
-
-
-
-
-    @Override
-    public void resetSchnopsnDeck(){}
-    //2 players for beginning
-
-
-    @Override
-    public Player getRoundWinnerPlayerSchnopsn(){return null;}
-
-
-
-
-
-
-
-
-@Override
-    public Player getNextPlayer(Player player) {
-        int currentIndex = players.indexOf(player);
-        if (currentIndex == players.size()-1) {
-            currentIndex = 0;
-            //LOG.info("No next player! return first player");
-        } else {
-            currentIndex = currentIndex + 1;
-            //LOG.info("Index of next player: " + currentIndex);
-        }
-        return players.get(currentIndex);
-    }
-    @Override
-    public boolean checkIfAllPlayersFinishedRound() {
-        for (Player player: players) {
-            if (!player.isRoundFinished()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void resetRoundFinished() {
-        for (Player player: players) {
-            player.setRoundFinished(false);
-        }
-    }
-    @Override
-    public void sendEndRoundMessageToPlayers(Player roundWinner){
-        for (Player player: players) {
-            Responses.EndOfRound response = new Responses.EndOfRound();
-            response.playerID = roundWinner.getId();
-            player.getClientConnection().sendTCP(response);
-        }
-    }
-    @Override
-    public void sendTrumpToAllPlayers(Symbol symbol) {
-        for (Player player: players) {
-            Responses.SendTrumpToAllPlayers response = new Responses.SendTrumpToAllPlayers();
-            response.trump = symbol;
-            player.getClientConnection().sendTCP(response);
-        }
-    }
-    public void sendSchlagToAllPlayers(CardValue schlag){
-    for(Player player: players){
-        Responses.SendSchlagToAllPlayers response = new Responses.SendSchlagToAllPlayers();
-        response.schlag = schlag;
-        player.getClientConnection().sendTCP(response);
-    }
-    }
-
-  */
 }

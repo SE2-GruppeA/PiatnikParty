@@ -14,6 +14,8 @@ import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.gamelogic.SchnopsnGame;
 import com.example.piatinkpartyapp.gamelogic.WattnGame;
 
+import java.util.HashMap;
+
 public class NetworkHandler {
 
     //for testing now
@@ -66,7 +68,7 @@ public class NetworkHandler {
         kryo.register(Responses.playerDisconnected.class);
         kryo.register(Responses.mixedCards.class);
         kryo.register(Responses.CheatingPenalty.class);
-
+        kryo.register(Responses.SendSchlagToAllPlayers.class);
 
         // Other classes
         kryo.register(Card.class);
@@ -83,5 +85,6 @@ public class NetworkHandler {
         kryo.register(SchnopsnDeck.class);
         kryo.register(WattnGame.class);
         kryo.register(WattnDeck.class);
+        kryo.register(HashMap.class);
     }
 }

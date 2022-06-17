@@ -177,7 +177,8 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/imageViewKaSi"
+        android:id="@+id/imageViewKaroSieben"
+        android:contentDescription="karo_sieben"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -189,7 +190,8 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageViewKrAc"
+        android:id="@+id/imageViewKreuzAcht"
+        android:contentDescription="kreuz_acht"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -201,7 +203,8 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageViewPN"
+        android:id="@+id/imageViewPickNeun"
+        android:contentDescription="pick_neun"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -213,7 +216,8 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageViewHZ"
+        android:id="@+id/imageViewHerzZehn"
+        android:contentDescription="herz_zehn"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -225,7 +229,8 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageViewHU"
+        android:id="@+id/imageViewHerzUnter"
+        android:contentDescription="herz_unter"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -237,7 +242,8 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageViewHO"
+        android:id="@+id/imageViewHerzOber"
+        android:contentDescription="herz_ober"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -249,7 +255,8 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageViewHK"
+        android:id="@+id/imageViewHerzKoenig"
+        android:contentDescription="herz_koenig"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -261,7 +268,8 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageViewHA"
+        android:id="@+id/imageViewHerzAss"
+        android:contentDescription="herz_ass"
         android:layout_width="100dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"

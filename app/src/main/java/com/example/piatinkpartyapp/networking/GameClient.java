@@ -14,6 +14,7 @@ import com.example.piatinkpartyapp.chat.ChatMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -139,7 +140,8 @@ public class GameClient {
                         handle_SendSchlagToAllPlayers((Responses.SendSchlagToAllPlayers) object);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    LOG.info(e.toString());
                 }
             }
         });
@@ -362,6 +364,8 @@ public class GameClient {
     private void handle_UpdateScoreboard(Responses.UpdateScoreboard object) {
         Responses.UpdateScoreboard response = object;
 
+        players.postValue(response.players);
+
         LOG.info("Update Scoreboard!");
     }
     /////////////////// END - Handler Methods !!! ///////////////////
@@ -511,6 +515,7 @@ public class GameClient {
     private MutableLiveData<Integer> winnerId;
     private MutableLiveData<Boolean> cheaterExposed;
     private MutableLiveData<Boolean> cheatingExposed;
+    private MutableLiveData<Map<String, Integer>> players;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -583,6 +588,10 @@ public class GameClient {
 
     public LiveData<Boolean> isCheaterExposed() { return cheaterExposed; }
 
+    public LiveData<Map<String, Integer>> getPlayers() {
+        return players;
+    }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -605,6 +614,7 @@ public class GameClient {
         winnerId = new MutableLiveData<>();
         cheaterExposed = new MutableLiveData<>();
         cheatingExposed = new MutableLiveData<>();
+        players = new MutableLiveData<>();
     }
 
 

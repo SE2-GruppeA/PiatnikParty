@@ -100,6 +100,7 @@
 
     <ImageView
         android:id="@+id/card1"
+        android:contentDescription="started"
         android:layout_width="100dp"
         android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -113,6 +114,7 @@
 
     <ImageView
         android:id="@+id/card2"
+        android:contentDescription="started"
         android:layout_width="100dp"
         android:layout_height="120dp"
         android:rotation="0"
@@ -126,6 +128,7 @@
 
     <ImageView
         android:id="@+id/card3"
+        android:contentDescription="started"
         android:layout_width="100dp"
         android:layout_height="120dp"
         android:rotation="0"
@@ -139,6 +142,7 @@
 
     <ImageView
         android:id="@+id/card4"
+        android:contentDescription="started"
         android:layout_width="100dp"
         android:layout_height="120dp"
         android:rotation="0"
@@ -148,10 +152,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.954"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/placeholder" />
 
     <ImageView
         android:id="@+id/card5"
+        android:contentDescription="started"
         android:layout_width="100dp"
         android:layout_height="120dp"
         android:rotation="0"

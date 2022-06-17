@@ -3,13 +3,21 @@ package com.example.piatinkpartyapp.screens;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.example.piatinkpartyapp.R;
+import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
+
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +26,9 @@ import com.example.piatinkpartyapp.R;
  */
 public class ScoreBoard extends Fragment implements View.OnClickListener {
     ImageButton closeBtn;
+    TableLayout tblPlayerScore;
+
+    ClientViewModel clientViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,11 +78,45 @@ public class ScoreBoard extends Fragment implements View.OnClickListener {
 
         //add views
         closeBtn = root.findViewById(R.id.closeBtn);
+        tblPlayerScore = root.findViewById(R.id.tblPlayerScore);
 
         //add onclick listeners
         closeBtn.setOnClickListener(this);
 
+        //add view model and observer(s)
+        clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
+
+        clientViewModel.getPlayers().observe(getViewLifecycleOwner(), players -> updateScoreboard(players));
+
         return root;
+    }
+
+    private void updateScoreboard(Map<String, Integer> players) {
+        tblPlayerScore.removeAllViews();
+
+        for(String name:players.keySet()){
+            addRowToScoreboard(name, players.get(name));
+        }
+    }
+
+    public void addRowToScoreboard(String name, Integer score){
+        TableRow scoreRow = new TableRow(getActivity());
+
+        scoreRow.addView(createTextView(name, Gravity.LEFT, 24));
+        scoreRow.addView(createTextView(score.toString(), Gravity.RIGHT,24));
+
+        tblPlayerScore.addView(scoreRow, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+    }
+
+    public TextView createTextView(String text, Integer gravity, float fontSize){
+        TextView textView = new TextView(getActivity());
+
+        textView.setText(text);
+        textView.setGravity(gravity);
+        textView.setTextSize(fontSize);
+        //textView.setPadding(5, 5, 5, 5);
+
+        return textView;
     }
 
     @Override

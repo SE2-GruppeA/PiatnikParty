@@ -1,6 +1,8 @@
 package com.example.piatinkpartyapp.screens;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,10 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.piatinkpartyapp.R;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class GameRulesFragment extends Fragment implements View.OnClickListener {
@@ -25,22 +31,25 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
     private Button BtnSchnopsn;
     private Button BtnWattn;
     private Button BtnHosnObe;
-    private Button BtnPens;
+    private Button BtnPensionisteln;
     private Button BtnCards;
+    ArrayList<Button> ruleButtons;
 
     private TextView schonpsn_rules;
     private TextView wattn_rules;
     private TextView hosnObe_rules;
     private TextView pensionistln_rules;
+    ArrayList<TextView> rules;
 
-    private ImageView kasi;
-    private  ImageView krac;
-    private  ImageView pn;
-    private  ImageView hz;
-    private  ImageView hu;
-    private ImageView ho;
-    private  ImageView hk;
-    private  ImageView ha;
+    private ImageView karo_sieben;
+    private  ImageView kreuz_acht;
+    private  ImageView pick_neun;
+    private  ImageView herz_zehn;
+    private  ImageView herz_unter;
+    private ImageView herz_ober;
+    private  ImageView herz_koenig;
+    private  ImageView herz_ass;
+    private ArrayList<ImageView> cardViews;
 
     public GameRulesFragment() { }
 
@@ -62,179 +71,137 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    private void setCard(ImageView imgView){
+
+        imgView.setImageResource(getResId(imgView.getContentDescription().toString()));
+        imgView.setVisibility(View.INVISIBLE);
+        setCardListener(imgView.getContentDescription().toString(),imgView);
+    }
+    public static int getResId(String resName) {
+
+        try {
+
+            Field idField = R.drawable.class.getDeclaredField(resName);
+            Log.d("##############", idField.getName());
+            return idField.getInt(idField);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    private void setCardsVisibility(int visibility){
+        for(ImageView imageView:cardViews){
+            imageView.setVisibility(visibility);
+
+        }
+    }
+
+    private void hideTextViewsExcept(TextView textView){
+        for(TextView t : rules){
+            if(t!= textView ){
+                t.setVisibility(View.INVISIBLE);
+            }else{
+                t.setVisibility(View.VISIBLE);
+            }
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_game_rules, container, false);
         BtnBackGameRules = (Button) view.findViewById(R. id. buttonBackGameRules);
         BtnBackGameRules.setOnClickListener(this);
+        cardViews = new ArrayList<>();
+        ruleButtons = new ArrayList<>();
+        rules = new ArrayList<>();
 
-        kasi = view.findViewById(R.id.imageViewKaSi);
-        kasi.setVisibility(View.INVISIBLE);
-        kasi.setImageResource(R.drawable.karo_sieben);
-        kasi.setContentDescription("KARO SIEBEN");
-        setCardListener(kasi.getContentDescription().toString(),kasi);
+        schonpsn_rules = view.findViewById(R.id.editTextTextSchnopsn);
+        rules.add(schonpsn_rules);
+        wattn_rules = view.findViewById(R.id.editTextTextWattn);
+        rules.add(wattn_rules);
+        hosnObe_rules = view.findViewById(R.id.editTextTextHosnObe);
+        rules.add(hosnObe_rules);
+        pensionistln_rules = view.findViewById(R.id.editTextTextPensionistln);
+        rules.add(pensionistln_rules);
+        hideTextViewsExcept(null);
 
-        krac = view.findViewById(R.id.imageViewKrAc);
-        krac.setVisibility(View.INVISIBLE);
-        krac.setImageResource(R.drawable.kreuz_acht);
-        krac.setContentDescription("KREUZ ACHT");
-        setCardListener(krac.getContentDescription().toString(), krac);
+        BtnHosnObe = (Button) view.findViewById(R.id.buttonHosnObe);
+        BtnSchnopsn = (Button)view.findViewById(R.id.buttonSchnopsn);
+        BtnWattn = (Button)view.findViewById(R.id.buttonWattn);
+        BtnPensionisteln = (Button)view.findViewById(R.id.buttonPensionistln);
+        BtnCards = (Button)view.findViewById(R.id.buttonKarten);
 
+        karo_sieben = view.findViewById(R.id.imageViewKaroSieben);
+        cardViews.add(karo_sieben);
 
-        pn = view.findViewById(R.id.imageViewPN);
-        pn.setVisibility(View.INVISIBLE);
-        pn.setImageResource(R.drawable.pick_neun);
-        pn.setContentDescription("PICK NEUN");
-        setCardListener(pn.getContentDescription().toString(), pn);
+        kreuz_acht = view.findViewById(R.id.imageViewKreuzAcht);
+        cardViews.add(kreuz_acht);
 
+        pick_neun = view.findViewById(R.id.imageViewPickNeun);
+        cardViews.add(pick_neun);
 
-        hz = view.findViewById(R.id.imageViewHZ);
-        hz.setVisibility(View.INVISIBLE);
-        hz.setImageResource(R.drawable.herz_zehn);
-        hz.setContentDescription("HERZ ZEHN");
-        setCardListener(hz.getContentDescription().toString(),hz);
+        herz_zehn = view.findViewById(R.id.imageViewHerzZehn);
+        cardViews.add(herz_zehn);
 
-        hu = view.findViewById(R.id.imageViewHU);
-        hu.setVisibility(View.INVISIBLE);
-        hu.setImageResource(R.drawable.herz_unter);
-        hu.setContentDescription("HERZ UNTER");
-        setCardListener(hu.getContentDescription().toString(),hu);
+        herz_unter = view.findViewById(R.id.imageViewHerzUnter);
+        cardViews.add(herz_unter);
 
-        ho = view.findViewById(R.id.imageViewHO);
-        ho.setVisibility(View.INVISIBLE);
-        ho.setImageResource(R.drawable.herz_ober);
-        ho.setContentDescription("HERZ OBER");
-        setCardListener(ho.getContentDescription().toString(),ho);
+        herz_ober = view.findViewById(R.id.imageViewHerzOber);
+        cardViews.add(herz_ober);
 
-        hk = view.findViewById(R.id.imageViewHK);
-        hk.setVisibility(View.INVISIBLE);
-        hk.setImageResource(R.drawable.herz_koenig);
-        hk.setContentDescription("HERZ KÖNIG");
-        setCardListener(hk.getContentDescription().toString(),hk);
+        herz_koenig = view.findViewById(R.id.imageViewHerzKoenig);
+        cardViews.add(herz_koenig);
 
-        ha = view.findViewById(R.id.imageViewHA);
-        ha.setContentDescription("HERZ ASS");
-        ha.setImageResource(R.drawable.herz_ass);
-        ha.setVisibility(View.INVISIBLE);
-        setCardListener(ha.getContentDescription().toString(),ha);
+        herz_ass = view.findViewById(R.id.imageViewHerzAss);
+        cardViews.add(herz_ass);
 
-
-        BtnCards = (Button) view.findViewById(R.id.buttonKarten);
+        for(ImageView imageView : cardViews){
+            setCard(imageView);
+        }
 
         BtnCards.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hosnObe_rules.setVisibility(View.INVISIBLE);
-                pensionistln_rules.setVisibility(View.INVISIBLE);
-                schonpsn_rules.setVisibility(View.INVISIBLE);
-                wattn_rules.setVisibility(View.INVISIBLE);
-                kasi.setVisibility(View.VISIBLE);
-                krac.setVisibility(View.VISIBLE);
-                pn.setVisibility(View.VISIBLE);
-                hz.setVisibility(View.VISIBLE);
-                hu.setVisibility(View.VISIBLE);
-                ho.setVisibility(View.VISIBLE);
-                hk.setVisibility(View.VISIBLE);
-                ha.setVisibility(View.VISIBLE);
+            hideTextViewsExcept(null);
+            setCardsVisibility(View.VISIBLE);
             }
         });
-        BtnHosnObe = (Button) view.findViewById(R.id.buttonHosnObe);
+
+
         BtnHosnObe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                hosnObe_rules.setVisibility(View.VISIBLE);
-                schonpsn_rules.setVisibility(View.INVISIBLE);
-                wattn_rules.setVisibility(View.INVISIBLE);
-                pensionistln_rules.setVisibility(View.INVISIBLE);
-
-                kasi.setVisibility(View.INVISIBLE);
-                krac.setVisibility(View.INVISIBLE);
-                pn.setVisibility(View.INVISIBLE);
-                hz.setVisibility(View.INVISIBLE);
-                hu.setVisibility(View.INVISIBLE);
-                ho.setVisibility(View.INVISIBLE);
-                hk.setVisibility(View.INVISIBLE);
-                ha.setVisibility(View.INVISIBLE);
+                hideTextViewsExcept(hosnObe_rules);
+                setCardsVisibility(View.INVISIBLE);
             }
         });
-        BtnPens = (Button) view.findViewById(R.id.buttonPensionistln);
-        BtnPens.setOnClickListener(new View.OnClickListener() {
+
+        BtnPensionisteln.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pensionistln_rules.setVisibility(View.VISIBLE);
-                schonpsn_rules.setVisibility(View.INVISIBLE);
-                wattn_rules.setVisibility(View.INVISIBLE);
-                hosnObe_rules.setVisibility(View.INVISIBLE);
-
-                kasi.setVisibility(View.INVISIBLE);
-                krac.setVisibility(View.INVISIBLE);
-                pn.setVisibility(View.INVISIBLE);
-                hz.setVisibility(View.INVISIBLE);
-                hu.setVisibility(View.INVISIBLE);
-                ho.setVisibility(View.INVISIBLE);
-                hk.setVisibility(View.INVISIBLE);
-                ha.setVisibility(View.INVISIBLE);
+               hideTextViewsExcept(pensionistln_rules);
+               setCardsVisibility(View.INVISIBLE);
             }
         });
-        BtnSchnopsn = (Button) view.findViewById(R.id.buttonSchnopsn);
+
         BtnSchnopsn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                schonpsn_rules.setVisibility(View.VISIBLE);
-                wattn_rules.setVisibility(View.INVISIBLE);
-                pensionistln_rules.setVisibility(View.INVISIBLE);
-                hosnObe_rules.setVisibility(View.INVISIBLE);
-                kasi.setVisibility(View.INVISIBLE);
-                krac.setVisibility(View.INVISIBLE);
-                pn.setVisibility(View.INVISIBLE);
-                hz.setVisibility(View.INVISIBLE);
-                hu.setVisibility(View.INVISIBLE);
-                ho.setVisibility(View.INVISIBLE);
-                hk.setVisibility(View.INVISIBLE);
-                ha.setVisibility(View.INVISIBLE);
+                hideTextViewsExcept(schonpsn_rules);
+                setCardsVisibility(View.INVISIBLE);
             }
         });
-        BtnWattn = view.findViewById(R.id.buttonWattn);
+
         BtnWattn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                wattn_rules.setVisibility(View.VISIBLE);
-                schonpsn_rules.setVisibility(View.INVISIBLE);
-                pensionistln_rules.setVisibility(View.INVISIBLE);
-                hosnObe_rules.setVisibility(View.INVISIBLE);
-
-                kasi.setVisibility(View.INVISIBLE);
-                krac.setVisibility(View.INVISIBLE);
-                pn.setVisibility(View.INVISIBLE);
-                hz.setVisibility(View.INVISIBLE);
-                hu.setVisibility(View.INVISIBLE);
-                ho.setVisibility(View.INVISIBLE);
-                hk.setVisibility(View.INVISIBLE);
-                ha.setVisibility(View.INVISIBLE);
+                hideTextViewsExcept(wattn_rules);
+                setCardsVisibility(View.INVISIBLE);
 
             }
         });
-
-        schonpsn_rules = view.findViewById(R.id.editTextTextSchnopsn);
-        schonpsn_rules.setVisibility(View.INVISIBLE);
-
-        wattn_rules = view.findViewById(R.id.editTextTextWattn);
-        wattn_rules.setVisibility(View.INVISIBLE);
-
-        hosnObe_rules = view.findViewById(R.id.editTextTextHosnObe);
-       hosnObe_rules.setVisibility(View.INVISIBLE);
-
-
-        pensionistln_rules = view.findViewById(R.id.editTextTextPensionistln);
-        pensionistln_rules.setVisibility(View.INVISIBLE);
-
-
-
         return  view;
     }
 
@@ -242,7 +209,8 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), desc, Toast.LENGTH_LONG).show();
+                String[] s = desc.split("_");
+                Toast.makeText(getContext(), s[0].toUpperCase(Locale.ROOT) + " " + s[1].toUpperCase(Locale.ROOT), Toast.LENGTH_LONG).show();
             }
         });
     }
