@@ -6,9 +6,7 @@ import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class Game {
@@ -184,15 +182,7 @@ public class Game {
         return lobby;
     }
 
-    public void startGameSchnopsn() {
-
-    }
-
-    public void startGameWattn(){
-
-    }
-
-    public void startGameHosnObe() {
+    public void startGame() {
 
     }
 

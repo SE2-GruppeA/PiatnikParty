@@ -27,7 +27,7 @@ public class WattnGame extends Game {
     }
     //starting the game
     @Override
-    public void startGameWattn(){
+    public void startGame(){
         new Thread(()->{
             resetWattnDeck(lobby.getPlayers().size());
             sendGameStartedMessageToClients();

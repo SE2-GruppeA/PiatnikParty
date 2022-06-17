@@ -64,12 +64,12 @@ public class Lobby {
                 case Schnopsn:
                     //start schnopsn
                     currentGame = new SchnopsnGame(this);
-                    currentGame.startGameSchnopsn();
+                    currentGame.startGame();
                     break;
                 case Wattn:
                     //start wattn
                     currentGame = new WattnGame(this);
-                    currentGame.startGameWattn();
+                    currentGame.startGame();
                     break;
                 case HosnObe:
                     //start HosnObe
