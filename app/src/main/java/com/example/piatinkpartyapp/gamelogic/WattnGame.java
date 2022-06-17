@@ -73,6 +73,7 @@ public class WattnGame extends Game {
         ArrayList<Card> currentHandCards = player.getHandcards();
 
         //replaces first card with the best card
+
         currentHandCards.set(0, card);
         player.setHandcards(currentHandCards);
 
@@ -151,7 +152,7 @@ public class WattnGame extends Game {
             else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getHit() ){
                 winningPlayer = winningPlayer;
             }//hit case - hit wins
-            else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && (winningPlayer.getCardPlayed().getSymbol() != this.deck.getTrump() && winningPlayer.getCardPlayed().cardValue != this.deck.getHit())){
+            else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && (winningPlayer.getCardPlayed().cardValue != this.deck.getHit())){
 
                 winningPlayer = currentPlayer;
             } // trump case - higher trump wins
@@ -170,6 +171,10 @@ public class WattnGame extends Game {
                 LOG.info(winningPlayer + " won this game!");
 
                 sendEndRoundMessageToPlayers(roundStartPlayer);
+                return winningPlayer;
+            }else if(winningPlayer.getPoints() < currentPlayer.getPoints()){
+                sendEndRoundMessageToPlayers(roundStartPlayer);
+                winningPlayer = currentPlayer;
                 return winningPlayer;
             }
             currentPlayer = getNextPlayer(currentPlayer);
@@ -210,7 +215,7 @@ public class WattnGame extends Game {
         new Thread(()->{
             if (startPlayer.getPoints() >= 3 ) {
                 // if the player gets at least 66 points then the player wins
-                // TODO: test if player can win on other places? wenn 20 oder 40 angesagt wird?
+
                 sendEndRoundMessageToPlayers(startPlayer);
 
             }else if(startPlayer.getHandcards().isEmpty()){

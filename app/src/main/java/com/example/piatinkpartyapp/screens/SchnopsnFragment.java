@@ -89,6 +89,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     private float mAccelLast;
     Boolean mixedCards;
     Boolean cardsToMix;
+    Boolean isWattn;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -203,6 +204,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         handCardImageViews.add(handCardView4);
         handCardImageViews.add(handCardView5);
         isMyTurn = false;
+        isWattn = true;
+
     }
 
     private void updateHandCards(ArrayList<Card> handCards) {
@@ -210,12 +213,26 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
         int j = 0;
         //set onclickListeners to handcards
+        //hot fix for wattn
         for (ImageView imageView : handCardImageViews) {
+            if(j<5) {
+          //      if (isWattn) {
+                    if (!imageView.getContentDescription().equals("backside")) {
+                        setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
+                        j++;
+                        handCardViewListener(imageView);
+                    }
 
-            setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
-            j++;
-            handCardViewListener(imageView);
-        }
+             /*   } else {
+                    setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
+                    j++;
+                    handCardViewListener(imageView);
+                }*/
+            }
+            }
+
+
+
     }
 
     @Override
@@ -233,6 +250,12 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         //if it would not be in landscape mode some dialogs would get displayed twice
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
+
+            //when a game is started, the client gets notified
+            clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), started -> initializeSchnopsn(started));
+            clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), started -> initializeWattn(started));
+            clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), started -> initializePensionistln(started));
+            clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
 
             clientViewModel.getHandCards().observe(getViewLifecycleOwner(), handCards -> updateHandCards(handCards));
             clientViewModel.isMyTurn().observe(getViewLifecycleOwner(), isMyTurn -> waitForMyTurn(isMyTurn));
@@ -252,11 +275,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
 
-            //when a game is started, the client gets notified
-            clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), started -> initializeSchnopsn(started));
-            clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), started -> initializeWattn(started));
-            clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), started -> initializePensionistln(started));
-            clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
+
 
             //shaking phone to mix cards
 
@@ -305,6 +324,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             resetImageView(currentCard2);
             resetImageView(currentCard3);
             resetImageView(currentCard4);
+            isWattn = true;
             scoreTxt.setText("0");
         }
     }
@@ -315,6 +335,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             resetImageView(currentCard2);
 
             scoreTxt.setText("0");
+            isWattn = false;
         }
     }
 
@@ -368,6 +389,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private void atRoundEnd(Integer winner) {
         showRoundWinner(winner);
+        for(ImageView imageView : handCardImageViews){
+            imageView.setContentDescription("started");
+        }
     }
 
     private void voteForNextGame(Boolean votingForNextGame) {
