@@ -118,15 +118,19 @@ public void onCreate(Bundle savedInstanceState) {
         GameServer s;
 private void startChatTestServer() {
         s = new GameServer();
+
         try {
-        s.startNewGameServer();
-        Thread.sleep(2000);
+                s.startNewGameServer();
         } catch (IOException e) {
-        //e.printStackTrace();
+                e.printStackTrace();
+        }
+
+        try {
+                Thread.sleep(2000);
         } catch (InterruptedException e) {
         //e.printStackTrace();
         }
-        }
+}
 
 private void waitForMyTurn(Boolean isMyTurn) {
         if(isMyTurn) {
