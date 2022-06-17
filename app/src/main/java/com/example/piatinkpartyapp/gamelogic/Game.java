@@ -7,6 +7,8 @@ import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Responses;
 
 import java.util.HashMap;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 public class Game {
@@ -164,8 +166,8 @@ public class Game {
         }
     }
 
-    public HashMap<String, Integer> getPlayerHashMap(){
-        HashMap<String, Integer> playersHashMap = new HashMap<>();
+    public TreeMap<String, Integer> getPlayerHashMap(){
+        TreeMap<String, Integer> playersHashMap = new TreeMap<>();
 
         for(Player player: lobby.getPlayers()){
             playersHashMap.put(player.getPlayerName(), player.getPointsScoreboard());

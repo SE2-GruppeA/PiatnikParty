@@ -32,6 +32,7 @@ public class SchnopsnGame extends Game {
         new Thread(() -> {
             AusgabeTest();
             resetSchnopsnDeck();
+            sendMessageUpdateScoreboard();
             sendGameStartedMessageToClients();
             resetRoundFinished();
             resetPlayerPoints();

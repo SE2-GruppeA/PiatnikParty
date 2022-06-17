@@ -30,9 +30,10 @@ public class WattnGame extends Game {
     public void startGame(){
         new Thread(()->{
             resetWattnDeck(lobby.getPlayers().size());
-            sendGameStartedMessageToClients();
             resetRoundFinished();
+            sendMessageUpdateScoreboard();
             resetPlayerPoints();
+            sendGameStartedMessageToClients();
             sendHandCards();
             setRoundStartPlayer(lobby.getPlayers().get(0));
             notifyPlayerYourTurn(lobby.getPlayers().get(0));
@@ -215,9 +216,8 @@ public class WattnGame extends Game {
         new Thread(()->{
             if (startPlayer.getPoints() >= 3 ) {
                 // if the player gets at least 66 points then the player wins
-
                 sendEndRoundMessageToPlayers(startPlayer);
-
+                addPointsAndUpdateScoreboard(startPlayer, 1);
             }else if(startPlayer.getHandcards().isEmpty()){
                 sendEndRoundMessageToPlayers(startPlayer);
             }
