@@ -3,8 +3,11 @@ package com.example.piatinkpartyapp.networking;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.gamelogic.Player;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 
 /*
 NOTES :
@@ -246,14 +249,14 @@ public class Responses {
     }
 
     public static class UpdateScoreboard {
-        //public Lobby lobby;
+        public Map<String, Integer> players;
 
         public UpdateScoreboard() {
         }
-/*
-        public UpdateScoreboard(Lobby lobby) {
-            this.lobby = lobby;
-        }*/
+
+        public UpdateScoreboard(Map<String, Integer> players){
+            this.players = players;
+        }
     }
 
     public static class CheatingPenalty{
