@@ -551,7 +551,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             Log.d("##############", idField.getName());
             return idField.getInt(idField);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return -1;
         }
     }

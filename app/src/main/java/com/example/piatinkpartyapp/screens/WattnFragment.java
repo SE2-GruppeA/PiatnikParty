@@ -122,9 +122,9 @@ private void startChatTestServer() {
         s.startNewGameServer();
         Thread.sleep(2000);
         } catch (IOException e) {
-        e.printStackTrace();
+        //e.printStackTrace();
         } catch (InterruptedException e) {
-        e.printStackTrace();
+        //e.printStackTrace();
         }
         }
 
@@ -384,7 +384,7 @@ public static int getResId(String resName) {
         Log.d("##############",idField.getName());
         return idField.getInt(idField);
         } catch (Exception e) {
-        e.printStackTrace();
+        //e.printStackTrace();
         return -1;
         }
         }

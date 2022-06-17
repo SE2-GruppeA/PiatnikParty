@@ -151,7 +151,7 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
             brightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS);
         } catch (Settings.SettingNotFoundException e) {
             Log.e("Error","Brightness cannot be changed");
-            e.printStackTrace();
+            /e.printStackTrace();
             Toast.makeText(getActivity().getApplicationContext(),
                     "Brightness cannot be changed", Toast.LENGTH_SHORT).show();
         }
