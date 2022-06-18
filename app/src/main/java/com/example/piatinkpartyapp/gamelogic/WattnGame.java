@@ -37,6 +37,11 @@ public class WattnGame extends Game {
             sendHandCards();
             setRoundStartPlayer(lobby.getPlayers().get(0));
             notifyPlayerYourTurn(lobby.getPlayers().get(0));
+            //reset player points
+            for(Player p: lobby.getPlayers()){
+                p.addPoints(-1*p.getPoints());
+                sendPointsToWinnerPlayer(p);
+            }
         }).start();
     }
     //sending handcards to players
@@ -143,6 +148,7 @@ public class WattnGame extends Game {
                     && winningPlayer.getCardPlayed().getSymbol()
                     == deck.getTrump()){
                 //winningPlayer = winningPlayer;
+                return winningPlayer;
             }
 
             //second played card is right card
@@ -214,11 +220,20 @@ public class WattnGame extends Game {
 
     public void startNewRoundWattn(Player startPlayer) {
         new Thread(()->{
-            if (startPlayer.getPoints() >= 3 || (startPlayer.getHandcards().isEmpty() && startPlayer.getPoints() > getNextPlayer(startPlayer).getPoints()) ){
+            LOG.info(startPlayer.getPlayerName() + " has " +startPlayer.getPoints());
+            Player other = getNextPlayer(startPlayer);
+            LOG.info(other.getPlayerName() + " has " + other.getPoints());
+            if (startPlayer.getPoints() >= 3 ) {
                 sendEndRoundMessageToPlayers(startPlayer);
                 addPointsAndUpdateScoreboard(startPlayer, 1);
-            }else if(startPlayer.getHandcards().isEmpty()){
-                sendEndRoundMessageToPlayers(startPlayer);
+            }else if(startPlayer.getHandcards().isEmpty() && other.getHandcards().isEmpty()){
+                if(startPlayer.getPoints() >= other.getPoints()){
+                    sendEndRoundMessageToPlayers(startPlayer);
+                    addPointsAndUpdateScoreboard(startPlayer,1);
+                }else{
+                    sendEndRoundMessageToPlayers(other);
+                    addPointsAndUpdateScoreboard(other,1);
+                }
             }
             else {
                 resetRoundFinished();
