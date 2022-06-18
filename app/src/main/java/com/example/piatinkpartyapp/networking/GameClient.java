@@ -224,9 +224,9 @@ public class GameClient {
 
         // notify UI: game has started
         schnopsnStarted.postValue(true);
-        wattnStarted.setValue(false);
-        pensionistlnStarted.setValue(false);
-        hosnObeStarted.setValue(false);
+        wattnStarted.postValue(false);
+        pensionistlnStarted.postValue(false);
+        hosnObeStarted.postValue(false);
 
         LOG.info("Schnopsn Game started by server after voting");
     }
@@ -236,10 +236,10 @@ public class GameClient {
                 object;
 
         // notify UI: game has started
-        schnopsnStarted.setValue(false);
         wattnStarted.postValue(true);
-        pensionistlnStarted.setValue(false);
-        hosnObeStarted.setValue(false);
+        schnopsnStarted.postValue(false);
+        pensionistlnStarted.postValue(false);
+        hosnObeStarted.postValue(false);
 
         LOG.info("Wattn Game started by server after voting");
     }
@@ -249,10 +249,10 @@ public class GameClient {
                 object;
 
         // notify UI: game has started
-        schnopsnStarted.setValue(false);
-        wattnStarted.setValue(false);
+        schnopsnStarted.postValue(false);
+        wattnStarted.postValue(false);
         pensionistlnStarted.postValue(true);
-        hosnObeStarted.setValue(false);
+        hosnObeStarted.postValue(false);
 
         LOG.info("Pensionistln Game started by server after voting");
     }
@@ -262,9 +262,9 @@ public class GameClient {
                 object;
 
         // notify UI: game has started
-        schnopsnStarted.setValue(false);
-        wattnStarted.setValue(false);
-        pensionistlnStarted.setValue(false);
+        schnopsnStarted.postValue(false);
+        wattnStarted.postValue(false);
+        pensionistlnStarted.postValue(false);
         hosnObeStarted.postValue(true);
 
         LOG.info("Hosn Obe Game started by server after voting");

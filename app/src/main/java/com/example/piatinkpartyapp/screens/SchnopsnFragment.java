@@ -60,6 +60,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     ImageView swapCardView;
     ImageView imgTrump;
     ImageView imgSchlag;
+    ImageView imgScore;
+    ImageView schlagImage;
+    ImageView trumpfImage;
 
     ImageButton exitBtn;
     TextView scoreTxt;
@@ -314,22 +317,47 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private void initializeWattn(Boolean started) {
         if (started) {
-            resetImageView(currentCard1);
-            resetImageView(currentCard2);
-            resetImageView(currentCard3);
-            resetImageView(currentCard4);
-
-            scoreTxt.setText("0");
+            resetGameTable(0, true, true);
         }
     }
 
     private void initializeSchnopsn(Boolean started) {
         if (started) {
-            resetImageView(currentCard1);
-            resetImageView(currentCard2);
+            resetGameTable(0, true, false);
+        }
+    }
 
-            scoreTxt.setText("0");
+    private void resetGameTable(Integer initScore, Boolean showTrump, Boolean showSchlag){
+        resetAllCardsOnTable();
+        scoreTxt.setText(initScore.toString());
+        showTrump(showTrump);
+        showSchlag(showSchlag);
+    }
 
+    private void resetAllCardsOnTable(){
+        resetImageView(currentCard1);
+        resetImageView(currentCard2);
+        resetImageView(currentCard3);
+        resetImageView(currentCard4);
+    }
+
+    public void showTrump(Boolean show){
+        if(show){
+            trumpfImage.setVisibility(View.VISIBLE);
+            imgTrump.setVisibility(View.VISIBLE);
+        }else{
+            trumpfImage.setVisibility(View.INVISIBLE);
+            imgTrump.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void showSchlag(Boolean show){
+        if(show){
+            schlagImage.setVisibility(View.VISIBLE);
+            imgSchlag.setVisibility(View.VISIBLE);
+        }else{
+            schlagImage.setVisibility(View.INVISIBLE);
+            imgSchlag.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -438,8 +466,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         imgSchlag = view.findViewById(R.id.imgSchlag);
         btnCheat = view.findViewById(R.id.btnCheat);
         btnExpose = view.findViewById(R.id.btnExpose);
-
-
+        imgScore = view.findViewById(R.id.scoreImage);
+        schlagImage = view.findViewById(R.id.schlageImage);
+        trumpfImage = view.findViewById(R.id.trumpfImage);
     }
 
     @Override
