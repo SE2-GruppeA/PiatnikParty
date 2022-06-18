@@ -283,7 +283,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     private void showCheatingExposed(Boolean isCheating) {
         if(isCheating){
             Toast.makeText(requireActivity().getApplicationContext(),
-                    "Du wurdest beim cheaten erwischt! -20 Punkte",
+                    "Du wurdest beim cheaten erwischt! Das kostet Punkte",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -295,7 +295,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
                     Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(requireActivity().getApplicationContext(),
-                    "Das war kein Cheater! -10 Punkte",
+                    "Das war kein Cheater! Das kostet Punkte",
                     Toast.LENGTH_SHORT).show();
         }
     }
