@@ -27,12 +27,13 @@ public class WattnGame extends Game {
     }
     //starting the game
     @Override
-    public void startGameWattn(){
+    public void startGame(){
         new Thread(()->{
             resetWattnDeck(lobby.getPlayers().size());
-            sendGameStartedMessageToClients();
             resetRoundFinished();
+            sendMessageUpdateScoreboard();
             resetPlayerPoints();
+            sendGameStartedMessageToClients();
             sendHandCards();
             setRoundStartPlayer(lobby.getPlayers().get(0));
             notifyPlayerYourTurn(lobby.getPlayers().get(0));
@@ -141,7 +142,7 @@ public class WattnGame extends Game {
                     == this.deck.getHit()
                     && winningPlayer.getCardPlayed().getSymbol()
                     == deck.getTrump()){
-                winningPlayer = winningPlayer;
+                //winningPlayer = winningPlayer;
             }
 
             //second played card is right card
@@ -150,7 +151,7 @@ public class WattnGame extends Game {
 
             } //hit case - first played hit wins
             else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getHit() ){
-                winningPlayer = winningPlayer;
+                //winningPlayer = winningPlayer;
             }//hit case - hit wins
             else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && (winningPlayer.getCardPlayed().cardValue != this.deck.getHit())){
 
@@ -215,9 +216,8 @@ public class WattnGame extends Game {
         new Thread(()->{
             if (startPlayer.getPoints() >= 3 ) {
                 // if the player gets at least 66 points then the player wins
-
                 sendEndRoundMessageToPlayers(startPlayer);
-
+                addPointsAndUpdateScoreboard(startPlayer, 1);
             }else if(startPlayer.getHandcards().isEmpty()){
                 sendEndRoundMessageToPlayers(startPlayer);
             }

@@ -85,7 +85,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.06"
-        app:srcCompat="@drawable/score" />
+        app:srcCompat="@drawable/score_trumpf_schlag" />
 
     <ImageView
         android:id="@+id/arrowBtn"
@@ -267,10 +267,10 @@
         android:src="@drawable/placeholder"
         app:layout_constraintBottom_toBottomOf="@+id/scoreImage"
         app:layout_constraintEnd_toEndOf="@+id/scoreImage"
-        app:layout_constraintHorizontal_bias="0.76"
+        app:layout_constraintHorizontal_bias="0.752"
         app:layout_constraintStart_toStartOf="@+id/scoreImage"
         app:layout_constraintTop_toTopOf="@+id/scoreImage"
-        app:layout_constraintVertical_bias="0.794" />
+        app:layout_constraintVertical_bias="0.705" />
 
     <ImageView
         android:id="@+id/imgSchlag"
@@ -279,10 +279,10 @@
         android:src="@drawable/placeholder"
         app:layout_constraintBottom_toBottomOf="@+id/scoreImage"
         app:layout_constraintEnd_toEndOf="@+id/scoreImage"
-        app:layout_constraintHorizontal_bias="0.76"
+        app:layout_constraintHorizontal_bias="0.752"
         app:layout_constraintStart_toStartOf="@+id/scoreImage"
         app:layout_constraintTop_toTopOf="@+id/scoreImage"
-        app:layout_constraintVertical_bias="0.994" />
+        app:layout_constraintVertical_bias="0.863" />
 
     <Button
         android:id="@+id/btnCheat"

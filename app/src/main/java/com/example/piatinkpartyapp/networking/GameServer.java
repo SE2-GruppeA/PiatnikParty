@@ -39,7 +39,8 @@ public class GameServer {
             try {
                 server.bind(NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                LOG.info(e.toString());
             }
             // create new Game
             game = new Game();

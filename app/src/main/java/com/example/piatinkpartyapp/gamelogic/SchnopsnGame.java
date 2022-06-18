@@ -26,12 +26,13 @@ public class SchnopsnGame extends Game {
         deck = new SchnopsnDeck(GameName.Schnopsn, 2);
     }
 
-    // start the game
     @Override
-    public void startGameSchnopsn() {
+    // start the game
+    public void startGame() {
         new Thread(() -> {
             AusgabeTest();
             resetSchnopsnDeck();
+            sendMessageUpdateScoreboard();
             sendGameStartedMessageToClients();
             resetRoundFinished();
             resetPlayerPoints();

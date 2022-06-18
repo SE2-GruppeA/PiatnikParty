@@ -86,7 +86,8 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         try {
             server.startNewGameServer();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+
         }
 
         if(!isGameStarted) {
