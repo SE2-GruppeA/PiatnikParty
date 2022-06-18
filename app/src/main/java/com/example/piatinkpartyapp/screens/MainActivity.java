@@ -84,6 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
        /* getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new SchnopsnFragment()).commit();*/
-        getSupportFragmentManager().beginTransaction().add(android.R.id.content, new WattnFragment()).commit();
+     //   getSupportFragmentManager().beginTransaction().add(android.R.id.content, new WattnFragment()).commit();
     }
 }

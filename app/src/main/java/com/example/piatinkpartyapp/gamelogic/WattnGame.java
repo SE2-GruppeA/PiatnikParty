@@ -214,8 +214,7 @@ public class WattnGame extends Game {
 
     public void startNewRoundWattn(Player startPlayer) {
         new Thread(()->{
-            if (startPlayer.getPoints() >= 3 ) {
-                // if the player gets at least 66 points then the player wins
+            if (startPlayer.getPoints() >= 3 || (startPlayer.getHandcards().isEmpty() && startPlayer.getPoints() > getNextPlayer(startPlayer).getPoints()) ){
                 sendEndRoundMessageToPlayers(startPlayer);
                 addPointsAndUpdateScoreboard(startPlayer, 1);
             }else if(startPlayer.getHandcards().isEmpty()){
@@ -261,5 +260,21 @@ public class WattnGame extends Game {
             Responses.WattnStartedClientMessage request = new Responses.WattnStartedClientMessage();
             player.getClientConnection().sendTCP(request);
         }
+    }
+    @Override
+    public void punishWrongExposure(Integer exposerId){
+        Player player = lobby.getPlayerByID(exposerId);
+        player.addPoints(-1);
+        sendPointsToWinnerPlayer(player);
+    }
+    @Override
+    public void cheaterPenalty(Integer playerId){
+        Player player = lobby.getPlayerByID(playerId);
+
+        if(player.isCheaten()){
+            player.addPoints(-2);
+        }
+
+        sendPenaltyMessageToPlayer(player);
     }
 }
