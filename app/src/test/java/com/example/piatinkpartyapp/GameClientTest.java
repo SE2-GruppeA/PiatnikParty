@@ -52,6 +52,7 @@ public class GameClientTest {
             gameClient = new GameClient(ip);
             gameServer.startNewGameServer();
 
+            // simulate waiting bc else we would need to implement some kind of async waiting
             Thread.sleep(2000);
 
             LiveData<Boolean> isGameStartedState = gameClient.isGameStarted();
