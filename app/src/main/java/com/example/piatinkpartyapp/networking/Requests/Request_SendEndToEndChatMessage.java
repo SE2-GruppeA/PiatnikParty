@@ -2,15 +2,17 @@ package com.example.piatinkpartyapp.networking.Requests;
 
 import com.example.piatinkpartyapp.networking.IPackets;
 
-public class SendToAllChatMessage implements IPackets {
+public class Request_SendEndToEndChatMessage implements IPackets {
     public String message;
     public int from;
+    public int to;
 
-    public SendToAllChatMessage() {
+    public Request_SendEndToEndChatMessage() {
     }
 
-    public SendToAllChatMessage(String message, int from) {
+    public Request_SendEndToEndChatMessage(String message, int from, int to) {
         this.message = message;
         this.from = from;
+        this.to = to;
     }
 }

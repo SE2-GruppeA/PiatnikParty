@@ -2,17 +2,17 @@ package com.example.piatinkpartyapp.networking.Requests;
 
 import androidx.annotation.Nullable;
 
-import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.networking.IPackets;
 
-public class PlayerSetTrump implements IPackets {
-    public Symbol trump;
+public class Request_PlayerSetSchlag implements IPackets {
+    public CardValue schlag;
 
-    public PlayerSetTrump() {
+    public Request_PlayerSetSchlag() {
     }
 
-    public PlayerSetTrump(Symbol trump) {
-        this.trump = trump;
+    public Request_PlayerSetSchlag(CardValue schlag) {
+        this.schlag = schlag;
     }
 
     @Override
@@ -22,9 +22,9 @@ public class PlayerSetTrump implements IPackets {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof PlayerSetTrump) {
-            PlayerSetTrump comp = (PlayerSetTrump) obj;
-            if (trump == comp.trump) {
+        if (obj instanceof Request_PlayerSetSchlag) {
+            Request_PlayerSetSchlag comp = (Request_PlayerSetSchlag) obj;
+            if (schlag == comp.schlag) {
                 return true;
             } else {
                 return false;

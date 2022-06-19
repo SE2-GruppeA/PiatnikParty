@@ -5,11 +5,11 @@ import androidx.annotation.Nullable;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.networking.IPackets;
 
-public class PlayerSetCard implements IPackets {
+public class Request_PlayerSetCard implements IPackets {
     public int playerID;
     public Card card;
 
-    public PlayerSetCard() {
+    public Request_PlayerSetCard() {
     }
 
     public Card getCard() {
@@ -20,7 +20,7 @@ public class PlayerSetCard implements IPackets {
         this.card = card;
     }
 
-    public PlayerSetCard(int playerID, Card card) {
+    public Request_PlayerSetCard(int playerID, Card card) {
         this.playerID = playerID;
         this.card = card;
     }
@@ -32,8 +32,8 @@ public class PlayerSetCard implements IPackets {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof PlayerSetCard) {
-            PlayerSetCard comp = (PlayerSetCard) obj;
+        if (obj instanceof Request_PlayerSetCard) {
+            Request_PlayerSetCard comp = (Request_PlayerSetCard) obj;
             if (playerID == comp.playerID && card.equals(comp.card)) {
                 return true;
             } else {

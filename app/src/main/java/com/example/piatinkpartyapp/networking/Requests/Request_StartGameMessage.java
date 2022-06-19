@@ -4,8 +4,8 @@ import androidx.annotation.Nullable;
 
 import com.example.piatinkpartyapp.networking.IPackets;
 
-public class StartGameMessage implements IPackets {
-    public StartGameMessage() {
+public class Request_StartGameMessage implements IPackets {
+    public Request_StartGameMessage() {
     }
 
     @Override
@@ -15,7 +15,7 @@ public class StartGameMessage implements IPackets {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof StartGameMessage) {
+        if (obj instanceof Request_StartGameMessage) {
             return true;
         } else {
             return false;
