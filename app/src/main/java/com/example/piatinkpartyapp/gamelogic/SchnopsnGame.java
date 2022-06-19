@@ -38,6 +38,7 @@ public class SchnopsnGame extends Game {
             sendGameStartedMessageToClients();
             resetRoundFinished();
             resetPlayerPoints();
+            resetCheating();
             sendHandCards();
             //  sendTrumpToAllPlayers(this.deck.getTrump());
 
@@ -88,16 +89,19 @@ public class SchnopsnGame extends Game {
     //replaces the first hand card with the best card in the game
     public void sendPlayerBestCard(int playerId, Card card){
         Player player = lobby.getPlayerByID(playerId);
-        ArrayList<Card> currentHandCards = player.getHandcards();
 
-        //replaces first card with the best card
-        currentHandCards.set(0, card);
-        player.setHandcards(currentHandCards);
+        if(!player.isCheaten()) {
+            ArrayList<Card> currentHandCards = player.getHandcards();
 
-        //sends new handcards to the player
-        sendHandCardsToPlayer(currentHandCards, player);
+            //replaces first card with the best card
+            currentHandCards.set(0, card);
+            player.setHandcards(currentHandCards);
 
-        player.setCheaten(true);
+            //sends new handcards to the player
+            sendHandCardsToPlayer(currentHandCards, player);
+
+            player.setCheaten(true);
+        }
     }
 
     // Player set card

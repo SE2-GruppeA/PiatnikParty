@@ -99,6 +99,11 @@ public class GameClient {
         return INSTANCE;
     }
 
+    public static GameClient getNewInstance() throws IOException {
+        INSTANCE = new GameClient(NetworkHandler.GAMESERVER_IP);
+        return INSTANCE;
+    }
+
     public String getPlayerID() {
         return "Player " + playerID;
     }

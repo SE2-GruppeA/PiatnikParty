@@ -16,6 +16,8 @@ import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.networking.NetworkHandler;
 
+import java.io.IOException;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link PlayGameFragment#newInstance} factory method to
@@ -104,6 +106,13 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
             NetworkHandler.GAMESERVER_IP =  editText.getText().toString();
 
             clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+
+            try {
+                clientViewModel.newGameClientInstance();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             clientViewModel.getConnectionState().observe(getActivity(), connectionState -> displayConnectionState(connectionState));
             clientViewModel.isGameStarted().observe(getActivity(), gameStarted -> atGameStart());
         }

@@ -73,6 +73,13 @@ public class Game {
         }
     }
 
+    public void resetCheating(){
+        for (Player player : lobby.getPlayers()) {
+            player.setHasExposed(false);
+            player.setCheaten(false);
+        }
+    }
+
     // reset played card from players
     public void resetPlayedCard() {
         for (Player player : lobby.getPlayers()) {
@@ -222,7 +229,8 @@ public class Game {
 
     }
 
-    public Boolean isPlayerCheater(Integer playerId) {
+    public Boolean isPlayerCheater(Integer playerId, Integer exposerId) {
+        lobby.getPlayerByID(exposerId).setHasExposed(true);
         return lobby.getPlayerByID(playerId).isCheaten();
     }
 

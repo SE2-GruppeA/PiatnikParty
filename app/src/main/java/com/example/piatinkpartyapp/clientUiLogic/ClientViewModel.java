@@ -24,6 +24,10 @@ public class ClientViewModel extends ViewModel {
 
     private GameClient client = GameClient.getInstance();
 
+    public void newGameClientInstance() throws IOException {
+        client = GameClient.getNewInstance();
+    }
+
     /*
     // Don't know why this methode is empty
      */

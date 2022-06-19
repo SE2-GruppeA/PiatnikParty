@@ -127,12 +127,16 @@ public class GameServer {
         Integer playerId = object.playerId;
 
         Response_IsCheater response = new Response_IsCheater();
-        if(isCheater(playerId, connection.getID())){
-            response.isCheater = true;
-        }else{
-            response.isCheater = false;
+
+        //player can only expose one time a round and cannot expose himself
+        if(playerId != connection.getID() && !lobby.getPlayerByID(connection.getID()).hasExposedPlayer()) {
+            if (isCheater(playerId, connection.getID())) {
+                response.isCheater = true;
+            } else {
+                response.isCheater = false;
+            }
+            connection.sendTCP(response);
         }
-        connection.sendTCP(response);
     }
 
     //todo: Add this function to gamelogic itself, it's just here so i can build the handler above !
@@ -140,7 +144,7 @@ public class GameServer {
         // todo: Implement gamelogic: how explained down below (Maybe Anton or Bene)!
         // todo: Also add live data !
 
-        Boolean isCheater = lobby.currentGame.isPlayerCheater(playerId);
+        Boolean isCheater = lobby.currentGame.isPlayerCheater(playerId, exposerId);
 
         /**
          * gameLogic.exposePossibleCheater(playerId)

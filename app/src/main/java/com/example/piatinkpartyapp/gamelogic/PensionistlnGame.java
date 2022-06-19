@@ -27,6 +27,7 @@ public class PensionistlnGame extends SchnopsnGame{
             sendMessageUpdateScoreboard();
             setCurrentRound();
             sendGameStartedMessageToClients();
+            resetCheating();
             resetRoundFinished();
             resetPlayerPoints();
             sendHandCards();

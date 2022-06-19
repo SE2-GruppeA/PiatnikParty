@@ -36,6 +36,7 @@ public class WattnGame extends Game {
             resetRoundFinished();
             sendMessageUpdateScoreboard();
             resetPlayerPoints();
+            resetCheating();
             sendGameStartedMessageToClients();
             sendHandCards();
             setRoundStartPlayer(lobby.getPlayers().get(0));
@@ -79,17 +80,20 @@ public class WattnGame extends Game {
     //adopted from schopsnGame since it has the same functionality for wattn
     public void sendPlayerBestCard(int playerId, Card card){
         Player player = lobby.getPlayerByID(playerId);
-        ArrayList<Card> currentHandCards = player.getHandcards();
 
-        //replaces first card with the best card
+        if(!player.isCheaten()) {
+            ArrayList<Card> currentHandCards = player.getHandcards();
 
-        currentHandCards.set(0, card);
-        player.setHandcards(currentHandCards);
+            //replaces first card with the best card
 
-        //sends new handcards to the player
-        sendHandCardsToPlayer(currentHandCards, player);
+            currentHandCards.set(0, card);
+            player.setHandcards(currentHandCards);
 
-        player.setCheaten(true);
+            //sends new handcards to the player
+            sendHandCardsToPlayer(currentHandCards, player);
+
+            player.setCheaten(true);
+        }
     }
 
     @Override
