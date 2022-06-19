@@ -2,14 +2,14 @@ package com.example.piatinkpartyapp.networking.Responses;
 
 import com.example.piatinkpartyapp.cards.Card;
 
-public class SendPlayedCardToAllPlayers {
+public class Response_PlayerGetHandoutCard {
     public int playerID;
     public Card card;
 
-    public SendPlayedCardToAllPlayers() {
+    public Response_PlayerGetHandoutCard() {
     }
 
-    public SendPlayedCardToAllPlayers(int playerID, Card card) {
+    public Response_PlayerGetHandoutCard(int playerID, Card card) {
         this.playerID = playerID;
         this.card = card;
     }

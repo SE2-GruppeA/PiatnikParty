@@ -2,13 +2,13 @@ package com.example.piatinkpartyapp.networking.Responses;
 
 import com.example.piatinkpartyapp.cards.CardValue;
 
-public class SendSchlagToAllPlayers {
+public class Response_SendSchlagToAllPlayers {
     public CardValue schlag;
 
-    public SendSchlagToAllPlayers() {
+    public Response_SendSchlagToAllPlayers() {
     }
 
-    public SendSchlagToAllPlayers(CardValue cardValue) {
+    public Response_SendSchlagToAllPlayers(CardValue cardValue) {
         this.schlag = cardValue;
     }
 }

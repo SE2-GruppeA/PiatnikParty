@@ -1,12 +1,12 @@
 package com.example.piatinkpartyapp.networking.Responses;
 
-public class NotifyPlayerYourTurn {
+public class Response_EndOfRound {
     public int playerID;
 
-    public NotifyPlayerYourTurn() {
+    public Response_EndOfRound() {
     }
 
-    public NotifyPlayerYourTurn(int playerID) {
+    public Response_EndOfRound(int playerID) {
         this.playerID = playerID;
     }
 }

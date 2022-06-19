@@ -12,7 +12,7 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.GameClient;
-import com.example.piatinkpartyapp.networking.Responses.SendPlayedCardToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardToAllPlayers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public class ClientViewModel extends ViewModel {
         return client.isEndOfRound();
     }
 
-    public LiveData<SendPlayedCardToAllPlayers> getPlayedCard() {
+    public LiveData<Response_SendPlayedCardToAllPlayers> getPlayedCard() {
         return client.getPlayedCard();
     }
 

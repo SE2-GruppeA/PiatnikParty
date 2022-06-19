@@ -2,7 +2,7 @@ package com.example.piatinkpartyapp.networking.Responses;
 
 import com.example.piatinkpartyapp.networking.IPackets;
 
-public class GameStartedClientMessage implements IPackets {
-    public GameStartedClientMessage() {
+public class Response_GameStartedClientMessage implements IPackets {
+    public Response_GameStartedClientMessage() {
     }
 }

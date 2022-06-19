@@ -11,29 +11,31 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
-import com.example.piatinkpartyapp.networking.Responses.CheatingPenalty;
-import com.example.piatinkpartyapp.networking.Responses.ConnectedSuccessfully;
-import com.example.piatinkpartyapp.networking.Responses.EndOfRound;
-import com.example.piatinkpartyapp.networking.Responses.GameStartedClientMessage;
-import com.example.piatinkpartyapp.networking.Responses.HosnObeStartedClientMessage;
-import com.example.piatinkpartyapp.networking.Responses.IsCheater;
-import com.example.piatinkpartyapp.networking.Responses.NotifyPlayerToSetSchlag;
-import com.example.piatinkpartyapp.networking.Responses.NotifyPlayerToSetTrump;
-import com.example.piatinkpartyapp.networking.Responses.NotifyPlayerYourTurn;
-import com.example.piatinkpartyapp.networking.Responses.PensionistlnStartedClientMessage;
-import com.example.piatinkpartyapp.networking.Responses.PlayerGetHandoutCard;
-import com.example.piatinkpartyapp.networking.Responses.ReceiveEndToEndChatMessage;
-import com.example.piatinkpartyapp.networking.Responses.ReceiveToAllChatMessage;
-import com.example.piatinkpartyapp.networking.Responses.SchnopsnStartedClientMessage;
-import com.example.piatinkpartyapp.networking.Responses.SendHandCards;
-import com.example.piatinkpartyapp.networking.Responses.SendPlayedCardToAllPlayers;
-import com.example.piatinkpartyapp.networking.Responses.SendRoundWinnerPlayerToAllPlayers;
-import com.example.piatinkpartyapp.networking.Responses.SendSchlagToAllPlayers;
-import com.example.piatinkpartyapp.networking.Responses.SendTrumpToAllPlayers;
-import com.example.piatinkpartyapp.networking.Responses.UpdatePointsWinnerPlayer;
-import com.example.piatinkpartyapp.networking.Responses.UpdateScoreboard;
-import com.example.piatinkpartyapp.networking.Responses.WattnStartedClientMessage;
-import com.example.piatinkpartyapp.networking.Responses.playerDisconnected;
+import com.example.piatinkpartyapp.networking.Responses.Response_CheatingPenalty;
+import com.example.piatinkpartyapp.networking.Responses.Response_ConnectedSuccessfully;
+import com.example.piatinkpartyapp.networking.Responses.Response_EndOfRound;
+import com.example.piatinkpartyapp.networking.Responses.Response_GameStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_HosnObeStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_IsCheater;
+import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerToSetSchlag;
+import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerToSetTrump;
+import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerYourTurn;
+import com.example.piatinkpartyapp.networking.Responses.Response_PensionistlnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_PlayerGetHandoutCard;
+import com.example.piatinkpartyapp.networking.Responses.Response_ReceiveEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_ReceiveToAllChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_SchnopsnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendHandCards;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendRoundWinnerPlayerToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendSchlagToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendTrumpToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_UpdatePointsWinnerPlayer;
+import com.example.piatinkpartyapp.networking.Responses.Response_UpdateScoreboard;
+import com.example.piatinkpartyapp.networking.Responses.Response_VoteForNextGame;
+import com.example.piatinkpartyapp.networking.Responses.Response_WattnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_mixedCards;
+import com.example.piatinkpartyapp.networking.Responses.Response_playerDisconnected;
 import com.example.piatinkpartyapp.networking.Requests.Request_ExposePossibleCheater;
 import com.example.piatinkpartyapp.networking.Requests.Request_ForceVoting;
 import com.example.piatinkpartyapp.networking.Requests.Request_MixCardsRequest;
@@ -122,56 +124,56 @@ public class GameClient {
             @Override
             public void received(Connection connection, Object object) {
                 try {
-                    if (object instanceof ConnectedSuccessfully) {
-                        handle_ConnectedSuccessfully((ConnectedSuccessfully) object);
-                    } else if (object instanceof ReceiveEndToEndChatMessage) {
-                        handle_ReceiveEndToEndMessage((ReceiveEndToEndChatMessage) object);
-                    } else if (object instanceof ReceiveToAllChatMessage) {
-                        handle_ReceiveToAllChatMessage((ReceiveToAllChatMessage) object);
-                    } else if (object instanceof GameStartedClientMessage) {
-                        handle_GameStartedClientMessage((GameStartedClientMessage) object);
-                    } else if (object instanceof SendHandCards) {
-                        handle_SendHandCards((SendHandCards) object);
-                    } else if (object instanceof NotifyPlayerYourTurn) {
-                        handle_NotifyPlayerYourTurn((NotifyPlayerYourTurn) object);
-                    } else if (object instanceof PlayerGetHandoutCard) {
-                        handle_PlayerGetHandoutCard((PlayerGetHandoutCard) object);
-                    } else if (object instanceof EndOfRound) {
-                        handle_EndOfRound((EndOfRound) object);
-                    } else if (object instanceof com.example.piatinkpartyapp.networking.Responses.VoteForNextGame){
+                    if (object instanceof Response_ConnectedSuccessfully) {
+                        handle_ConnectedSuccessfully((Response_ConnectedSuccessfully) object);
+                    } else if (object instanceof Response_ReceiveEndToEndChatMessage) {
+                        handle_ReceiveEndToEndMessage((Response_ReceiveEndToEndChatMessage) object);
+                    } else if (object instanceof Response_ReceiveToAllChatMessage) {
+                        handle_ReceiveToAllChatMessage((Response_ReceiveToAllChatMessage) object);
+                    } else if (object instanceof Response_GameStartedClientMessage) {
+                        handle_GameStartedClientMessage((Response_GameStartedClientMessage) object);
+                    } else if (object instanceof Response_SendHandCards) {
+                        handle_SendHandCards((Response_SendHandCards) object);
+                    } else if (object instanceof Response_NotifyPlayerYourTurn) {
+                        handle_NotifyPlayerYourTurn((Response_NotifyPlayerYourTurn) object);
+                    } else if (object instanceof Response_PlayerGetHandoutCard) {
+                        handle_PlayerGetHandoutCard((Response_PlayerGetHandoutCard) object);
+                    } else if (object instanceof Response_EndOfRound) {
+                        handle_EndOfRound((Response_EndOfRound) object);
+                    } else if (object instanceof Response_VoteForNextGame){
                         handle_VoteForNextGame();
-                    } else if (object instanceof SendPlayedCardToAllPlayers) {
-                        handle_SendPlayedCardToAllPlayers((SendPlayedCardToAllPlayers) object);
-                    } else if (object instanceof SendTrumpToAllPlayers) {
-                        handle_SendTrumpToAllPlayers((SendTrumpToAllPlayers) object);
-                    } else if (object instanceof NotifyPlayerToSetSchlag) {
-                        handle_NotifyPlayerToSetSchlag((NotifyPlayerToSetSchlag) object);
-                    } else if (object instanceof NotifyPlayerToSetTrump) {
-                        handle_NotifyPlayerToSetTrump((NotifyPlayerToSetTrump) object);
-                    } else if(object instanceof UpdatePointsWinnerPlayer){
-                        handle_UpdatePointsWinnerPlayer((UpdatePointsWinnerPlayer) object);
-                    } else if (object instanceof SchnopsnStartedClientMessage) {
-                        handle_SchnopsnStartedClientMessage((SchnopsnStartedClientMessage) object);
-                    } else if (object instanceof WattnStartedClientMessage){
-                        handle_WattnStartedClientMessage((WattnStartedClientMessage) object);
-                    } else if (object instanceof PensionistlnStartedClientMessage){
-                        handle_PensionistlnStartedClientMessage((PensionistlnStartedClientMessage) object);
-                    } else if (object instanceof HosnObeStartedClientMessage){
-                        handle_HosnObeStartedClientMessage((HosnObeStartedClientMessage) object);
-                    }else if(object instanceof playerDisconnected){
-                        handle_PlayerDisconnected((playerDisconnected)object);
-                    }else if(object instanceof com.example.piatinkpartyapp.networking.Responses.mixedCards){
-                        handle_MixedCards((com.example.piatinkpartyapp.networking.Responses.mixedCards)object);
-                    }else if(object instanceof IsCheater){
-                        handle_isCheater((IsCheater)object);
-                    } else if (object instanceof SendRoundWinnerPlayerToAllPlayers) {
-                        handle_SendRoundWinnerPlayerToAllPlayers((SendRoundWinnerPlayerToAllPlayers) object);
-                    } else if (object instanceof UpdateScoreboard) {
-                        handle_UpdateScoreboard((UpdateScoreboard) object);
-                    } else if(object instanceof CheatingPenalty){
-                        handle_CheatingPenalty((CheatingPenalty) object);
-                    }else if(object instanceof SendSchlagToAllPlayers){
-                        handle_SendSchlagToAllPlayers((SendSchlagToAllPlayers) object);
+                    } else if (object instanceof Response_SendPlayedCardToAllPlayers) {
+                        handle_SendPlayedCardToAllPlayers((Response_SendPlayedCardToAllPlayers) object);
+                    } else if (object instanceof Response_SendTrumpToAllPlayers) {
+                        handle_SendTrumpToAllPlayers((Response_SendTrumpToAllPlayers) object);
+                    } else if (object instanceof Response_NotifyPlayerToSetSchlag) {
+                        handle_NotifyPlayerToSetSchlag((Response_NotifyPlayerToSetSchlag) object);
+                    } else if (object instanceof Response_NotifyPlayerToSetTrump) {
+                        handle_NotifyPlayerToSetTrump((Response_NotifyPlayerToSetTrump) object);
+                    } else if(object instanceof Response_UpdatePointsWinnerPlayer){
+                        handle_UpdatePointsWinnerPlayer((Response_UpdatePointsWinnerPlayer) object);
+                    } else if (object instanceof Response_SchnopsnStartedClientMessage) {
+                        handle_SchnopsnStartedClientMessage((Response_SchnopsnStartedClientMessage) object);
+                    } else if (object instanceof Response_WattnStartedClientMessage){
+                        handle_WattnStartedClientMessage((Response_WattnStartedClientMessage) object);
+                    } else if (object instanceof Response_PensionistlnStartedClientMessage){
+                        handle_PensionistlnStartedClientMessage((Response_PensionistlnStartedClientMessage) object);
+                    } else if (object instanceof Response_HosnObeStartedClientMessage){
+                        handle_HosnObeStartedClientMessage((Response_HosnObeStartedClientMessage) object);
+                    }else if(object instanceof Response_playerDisconnected){
+                        handle_PlayerDisconnected((Response_playerDisconnected)object);
+                    }else if(object instanceof Response_mixedCards){
+                        handle_MixedCards((Response_mixedCards)object);
+                    }else if(object instanceof Response_IsCheater){
+                        handle_isCheater((Response_IsCheater)object);
+                    } else if (object instanceof Response_SendRoundWinnerPlayerToAllPlayers) {
+                        handle_SendRoundWinnerPlayerToAllPlayers((Response_SendRoundWinnerPlayerToAllPlayers) object);
+                    } else if (object instanceof Response_UpdateScoreboard) {
+                        handle_UpdateScoreboard((Response_UpdateScoreboard) object);
+                    } else if(object instanceof Response_CheatingPenalty){
+                        handle_CheatingPenalty((Response_CheatingPenalty) object);
+                    }else if(object instanceof Response_SendSchlagToAllPlayers){
+                        handle_SendSchlagToAllPlayers((Response_SendSchlagToAllPlayers) object);
                     }
                 } catch (Exception e) {
                     //e.printStackTrace();
@@ -182,7 +184,7 @@ public class GameClient {
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////
-    private void handle_isCheater(IsCheater object) {
+    private void handle_isCheater(Response_IsCheater object) {
         // todo: handle live data and update ui
         boolean isCheater = object.isCheater;
 
@@ -193,7 +195,7 @@ public class GameClient {
          */
     }
 
-    private void handle_CheatingPenalty(CheatingPenalty object) {
+    private void handle_CheatingPenalty(Response_CheatingPenalty object) {
         cheatingExposed.postValue(true);
     }
 
@@ -202,8 +204,8 @@ public class GameClient {
         LOG.info("VoteForNextGame received from the server");
     }
 
-    private void handle_EndOfRound(EndOfRound object) {
-        EndOfRound response =
+    private void handle_EndOfRound(Response_EndOfRound object) {
+        Response_EndOfRound response =
                 object;
 
         // notify UI: round of player is over
@@ -212,8 +214,8 @@ public class GameClient {
         LOG.info("End of round!");
     }
 
-    private void handle_PlayerGetHandoutCard(PlayerGetHandoutCard object) {
-        PlayerGetHandoutCard response =
+    private void handle_PlayerGetHandoutCard(Response_PlayerGetHandoutCard object) {
+        Response_PlayerGetHandoutCard response =
                 object;
 
         // notify UI: clients gets one card
@@ -222,8 +224,8 @@ public class GameClient {
         LOG.info("Handout card received for player: " + response.playerID);
     }
 
-    private void handle_NotifyPlayerYourTurn(NotifyPlayerYourTurn object) {
-        NotifyPlayerYourTurn response =
+    private void handle_NotifyPlayerYourTurn(Response_NotifyPlayerYourTurn object) {
+        Response_NotifyPlayerYourTurn response =
                 object;
 
         // notify UI: its the clients turn
@@ -232,8 +234,8 @@ public class GameClient {
         LOG.info("It's your turn! player: " + response.playerID);
     }
 
-    private void handle_SendHandCards(SendHandCards object) {
-        SendHandCards response =
+    private void handle_SendHandCards(Response_SendHandCards object) {
+        Response_SendHandCards response =
                 object;
 
         // notify UI: send handcards to SchnopsnFragment
@@ -242,8 +244,8 @@ public class GameClient {
         LOG.info("Handcards received for player: " + response.playerID);
     }
 
-    private void handle_GameStartedClientMessage(GameStartedClientMessage object) {
-        GameStartedClientMessage response =
+    private void handle_GameStartedClientMessage(Response_GameStartedClientMessage object) {
+        Response_GameStartedClientMessage response =
                 object;
 
         // notify UI: game has started
@@ -252,8 +254,8 @@ public class GameClient {
         LOG.info("Game started by server");
     }
 
-    private void handle_SchnopsnStartedClientMessage(SchnopsnStartedClientMessage object) {
-        SchnopsnStartedClientMessage response =
+    private void handle_SchnopsnStartedClientMessage(Response_SchnopsnStartedClientMessage object) {
+        Response_SchnopsnStartedClientMessage response =
                 object;
 
         // notify UI: game has started
@@ -265,8 +267,8 @@ public class GameClient {
         LOG.info("Schnopsn Game started by server after voting");
     }
 
-    private void handle_WattnStartedClientMessage(WattnStartedClientMessage object) {
-        WattnStartedClientMessage response =
+    private void handle_WattnStartedClientMessage(Response_WattnStartedClientMessage object) {
+        Response_WattnStartedClientMessage response =
                 object;
 
         // notify UI: game has started
@@ -278,8 +280,8 @@ public class GameClient {
         LOG.info("Wattn Game started by server after voting");
     }
 
-    private void handle_PensionistlnStartedClientMessage(PensionistlnStartedClientMessage object) {
-        PensionistlnStartedClientMessage response =
+    private void handle_PensionistlnStartedClientMessage(Response_PensionistlnStartedClientMessage object) {
+        Response_PensionistlnStartedClientMessage response =
                 object;
 
         // notify UI: game has started
@@ -291,8 +293,8 @@ public class GameClient {
         LOG.info("Pensionistln Game started by server after voting");
     }
 
-    private void handle_HosnObeStartedClientMessage(HosnObeStartedClientMessage object) {
-        HosnObeStartedClientMessage response =
+    private void handle_HosnObeStartedClientMessage(Response_HosnObeStartedClientMessage object) {
+        Response_HosnObeStartedClientMessage response =
                 object;
 
         // notify UI: game has started
@@ -304,8 +306,8 @@ public class GameClient {
         LOG.info("Hosn Obe Game started by server after voting");
     }
 
-    private void handle_ConnectedSuccessfully(ConnectedSuccessfully object) {
-        ConnectedSuccessfully response =
+    private void handle_ConnectedSuccessfully(Response_ConnectedSuccessfully object) {
+        Response_ConnectedSuccessfully response =
                 object;
 
         // notify UI: connection information
@@ -319,8 +321,8 @@ public class GameClient {
         }
     }
 
-    private void handle_SendPlayedCardToAllPlayers(SendPlayedCardToAllPlayers object) {
-        SendPlayedCardToAllPlayers response = object;
+    private void handle_SendPlayedCardToAllPlayers(Response_SendPlayedCardToAllPlayers object) {
+        Response_SendPlayedCardToAllPlayers response = object;
 
         Card cardPlayed = response.card;
 
@@ -330,8 +332,8 @@ public class GameClient {
         playedCard.postValue(object);
     }
 
-    private void handle_SendTrumpToAllPlayers(SendTrumpToAllPlayers object) {
-        SendTrumpToAllPlayers response = object;
+    private void handle_SendTrumpToAllPlayers(Response_SendTrumpToAllPlayers object) {
+        Response_SendTrumpToAllPlayers response = object;
 
         Symbol currentTrump = response.trump;
 
@@ -340,15 +342,15 @@ public class GameClient {
         //notify UI
         trump.postValue(currentTrump);
     }
-    private void handle_SendSchlagToAllPlayers(SendSchlagToAllPlayers object){
-        SendSchlagToAllPlayers response = object;
+    private void handle_SendSchlagToAllPlayers(Response_SendSchlagToAllPlayers object){
+        Response_SendSchlagToAllPlayers response = object;
         CardValue currentSchlag = response.schlag;
         LOG.info("Schlag: "+ schlag.toString() + "was sent to player!");
         schlag.postValue(currentSchlag);
     }
 
-    private void handle_NotifyPlayerToSetSchlag(NotifyPlayerToSetSchlag object) {
-        NotifyPlayerToSetSchlag response =
+    private void handle_NotifyPlayerToSetSchlag(Response_NotifyPlayerToSetSchlag object) {
+        Response_NotifyPlayerToSetSchlag response =
                 object;
 
         // notify UI: to set schlag
@@ -357,8 +359,8 @@ public class GameClient {
         LOG.info("Please set schlag!");
     }
 
-    private void handle_NotifyPlayerToSetTrump(NotifyPlayerToSetTrump object) {
-        NotifyPlayerToSetTrump response =
+    private void handle_NotifyPlayerToSetTrump(Response_NotifyPlayerToSetTrump object) {
+        Response_NotifyPlayerToSetTrump response =
                 object;
 
         // notify UI: to set trump
@@ -367,36 +369,36 @@ public class GameClient {
         LOG.info("Please set trump!");
     }
 
-    private void handle_UpdatePointsWinnerPlayer(UpdatePointsWinnerPlayer object){
-        UpdatePointsWinnerPlayer response = object;
+    private void handle_UpdatePointsWinnerPlayer(Response_UpdatePointsWinnerPlayer object){
+        Response_UpdatePointsWinnerPlayer response = object;
 
         points.postValue(response.totalPoints);
     }
 
-    private void handle_PlayerDisconnected(playerDisconnected object){
+    private void handle_PlayerDisconnected(Response_playerDisconnected object){
         LOG.info("PLayer has disconected ID:" + object.playerID);
         //TODO: notify the UI that a player disconected from the game
     }
 
     //mixed cards
-    private void handle_MixedCards(com.example.piatinkpartyapp.networking.Responses.mixedCards object){
-        com.example.piatinkpartyapp.networking.Responses.mixedCards response = object;
+    private void handle_MixedCards(Response_mixedCards object){
+        Response_mixedCards response = object;
         mixedCards.postValue(true);
     //
         //  mixCards();
         LOG.info("mixed cards");
     }
 
-    private void handle_SendRoundWinnerPlayerToAllPlayers(SendRoundWinnerPlayerToAllPlayers object) {
-        SendRoundWinnerPlayerToAllPlayers response = object;
+    private void handle_SendRoundWinnerPlayerToAllPlayers(Response_SendRoundWinnerPlayerToAllPlayers object) {
+        Response_SendRoundWinnerPlayerToAllPlayers response = object;
 
         winnerId.postValue(response.winnerPlayerID);
 
         LOG.info("Player: " + response.winnerPlayerID + " has won the round!");
     }
 
-    private void handle_UpdateScoreboard(UpdateScoreboard object) {
-        UpdateScoreboard response = object;
+    private void handle_UpdateScoreboard(Response_UpdateScoreboard object) {
+        Response_UpdateScoreboard response = object;
 
         players.postValue(response.players);
 
@@ -467,8 +469,8 @@ public class GameClient {
         return chatMessages;
     }
 
-    private void handle_ReceiveToAllChatMessage(ReceiveToAllChatMessage object) {
-        ReceiveToAllChatMessage receivedMessage =
+    private void handle_ReceiveToAllChatMessage(Response_ReceiveToAllChatMessage object) {
+        Response_ReceiveToAllChatMessage receivedMessage =
                 object;
         LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
         ChatMessage msg = new ChatMessage("Player " + String.valueOf(receivedMessage.from), receivedMessage.message, receivedMessage.date, ChatMessage.MessageType.OUT);
@@ -478,8 +480,8 @@ public class GameClient {
         chatMessages.postValue(value);
     }
 
-    private void handle_ReceiveEndToEndMessage(ReceiveEndToEndChatMessage object) {
-        ReceiveEndToEndChatMessage receivedMessage =
+    private void handle_ReceiveEndToEndMessage(Response_ReceiveEndToEndChatMessage object) {
+        Response_ReceiveEndToEndChatMessage receivedMessage =
                 object;
         LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
     }
@@ -535,7 +537,7 @@ public class GameClient {
     private MutableLiveData<Card> handoutCard;
     private MutableLiveData<Integer> endOfRound;
     private MutableLiveData<Boolean> voteForNextGame;
-    private MutableLiveData<SendPlayedCardToAllPlayers> playedCard;
+    private MutableLiveData<Response_SendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
     private MutableLiveData<CardValue> schlag;
     private MutableLiveData<Integer> points;
@@ -580,7 +582,7 @@ public class GameClient {
 
     public LiveData<Boolean> isVotingForNextGame() { return voteForNextGame; }
 
-    public LiveData<SendPlayedCardToAllPlayers> getPlayedCard(){
+    public LiveData<Response_SendPlayedCardToAllPlayers> getPlayedCard(){
         return playedCard;
     }
 

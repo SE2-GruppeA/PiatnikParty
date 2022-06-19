@@ -2,7 +2,7 @@ package com.example.piatinkpartyapp.networking.Responses;
 
 import com.example.piatinkpartyapp.networking.IPackets;
 
-public class PensionistlnStartedClientMessage implements IPackets {
-    public PensionistlnStartedClientMessage() {
+public class Response_WattnStartedClientMessage implements IPackets {
+    public Response_WattnStartedClientMessage() {
     }
 }

@@ -6,9 +6,9 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses.PlayerGetHandoutCard;
-import com.example.piatinkpartyapp.networking.Responses.SendHandCards;
-import com.example.piatinkpartyapp.networking.Responses.mixedCards;
+import com.example.piatinkpartyapp.networking.Responses.Response_PlayerGetHandoutCard;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendHandCards;
+import com.example.piatinkpartyapp.networking.Responses.Response_mixedCards;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -60,7 +60,7 @@ public class SchnopsnGame extends Game {
     }
 
     public void sendHandCardsToPlayer(ArrayList<Card> handCards, Player player){
-        SendHandCards request = new SendHandCards();
+        Response_SendHandCards request = new Response_SendHandCards();
         request.cards = handCards;
         request.playerID = player.getClientConnection().getID();
         player.getClientConnection().sendTCP(request);
@@ -199,7 +199,7 @@ public class SchnopsnGame extends Game {
                 player.addHandcard(newCard);
 
                 // send message with handout card to players
-                PlayerGetHandoutCard response = new PlayerGetHandoutCard();
+                Response_PlayerGetHandoutCard response = new Response_PlayerGetHandoutCard();
                 response.playerID = player.getClientConnection().getID();
                 response.card = newCard;
                 player.getClientConnection().sendTCP(response);
@@ -216,7 +216,7 @@ public class SchnopsnGame extends Game {
         LOG.info("after mixing");
         LOG.info(deck.getDeck().get(0).toString());
         LOG.info(deck.toString());
-        mixedCards response = new mixedCards();
+        Response_mixedCards response = new Response_mixedCards();
         lobby.getPlayerByID(1).getClientConnection().sendTCP(response);
     }
 }
