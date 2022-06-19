@@ -1,6 +1,9 @@
 
 package com.example.piatinkpartyapp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.esotericsoftware.kryonet.Client;
@@ -8,7 +11,9 @@ import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameClient;
+import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.Requests;
+import com.example.piatinkpartyapp.utils.Utils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,16 +22,42 @@ import org.mockito.Mockito;
 
 public class GameClientTest {
 
-    private GameClient gameClient;
 
-    @Mock
-    private Client client;
+    /*
+     Example tests for Nejc and Tine, they need to work on more tests
+     as they have been saying this for over 3 weeks !
+     */
 
-    @BeforeEach
-    public void setup(){
-        this.client = Mockito.mock(Client.class);
+    String ip = "127.0.0.1";
+    GameServer gameServer = new GameServer();
+    GameClient gameClient;
+    @Test
+    public void testIfClientCanConnect() {
+        try{
+            gameClient = new GameClient(ip);
 
-        this.gameClient = new GameClient(client);
+            Thread.sleep(2000);
+
+            LiveData<Boolean> connectionState = gameClient.getConnectionState();
+            assertEquals(true, connectionState.getValue());
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testIfGameStarted() {
+        try{
+            gameClient = new GameClient(ip);
+            gameServer.startNewGameServer();
+
+            Thread.sleep(2000);
+
+            LiveData<Boolean> isGameStartedState = gameClient.isGameStarted();
+            assertEquals(true, isGameStartedState.getValue());
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
     }
 /*
     @Test
