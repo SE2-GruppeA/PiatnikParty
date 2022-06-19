@@ -13,6 +13,42 @@ import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.gamelogic.SchnopsnGame;
 import com.example.piatinkpartyapp.gamelogic.WattnGame;
+import com.example.piatinkpartyapp.networking.Responses.CheatingPenalty;
+import com.example.piatinkpartyapp.networking.Responses.ConnectedSuccessfully;
+import com.example.piatinkpartyapp.networking.Responses.EndOfGame;
+import com.example.piatinkpartyapp.networking.Responses.EndOfRound;
+import com.example.piatinkpartyapp.networking.Responses.GameStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.HosnObeStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.IsCheater;
+import com.example.piatinkpartyapp.networking.Responses.NotifyPlayerToSetSchlag;
+import com.example.piatinkpartyapp.networking.Responses.NotifyPlayerToSetTrump;
+import com.example.piatinkpartyapp.networking.Responses.NotifyPlayerYourTurn;
+import com.example.piatinkpartyapp.networking.Responses.PensionistlnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.PlayerGetHandoutCard;
+import com.example.piatinkpartyapp.networking.Responses.ReceiveEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.ReceiveToAllChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.SchnopsnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.SendHandCards;
+import com.example.piatinkpartyapp.networking.Responses.SendPlayedCardToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.SendRoundWinnerPlayerToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.SendSchlagToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.SendTrumpToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.UpdatePointsWinnerPlayer;
+import com.example.piatinkpartyapp.networking.Responses.UpdateScoreboard;
+import com.example.piatinkpartyapp.networking.Responses.WattnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.mixedCards;
+import com.example.piatinkpartyapp.networking.Responses.playerDisconnected;
+import com.example.piatinkpartyapp.networking.Requests.ExposePossibleCheater;
+import com.example.piatinkpartyapp.networking.Requests.ForceVoting;
+import com.example.piatinkpartyapp.networking.Requests.MixCardsRequest;
+import com.example.piatinkpartyapp.networking.Requests.PlayerRequestsCheat;
+import com.example.piatinkpartyapp.networking.Requests.PlayerSetCard;
+import com.example.piatinkpartyapp.networking.Requests.PlayerSetSchlag;
+import com.example.piatinkpartyapp.networking.Requests.PlayerSetTrump;
+import com.example.piatinkpartyapp.networking.Requests.SendEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.Requests.SendToAllChatMessage;
+import com.example.piatinkpartyapp.networking.Requests.StartGameMessage;
+import com.example.piatinkpartyapp.networking.Requests.VoteForNextGame;
 
 import java.util.TreeMap;
 
@@ -27,48 +63,48 @@ public class NetworkHandler {
     public static void register(Kryo kryo) {
 
 
-        kryo.register(Requests.SendToAllChatMessage.class);
-        kryo.register(Responses.ReceiveToAllChatMessage.class);
+        kryo.register(SendToAllChatMessage.class);
+        kryo.register(ReceiveToAllChatMessage.class);
 
-        kryo.register(Requests.SendEndToEndChatMessage.class);
-        kryo.register(Responses.ReceiveEndToEndChatMessage.class);
+        kryo.register(SendEndToEndChatMessage.class);
+        kryo.register(ReceiveEndToEndChatMessage.class);
 
         //Requests
-        kryo.register(Requests.StartGameMessage.class);
-        kryo.register(Requests.PlayerSetCard.class);
-        kryo.register(Requests.PlayerSetSchlag.class);
-        kryo.register(Requests.PlayerSetTrump.class);
-        kryo.register(Requests.ForceVoting.class);
-        kryo.register(Requests.VoteForNextGame.class);
-        kryo.register(Requests.PlayerRequestsCheat.class);
-        kryo.register(Requests.ExposePossibleCheater.class);
-        kryo.register(Requests.MixCardsRequest.class);
+        kryo.register(StartGameMessage.class);
+        kryo.register(PlayerSetCard.class);
+        kryo.register(PlayerSetSchlag.class);
+        kryo.register(PlayerSetTrump.class);
+        kryo.register(ForceVoting.class);
+        kryo.register(VoteForNextGame.class);
+        kryo.register(PlayerRequestsCheat.class);
+        kryo.register(ExposePossibleCheater.class);
+        kryo.register(MixCardsRequest.class);
 
         //Responses
-        kryo.register(Responses.ConnectedSuccessfully.class);
-        kryo.register(Responses.SendHandCards.class);
-        kryo.register(Responses.NotifyPlayerYourTurn.class);
-        kryo.register(Responses.PlayerGetHandoutCard.class);
-        kryo.register(Responses.GameStartedClientMessage.class);
-        kryo.register(Responses.EndOfRound.class);
-        kryo.register(Responses.EndOfGame.class);
-        kryo.register(Responses.VoteForNextGame.class);
-        kryo.register(Responses.SendPlayedCardToAllPlayers.class);
-        kryo.register(Responses.SendTrumpToAllPlayers.class);
-        kryo.register(Responses.UpdatePointsWinnerPlayer.class);
-        kryo.register(Responses.NotifyPlayerToSetSchlag.class);
-        kryo.register(Responses.NotifyPlayerToSetTrump.class);
-        kryo.register(Responses.SchnopsnStartedClientMessage.class);
-        kryo.register(Responses.WattnStartedClientMessage.class);
-        kryo.register(Responses.PensionistlnStartedClientMessage.class);
-        kryo.register(Responses.HosnObeStartedClientMessage.class);
-        kryo.register(Responses.IsCheater.class);
-        kryo.register(Responses.SendRoundWinnerPlayerToAllPlayers.class);
-        kryo.register(Responses.UpdateScoreboard.class);
-        kryo.register(Responses.playerDisconnected.class);
-        kryo.register(Responses.mixedCards.class);
-        kryo.register(Responses.CheatingPenalty.class);
-        kryo.register(Responses.SendSchlagToAllPlayers.class);
+        kryo.register(ConnectedSuccessfully.class);
+        kryo.register(SendHandCards.class);
+        kryo.register(NotifyPlayerYourTurn.class);
+        kryo.register(PlayerGetHandoutCard.class);
+        kryo.register(GameStartedClientMessage.class);
+        kryo.register(EndOfRound.class);
+        kryo.register(EndOfGame.class);
+        kryo.register(com.example.piatinkpartyapp.networking.Responses.VoteForNextGame.class);
+        kryo.register(SendPlayedCardToAllPlayers.class);
+        kryo.register(SendTrumpToAllPlayers.class);
+        kryo.register(UpdatePointsWinnerPlayer.class);
+        kryo.register(NotifyPlayerToSetSchlag.class);
+        kryo.register(NotifyPlayerToSetTrump.class);
+        kryo.register(SchnopsnStartedClientMessage.class);
+        kryo.register(WattnStartedClientMessage.class);
+        kryo.register(PensionistlnStartedClientMessage.class);
+        kryo.register(HosnObeStartedClientMessage.class);
+        kryo.register(IsCheater.class);
+        kryo.register(SendRoundWinnerPlayerToAllPlayers.class);
+        kryo.register(UpdateScoreboard.class);
+        kryo.register(playerDisconnected.class);
+        kryo.register(mixedCards.class);
+        kryo.register(CheatingPenalty.class);
+        kryo.register(SendSchlagToAllPlayers.class);
 
         // Other classes
         kryo.register(Card.class);

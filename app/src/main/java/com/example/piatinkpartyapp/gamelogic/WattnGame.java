@@ -6,7 +6,10 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.cards.WattnDeck;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses;
+import com.example.piatinkpartyapp.networking.Responses.NotifyPlayerToSetSchlag;
+import com.example.piatinkpartyapp.networking.Responses.NotifyPlayerToSetTrump;
+import com.example.piatinkpartyapp.networking.Responses.SendHandCards;
+import com.example.piatinkpartyapp.networking.Responses.WattnStartedClientMessage;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -54,14 +57,14 @@ public class WattnGame extends Game {
             sendHandCardsToPlayer(handCards, player);
             //messages for player 1 to set schlag & player 2 to set trump
             if(player.getId() == 1){
-                player.getClientConnection().sendTCP(new Responses.NotifyPlayerToSetSchlag());
+                player.getClientConnection().sendTCP(new NotifyPlayerToSetSchlag());
             }else if(player.getId() == 2){
-                player.getClientConnection().sendTCP(new Responses.NotifyPlayerToSetTrump());
+                player.getClientConnection().sendTCP(new NotifyPlayerToSetTrump());
             }
         }
     }
     public void sendHandCardsToPlayer(ArrayList<Card> handCards, Player player){
-        Responses.SendHandCards request = new Responses.SendHandCards();
+        SendHandCards request = new SendHandCards();
         request.cards = handCards;
         request.playerID = player.getClientConnection().getID();
         player.getClientConnection().sendTCP(request);
@@ -272,7 +275,7 @@ public class WattnGame extends Game {
     public void sendGameStartedMessageToClients() {
         for (Player player : lobby.getPlayers()) {
             // send message to client that game has started
-            Responses.WattnStartedClientMessage request = new Responses.WattnStartedClientMessage();
+            WattnStartedClientMessage request = new WattnStartedClientMessage();
             player.getClientConnection().sendTCP(request);
         }
     }

@@ -3,11 +3,17 @@ package com.example.piatinkpartyapp.gamelogic;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.Symbol;
+import com.example.piatinkpartyapp.networking.Responses.CheatingPenalty;
+import com.example.piatinkpartyapp.networking.Responses.EndOfRound;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses;
-
-import java.util.HashMap;
-import java.util.SortedMap;
+import com.example.piatinkpartyapp.networking.Responses.NotifyPlayerYourTurn;
+import com.example.piatinkpartyapp.networking.Responses.SchnopsnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.SendPlayedCardToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.SendRoundWinnerPlayerToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.SendSchlagToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.SendTrumpToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.UpdatePointsWinnerPlayer;
+import com.example.piatinkpartyapp.networking.Responses.*;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
@@ -92,21 +98,21 @@ public class Game {
     public void sendGameStartedMessageToClients() {
         for (Player player : lobby.getPlayers()) {
             // send message to client that game has started
-            Responses.SchnopsnStartedClientMessage request = new Responses.SchnopsnStartedClientMessage();
+            SchnopsnStartedClientMessage request = new SchnopsnStartedClientMessage();
             player.getClientConnection().sendTCP(request);
         }
     }
 
     // notify player: "it's your turn"
     public void notifyPlayerYourTurn(Player player) {
-        Responses.NotifyPlayerYourTurn request = new Responses.NotifyPlayerYourTurn();
+        NotifyPlayerYourTurn request = new NotifyPlayerYourTurn();
         request.playerID = player.getClientConnection().getID();
         player.getClientConnection().sendTCP(request);
     }
 
     public void sendEndRoundMessageToPlayers(Player roundWinner) {
         for (Player player : lobby.getPlayers()) {
-            Responses.EndOfRound response = new Responses.EndOfRound();
+            EndOfRound response = new EndOfRound();
             response.playerID = roundWinner.getId();
             player.getClientConnection().sendTCP(response);
         }
@@ -114,7 +120,7 @@ public class Game {
 
     public void sendPlayedCardToAllPlayers(int playerId, Card card) {
         for (Player player : lobby.getPlayers()) {
-            Responses.SendPlayedCardToAllPlayers response = new Responses.SendPlayedCardToAllPlayers();
+            SendPlayedCardToAllPlayers response = new SendPlayedCardToAllPlayers();
             response.playerID = playerId;
             response.card = card;
             player.getClientConnection().sendTCP(response);
@@ -123,7 +129,7 @@ public class Game {
 
     public void sendTrumpToAllPlayers(Symbol symbol) {
         for (Player player : lobby.getPlayers()) {
-            Responses.SendTrumpToAllPlayers response = new Responses.SendTrumpToAllPlayers();
+            SendTrumpToAllPlayers response = new SendTrumpToAllPlayers();
             response.trump = symbol;
             player.getClientConnection().sendTCP(response);
         }
@@ -132,19 +138,19 @@ public class Game {
 
     public void sendSchlagToAllPlayers(CardValue cardValue){
         for(Player player: lobby.getPlayers()){
-            Responses.SendSchlagToAllPlayers response = new Responses.SendSchlagToAllPlayers(cardValue);
+            SendSchlagToAllPlayers response = new SendSchlagToAllPlayers(cardValue);
             //response.schlag = cardValue;
             player.getClientConnection().sendTCP(response);
         }
     }
     public void sendPointsToWinnerPlayer(Player winnerPlayer) {
-        Responses.UpdatePointsWinnerPlayer response = new Responses.UpdatePointsWinnerPlayer();
+        UpdatePointsWinnerPlayer response = new UpdatePointsWinnerPlayer();
         response.totalPoints = winnerPlayer.getPoints();
         winnerPlayer.getClientConnection().sendTCP(response);
     }
 
     public void sendRoundWinnerPlayerToAllPlayers(Player winnerPlayer) {
-        Responses.SendRoundWinnerPlayerToAllPlayers response = new Responses.SendRoundWinnerPlayerToAllPlayers();
+        SendRoundWinnerPlayerToAllPlayers response = new SendRoundWinnerPlayerToAllPlayers();
         response.winnerPlayerID = winnerPlayer.getId();
 
         for (Player player : lobby.getPlayers()) {
@@ -159,7 +165,7 @@ public class Game {
     }
 
     public void sendMessageUpdateScoreboard() {
-        Responses.UpdateScoreboard response = new Responses.UpdateScoreboard(getPlayerHashMap());
+        UpdateScoreboard response = new UpdateScoreboard(getPlayerHashMap());
 
         for (Player player : lobby.getPlayers()) {
             player.getClientConnection().sendTCP(response);
@@ -231,7 +237,7 @@ public class Game {
     }
 
     public void sendPenaltyMessageToPlayer(Player player) {
-        Responses.CheatingPenalty response = new Responses.CheatingPenalty();
+        CheatingPenalty response = new CheatingPenalty();
         player.getClientConnection().sendTCP(response);
         sendPointsToWinnerPlayer(player);
     }

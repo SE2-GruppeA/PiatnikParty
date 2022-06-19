@@ -11,13 +11,11 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
-import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.networking.GameClient;
-import com.example.piatinkpartyapp.networking.Responses;
+import com.example.piatinkpartyapp.networking.Responses.SendPlayedCardToAllPlayers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ClientViewModel extends ViewModel {
@@ -101,7 +99,7 @@ public class ClientViewModel extends ViewModel {
         return client.isEndOfRound();
     }
 
-    public LiveData<Responses.SendPlayedCardToAllPlayers> getPlayedCard() {
+    public LiveData<SendPlayedCardToAllPlayers> getPlayedCard() {
         return client.getPlayedCard();
     }
 
