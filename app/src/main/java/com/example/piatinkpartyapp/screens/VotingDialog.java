@@ -26,7 +26,7 @@ public class VotingDialog extends Fragment implements View.OnClickListener {
 
     Button schnopsnBtn;
     Button wattenBtn;
-    Button hosnobeBtn;
+    Button btnVoteEnd;
     Button pensionistlnBtn;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -79,13 +79,13 @@ public class VotingDialog extends Fragment implements View.OnClickListener {
         schnopsnBtn = root.findViewById(R.id.schnappsenBtn);
         wattenBtn = root.findViewById(R.id.wattenBtn);
         pensionistlnBtn = root.findViewById(R.id.pensionistelnBtn);
-        hosnobeBtn = root.findViewById(R.id.hosnobeBtn);
+        btnVoteEnd = root.findViewById(R.id.btnVoteEnd);
 
         closeVoteBtn.setOnClickListener(this);
         schnopsnBtn.setOnClickListener(this);
         wattenBtn.setOnClickListener(this);
         pensionistlnBtn.setOnClickListener(this);
-        hosnobeBtn.setOnClickListener(this);
+        btnVoteEnd.setOnClickListener(this);
 
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
@@ -103,10 +103,11 @@ public class VotingDialog extends Fragment implements View.OnClickListener {
             clientViewModel.voteForNextGame(GameName.Wattn);
             closeVotingDialog();
         }else if(view == pensionistlnBtn){
-            //clientViewModel.voteForNextGame(GameName.Pensionisteln);
-            //closeVotingDialog();
-        }else if(view == hosnobeBtn){
-            clientViewModel.voteForNextGame(GameName.HosnObe);
+            clientViewModel.voteForNextGame(GameName.Pensionisteln);
+            closeVotingDialog();
+        }else if(view == btnVoteEnd){
+            //vote for the end of the game
+            clientViewModel.sendVoteForGameEnd();
             closeVotingDialog();
         }
     }

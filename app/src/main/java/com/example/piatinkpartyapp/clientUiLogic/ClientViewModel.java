@@ -95,6 +95,10 @@ public class ClientViewModel extends ViewModel {
         client.sendVoteForNextGame(nextGame);
     }
 
+    public void sendVoteForGameEnd(){
+        client.sendVoteForGameEnd();
+    }
+
     public LiveData<Integer> isEndOfRound(){
         return client.isEndOfRound();
     }

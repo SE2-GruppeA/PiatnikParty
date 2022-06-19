@@ -219,4 +219,12 @@ public class SchnopsnGame extends Game {
         Response_mixedCards response = new Response_mixedCards();
         lobby.getPlayerByID(1).getClientConnection().sendTCP(response);
     }
+
+    public SchnopsnDeck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(SchnopsnDeck deck){
+        this.deck = deck;
+    }
 }

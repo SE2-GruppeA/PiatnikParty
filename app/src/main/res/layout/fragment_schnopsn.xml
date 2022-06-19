@@ -318,7 +318,7 @@
         app:layout_constraintHorizontal_bias="0.837"
         app:layout_constraintStart_toStartOf="@+id/trumpfImage"
         app:layout_constraintTop_toTopOf="@+id/trumpfImage"
-        app:layout_constraintVertical_bias="0.333" />
+        app:layout_constraintVertical_bias="0.258" />
 
     <ImageView
         android:id="@+id/imgSchlag"

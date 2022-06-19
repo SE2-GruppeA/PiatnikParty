@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.cards.PensionistlnRound;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.cards.WattnDeck;
@@ -123,5 +124,6 @@ public class NetworkHandler {
         kryo.register(WattnGame.class);
         kryo.register(WattnDeck.class);
         kryo.register(TreeMap.class);
+        kryo.register(PensionistlnRound.class);
     }
 }

@@ -702,5 +702,14 @@ public class GameClient {
     public LiveData<Boolean> isCheatingExposed() {
         return cheatingExposed;
     }
+
+    public void sendVoteForGameEnd() {
+        Request_VoteForNextGame request = new Request_VoteForNextGame();
+
+        //sends a Requests.VoteForNextGame packet without setting a nextGame
+        sendPacket(request);
+
+        LOG.info("Client voted for the game to end");
+    }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

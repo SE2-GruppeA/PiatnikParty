@@ -76,6 +76,8 @@ public class Lobby {
                     break;
                 case Pensionisteln:
                     // start pensionistln
+                    currentGame = new PensionistlnGame(this);
+                    currentGame.startGame();
                     break;
                 default:
                     break;

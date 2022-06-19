@@ -305,13 +305,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private void initializeHosnObe(Boolean started) {
         if (started) {
-
+            //game not implemented
         }
     }
 
     private void initializePensionistln(Boolean started) {
         if (started) {
-
+           resetGameTable(0, false, false);
         }
     }
 
