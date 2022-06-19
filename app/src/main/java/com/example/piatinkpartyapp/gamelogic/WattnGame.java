@@ -81,19 +81,16 @@ public class WattnGame extends Game {
     public void sendPlayerBestCard(int playerId, Card card){
         Player player = lobby.getPlayerByID(playerId);
 
-        if(!player.isCheaten()) {
-            ArrayList<Card> currentHandCards = player.getHandcards();
+        ArrayList<Card> currentHandCards = player.getHandcards();
 
-            //replaces first card with the best card
+        //replaces first card with the best card
 
-            currentHandCards.set(0, card);
-            player.setHandcards(currentHandCards);
+        currentHandCards.set(0, card);
+        player.setHandcards(currentHandCards);
 
-            //sends new handcards to the player
-            sendHandCardsToPlayer(currentHandCards, player);
+        //sends new handcards to the player
+        sendHandCardsToPlayer(currentHandCards, player);
 
-            player.setCheaten(true);
-        }
     }
 
     @Override

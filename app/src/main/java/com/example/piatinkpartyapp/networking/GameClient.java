@@ -1,5 +1,7 @@
 package com.example.piatinkpartyapp.networking;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -30,6 +32,7 @@ import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardT
 import com.example.piatinkpartyapp.networking.Responses.Response_SendRoundWinnerPlayerToAllPlayers;
 import com.example.piatinkpartyapp.networking.Responses.Response_SendSchlagToAllPlayers;
 import com.example.piatinkpartyapp.networking.Responses.Response_SendTrumpToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_ServerMessage;
 import com.example.piatinkpartyapp.networking.Responses.Response_UpdatePointsWinnerPlayer;
 import com.example.piatinkpartyapp.networking.Responses.Response_UpdateScoreboard;
 import com.example.piatinkpartyapp.networking.Responses.Response_VoteForNextGame;
@@ -108,6 +111,10 @@ public class GameClient {
         return "Player " + playerID;
     }
 
+    public int getID(){
+        return playerID;
+    }
+
     private void startListener() {
         client.addListener(new Listener() {
             @Override
@@ -177,8 +184,10 @@ public class GameClient {
                         handle_UpdateScoreboard((Response_UpdateScoreboard) object);
                     } else if(object instanceof Response_CheatingPenalty){
                         handle_CheatingPenalty((Response_CheatingPenalty) object);
-                    }else if(object instanceof Response_SendSchlagToAllPlayers){
+                    } else if(object instanceof Response_SendSchlagToAllPlayers){
                         handle_SendSchlagToAllPlayers((Response_SendSchlagToAllPlayers) object);
+                    } else if(object instanceof Response_ServerMessage){
+                        handle_ServerMessage((Response_ServerMessage) object);
                     }
                 } catch (Exception e) {
                     //e.printStackTrace();
@@ -324,6 +333,14 @@ public class GameClient {
         } else {
             LOG.info("Client cannot connect to server : " + NetworkHandler.GAMESERVER_IP);
         }
+    }
+
+    private void handle_ServerMessage(Response_ServerMessage object) {
+        Response_ServerMessage response = object;
+
+        serverMessage.postValue(response.message);
+
+        LOG.info("Message from server received: " + response.message);
     }
 
     private void handle_SendPlayedCardToAllPlayers(Response_SendPlayedCardToAllPlayers object) {
@@ -557,6 +574,7 @@ public class GameClient {
     private MutableLiveData<Boolean> cheaterExposed;
     private MutableLiveData<Boolean> cheatingExposed;
     private MutableLiveData<Map<String, Integer>> players;
+    private MutableLiveData<String> serverMessage;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -656,6 +674,7 @@ public class GameClient {
         cheaterExposed = new MutableLiveData<>();
         cheatingExposed = new MutableLiveData<>();
         players = new MutableLiveData<>();
+        serverMessage = new MutableLiveData<>();
     }
 
 
@@ -715,6 +734,10 @@ public class GameClient {
         sendPacket(request);
 
         LOG.info("Client voted for the game to end");
+    }
+
+    public LiveData<String> getServerMessage() {
+        return serverMessage;
     }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

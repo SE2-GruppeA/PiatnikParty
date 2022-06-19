@@ -181,5 +181,9 @@ public class ClientViewModel extends ViewModel {
         return client.getPlayers();
     }
 
+    public LiveData<String> getServerMessage() {
+        return client.getServerMessage();
+    }
+
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

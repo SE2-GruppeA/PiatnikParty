@@ -272,7 +272,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
 
-
+            //receiving messages from server
+            clientViewModel.getServerMessage().observe(getViewLifecycleOwner(), serverMessage -> showServerMessage(serverMessage));
 
             //shaking phone to mix cards
 
@@ -281,6 +282,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
         //initializeGame();
         return root;
+    }
+
+    private void showServerMessage(String serverMessage) {
+        Toast.makeText(requireActivity().getApplicationContext(), serverMessage, Toast.LENGTH_SHORT).show();
     }
 
     private void showCheatingExposed(Boolean isCheating) {

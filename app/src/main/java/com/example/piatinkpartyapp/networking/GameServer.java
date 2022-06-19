@@ -15,6 +15,7 @@ import com.example.piatinkpartyapp.networking.Responses.Response_GameStartedClie
 import com.example.piatinkpartyapp.networking.Responses.Response_IsCheater;
 import com.example.piatinkpartyapp.networking.Responses.Response_ReceiveEndToEndChatMessage;
 import com.example.piatinkpartyapp.networking.Responses.Response_ReceiveToAllChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_ServerMessage;
 import com.example.piatinkpartyapp.networking.Responses.Response_VoteForNextGame;
 import com.example.piatinkpartyapp.networking.Responses.Response_mixedCards;
 import com.example.piatinkpartyapp.networking.Responses.Response_playerDisconnected;
@@ -128,14 +129,26 @@ public class GameServer {
 
         Response_IsCheater response = new Response_IsCheater();
 
+        LOG.info("Client " + connection.getID() + " wants to expose client " + object.playerId);
+
         //player can only expose one time a round and cannot expose himself
-        if(playerId != connection.getID() && !lobby.getPlayerByID(connection.getID()).hasExposedPlayer()) {
-            if (isCheater(playerId, connection.getID())) {
-                response.isCheater = true;
-            } else {
-                response.isCheater = false;
+        if(playerId != connection.getID()) {
+            if(!lobby.getPlayerByID(connection.getID()).hasExposedPlayer()){
+                if (isCheater(playerId, connection.getID())) {
+                    response.isCheater = true;
+                } else {
+                    response.isCheater = false;
+                }
+
+                LOG.info("Client " + object.playerId + " cheating: " + response.isCheater);
+                connection.sendTCP(response);
+            }else{
+                LOG.info("Client " + connection.getID() + " already cheated");
+                sendPacket(connection, new Response_ServerMessage("Du kannst pro Runde nur einmal exposen!"));
             }
-            connection.sendTCP(response);
+        }else{
+            LOG.info("Client " + connection.getID() + " tried to expose himself");
+            sendPacket(connection, new Response_ServerMessage("Du kannst dich nicht selbst exposen!"));
         }
     }
 
@@ -258,10 +271,18 @@ public class GameServer {
 
     private void handle_PlayerRequestsCheat(Connection connection, Request_PlayerRequestsCheat object) {
         Request_PlayerRequestsCheat request = object;
-
         LOG.info("Client " + connection.getID() + " requested cheating");
 
-        lobby.currentGame.givePlayerBestCard(connection.getID());
+        Player player = lobby.getPlayerByID(connection.getID());
+
+        if(!player.isCheaten()){
+            lobby.currentGame.givePlayerBestCard(connection.getID());
+            LOG.info("Cheating successfull for client " + connection.getID());
+        }else{
+            sendPacket(connection, new Response_ServerMessage("Du kannst nur einmal pro Runde cheaten"));
+            LOG.info("Error: Client " + connection.getID() + " already cheated this round");
+        }
+
     }
     private void handle_MixCardsRequest(Connection connection, Request_MixCardsRequest object){
         Response_mixedCards response = new Response_mixedCards();

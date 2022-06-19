@@ -34,6 +34,7 @@ import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardT
 import com.example.piatinkpartyapp.networking.Responses.Response_SendRoundWinnerPlayerToAllPlayers;
 import com.example.piatinkpartyapp.networking.Responses.Response_SendSchlagToAllPlayers;
 import com.example.piatinkpartyapp.networking.Responses.Response_SendTrumpToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_ServerMessage;
 import com.example.piatinkpartyapp.networking.Responses.Response_UpdatePointsWinnerPlayer;
 import com.example.piatinkpartyapp.networking.Responses.Response_UpdateScoreboard;
 import com.example.piatinkpartyapp.networking.Responses.Response_VoteForNextGame;
@@ -107,6 +108,7 @@ public class NetworkHandler {
         kryo.register(Response_mixedCards.class);
         kryo.register(Response_CheatingPenalty.class);
         kryo.register(Response_SendSchlagToAllPlayers.class);
+        kryo.register(Response_ServerMessage.class);
 
         // Other classes
         kryo.register(Card.class);
