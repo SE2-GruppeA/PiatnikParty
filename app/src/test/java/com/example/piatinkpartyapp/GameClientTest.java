@@ -36,6 +36,7 @@ public class GameClientTest {
         try{
             gameClient = new GameClient(ip);
 
+            // simulate waiting bc else we would need to implement some kind of async waiting
             Thread.sleep(2000);
 
             LiveData<Boolean> connectionState = gameClient.getConnectionState();
