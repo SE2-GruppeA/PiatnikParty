@@ -21,16 +21,6 @@ public class TestChatAdapter {
     }
 
     @Test
-    public void testHandlePlayerColor() {
-
-    }
-
-    @Test
-    void testGetItemViewType() {
-        int position = 0;
-    }
-
-    @Test
     void testGetItemCount() {
         ArrayList<ChatMessage> messages = new ArrayList<>();
         ChatAdapter chatAdapter = new ChatAdapter(messages);
