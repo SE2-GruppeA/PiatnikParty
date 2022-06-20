@@ -77,15 +77,39 @@
 
     <ImageView
         android:id="@+id/scoreImage"
-        android:layout_width="153dp"
-        android:layout_height="181dp"
+        android:layout_width="110dp"
+        android:layout_height="122dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintHorizontal_bias="0.957"
+        app:layout_constraintHorizontal_bias="0.987"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06"
+        app:layout_constraintVertical_bias="0.062"
         app:srcCompat="@drawable/score" />
+
+    <ImageView
+        android:id="@+id/schlageImage"
+        android:layout_width="110dp"
+        android:layout_height="61dp"
+        android:src="@drawable/schlag"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.808"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trumpfImage"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/trumpfImage"
+        android:layout_width="110dp"
+        android:layout_height="61dp"
+        android:src="@drawable/trumpf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.809"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.051" />
 
     <ImageView
         android:id="@+id/arrowBtn"
@@ -175,11 +199,11 @@
         android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.147"
+        app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.402"
-        app:srcCompat="@drawable/placeholder" />
+        app:srcCompat="@drawable/backside" />
 
     <ImageView
         android:id="@+id/currentCard2"
@@ -187,11 +211,11 @@
         android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.342"
+        app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.402"
-        app:srcCompat="@drawable/placeholder" />
+        app:srcCompat="@drawable/backside" />
 
     <ImageView
         android:id="@+id/currentCard3"
@@ -199,37 +223,23 @@
         android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.399"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.204"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:layout_constraintVertical_bias="0.402"
+        app:srcCompat="@drawable/backside" />
+
     <ImageView
         android:id="@+id/currentCard4"
         android:layout_width="100dp"
         android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintHorizontal_bias="0.637"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.204"
-        app:srcCompat="@drawable/ic_launcher_background" />
-
-
-    <ImageView
-        android:id="@+id/swapCard"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:rotation="90"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.601"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.183"
-        tools:srcCompat="@tools:sample/avatars" />
-
+        app:layout_constraintVertical_bias="0.402"
+        app:srcCompat="@drawable/backside" />
 
     <TextView
         android:id="@+id/scoreTxt"
@@ -239,10 +249,23 @@
         android:textSize="58sp"
         app:layout_constraintBottom_toBottomOf="@+id/scoreImage"
         app:layout_constraintEnd_toEndOf="@+id/scoreImage"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintHorizontal_bias="0.525"
         app:layout_constraintStart_toStartOf="@+id/scoreImage"
         app:layout_constraintTop_toTopOf="@+id/scoreImage"
-        app:layout_constraintVertical_bias="0.375" />
+        app:layout_constraintVertical_bias="0.666" />
+
+    <ImageView
+        android:id="@+id/swapCard"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:rotation="90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.928"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/cardDeck"
@@ -251,38 +274,14 @@
         android:rotation="0"
         android:rotationX="0"
         android:rotationY="0"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.639"
+        app:layout_constraintHorizontal_bias="0.974"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.183"
-        app:srcCompat="@drawable/ic_launcher_background"
-        tools:srcCompat="@tools:sample/avatars[2]" />
-
-    <ImageView
-        android:id="@+id/imgTrump"
-        android:layout_width="36dp"
-        android:layout_height="35dp"
-        android:src="@drawable/placeholder"
-        app:layout_constraintBottom_toBottomOf="@+id/scoreImage"
-        app:layout_constraintEnd_toEndOf="@+id/scoreImage"
-        app:layout_constraintHorizontal_bias="0.76"
-        app:layout_constraintStart_toStartOf="@+id/scoreImage"
-        app:layout_constraintTop_toTopOf="@+id/scoreImage"
-        app:layout_constraintVertical_bias="0.794" />
-
-    <ImageView
-        android:id="@+id/imgSchlag"
-        android:layout_width="36dp"
-        android:layout_height="35dp"
-        android:src="@drawable/placeholder"
-        app:layout_constraintBottom_toBottomOf="@+id/scoreImage"
-        app:layout_constraintEnd_toEndOf="@+id/scoreImage"
-        app:layout_constraintHorizontal_bias="0.76"
-        app:layout_constraintStart_toStartOf="@+id/scoreImage"
-        app:layout_constraintTop_toTopOf="@+id/scoreImage"
-        app:layout_constraintVertical_bias="0.994" />
+        app:layout_constraintVertical_bias="0.498"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/btnCheat"
@@ -304,9 +303,33 @@
         android:text="Expose Cheater"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
+        app:layout_constraintHorizontal_bias="0.376"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.964" />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imgTrump"
+        android:layout_width="36dp"
+        android:layout_height="30dp"
+        android:src="@drawable/placeholder"
+        app:layout_constraintBottom_toBottomOf="@+id/trumpfImage"
+        app:layout_constraintEnd_toEndOf="@+id/trumpfImage"
+        app:layout_constraintHorizontal_bias="0.837"
+        app:layout_constraintStart_toStartOf="@+id/trumpfImage"
+        app:layout_constraintTop_toTopOf="@+id/trumpfImage"
+        app:layout_constraintVertical_bias="0.258" />
+
+    <ImageView
+        android:id="@+id/imgSchlag"
+        android:layout_width="36dp"
+        android:layout_height="30dp"
+        android:src="@drawable/placeholder"
+        app:layout_constraintBottom_toBottomOf="@+id/schlageImage"
+        app:layout_constraintEnd_toEndOf="@+id/schlageImage"
+        app:layout_constraintHorizontal_bias="0.837"
+        app:layout_constraintStart_toStartOf="@+id/schlageImage"
+        app:layout_constraintTop_toTopOf="@+id/schlageImage"
+        app:layout_constraintVertical_bias="0.32" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

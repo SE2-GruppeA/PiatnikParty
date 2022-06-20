@@ -11,13 +11,11 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
-import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.networking.GameClient;
-import com.example.piatinkpartyapp.networking.Responses;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardToAllPlayers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ClientViewModel extends ViewModel {
@@ -25,6 +23,10 @@ public class ClientViewModel extends ViewModel {
 
 
     private GameClient client = GameClient.getInstance();
+
+    public void newGameClientInstance() throws IOException {
+        client = GameClient.getNewInstance();
+    }
 
     /*
     // Don't know why this methode is empty
@@ -97,11 +99,15 @@ public class ClientViewModel extends ViewModel {
         client.sendVoteForNextGame(nextGame);
     }
 
+    public void sendVoteForGameEnd(){
+        client.sendVoteForGameEnd();
+    }
+
     public LiveData<Integer> isEndOfRound(){
         return client.isEndOfRound();
     }
 
-    public LiveData<Responses.SendPlayedCardToAllPlayers> getPlayedCard() {
+    public LiveData<Response_SendPlayedCardToAllPlayers> getPlayedCard() {
         return client.getPlayedCard();
     }
 
@@ -173,6 +179,10 @@ public class ClientViewModel extends ViewModel {
 
     public LiveData<Map<String, Integer>> getPlayers() {
         return client.getPlayers();
+    }
+
+    public LiveData<String> getServerMessage() {
+        return client.getServerMessage();
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

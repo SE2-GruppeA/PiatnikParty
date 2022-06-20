@@ -10,6 +10,26 @@ import com.example.piatinkpartyapp.gamelogic.Game;
 import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.gamelogic.WattnGame;
+import com.example.piatinkpartyapp.networking.Responses.Response_ConnectedSuccessfully;
+import com.example.piatinkpartyapp.networking.Responses.Response_GameStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_IsCheater;
+import com.example.piatinkpartyapp.networking.Responses.Response_ReceiveEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_ReceiveToAllChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_ServerMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_VoteForNextGame;
+import com.example.piatinkpartyapp.networking.Responses.Response_mixedCards;
+import com.example.piatinkpartyapp.networking.Responses.Response_playerDisconnected;
+import com.example.piatinkpartyapp.networking.Requests.Request_ExposePossibleCheater;
+import com.example.piatinkpartyapp.networking.Requests.Request_ForceVoting;
+import com.example.piatinkpartyapp.networking.Requests.Request_MixCardsRequest;
+import com.example.piatinkpartyapp.networking.Requests.Request_PlayerRequestsCheat;
+import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetCard;
+import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetSchlag;
+import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetTrump;
+import com.example.piatinkpartyapp.networking.Requests.Request_SendEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.Requests.Request_SendToAllChatMessage;
+import com.example.piatinkpartyapp.networking.Requests.Request_StartGameMessage;
+import com.example.piatinkpartyapp.networking.Requests.Request_VoteForNextGame;
 import com.example.piatinkpartyapp.utils.Utils;
 
 import java.io.IOException;
@@ -73,28 +93,28 @@ public class GameServer {
             @Override
             public void received(Connection connection, Object object) {
                 try {
-                    if (object instanceof Requests.SendEndToEndChatMessage) {
-                        handleEndToEndMessage((Requests.SendEndToEndChatMessage) object);
-                    } else if (object instanceof Requests.SendToAllChatMessage) {
-                        handleSendToAllChatMessage((Requests.SendToAllChatMessage) object);
-                    } else if (object instanceof Requests.StartGameMessage) {
+                    if (object instanceof Request_SendEndToEndChatMessage) {
+                        handleEndToEndMessage((Request_SendEndToEndChatMessage) object);
+                    } else if (object instanceof Request_SendToAllChatMessage) {
+                        handleSendToAllChatMessage((Request_SendToAllChatMessage) object);
+                    } else if (object instanceof Request_StartGameMessage) {
                         handle_StartGameMessage(connection);
-                    } else if (object instanceof Requests.PlayerSetCard) {
-                        handle_PlayerSetCard(connection, (Requests.PlayerSetCard) object);
-                    } else if (object instanceof Requests.ForceVoting){
+                    } else if (object instanceof Request_PlayerSetCard) {
+                        handle_PlayerSetCard(connection, (Request_PlayerSetCard) object);
+                    } else if (object instanceof Request_ForceVoting){
                         handle_ForceVoting(connection);
-                    } else if(object instanceof  Requests.VoteForNextGame){
-                        handle_VoteForNextGame(connection, (Requests.VoteForNextGame) object);
-                    } else if (object instanceof Requests.PlayerSetSchlag) {
-                        handle_PlayerSetSchlag(connection, (Requests.PlayerSetSchlag) object);
-                    } else if (object instanceof Requests.PlayerSetTrump) {
-                        handle_PlayerSetTrump(connection, (Requests.PlayerSetTrump) object);
-                    } else if(object instanceof Requests.PlayerRequestsCheat){
-                        handle_PlayerRequestsCheat(connection, (Requests.PlayerRequestsCheat) object);
-                    }else if(object instanceof  Requests.MixCardsRequest){
-                        handle_MixCardsRequest(connection,(Requests.MixCardsRequest) object);
-                    }else if(object instanceof  Requests.ExposePossibleCheater){
-                        handle_exposePossibleCheater(connection,(Requests.ExposePossibleCheater) object);
+                    } else if(object instanceof Request_VoteForNextGame){
+                        handle_VoteForNextGame(connection, (Request_VoteForNextGame) object);
+                    } else if (object instanceof Request_PlayerSetSchlag) {
+                        handle_PlayerSetSchlag(connection, (Request_PlayerSetSchlag) object);
+                    } else if (object instanceof Request_PlayerSetTrump) {
+                        handle_PlayerSetTrump(connection, (Request_PlayerSetTrump) object);
+                    } else if(object instanceof Request_PlayerRequestsCheat){
+                        handle_PlayerRequestsCheat(connection, (Request_PlayerRequestsCheat) object);
+                    }else if(object instanceof Request_MixCardsRequest){
+                        handle_MixCardsRequest(connection,(Request_MixCardsRequest) object);
+                    }else if(object instanceof Request_ExposePossibleCheater){
+                        handle_exposePossibleCheater(connection,(Request_ExposePossibleCheater) object);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -104,16 +124,32 @@ public class GameServer {
         });
     }
 
-    private void handle_exposePossibleCheater(Connection connection, Requests.ExposePossibleCheater object) {
+    private void handle_exposePossibleCheater(Connection connection, Request_ExposePossibleCheater object) {
         Integer playerId = object.playerId;
 
-        Responses.IsCheater response = new Responses.IsCheater();
-        if(isCheater(playerId, connection.getID())){
-            response.isCheater = true;
+        Response_IsCheater response = new Response_IsCheater();
+
+        LOG.info("Client " + connection.getID() + " wants to expose client " + object.playerId);
+
+        //player can only expose one time a round and cannot expose himself
+        if(playerId != connection.getID()) {
+            if(!lobby.getPlayerByID(connection.getID()).hasExposedPlayer()){
+                if (isCheater(playerId, connection.getID())) {
+                    response.isCheater = true;
+                } else {
+                    response.isCheater = false;
+                }
+
+                LOG.info("Client " + object.playerId + " cheating: " + response.isCheater);
+                connection.sendTCP(response);
+            }else{
+                LOG.info("Client " + connection.getID() + " already cheated");
+                sendPacket(connection, new Response_ServerMessage("Du kannst pro Runde nur einmal exposen!"));
+            }
         }else{
-            response.isCheater = false;
+            LOG.info("Client " + connection.getID() + " tried to expose himself");
+            sendPacket(connection, new Response_ServerMessage("Du kannst dich nicht selbst exposen!"));
         }
-        connection.sendTCP(response);
     }
 
     //todo: Add this function to gamelogic itself, it's just here so i can build the handler above !
@@ -121,7 +157,7 @@ public class GameServer {
         // todo: Implement gamelogic: how explained down below (Maybe Anton or Bene)!
         // todo: Also add live data !
 
-        Boolean isCheater = lobby.currentGame.isPlayerCheater(playerId);
+        Boolean isCheater = lobby.currentGame.isPlayerCheater(playerId, exposerId);
 
         /**
          * gameLogic.exposePossibleCheater(playerId)
@@ -145,7 +181,7 @@ public class GameServer {
     private void handle_connected(Connection connection) {
         LOG.info("Client with ID : " + connection.getID() + " just connected");
 
-        Responses.ConnectedSuccessfully response = new Responses.ConnectedSuccessfully();
+        Response_ConnectedSuccessfully response = new Response_ConnectedSuccessfully();
         response.isConnected = clients.contains(connection) ? false : clients.add(connection);
         response.playerID = connection.getID();
 
@@ -163,14 +199,14 @@ public class GameServer {
         players.postValue(lobby.getPlayers());
 
         //When the Player disconnects the message is send to all other players.
-        Responses.playerDisconnected response = new Responses.playerDisconnected();
+        Response_playerDisconnected response = new Response_playerDisconnected();
         response.playerID = connection.getID();
         sendPacketToAll(response);
 
         //players.postValue(wattnGame.getPlayers());
     }
 
-    private void handle_VoteForNextGame(Connection connection, Requests.VoteForNextGame object) {
+    private void handle_VoteForNextGame(Connection connection, Request_VoteForNextGame object) {
         LOG.info("Client " + connection.getID() + " voted for" +
                 object.gameName.toString());
 
@@ -181,16 +217,16 @@ public class GameServer {
     private void handle_ForceVoting(Connection connection) {
         LOG.info("Voting has been initiated by client " + connection.getID());
 
-        Responses.VoteForNextGame response =
-                new Responses.VoteForNextGame();
+        Response_VoteForNextGame response =
+                new Response_VoteForNextGame();
 
         sendPacketToAll(response);
 
         LOG.info("VoteForNextGame sent to all Clients");
     }
 
-    private void handle_PlayerSetCard(Connection connection, Requests.PlayerSetCard object) {
-        Requests.PlayerSetCard request =
+    private void handle_PlayerSetCard(Connection connection, Request_PlayerSetCard object) {
+        Request_PlayerSetCard request =
                 object;
 
         LOG.info("Card: " + request.card.getSymbol().toString() + request.card.getCardValue().toString() + " was set from Client ID: " + connection.getID());
@@ -209,23 +245,23 @@ public class GameServer {
                 ", Client ID started the game: " + connection.getID());
 
         // Message to all Players that game has started to open the gamefragment in order to open voting
-        Responses.GameStartedClientMessage response = new Responses.GameStartedClientMessage();
+        Response_GameStartedClientMessage response = new Response_GameStartedClientMessage();
         sendPacketToAll(response);
 
         // Message to all Players to open the voting
         handle_ForceVoting(connection);
     }
 
-    private void handle_PlayerSetSchlag(Connection connection, Requests.PlayerSetSchlag object) {
-        Requests.PlayerSetSchlag request =
+    private void handle_PlayerSetSchlag(Connection connection, Request_PlayerSetSchlag object) {
+        Request_PlayerSetSchlag request =
                 object;
         lobby.currentGame.setSchlag(request.schlag);
 
         LOG.info("Schlag: " + lobby.currentGame.getSchlag() + " was set from Client ID: " + connection.getID());
     }
 
-    private void handle_PlayerSetTrump(Connection connection, Requests.PlayerSetTrump object) {
-        Requests.PlayerSetTrump request =
+    private void handle_PlayerSetTrump(Connection connection, Request_PlayerSetTrump object) {
+        Request_PlayerSetTrump request =
                 object;
         lobby.currentGame.setTrump(request.trump);
 
@@ -233,15 +269,23 @@ public class GameServer {
         LOG.info("Trump: " + lobby.currentGame.getTrump() + " was set from Client ID: " + connection.getID());
     }
 
-    private void handle_PlayerRequestsCheat(Connection connection, Requests.PlayerRequestsCheat object) {
-        Requests.PlayerRequestsCheat request = object;
-
+    private void handle_PlayerRequestsCheat(Connection connection, Request_PlayerRequestsCheat object) {
+        Request_PlayerRequestsCheat request = object;
         LOG.info("Client " + connection.getID() + " requested cheating");
 
-        lobby.currentGame.givePlayerBestCard(connection.getID());
+        Player player = lobby.getPlayerByID(connection.getID());
+
+        if(!player.isCheaten()){
+            lobby.currentGame.givePlayerBestCard(connection.getID());
+            LOG.info("Cheating successfull for client " + connection.getID());
+        }else{
+            sendPacket(connection, new Response_ServerMessage("Du kannst nur einmal pro Runde cheaten"));
+            LOG.info("Error: Client " + connection.getID() + " already cheated this round");
+        }
+
     }
-    private void handle_MixCardsRequest(Connection connection,Requests.MixCardsRequest object){
-        Responses.mixedCards response = new Responses.mixedCards();
+    private void handle_MixCardsRequest(Connection connection, Request_MixCardsRequest object){
+        Response_mixedCards response = new Response_mixedCards();
         lobby.currentGame.mixCards();
         LOG.info("here");
         sendPacketToAll(response);
@@ -250,20 +294,20 @@ public class GameServer {
 
 
     /////////////////// Chat - Handler Methods !!! ///////////////////
-    private void handleEndToEndMessage(Requests.SendEndToEndChatMessage request) throws Exception {
+    private void handleEndToEndMessage(Request_SendEndToEndChatMessage request) throws Exception {
         final Connection messageReceiverClientConnection = Arrays
                 .stream(server.getConnections())
                 .filter(connection -> connection.getID() == request.to)
                 .findFirst()
                 .orElseThrow(() -> new Exception("Client with ID : " + request.to + " not found, so we cannot send the message!"));
-        Responses.ReceiveEndToEndChatMessage response
-                = new Responses.ReceiveEndToEndChatMessage(request.message, request.from, request.to);
+        Response_ReceiveEndToEndChatMessage response
+                = new Response_ReceiveEndToEndChatMessage(request.message, request.from, request.to);
         messageReceiverClientConnection.sendTCP(response);
     }
 
-    private void handleSendToAllChatMessage(Requests.SendToAllChatMessage request) {
+    private void handleSendToAllChatMessage(Request_SendToAllChatMessage request) {
         IPackets response =
-                new Responses.ReceiveToAllChatMessage(request.message, request.from, Utils.getDateAsString());
+                new Response_ReceiveToAllChatMessage(request.message, request.from, Utils.getDateAsString());
 
         // this should be called but for testing purposes, I send to myself again, so I can see that it really worked!
         //sendPacketToAllExcept(request.from, response);

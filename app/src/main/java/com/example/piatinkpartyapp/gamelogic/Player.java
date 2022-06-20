@@ -23,6 +23,7 @@ public class Player {
     private Connection clientConnection;
     private boolean votingFinished;
     private GameName votingGame;
+    private Boolean exposedPlayer;
 
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
@@ -148,6 +149,14 @@ public class Player {
 
     public boolean isCheaten() {
         return cheaten;
+    }
+
+    public boolean hasExposedPlayer(){
+        return exposedPlayer;
+    }
+
+    public void setHasExposed(Boolean hasExposed){
+        exposedPlayer = hasExposed;
     }
 
     public void setCheaten(Boolean cheat) {this.cheaten = cheat; }

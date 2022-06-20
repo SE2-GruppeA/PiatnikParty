@@ -35,7 +35,7 @@ import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.chat.fragments.ExposeCheaterFragment;
 import com.example.piatinkpartyapp.chat.fragments.ExposeDialogFragment;
 import com.example.piatinkpartyapp.chat.fragments.IsCheaterDialogFragment;
-import com.example.piatinkpartyapp.networking.Responses;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardToAllPlayers;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -60,6 +60,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     ImageView swapCardView;
     ImageView imgTrump;
     ImageView imgSchlag;
+    ImageView imgScore;
+    ImageView schlagImage;
+    ImageView trumpfImage;
 
     ImageButton exitBtn;
     TextView scoreTxt;
@@ -89,7 +92,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     private float mAccelLast;
     Boolean mixedCards;
     Boolean cardsToMix;
-    Boolean isWattn;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -204,7 +207,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         handCardImageViews.add(handCardView4);
         handCardImageViews.add(handCardView5);
         isMyTurn = false;
-        isWattn = true;
+
 
     }
 
@@ -212,23 +215,17 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         this.handCards = handCards;
 
         int j = 0;
-        //set onclickListeners to handcards
-        //hot fix for wattn
+
         for (ImageView imageView : handCardImageViews) {
             if(j<5) {
-          //      if (isWattn) {
+
                     if (!imageView.getContentDescription().equals("backside")) {
                         setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
                         j++;
                         handCardViewListener(imageView);
                     }
 
-             /*   } else {
-                    setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
-                    j++;
-                    handCardViewListener(imageView);
-                }*/
-            }
+              }
             }
 
 
@@ -275,7 +272,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
 
-
+            //receiving messages from server
+            clientViewModel.getServerMessage().observe(getViewLifecycleOwner(), serverMessage -> showServerMessage(serverMessage));
 
             //shaking phone to mix cards
 
@@ -286,10 +284,14 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         return root;
     }
 
+    private void showServerMessage(String serverMessage) {
+        Toast.makeText(requireActivity().getApplicationContext(), serverMessage, Toast.LENGTH_SHORT).show();
+    }
+
     private void showCheatingExposed(Boolean isCheating) {
         if(isCheating){
             Toast.makeText(requireActivity().getApplicationContext(),
-                    "Du wurdest beim cheaten erwischt! -20 Punkte",
+                    "Du wurdest beim cheaten erwischt! Das kostet Punkte",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -301,41 +303,66 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
                     Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(requireActivity().getApplicationContext(),
-                    "Das war kein Cheater! -10 Punkte",
+                    "Das war kein Cheater! Das kostet Punkte",
                     Toast.LENGTH_SHORT).show();
         }
     }
 
     private void initializeHosnObe(Boolean started) {
         if (started) {
-
+            //game not implemented
         }
     }
 
     private void initializePensionistln(Boolean started) {
         if (started) {
-
+           resetGameTable(0, false, false);
         }
     }
 
     private void initializeWattn(Boolean started) {
         if (started) {
-            resetImageView(currentCard1);
-            resetImageView(currentCard2);
-            resetImageView(currentCard3);
-            resetImageView(currentCard4);
-            isWattn = true;
-            scoreTxt.setText("0");
+            resetGameTable(0, true, true);
         }
     }
 
     private void initializeSchnopsn(Boolean started) {
         if (started) {
-            resetImageView(currentCard1);
-            resetImageView(currentCard2);
+            resetGameTable(0, true, false);
+        }
+    }
 
-            scoreTxt.setText("0");
-            isWattn = false;
+    private void resetGameTable(Integer initScore, Boolean showTrump, Boolean showSchlag){
+        resetAllCardsOnTable();
+        scoreTxt.setText(initScore.toString());
+        showTrump(showTrump);
+        showSchlag(showSchlag);
+    }
+
+    private void resetAllCardsOnTable(){
+        resetImageView(currentCard1);
+        resetImageView(currentCard2);
+        resetImageView(currentCard3);
+        resetImageView(currentCard4);
+    }
+
+    public void showTrump(Boolean show){
+        if(show){
+            trumpfImage.setVisibility(View.VISIBLE);
+            imgTrump.setVisibility(View.VISIBLE);
+        }else{
+            trumpfImage.setVisibility(View.INVISIBLE);
+            imgTrump.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void showSchlag(Boolean show){
+        if(show){
+            schlagImage.setVisibility(View.VISIBLE);
+            imgSchlag.setVisibility(View.VISIBLE);
+        }else{
+            schlagImage.setVisibility(View.INVISIBLE);
+            imgSchlag.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -383,7 +410,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     }
 
-    private void setPlayedCard(Responses.SendPlayedCardToAllPlayers playedCard) {
+    private void setPlayedCard(Response_SendPlayedCardToAllPlayers playedCard) {
         play(playedCard.card, playedCard.playerID);
     }
 
@@ -444,8 +471,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         imgSchlag = view.findViewById(R.id.imgSchlag);
         btnCheat = view.findViewById(R.id.btnCheat);
         btnExpose = view.findViewById(R.id.btnExpose);
-
-
+        imgScore = view.findViewById(R.id.scoreImage);
+        schlagImage = view.findViewById(R.id.schlageImage);
+        trumpfImage = view.findViewById(R.id.trumpfImage);
     }
 
     @Override
