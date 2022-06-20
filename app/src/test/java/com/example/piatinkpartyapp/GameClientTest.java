@@ -4,28 +4,13 @@ package com.example.piatinkpartyapp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.esotericsoftware.kryonet.Client;
-import com.example.piatinkpartyapp.cards.Card;
-import com.example.piatinkpartyapp.cards.CardValue;
-import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameClient;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.utils.Utils;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 public class GameClientTest {
-
-
-    /*
-     Example tests for Nejc and Tine, they need to work on more tests
-     as they have been saying this for over 3 weeks !
-     */
 
     String ip = "127.0.0.1";
     GameServer gameServer = new GameServer();
@@ -35,7 +20,6 @@ public class GameClientTest {
         try{
             gameClient = new GameClient(ip);
 
-            // simulate waiting bc else we would need to implement some kind of async waiting
             Thread.sleep(2000);
 
             LiveData<Boolean> connectionState = gameClient.getConnectionState();
@@ -51,7 +35,6 @@ public class GameClientTest {
             gameClient = new GameClient(ip);
             gameServer.startNewGameServer();
 
-            // simulate waiting bc else we would need to implement some kind of async waiting
             Thread.sleep(2000);
 
             LiveData<Boolean> isGameStartedState = gameClient.isGameStarted();
