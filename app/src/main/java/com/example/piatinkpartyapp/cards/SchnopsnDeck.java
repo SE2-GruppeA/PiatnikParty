@@ -112,8 +112,8 @@ public class SchnopsnDeck extends Deck {
     }
 
 
-    public void setPointMap(HashMap<CardValue, Integer> point_map) {
-        this.pointMap = point_map;
+    public void setPointMap(HashMap<CardValue, Integer> pointMap) {
+        this.pointMap = pointMap;
     }
 
     public void setSchnopsnCardValues(ArrayList<CardValue> schnopsnCardValues) {

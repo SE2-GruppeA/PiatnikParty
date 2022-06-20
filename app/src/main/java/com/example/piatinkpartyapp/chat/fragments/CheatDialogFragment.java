@@ -37,11 +37,9 @@ public class CheatDialogFragment extends DialogFragment {
                 .setTitle("Achtung ! - Cheat Window")
                 .setMessage("Du hast das Cheat Window akktiviert!\nWillst du wirklich cheaten ?\nEinmal ein Cheater immer ein Cheater ! \uD83D\uDE08\uD83D\uDE08 ")
                 .setPositiveButton("Ja, ich will cheaten !", (dialog, which) -> {
-                    System.out.println("cheating");
                     cheatDialogOutputHandler.handleCheatingChoice(true);
                 })
                 .setNegativeButton("Nein, nie im Leben", (dialog, which) -> {
-                    System.out.println("not cheating");
                     cheatDialogOutputHandler.handleCheatingChoice(false);
                 })
                 .create();

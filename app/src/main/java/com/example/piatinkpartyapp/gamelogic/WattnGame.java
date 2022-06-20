@@ -175,9 +175,7 @@ public class WattnGame extends Game {
             }else if(currentPlayer.getCardPlayed().getSymbol() == this.deck.getTrump() || (winningPlayer.getCardPlayed().getSymbol() == currentPlayer.getCardPlayed().getSymbol() && this.deck.cardPoints(currentPlayer.getCardPlayed().cardValue) > this.deck.cardPoints(winningPlayer.getCardPlayed().cardValue))){
                 winningPlayer = currentPlayer;
             }
-            /*Integer p = playerPoints.get(winningPlayer.getId()-1);
-            p++;
-            playerPoints.set(winningPlayer.getId()-1,p);*/
+
             if(winningPlayer.getPoints() == 3){
                 LOG.info(winningPlayer + " won this game!");
 
