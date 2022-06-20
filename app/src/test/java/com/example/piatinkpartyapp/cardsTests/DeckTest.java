@@ -1,7 +1,7 @@
 package com.example.piatinkpartyapp.cardsTests;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.example.piatinkpartyapp.cards.Deck;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -43,7 +43,7 @@ public class DeckTest {
     @Test
     public void testTakeCard() {
         // Testing if a card is taken from the deck
-        assertNotEquals(deck,deck.takeCard());
+        assertNotEquals(deck.takeCard(),deck.takeCard());
 
     }
 }

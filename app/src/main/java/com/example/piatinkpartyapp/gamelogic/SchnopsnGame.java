@@ -6,7 +6,9 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses;
+import com.example.piatinkpartyapp.networking.Responses.Response_PlayerGetHandoutCard;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendHandCards;
+import com.example.piatinkpartyapp.networking.Responses.Response_mixedCards;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -26,15 +28,17 @@ public class SchnopsnGame extends Game {
         deck = new SchnopsnDeck(GameName.Schnopsn, 2);
     }
 
-    // start the game
     @Override
-    public void startGameSchnopsn() {
+    // start the game
+    public void startGame() {
         new Thread(() -> {
             AusgabeTest();
             resetSchnopsnDeck();
+            sendMessageUpdateScoreboard();
             sendGameStartedMessageToClients();
             resetRoundFinished();
             resetPlayerPoints();
+            resetCheating();
             sendHandCards();
             //  sendTrumpToAllPlayers(this.deck.getTrump());
 
@@ -57,7 +61,7 @@ public class SchnopsnGame extends Game {
     }
 
     public void sendHandCardsToPlayer(ArrayList<Card> handCards, Player player){
-        Responses.SendHandCards request = new Responses.SendHandCards();
+        Response_SendHandCards request = new Response_SendHandCards();
         request.cards = handCards;
         request.playerID = player.getClientConnection().getID();
         player.getClientConnection().sendTCP(request);
@@ -85,6 +89,7 @@ public class SchnopsnGame extends Game {
     //replaces the first hand card with the best card in the game
     public void sendPlayerBestCard(int playerId, Card card){
         Player player = lobby.getPlayerByID(playerId);
+
         ArrayList<Card> currentHandCards = player.getHandcards();
 
         //replaces first card with the best card
@@ -93,8 +98,6 @@ public class SchnopsnGame extends Game {
 
         //sends new handcards to the player
         sendHandCardsToPlayer(currentHandCards, player);
-
-        player.setCheaten(true);
     }
 
     // Player set card
@@ -196,7 +199,7 @@ public class SchnopsnGame extends Game {
                 player.addHandcard(newCard);
 
                 // send message with handout card to players
-                Responses.PlayerGetHandoutCard response = new Responses.PlayerGetHandoutCard();
+                Response_PlayerGetHandoutCard response = new Response_PlayerGetHandoutCard();
                 response.playerID = player.getClientConnection().getID();
                 response.card = newCard;
                 player.getClientConnection().sendTCP(response);
@@ -213,7 +216,15 @@ public class SchnopsnGame extends Game {
         LOG.info("after mixing");
         LOG.info(deck.getDeck().get(0).toString());
         LOG.info(deck.toString());
-        Responses.mixedCards response = new Responses.mixedCards();
+        Response_mixedCards response = new Response_mixedCards();
         lobby.getPlayerByID(1).getClientConnection().sendTCP(response);
+    }
+
+    public SchnopsnDeck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(SchnopsnDeck deck){
+        this.deck = deck;
     }
 }

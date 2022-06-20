@@ -3,42 +3,32 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_game_rules.xml" value="0.13802083333333334" />
-        <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_play_game.xml" value="0.1" />
-        <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_score_board.xml" value="0.1" />
+        <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_schlag_select.xml" value="0.1" />
+        <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_schnopsn.xml" value="0.22826086956521738" />
+        <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_trump_select.xml" value="0.1" />
+        <entry key="..\:/Documents/PiatnikParty/app/src/main/res/layout/fragment_wattn.xml" value="0.22826086956521738" />
         <entry key="..\:/PiatnikParty/app/src/main/res/layout/activity_main.xml" value="0.11302083333333333" />
         <entry key="..\:/PiatnikParty/app/src/main/res/layout/activity_schnopsn.xml" value="0.1" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_chat.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_cheat_celebration.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_cheating.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_cheating_info.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_expose_cheater.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_expose_cheater2.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/activity_schnopsn.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_create_game.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_item_chat_out.xml" value="0.19927536231884058" />
         <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_play_game.xml" value="0.19972826086956522" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_schlag_select.xml" value="0.2" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_schnopsn.xml" value="0.25" />
+        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_schlag_select.xml" value="0.264" />
+        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_schnopsn.xml" value="0.43342981186685964" />
         <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_score_board.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_trump_select.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_voting_dialog.xml" value="0.19972826086956522" />
+        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_voting_dialog.xml" value="0.4" />
         <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_waiting_players.xml" value="0.19927536231884058" />
-        <entry key="..\:/Users/Anton/AndroidStudioProjects/PiatnikParty-dev/app/src/main/res/layout/fragment_winner.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Benedikt Senitza/Documents/GitHub/PiatnikParty/app/src/main/res/layout/activity_create_game.xml" value="0.13802083333333334" />
         <entry key="..\:/Users/Benedikt Senitza/Documents/GitHub/PiatnikParty/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Benedikt Senitza/Documents/GitHub/PiatnikParty/app/src/main/res/layout/activity_schnopsn.xml" value="0.1" />
         <entry key="..\:/Users/Benedikt Senitza/Documents/GitHub/PiatnikParty/app/src/main/res/layout/fragment_create_game.xml" value="0.1" />
         <entry key="..\:/Users/Benedikt Senitza/Documents/GitHub/PiatnikParty/app/src/main/res/layout/fragment_waiting_players.xml" value="0.1" />
-        <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_cheat_celebration.xml" value="0.2265625" />
         <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_cheating.xml" value="0.2390625" />
         <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_cheatingInfo.xml" value="0.2390625" />
         <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_edit_name.xml" value="0.18085106382978725" />
-        <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_expose_cheater.xml" value="0.2265625" />
-        <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_expose_cheater2.xml" value="0.33" />
         <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_happy.xml" value="0.1" />
         <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_item_chat_in.xml" value="0.1" />
-        <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_schnopsn.xml" value="0.1" />
-        <entry key="..\:/Users/Valon/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_voting_dialog.xml" value="0.20364583333333333" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_create_game.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_einstellungen.xml" value="0.3625" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_game_rules.xml" value="0.1343370005790388" />

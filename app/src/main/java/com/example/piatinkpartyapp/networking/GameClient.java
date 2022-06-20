@@ -1,5 +1,7 @@
 package com.example.piatinkpartyapp.networking;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -11,9 +13,47 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_CheatingPenalty;
+import com.example.piatinkpartyapp.networking.Responses.Response_ConnectedSuccessfully;
+import com.example.piatinkpartyapp.networking.Responses.Response_EndOfRound;
+import com.example.piatinkpartyapp.networking.Responses.Response_GameStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_HosnObeStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_IsCheater;
+import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerToSetSchlag;
+import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerToSetTrump;
+import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerYourTurn;
+import com.example.piatinkpartyapp.networking.Responses.Response_PensionistlnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_PlayerGetHandoutCard;
+import com.example.piatinkpartyapp.networking.Responses.Response_ReceiveEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_ReceiveToAllChatMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_SchnopsnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendHandCards;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendRoundWinnerPlayerToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendSchlagToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendTrumpToAllPlayers;
+import com.example.piatinkpartyapp.networking.Responses.Response_ServerMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_UpdatePointsWinnerPlayer;
+import com.example.piatinkpartyapp.networking.Responses.Response_UpdateScoreboard;
+import com.example.piatinkpartyapp.networking.Responses.Response_VoteForNextGame;
+import com.example.piatinkpartyapp.networking.Responses.Response_WattnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.Responses.Response_mixedCards;
+import com.example.piatinkpartyapp.networking.Responses.Response_playerDisconnected;
+import com.example.piatinkpartyapp.networking.Requests.Request_ExposePossibleCheater;
+import com.example.piatinkpartyapp.networking.Requests.Request_ForceVoting;
+import com.example.piatinkpartyapp.networking.Requests.Request_MixCardsRequest;
+import com.example.piatinkpartyapp.networking.Requests.Request_PlayerRequestsCheat;
+import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetCard;
+import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetSchlag;
+import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetTrump;
+import com.example.piatinkpartyapp.networking.Requests.Request_SendEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.Requests.Request_SendToAllChatMessage;
+import com.example.piatinkpartyapp.networking.Requests.Request_StartGameMessage;
+import com.example.piatinkpartyapp.networking.Requests.Request_VoteForNextGame;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -45,7 +85,7 @@ public class GameClient {
             try {
                 client.connect(10000, NetworkHandler.GAMESERVER_IP, NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
             this.playerID = client.getID();
@@ -62,8 +102,17 @@ public class GameClient {
         return INSTANCE;
     }
 
+    public static GameClient getNewInstance() throws IOException {
+        INSTANCE = new GameClient(NetworkHandler.GAMESERVER_IP);
+        return INSTANCE;
+    }
+
     public String getPlayerID() {
         return "Player " + playerID;
+    }
+
+    public int getID(){
+        return playerID;
     }
 
     private void startListener() {
@@ -79,7 +128,7 @@ public class GameClient {
                 try {
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
                 super.disconnected(connection);
             }
@@ -87,66 +136,69 @@ public class GameClient {
             @Override
             public void received(Connection connection, Object object) {
                 try {
-                    if (object instanceof Responses.ConnectedSuccessfully) {
-                        handle_ConnectedSuccessfully((Responses.ConnectedSuccessfully) object);
-                    } else if (object instanceof Responses.ReceiveEndToEndChatMessage) {
-                        handle_ReceiveEndToEndMessage((Responses.ReceiveEndToEndChatMessage) object);
-                    } else if (object instanceof Responses.ReceiveToAllChatMessage) {
-                        handle_ReceiveToAllChatMessage((Responses.ReceiveToAllChatMessage) object);
-                    } else if (object instanceof Responses.GameStartedClientMessage) {
-                        handle_GameStartedClientMessage((Responses.GameStartedClientMessage) object);
-                    } else if (object instanceof Responses.SendHandCards) {
-                        handle_SendHandCards((Responses.SendHandCards) object);
-                    } else if (object instanceof Responses.NotifyPlayerYourTurn) {
-                        handle_NotifyPlayerYourTurn((Responses.NotifyPlayerYourTurn) object);
-                    } else if (object instanceof Responses.PlayerGetHandoutCard) {
-                        handle_PlayerGetHandoutCard((Responses.PlayerGetHandoutCard) object);
-                    } else if (object instanceof Responses.EndOfRound) {
-                        handle_EndOfRound((Responses.EndOfRound) object);
-                    } else if (object instanceof Responses.VoteForNextGame){
+                    if (object instanceof Response_ConnectedSuccessfully) {
+                        handle_ConnectedSuccessfully((Response_ConnectedSuccessfully) object);
+                    } else if (object instanceof Response_ReceiveEndToEndChatMessage) {
+                        handle_ReceiveEndToEndMessage((Response_ReceiveEndToEndChatMessage) object);
+                    } else if (object instanceof Response_ReceiveToAllChatMessage) {
+                        handle_ReceiveToAllChatMessage((Response_ReceiveToAllChatMessage) object);
+                    } else if (object instanceof Response_GameStartedClientMessage) {
+                        handle_GameStartedClientMessage((Response_GameStartedClientMessage) object);
+                    } else if (object instanceof Response_SendHandCards) {
+                        handle_SendHandCards((Response_SendHandCards) object);
+                    } else if (object instanceof Response_NotifyPlayerYourTurn) {
+                        handle_NotifyPlayerYourTurn((Response_NotifyPlayerYourTurn) object);
+                    } else if (object instanceof Response_PlayerGetHandoutCard) {
+                        handle_PlayerGetHandoutCard((Response_PlayerGetHandoutCard) object);
+                    } else if (object instanceof Response_EndOfRound) {
+                        handle_EndOfRound((Response_EndOfRound) object);
+                    } else if (object instanceof Response_VoteForNextGame){
                         handle_VoteForNextGame();
-                    } else if (object instanceof Responses.SendPlayedCardToAllPlayers) {
-                        handle_SendPlayedCardToAllPlayers((Responses.SendPlayedCardToAllPlayers) object);
-                    } else if (object instanceof Responses.SendTrumpToAllPlayers) {
-                        handle_SendTrumpToAllPlayers((Responses.SendTrumpToAllPlayers) object);
-                    } else if (object instanceof Responses.NotifyPlayerToSetSchlag) {
-                        handle_NotifyPlayerToSetSchlag((Responses.NotifyPlayerToSetSchlag) object);
-                    } else if (object instanceof Responses.NotifyPlayerToSetTrump) {
-                        handle_NotifyPlayerToSetTrump((Responses.NotifyPlayerToSetTrump) object);
-                    } else if(object instanceof Responses.UpdatePointsWinnerPlayer){
-                        handle_UpdatePointsWinnerPlayer((Responses.UpdatePointsWinnerPlayer) object);
-                    } else if (object instanceof Responses.SchnopsnStartedClientMessage) {
-                        handle_SchnopsnStartedClientMessage((Responses.SchnopsnStartedClientMessage) object);
-                    } else if (object instanceof Responses.WattnStartedClientMessage){
-                        handle_WattnStartedClientMessage((Responses.WattnStartedClientMessage) object);
-                    } else if (object instanceof Responses.PensionistlnStartedClientMessage){
-                        handle_PensionistlnStartedClientMessage((Responses.PensionistlnStartedClientMessage) object);
-                    } else if (object instanceof Responses.HosnObeStartedClientMessage){
-                        handle_HosnObeStartedClientMessage((Responses.HosnObeStartedClientMessage) object);
-                    }else if(object instanceof Responses.playerDisconnected){
-                        handle_PlayerDisconnected((Responses.playerDisconnected)object);
-                    }else if(object instanceof  Responses.mixedCards){
-                        handle_MixedCards((Responses.mixedCards)object);
-                    }else if(object instanceof  Responses.IsCheater){
-                        handle_isCheater((Responses.IsCheater)object);
-                    } else if (object instanceof Responses.SendRoundWinnerPlayerToAllPlayers) {
-                        handle_SendRoundWinnerPlayerToAllPlayers((Responses.SendRoundWinnerPlayerToAllPlayers) object);
-                    } else if (object instanceof Responses.UpdateScoreboard) {
-                        handle_UpdateScoreboard((Responses.UpdateScoreboard) object);
-                    } else if(object instanceof Responses.CheatingPenalty){
-                        handle_CheatingPenalty((Responses.CheatingPenalty) object);
-                    }else if(object instanceof  Responses.SendSchlagToAllPlayers){
-                        handle_SendSchlagToAllPlayers((Responses.SendSchlagToAllPlayers) object);
+                    } else if (object instanceof Response_SendPlayedCardToAllPlayers) {
+                        handle_SendPlayedCardToAllPlayers((Response_SendPlayedCardToAllPlayers) object);
+                    } else if (object instanceof Response_SendTrumpToAllPlayers) {
+                        handle_SendTrumpToAllPlayers((Response_SendTrumpToAllPlayers) object);
+                    } else if (object instanceof Response_NotifyPlayerToSetSchlag) {
+                        handle_NotifyPlayerToSetSchlag((Response_NotifyPlayerToSetSchlag) object);
+                    } else if (object instanceof Response_NotifyPlayerToSetTrump) {
+                        handle_NotifyPlayerToSetTrump((Response_NotifyPlayerToSetTrump) object);
+                    } else if(object instanceof Response_UpdatePointsWinnerPlayer){
+                        handle_UpdatePointsWinnerPlayer((Response_UpdatePointsWinnerPlayer) object);
+                    } else if (object instanceof Response_SchnopsnStartedClientMessage) {
+                        handle_SchnopsnStartedClientMessage((Response_SchnopsnStartedClientMessage) object);
+                    } else if (object instanceof Response_WattnStartedClientMessage){
+                        handle_WattnStartedClientMessage((Response_WattnStartedClientMessage) object);
+                    } else if (object instanceof Response_PensionistlnStartedClientMessage){
+                        handle_PensionistlnStartedClientMessage((Response_PensionistlnStartedClientMessage) object);
+                    } else if (object instanceof Response_HosnObeStartedClientMessage){
+                        handle_HosnObeStartedClientMessage((Response_HosnObeStartedClientMessage) object);
+                    }else if(object instanceof Response_playerDisconnected){
+                        handle_PlayerDisconnected((Response_playerDisconnected)object);
+                    }else if(object instanceof Response_mixedCards){
+                        handle_MixedCards((Response_mixedCards)object);
+                    }else if(object instanceof Response_IsCheater){
+                        handle_isCheater((Response_IsCheater)object);
+                    } else if (object instanceof Response_SendRoundWinnerPlayerToAllPlayers) {
+                        handle_SendRoundWinnerPlayerToAllPlayers((Response_SendRoundWinnerPlayerToAllPlayers) object);
+                    } else if (object instanceof Response_UpdateScoreboard) {
+                        handle_UpdateScoreboard((Response_UpdateScoreboard) object);
+                    } else if(object instanceof Response_CheatingPenalty){
+                        handle_CheatingPenalty((Response_CheatingPenalty) object);
+                    } else if(object instanceof Response_SendSchlagToAllPlayers){
+                        handle_SendSchlagToAllPlayers((Response_SendSchlagToAllPlayers) object);
+                    } else if(object instanceof Response_ServerMessage){
+                        handle_ServerMessage((Response_ServerMessage) object);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    LOG.info(e.toString());
                 }
             }
         });
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////
-    private void handle_isCheater(Responses.IsCheater object) {
+    private void handle_isCheater(Response_IsCheater object) {
         // todo: handle live data and update ui
         boolean isCheater = object.isCheater;
 
@@ -157,7 +209,7 @@ public class GameClient {
          */
     }
 
-    private void handle_CheatingPenalty(Responses.CheatingPenalty object) {
+    private void handle_CheatingPenalty(Response_CheatingPenalty object) {
         cheatingExposed.postValue(true);
     }
 
@@ -166,8 +218,8 @@ public class GameClient {
         LOG.info("VoteForNextGame received from the server");
     }
 
-    private void handle_EndOfRound(Responses.EndOfRound object) {
-        Responses.EndOfRound response =
+    private void handle_EndOfRound(Response_EndOfRound object) {
+        Response_EndOfRound response =
                 object;
 
         // notify UI: round of player is over
@@ -176,8 +228,8 @@ public class GameClient {
         LOG.info("End of round!");
     }
 
-    private void handle_PlayerGetHandoutCard(Responses.PlayerGetHandoutCard object) {
-        Responses.PlayerGetHandoutCard response =
+    private void handle_PlayerGetHandoutCard(Response_PlayerGetHandoutCard object) {
+        Response_PlayerGetHandoutCard response =
                 object;
 
         // notify UI: clients gets one card
@@ -186,8 +238,8 @@ public class GameClient {
         LOG.info("Handout card received for player: " + response.playerID);
     }
 
-    private void handle_NotifyPlayerYourTurn(Responses.NotifyPlayerYourTurn object) {
-        Responses.NotifyPlayerYourTurn response =
+    private void handle_NotifyPlayerYourTurn(Response_NotifyPlayerYourTurn object) {
+        Response_NotifyPlayerYourTurn response =
                 object;
 
         // notify UI: its the clients turn
@@ -196,8 +248,8 @@ public class GameClient {
         LOG.info("It's your turn! player: " + response.playerID);
     }
 
-    private void handle_SendHandCards(Responses.SendHandCards object) {
-        Responses.SendHandCards response =
+    private void handle_SendHandCards(Response_SendHandCards object) {
+        Response_SendHandCards response =
                 object;
 
         // notify UI: send handcards to SchnopsnFragment
@@ -206,8 +258,8 @@ public class GameClient {
         LOG.info("Handcards received for player: " + response.playerID);
     }
 
-    private void handle_GameStartedClientMessage(Responses.GameStartedClientMessage object) {
-        Responses.GameStartedClientMessage response =
+    private void handle_GameStartedClientMessage(Response_GameStartedClientMessage object) {
+        Response_GameStartedClientMessage response =
                 object;
 
         // notify UI: game has started
@@ -216,60 +268,60 @@ public class GameClient {
         LOG.info("Game started by server");
     }
 
-    private void handle_SchnopsnStartedClientMessage(Responses.SchnopsnStartedClientMessage object) {
-        Responses.SchnopsnStartedClientMessage response =
+    private void handle_SchnopsnStartedClientMessage(Response_SchnopsnStartedClientMessage object) {
+        Response_SchnopsnStartedClientMessage response =
                 object;
 
         // notify UI: game has started
         schnopsnStarted.postValue(true);
-        wattnStarted.setValue(false);
-        pensionistlnStarted.setValue(false);
-        hosnObeStarted.setValue(false);
+        wattnStarted.postValue(false);
+        pensionistlnStarted.postValue(false);
+        hosnObeStarted.postValue(false);
 
         LOG.info("Schnopsn Game started by server after voting");
     }
 
-    private void handle_WattnStartedClientMessage(Responses.WattnStartedClientMessage object) {
-        Responses.WattnStartedClientMessage response =
+    private void handle_WattnStartedClientMessage(Response_WattnStartedClientMessage object) {
+        Response_WattnStartedClientMessage response =
                 object;
 
         // notify UI: game has started
-        schnopsnStarted.setValue(false);
         wattnStarted.postValue(true);
-        pensionistlnStarted.setValue(false);
-        hosnObeStarted.setValue(false);
+        schnopsnStarted.postValue(false);
+        pensionistlnStarted.postValue(false);
+        hosnObeStarted.postValue(false);
 
         LOG.info("Wattn Game started by server after voting");
     }
 
-    private void handle_PensionistlnStartedClientMessage(Responses.PensionistlnStartedClientMessage object) {
-        Responses.PensionistlnStartedClientMessage response =
+    private void handle_PensionistlnStartedClientMessage(Response_PensionistlnStartedClientMessage object) {
+        Response_PensionistlnStartedClientMessage response =
                 object;
 
         // notify UI: game has started
-        schnopsnStarted.setValue(false);
-        wattnStarted.setValue(false);
+        schnopsnStarted.postValue(false);
+        wattnStarted.postValue(false);
         pensionistlnStarted.postValue(true);
-        hosnObeStarted.setValue(false);
+        hosnObeStarted.postValue(false);
 
         LOG.info("Pensionistln Game started by server after voting");
     }
 
-    private void handle_HosnObeStartedClientMessage(Responses.HosnObeStartedClientMessage object) {
-        Responses.HosnObeStartedClientMessage response =
+    private void handle_HosnObeStartedClientMessage(Response_HosnObeStartedClientMessage object) {
+        Response_HosnObeStartedClientMessage response =
                 object;
 
         // notify UI: game has started
-        schnopsnStarted.setValue(false);
-        wattnStarted.setValue(false);
-        pensionistlnStarted.setValue(false);
+        schnopsnStarted.postValue(false);
+        wattnStarted.postValue(false);
+        pensionistlnStarted.postValue(false);
         hosnObeStarted.postValue(true);
 
         LOG.info("Hosn Obe Game started by server after voting");
     }
 
-    private void handle_ConnectedSuccessfully(Responses.ConnectedSuccessfully object) {
-        Responses.ConnectedSuccessfully response =
+    private void handle_ConnectedSuccessfully(Response_ConnectedSuccessfully object) {
+        Response_ConnectedSuccessfully response =
                 object;
 
         // notify UI: connection information
@@ -283,8 +335,16 @@ public class GameClient {
         }
     }
 
-    private void handle_SendPlayedCardToAllPlayers(Responses.SendPlayedCardToAllPlayers object) {
-        Responses.SendPlayedCardToAllPlayers response = object;
+    private void handle_ServerMessage(Response_ServerMessage object) {
+        Response_ServerMessage response = object;
+
+        serverMessage.postValue(response.message);
+
+        LOG.info("Message from server received: " + response.message);
+    }
+
+    private void handle_SendPlayedCardToAllPlayers(Response_SendPlayedCardToAllPlayers object) {
+        Response_SendPlayedCardToAllPlayers response = object;
 
         Card cardPlayed = response.card;
 
@@ -294,8 +354,8 @@ public class GameClient {
         playedCard.postValue(object);
     }
 
-    private void handle_SendTrumpToAllPlayers(Responses.SendTrumpToAllPlayers object) {
-        Responses.SendTrumpToAllPlayers response = object;
+    private void handle_SendTrumpToAllPlayers(Response_SendTrumpToAllPlayers object) {
+        Response_SendTrumpToAllPlayers response = object;
 
         Symbol currentTrump = response.trump;
 
@@ -304,15 +364,15 @@ public class GameClient {
         //notify UI
         trump.postValue(currentTrump);
     }
-    private void handle_SendSchlagToAllPlayers(Responses.SendSchlagToAllPlayers object){
-        Responses.SendSchlagToAllPlayers response = object;
+    private void handle_SendSchlagToAllPlayers(Response_SendSchlagToAllPlayers object){
+        Response_SendSchlagToAllPlayers response = object;
         CardValue currentSchlag = response.schlag;
         LOG.info("Schlag: "+ schlag.toString() + "was sent to player!");
         schlag.postValue(currentSchlag);
     }
 
-    private void handle_NotifyPlayerToSetSchlag(Responses.NotifyPlayerToSetSchlag object) {
-        Responses.NotifyPlayerToSetSchlag response =
+    private void handle_NotifyPlayerToSetSchlag(Response_NotifyPlayerToSetSchlag object) {
+        Response_NotifyPlayerToSetSchlag response =
                 object;
 
         // notify UI: to set schlag
@@ -321,8 +381,8 @@ public class GameClient {
         LOG.info("Please set schlag!");
     }
 
-    private void handle_NotifyPlayerToSetTrump(Responses.NotifyPlayerToSetTrump object) {
-        Responses.NotifyPlayerToSetTrump response =
+    private void handle_NotifyPlayerToSetTrump(Response_NotifyPlayerToSetTrump object) {
+        Response_NotifyPlayerToSetTrump response =
                 object;
 
         // notify UI: to set trump
@@ -331,36 +391,38 @@ public class GameClient {
         LOG.info("Please set trump!");
     }
 
-    private void handle_UpdatePointsWinnerPlayer(Responses.UpdatePointsWinnerPlayer object){
-        Responses.UpdatePointsWinnerPlayer response = object;
+    private void handle_UpdatePointsWinnerPlayer(Response_UpdatePointsWinnerPlayer object){
+        Response_UpdatePointsWinnerPlayer response = object;
 
         points.postValue(response.totalPoints);
     }
 
-    private void handle_PlayerDisconnected(Responses.playerDisconnected object){
+    private void handle_PlayerDisconnected(Response_playerDisconnected object){
         LOG.info("PLayer has disconected ID:" + object.playerID);
         //TODO: notify the UI that a player disconected from the game
     }
 
     //mixed cards
-    private void handle_MixedCards(Responses.mixedCards object){
-        Responses.mixedCards response = object;
+    private void handle_MixedCards(Response_mixedCards object){
+        Response_mixedCards response = object;
         mixedCards.postValue(true);
     //
         //  mixCards();
         LOG.info("mixed cards");
     }
 
-    private void handle_SendRoundWinnerPlayerToAllPlayers(Responses.SendRoundWinnerPlayerToAllPlayers object) {
-        Responses.SendRoundWinnerPlayerToAllPlayers response = object;
+    private void handle_SendRoundWinnerPlayerToAllPlayers(Response_SendRoundWinnerPlayerToAllPlayers object) {
+        Response_SendRoundWinnerPlayerToAllPlayers response = object;
 
         winnerId.postValue(response.winnerPlayerID);
 
         LOG.info("Player: " + response.winnerPlayerID + " has won the round!");
     }
 
-    private void handle_UpdateScoreboard(Responses.UpdateScoreboard object) {
-        Responses.UpdateScoreboard response = object;
+    private void handle_UpdateScoreboard(Response_UpdateScoreboard object) {
+        Response_UpdateScoreboard response = object;
+
+        players.postValue(response.players);
 
         LOG.info("Update Scoreboard!");
     }
@@ -381,7 +443,7 @@ public class GameClient {
             client.sendTCP(new Requests.StartGameMessage());
         }).start();
         */
-        sendPacket(new Requests.StartGameMessage());
+        sendPacket(new Request_StartGameMessage());
     }
 
     public void setCard(Card card) {
@@ -394,7 +456,7 @@ public class GameClient {
             myTurn.postValue(false);
         }).start();
         */
-        Requests.PlayerSetCard request = new Requests.PlayerSetCard();
+        Request_PlayerSetCard request = new Request_PlayerSetCard();
         request.card =  card;
         sendPacket(request);
 
@@ -403,19 +465,19 @@ public class GameClient {
     }
 
    public void mixCards(){
-        Requests.MixCardsRequest request = new Requests.MixCardsRequest();
+        Request_MixCardsRequest request = new Request_MixCardsRequest();
         sendPacket(request);
        // mixedCards.postValue(true);
 
     }
     public void setSchlag(CardValue schlag) {
-        Requests.PlayerSetSchlag request = new Requests.PlayerSetSchlag(schlag);
+        Request_PlayerSetSchlag request = new Request_PlayerSetSchlag(schlag);
         sendPacket(request);
         setSchlag.postValue(false);
     }
 
     public void setTrump(Symbol trump) {
-        Requests.PlayerSetTrump request = new Requests.PlayerSetTrump(trump);
+        Request_PlayerSetTrump request = new Request_PlayerSetTrump(trump);
         sendPacket(request);
         setTrump.postValue(false);
     }
@@ -429,8 +491,8 @@ public class GameClient {
         return chatMessages;
     }
 
-    private void handle_ReceiveToAllChatMessage(Responses.ReceiveToAllChatMessage object) {
-        Responses.ReceiveToAllChatMessage receivedMessage =
+    private void handle_ReceiveToAllChatMessage(Response_ReceiveToAllChatMessage object) {
+        Response_ReceiveToAllChatMessage receivedMessage =
                 object;
         LOG.info("Client : " + playerID + " , received All Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
         ChatMessage msg = new ChatMessage("Player " + String.valueOf(receivedMessage.from), receivedMessage.message, receivedMessage.date, ChatMessage.MessageType.OUT);
@@ -440,19 +502,19 @@ public class GameClient {
         chatMessages.postValue(value);
     }
 
-    private void handle_ReceiveEndToEndMessage(Responses.ReceiveEndToEndChatMessage object) {
-        Responses.ReceiveEndToEndChatMessage receivedMessage =
+    private void handle_ReceiveEndToEndMessage(Response_ReceiveEndToEndChatMessage object) {
+        Response_ReceiveEndToEndChatMessage receivedMessage =
                 object;
         LOG.info("Client : " + playerID + " , received Message from Client : " + receivedMessage.from + " with the message : " + receivedMessage.message);
     }
 
     public void sendEndToEndMessage(String message, int to) {
-        Requests.SendEndToEndChatMessage request = new Requests.SendEndToEndChatMessage(message, playerID, to);
+        Request_SendEndToEndChatMessage request = new Request_SendEndToEndChatMessage(message, playerID, to);
         sendPacket(request);
     }
 
     public void sendToAll(String message) {
-        Requests.SendToAllChatMessage request = new Requests.SendToAllChatMessage(message, playerID);
+        Request_SendToAllChatMessage request = new Request_SendToAllChatMessage(message, playerID);
         sendPacket(request);
     }
 
@@ -497,7 +559,7 @@ public class GameClient {
     private MutableLiveData<Card> handoutCard;
     private MutableLiveData<Integer> endOfRound;
     private MutableLiveData<Boolean> voteForNextGame;
-    private MutableLiveData<Responses.SendPlayedCardToAllPlayers> playedCard;
+    private MutableLiveData<Response_SendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
     private MutableLiveData<CardValue> schlag;
     private MutableLiveData<Integer> points;
@@ -511,6 +573,8 @@ public class GameClient {
     private MutableLiveData<Integer> winnerId;
     private MutableLiveData<Boolean> cheaterExposed;
     private MutableLiveData<Boolean> cheatingExposed;
+    private MutableLiveData<Map<String, Integer>> players;
+    private MutableLiveData<String> serverMessage;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -541,7 +605,7 @@ public class GameClient {
 
     public LiveData<Boolean> isVotingForNextGame() { return voteForNextGame; }
 
-    public LiveData<Responses.SendPlayedCardToAllPlayers> getPlayedCard(){
+    public LiveData<Response_SendPlayedCardToAllPlayers> getPlayedCard(){
         return playedCard;
     }
 
@@ -583,6 +647,10 @@ public class GameClient {
 
     public LiveData<Boolean> isCheaterExposed() { return cheaterExposed; }
 
+    public LiveData<Map<String, Integer>> getPlayers() {
+        return players;
+    }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -605,6 +673,8 @@ public class GameClient {
         winnerId = new MutableLiveData<>();
         cheaterExposed = new MutableLiveData<>();
         cheatingExposed = new MutableLiveData<>();
+        players = new MutableLiveData<>();
+        serverMessage = new MutableLiveData<>();
     }
 
 
@@ -617,8 +687,8 @@ public class GameClient {
     }
 
     public void sendVoteForNextGame(GameName nextGame){
-        Requests.VoteForNextGame request =
-                new Requests.VoteForNextGame(nextGame);
+        Request_VoteForNextGame request =
+                new Request_VoteForNextGame(nextGame);
 
         sendPacket(request);
 
@@ -628,7 +698,7 @@ public class GameClient {
     }
 
     public void forceVoting(){
-        Requests.ForceVoting request = new Requests.ForceVoting();
+        Request_ForceVoting request = new Request_ForceVoting();
 
         sendPacket(request);
 
@@ -636,7 +706,7 @@ public class GameClient {
     }
 
     public void cheatRequest() {
-        Requests.PlayerRequestsCheat request = new Requests.PlayerRequestsCheat();
+        Request_PlayerRequestsCheat request = new Request_PlayerRequestsCheat();
 
         sendPacket(request);
 
@@ -644,7 +714,7 @@ public class GameClient {
     }
 
     public void exposePossibleCheater(Integer playerId) {
-        Requests.ExposePossibleCheater request = new Requests.ExposePossibleCheater(playerId);
+        Request_ExposePossibleCheater request = new Request_ExposePossibleCheater(playerId);
         sendPacket(request);
         LOG.info("ExposePossibleCheater Request was sent for playerID : " + playerId);
     }
@@ -655,6 +725,19 @@ public class GameClient {
 
     public LiveData<Boolean> isCheatingExposed() {
         return cheatingExposed;
+    }
+
+    public void sendVoteForGameEnd() {
+        Request_VoteForNextGame request = new Request_VoteForNextGame();
+
+        //sends a Requests.VoteForNextGame packet without setting a nextGame
+        sendPacket(request);
+
+        LOG.info("Client voted for the game to end");
+    }
+
+    public LiveData<String> getServerMessage() {
+        return serverMessage;
     }
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

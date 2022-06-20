@@ -1,32 +1,47 @@
 
 package com.example.piatinkpartyapp;
 
-import androidx.lifecycle.MutableLiveData;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.esotericsoftware.kryonet.Client;
-import com.example.piatinkpartyapp.cards.Card;
-import com.example.piatinkpartyapp.cards.CardValue;
-import com.example.piatinkpartyapp.cards.Symbol;
+import androidx.lifecycle.LiveData;
+
 import com.example.piatinkpartyapp.networking.GameClient;
-import com.example.piatinkpartyapp.networking.Requests;
+import com.example.piatinkpartyapp.networking.GameServer;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 public class GameClientTest {
 
-    private GameClient gameClient;
+    String ip = "127.0.0.1";
+    GameServer gameServer = new GameServer();
+    GameClient gameClient;
+    @Test
+    public void testIfClientCanConnect() {
+        try{
+            gameClient = new GameClient(ip);
 
-    @Mock
-    private Client client;
+            Thread.sleep(2000);
 
-    @BeforeEach
-    public void setup(){
-        this.client = Mockito.mock(Client.class);
+            LiveData<Boolean> connectionState = gameClient.getConnectionState();
+            assertEquals(true, connectionState.getValue());
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+    }
 
-        this.gameClient = new GameClient(client);
+    @Test
+    public void testIfGameStarted() {
+        try{
+            gameClient = new GameClient(ip);
+            gameServer.startNewGameServer();
+
+            Thread.sleep(2000);
+
+            LiveData<Boolean> isGameStartedState = gameClient.isGameStarted();
+            assertEquals(true, isGameStartedState.getValue());
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
     }
 /*
     @Test

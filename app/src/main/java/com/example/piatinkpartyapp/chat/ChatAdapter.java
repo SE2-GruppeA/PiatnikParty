@@ -20,8 +20,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
     private ArrayList<ChatMessage> messages;
 
     // used for coloring players CardView based on his playerName
-    private HashMap<String, String> playerToColorMapper;
-    private Stack<String> availablePlayerColors;
+    private static HashMap<String, String> playerToColorMapper;
+    private static Stack<String> availablePlayerColors;
 
     public ChatAdapter(ArrayList<ChatMessage> messages) {
         this.messages = messages;
@@ -42,7 +42,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
         availablePlayerColors.push("#EAEA7F");
     }
 
-    private void handlePlayerColor(String playerName, ChatMessageViewHolder holder) {
+    private static void handlePlayerColor(String playerName, ChatMessageViewHolder holder) {
         String playerColor = null;
         if (playerToColorMapper.containsKey(playerName)) {
             playerColor = playerToColorMapper.get(playerName);
@@ -74,7 +74,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessageViewHolder holder, int position) {
-
         holder.bindData(messages.get(position), holder);
     }
 
@@ -92,7 +91,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
         return R.layout.fragment_item_chat_out;
     }
 
-    public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
+    public static class ChatMessageViewHolder extends RecyclerView.ViewHolder {
+
         private TextView tvChatPlayerName;
         private TextView tvChatMessage;
         private TextView tvChatDate;
@@ -116,4 +116,4 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatMessageVie
             handlePlayerColor(tvChatPlayerName.getText().toString(), holder);
         }
     }
-    }
+}

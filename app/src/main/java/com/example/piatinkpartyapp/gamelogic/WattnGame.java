@@ -6,7 +6,10 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.cards.WattnDeck;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses;
+import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerToSetSchlag;
+import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerToSetTrump;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendHandCards;
+import com.example.piatinkpartyapp.networking.Responses.Response_WattnStartedClientMessage;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -27,15 +30,22 @@ public class WattnGame extends Game {
     }
     //starting the game
     @Override
-    public void startGameWattn(){
+    public void startGame(){
         new Thread(()->{
             resetWattnDeck(lobby.getPlayers().size());
-            sendGameStartedMessageToClients();
             resetRoundFinished();
+            sendMessageUpdateScoreboard();
             resetPlayerPoints();
+            resetCheating();
+            sendGameStartedMessageToClients();
             sendHandCards();
             setRoundStartPlayer(lobby.getPlayers().get(0));
             notifyPlayerYourTurn(lobby.getPlayers().get(0));
+            //reset player points
+            for(Player p: lobby.getPlayers()){
+                p.addPoints(-1*p.getPoints());
+                sendPointsToWinnerPlayer(p);
+            }
         }).start();
     }
     //sending handcards to players
@@ -48,14 +58,14 @@ public class WattnGame extends Game {
             sendHandCardsToPlayer(handCards, player);
             //messages for player 1 to set schlag & player 2 to set trump
             if(player.getId() == 1){
-                player.getClientConnection().sendTCP(new Responses.NotifyPlayerToSetSchlag());
+                player.getClientConnection().sendTCP(new Response_NotifyPlayerToSetSchlag());
             }else if(player.getId() == 2){
-                player.getClientConnection().sendTCP(new Responses.NotifyPlayerToSetTrump());
+                player.getClientConnection().sendTCP(new Response_NotifyPlayerToSetTrump());
             }
         }
     }
     public void sendHandCardsToPlayer(ArrayList<Card> handCards, Player player){
-        Responses.SendHandCards request = new Responses.SendHandCards();
+        Response_SendHandCards request = new Response_SendHandCards();
         request.cards = handCards;
         request.playerID = player.getClientConnection().getID();
         player.getClientConnection().sendTCP(request);
@@ -70,16 +80,17 @@ public class WattnGame extends Game {
     //adopted from schopsnGame since it has the same functionality for wattn
     public void sendPlayerBestCard(int playerId, Card card){
         Player player = lobby.getPlayerByID(playerId);
+
         ArrayList<Card> currentHandCards = player.getHandcards();
 
         //replaces first card with the best card
+
         currentHandCards.set(0, card);
         player.setHandcards(currentHandCards);
 
         //sends new handcards to the player
         sendHandCardsToPlayer(currentHandCards, player);
 
-        player.setCheaten(true);
     }
 
     @Override
@@ -137,21 +148,22 @@ public class WattnGame extends Game {
             LOG.info(this.deck.getHit().toString());
 
             if (winningPlayer.getCardPlayed().getCardValue()
-                    == this.deck.getRightCard().getCardValue()
+                    == this.deck.getHit()
                     && winningPlayer.getCardPlayed().getSymbol()
-                    == deck.getRightCard().getSymbol()){
-                winningPlayer = winningPlayer;
+                    == deck.getTrump()){
+                //winningPlayer = winningPlayer;
+                return winningPlayer;
             }
 
             //second played card is right card
-            else if (currentPlayer.getCardPlayed().getSymbol() == this.deck.getRightCard().getSymbol() && currentPlayer.getCardPlayed().getCardValue() == deck.getRightCard().getCardValue()){
+            else if (currentPlayer.getCardPlayed().getSymbol() == this.deck.getTrump() && currentPlayer.getCardPlayed().getCardValue() == deck.getHit()){
                 winningPlayer = currentPlayer;
 
             } //hit case - first played hit wins
-            else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getRightCard().getCardValue() ){
-                winningPlayer = winningPlayer;
+            else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getHit() ){
+                //winningPlayer = winningPlayer;
             }//hit case - hit wins
-            else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && winningPlayer.getCardPlayed() != this.deck.getRightCard()){
+            else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && (winningPlayer.getCardPlayed().cardValue != this.deck.getHit())){
 
                 winningPlayer = currentPlayer;
             } // trump case - higher trump wins
@@ -170,6 +182,10 @@ public class WattnGame extends Game {
                 LOG.info(winningPlayer + " won this game!");
 
                 sendEndRoundMessageToPlayers(roundStartPlayer);
+                return winningPlayer;
+            }else if(winningPlayer.getPoints() < currentPlayer.getPoints()){
+                sendEndRoundMessageToPlayers(roundStartPlayer);
+                winningPlayer = currentPlayer;
                 return winningPlayer;
             }
             currentPlayer = getNextPlayer(currentPlayer);
@@ -208,13 +224,20 @@ public class WattnGame extends Game {
 
     public void startNewRoundWattn(Player startPlayer) {
         new Thread(()->{
+            LOG.info(startPlayer.getPlayerName() + " has " +startPlayer.getPoints());
+            Player other = getNextPlayer(startPlayer);
+            LOG.info(other.getPlayerName() + " has " + other.getPoints());
             if (startPlayer.getPoints() >= 3 ) {
-                // if the player gets at least 66 points then the player wins
-                // TODO: test if player can win on other places? wenn 20 oder 40 angesagt wird?
                 sendEndRoundMessageToPlayers(startPlayer);
-
-            }else if(startPlayer.getHandcards().isEmpty()){
-                sendEndRoundMessageToPlayers(startPlayer);
+                addPointsAndUpdateScoreboard(startPlayer, 1);
+            }else if(startPlayer.getHandcards().isEmpty() && other.getHandcards().isEmpty()){
+                if(startPlayer.getPoints() >= other.getPoints()){
+                    sendEndRoundMessageToPlayers(startPlayer);
+                    addPointsAndUpdateScoreboard(startPlayer,1);
+                }else{
+                    sendEndRoundMessageToPlayers(other);
+                    addPointsAndUpdateScoreboard(other,1);
+                }
             }
             else {
                 resetRoundFinished();
@@ -253,8 +276,24 @@ public class WattnGame extends Game {
     public void sendGameStartedMessageToClients() {
         for (Player player : lobby.getPlayers()) {
             // send message to client that game has started
-            Responses.WattnStartedClientMessage request = new Responses.WattnStartedClientMessage();
+            Response_WattnStartedClientMessage request = new Response_WattnStartedClientMessage();
             player.getClientConnection().sendTCP(request);
         }
+    }
+    @Override
+    public void punishWrongExposure(Integer exposerId){
+        Player player = lobby.getPlayerByID(exposerId);
+        player.addPoints(-1);
+        sendPointsToWinnerPlayer(player);
+    }
+    @Override
+    public void cheaterPenalty(Integer playerId){
+        Player player = lobby.getPlayerByID(playerId);
+
+        if(player.isCheaten()){
+            player.addPoints(-2);
+        }
+
+        sendPenaltyMessageToPlayer(player);
     }
 }

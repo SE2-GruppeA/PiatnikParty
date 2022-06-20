@@ -35,7 +35,7 @@ import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.chat.fragments.ExposeCheaterFragment;
 import com.example.piatinkpartyapp.chat.fragments.ExposeDialogFragment;
 import com.example.piatinkpartyapp.chat.fragments.IsCheaterDialogFragment;
-import com.example.piatinkpartyapp.networking.Responses;
+import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardToAllPlayers;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -60,6 +60,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     ImageView swapCardView;
     ImageView imgTrump;
     ImageView imgSchlag;
+    ImageView imgScore;
+    ImageView schlagImage;
+    ImageView trumpfImage;
 
     ImageButton exitBtn;
     TextView scoreTxt;
@@ -89,6 +92,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     private float mAccelLast;
     Boolean mixedCards;
     Boolean cardsToMix;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -203,19 +207,29 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         handCardImageViews.add(handCardView4);
         handCardImageViews.add(handCardView5);
         isMyTurn = false;
+
+
     }
 
     private void updateHandCards(ArrayList<Card> handCards) {
         this.handCards = handCards;
 
         int j = 0;
-        //set onclickListeners to handcards
-        for (ImageView imageView : handCardImageViews) {
 
-            setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
-            j++;
-            handCardViewListener(imageView);
-        }
+        for (ImageView imageView : handCardImageViews) {
+            if(j<5) {
+
+                    if (!imageView.getContentDescription().equals("backside")) {
+                        setCardImage(handCards.get(j).frontSide.toLowerCase(Locale.ROOT), imageView);
+                        j++;
+                        handCardViewListener(imageView);
+                    }
+
+              }
+            }
+
+
+
     }
 
     @Override
@@ -233,6 +247,12 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         //if it would not be in landscape mode some dialogs would get displayed twice
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
+
+            //when a game is started, the client gets notified
+            clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), started -> initializeSchnopsn(started));
+            clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), started -> initializeWattn(started));
+            clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), started -> initializePensionistln(started));
+            clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
 
             clientViewModel.getHandCards().observe(getViewLifecycleOwner(), handCards -> updateHandCards(handCards));
             clientViewModel.isMyTurn().observe(getViewLifecycleOwner(), isMyTurn -> waitForMyTurn(isMyTurn));
@@ -252,11 +272,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
 
-            //when a game is started, the client gets notified
-            clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), started -> initializeSchnopsn(started));
-            clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), started -> initializeWattn(started));
-            clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), started -> initializePensionistln(started));
-            clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
+            //receiving messages from server
+            clientViewModel.getServerMessage().observe(getViewLifecycleOwner(), serverMessage -> showServerMessage(serverMessage));
 
             //shaking phone to mix cards
 
@@ -267,10 +284,14 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         return root;
     }
 
+    private void showServerMessage(String serverMessage) {
+        Toast.makeText(requireActivity().getApplicationContext(), serverMessage, Toast.LENGTH_SHORT).show();
+    }
+
     private void showCheatingExposed(Boolean isCheating) {
         if(isCheating){
             Toast.makeText(requireActivity().getApplicationContext(),
-                    "Du wurdest beim cheaten erwischt! -20 Punkte",
+                    "Du wurdest beim cheaten erwischt! Das kostet Punkte",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -282,39 +303,66 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
                     Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(requireActivity().getApplicationContext(),
-                    "Das war kein Cheater! -10 Punkte",
+                    "Das war kein Cheater! Das kostet Punkte",
                     Toast.LENGTH_SHORT).show();
         }
     }
 
     private void initializeHosnObe(Boolean started) {
         if (started) {
-
+            //game not implemented
         }
     }
 
     private void initializePensionistln(Boolean started) {
         if (started) {
-
+           resetGameTable(0, false, false);
         }
     }
 
     private void initializeWattn(Boolean started) {
         if (started) {
-            resetImageView(currentCard1);
-            resetImageView(currentCard2);
-            resetImageView(currentCard3);
-            resetImageView(currentCard4);
-            scoreTxt.setText("0");
+            resetGameTable(0, true, true);
         }
     }
 
     private void initializeSchnopsn(Boolean started) {
         if (started) {
-            resetImageView(currentCard1);
-            resetImageView(currentCard2);
+            resetGameTable(0, true, false);
+        }
+    }
 
-            scoreTxt.setText("0");
+    private void resetGameTable(Integer initScore, Boolean showTrump, Boolean showSchlag){
+        resetAllCardsOnTable();
+        scoreTxt.setText(initScore.toString());
+        showTrump(showTrump);
+        showSchlag(showSchlag);
+    }
+
+    private void resetAllCardsOnTable(){
+        resetImageView(currentCard1);
+        resetImageView(currentCard2);
+        resetImageView(currentCard3);
+        resetImageView(currentCard4);
+    }
+
+    public void showTrump(Boolean show){
+        if(show){
+            trumpfImage.setVisibility(View.VISIBLE);
+            imgTrump.setVisibility(View.VISIBLE);
+        }else{
+            trumpfImage.setVisibility(View.INVISIBLE);
+            imgTrump.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void showSchlag(Boolean show){
+        if(show){
+            schlagImage.setVisibility(View.VISIBLE);
+            imgSchlag.setVisibility(View.VISIBLE);
+        }else{
+            schlagImage.setVisibility(View.INVISIBLE);
+            imgSchlag.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -362,12 +410,15 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     }
 
-    private void setPlayedCard(Responses.SendPlayedCardToAllPlayers playedCard) {
+    private void setPlayedCard(Response_SendPlayedCardToAllPlayers playedCard) {
         play(playedCard.card, playedCard.playerID);
     }
 
     private void atRoundEnd(Integer winner) {
         showRoundWinner(winner);
+        for(ImageView imageView : handCardImageViews){
+            imageView.setContentDescription("started");
+        }
     }
 
     private void voteForNextGame(Boolean votingForNextGame) {
@@ -420,8 +471,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         imgSchlag = view.findViewById(R.id.imgSchlag);
         btnCheat = view.findViewById(R.id.btnCheat);
         btnExpose = view.findViewById(R.id.btnExpose);
-
-
+        imgScore = view.findViewById(R.id.scoreImage);
+        schlagImage = view.findViewById(R.id.schlageImage);
+        trumpfImage = view.findViewById(R.id.trumpfImage);
     }
 
     @Override
@@ -527,7 +579,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             Log.d("##############", idField.getName());
             return idField.getInt(idField);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return -1;
         }
     }
