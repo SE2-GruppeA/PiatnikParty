@@ -8,10 +8,10 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Test;
 
-public class TestCheatClelebrationFragment {
+public  class TestCheatClelebrationFragment {
 
     @Test
-    public void useAppContext() {
+     void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.piatinkpartyapp", appContext.getPackageName());

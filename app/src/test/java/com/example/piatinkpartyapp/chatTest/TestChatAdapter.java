@@ -9,11 +9,10 @@ import com.example.piatinkpartyapp.chat.ChatMessage;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-
-public class TestChatAdapter {
+class TestChatAdapter {
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         ArrayList<ChatMessage> messages;
         messages = null;
         ChatAdapter chatAdapter = new ChatAdapter(messages);

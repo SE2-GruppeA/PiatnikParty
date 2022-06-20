@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 public class GameTest {
 
     @Test
-    public void constructorTest() {
+     void constructorTest() {
         Game game = new Game();
         GameName Schnopsn = null;
         SchnopsnDeck deck = new SchnopsnDeck(Schnopsn,4);
@@ -26,7 +26,7 @@ public class GameTest {
     }
 
     @Test
-    public void setCard() {
+     void setCard() {
 
         int playerId = 1;
 
@@ -52,7 +52,7 @@ public class GameTest {
     }
 
     @Test
-    public void setCardTest() {
+     void setCardTest() {
 
         int playerId = 1;
 
@@ -83,7 +83,7 @@ public class GameTest {
     }
 
     @Test
-    public void getRoundWinnerPlayerSchnopsnTest() {
+     void getRoundWinnerPlayerSchnopsnTest() {
 
         Game game = new Game();
 
@@ -103,13 +103,13 @@ public class GameTest {
     }
 
     @Test
-    public void testConstructor() {
+     void testConstructor() {
         Game game = new Game();
         assertNotNull(game);
     }
 
     @Test
-    public void testGetLobby() {
+     void testGetLobby() {
         Game game = new Game();
         assertEquals(game.lobby, game.getLobby());
     }

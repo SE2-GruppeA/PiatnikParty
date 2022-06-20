@@ -11,17 +11,17 @@ import com.example.piatinkpartyapp.gamelogic.Player;
 
 import org.junit.Test;
 
-public class TestChatMessageViewHolder {
+ public class TestChatMessageViewHolder {
 
     @Test
-    public void testConstructor() {
+     void testConstructor() {
         View view = null;
         ChatAdapter.ChatMessageViewHolder chatMessageViewHolder
                 = new ChatAdapter.ChatMessageViewHolder(view);
         assertNotNull(chatMessageViewHolder);
     }
 
-    public void testBindData() {
+     void testBindData() {
         Player player = new Player();
         ChatMessage chatMessage = new ChatMessage(
                 player.getPlayerName(),
