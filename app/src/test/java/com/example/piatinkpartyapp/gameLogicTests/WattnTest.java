@@ -26,14 +26,14 @@ import org.junit.jupiter.api.Test;
 public class WattnTest {
 
     @Test
-    public void constructorTest(){
+     void constructorTest(){
         Game game = new Game();
         Lobby lobby = game.lobby;
         WattnGame wattnGame = new WattnGame(lobby);
         assertNotNull(wattnGame);
     }
     @Test
-    public void resetWattnDeckTest(){
+     void resetWattnDeckTest(){
         Game game = new Game();
         Lobby lobby = game.lobby;
         WattnGame wattnGame = new WattnGame(lobby);

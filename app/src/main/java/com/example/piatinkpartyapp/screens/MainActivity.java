@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         addAllMainActivityViews();
         addOnclickHandlersMainActivity();
-        System.out.println("pepep");
     }
 
     @Override
@@ -34,8 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             showPlayGameFragment();
         } else if(view == EinstellungenBtn) {
             showEinstellungenFragment();
-        } else if(view == ShowTableBtn) {
-            showTableMainActivity();
         } else if(view == GameRulesBtn) {
             showGameRulesFragment();
         }
@@ -75,15 +72,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void showGameRulesFragment(){
         getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new GameRulesFragment()).commit();
-    }
-
-    public void showTableMainActivity(){
-        /*Intent a = new Intent(this, SchnopsnActivity.class);
-        a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(a);*/
-
-       /* getSupportFragmentManager().beginTransaction().add(android.R.id.content,
-                new SchnopsnFragment()).commit();*/
-     //   getSupportFragmentManager().beginTransaction().add(android.R.id.content, new WattnFragment()).commit();
     }
 }

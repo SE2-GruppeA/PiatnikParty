@@ -14,14 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class WattnDeckTest {
+class WattnDeckTest {
 
     private WattnDeck deck;
     private GameName gameName;
     private Card card;
 
     @BeforeEach
-    public void init(){
+    void init(){
         int players = 1;
         gameName = GameName.Wattn;
         card = new Card();
@@ -29,21 +29,21 @@ public class WattnDeckTest {
     }
 
     @AfterEach
-    public void clear(){
+    void clear(){
         deck = null;
         gameName = null;
         card = null;
     }
 
     @Test
-    public void testLastCard(){
+    void testLastCard(){
         //Testing if not the last card in deck
         deck.lastCard();
         assertNotNull(deck);
     }
 
     @Test
-    public void testGetRightCard(){
+    void testGetRightCard(){
 
         //Testing if not the highest Value
         card.cardValue = CardValue.ACHT;
@@ -53,7 +53,7 @@ public class WattnDeckTest {
     }
 
     @Test
-    public void testCardPoints(){
+    void testCardPoints(){
         Card SIEBEN = new Card();
         Card ACHT = new Card();
         Card NEUN = new Card();
@@ -82,7 +82,5 @@ public class WattnDeckTest {
         assertEquals(7,deck.cardPoints(KOENIG.cardValue));
         assertEquals(8,deck.cardPoints(ASS.cardValue));
     }
-
-
 
 }

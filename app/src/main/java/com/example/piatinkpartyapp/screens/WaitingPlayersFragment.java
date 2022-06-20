@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.clientuilogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.networking.GameServer;
@@ -66,7 +66,6 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
         View view = inflater.inflate(R.layout.fragment_waiting_players, container, false);
 
-        //viewModel = new ViewModelProvider(this).get(GameViewModel.class);
 
         TextView textView = (TextView) view.findViewById(R.id.textView4);
 
@@ -85,19 +84,18 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         server = new GameServer();
         try {
             server.startNewGameServer();
-        } catch (IOException e) {
-            //e.printStackTrace();
+        } catch (IOException ignored) {
+
 
         }
 
         if(!isGameStarted) {
             clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
-            clientViewModel.getConnectionState().observe(getActivity(), connectionState ->
-                    displayConnectionState(connectionState));
+            clientViewModel.getConnectionState().observe(getActivity(), this::displayConnectionState);
 
             clientViewModel.isGameStarted().observe(getActivity(), isGameStarted -> atGameStart());
 
-            server.getPlayers().observe(getActivity(), players -> updatePlayers(players));
+            server.getPlayers().observe(getActivity(), this::updatePlayers);
         }
 
         // Inflate the layout for this fragment
@@ -117,7 +115,7 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
     }
 
     private void displayConnectionState(boolean connectionState) {
-        if(connectionState == true){
+        if(connectionState){
             Toast.makeText(requireActivity().getApplicationContext(),"Verbindung zum Server erfolgreich", Toast.LENGTH_LONG).show();
         }else{
             Toast.makeText(requireActivity().getApplicationContext(),"Verbindung zum Server fehlgeschlagen", Toast.LENGTH_LONG).show();
@@ -130,7 +128,6 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         //opening the game ui
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new SchnopsnFragment()).commit();
-               // new WattnFragment()).commit();
     }
 
     @Override

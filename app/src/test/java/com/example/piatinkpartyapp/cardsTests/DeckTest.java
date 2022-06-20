@@ -10,38 +10,37 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class DeckTest {
+class DeckTest {
     private GameName gameName;
-    private int players;
     private Deck deck;
 
     @BeforeEach
-    public void init(){
+    void init(){
         gameName = GameName.Schnopsn;
-        players = 2;
+        int players = 2;
         deck = new Deck(gameName, players);
     }
 
     @AfterEach
-    public void cleaer(){
+    void cleaer(){
         gameName = null;
         deck = null;
     }
 
     @Test
-    public void testCreateCards(){
+    void testCreateCards(){
         //Testing if the deck is created
         deck.createCards();
         assertNotNull(deck);
     }
 
     @Test
-    public void testGetHandCards() {
+    void testGetHandCards() {
         assertNotNull(deck.getHandCards());
     }
 
     @Test
-    public void testTakeCard() {
+    void testTakeCard() {
         // Testing if a card is taken from the deck
         assertNotEquals(deck.takeCard(),deck.takeCard());
 

@@ -26,12 +26,6 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
     private static final String ARG_PARAM2 = "param2";
 
 
-    private Button BtnBackGameRules;
-    private Button BtnSchnopsn;
-    private Button BtnWattn;
-    private Button BtnHosnObe;
-    private Button BtnPensionisteln;
-    private Button BtnCards;
     ArrayList<Button> ruleButtons;
 
     private TextView schonpsn_rules;
@@ -40,14 +34,6 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
     private TextView pensionistln_rules;
     ArrayList<TextView> rules;
 
-    private ImageView karo_sieben;
-    private  ImageView kreuz_acht;
-    private  ImageView pick_neun;
-    private  ImageView herz_zehn;
-    private  ImageView herz_unter;
-    private ImageView herz_ober;
-    private  ImageView herz_koenig;
-    private  ImageView herz_ass;
     private ArrayList<ImageView> cardViews;
 
     public GameRulesFragment() { }
@@ -84,7 +70,6 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
             Log.d("##############", idField.getName());
             return idField.getInt(idField);
         } catch (Exception e) {
-            //e.printStackTrace();
             return -1;
         }
     }
@@ -108,8 +93,8 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_game_rules, container, false);
-        BtnBackGameRules = (Button) view.findViewById(R. id. buttonBackGameRules);
-        BtnBackGameRules.setOnClickListener(this);
+        Button btnBackGameRules = (Button) view.findViewById(R.id.buttonBackGameRules);
+        btnBackGameRules.setOnClickListener(this);
         cardViews = new ArrayList<>();
         ruleButtons = new ArrayList<>();
         rules = new ArrayList<>();
@@ -124,93 +109,75 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
         rules.add(pensionistln_rules);
         hideTextViewsExcept(null);
 
-        BtnHosnObe = (Button) view.findViewById(R.id.buttonHosnObe);
-        BtnSchnopsn = (Button)view.findViewById(R.id.buttonSchnopsn);
-        BtnWattn = (Button)view.findViewById(R.id.buttonWattn);
-        BtnPensionisteln = (Button)view.findViewById(R.id.buttonPensionistln);
-        BtnCards = (Button)view.findViewById(R.id.buttonKarten);
+        Button btnHosnObe = (Button) view.findViewById(R.id.buttonHosnObe);
+        Button btnSchnopsn = (Button) view.findViewById(R.id.buttonSchnopsn);
+        Button btnWattn = (Button) view.findViewById(R.id.buttonWattn);
+        Button btnPensionisteln = (Button) view.findViewById(R.id.buttonPensionistln);
+        Button btnCards = (Button) view.findViewById(R.id.buttonKarten);
 
-        karo_sieben = view.findViewById(R.id.imageViewKaroSieben);
-        cardViews.add(karo_sieben);
+        ImageView karosieben = view.findViewById(R.id.imageViewKaroSieben);
+        cardViews.add(karosieben);
 
-        kreuz_acht = view.findViewById(R.id.imageViewKreuzAcht);
-        cardViews.add(kreuz_acht);
+        ImageView kreuzacht = view.findViewById(R.id.imageViewKreuzAcht);
+        cardViews.add(kreuzacht);
 
-        pick_neun = view.findViewById(R.id.imageViewPickNeun);
-        cardViews.add(pick_neun);
+        ImageView pickNeun = view.findViewById(R.id.imageViewPickNeun);
+        cardViews.add(pickNeun);
 
-        herz_zehn = view.findViewById(R.id.imageViewHerzZehn);
-        cardViews.add(herz_zehn);
+        ImageView herzZehn = view.findViewById(R.id.imageViewHerzZehn);
+        cardViews.add(herzZehn);
 
-        herz_unter = view.findViewById(R.id.imageViewHerzUnter);
-        cardViews.add(herz_unter);
+        ImageView herzUnter = view.findViewById(R.id.imageViewHerzUnter);
+        cardViews.add(herzUnter);
 
-        herz_ober = view.findViewById(R.id.imageViewHerzOber);
-        cardViews.add(herz_ober);
+        ImageView herzOber = view.findViewById(R.id.imageViewHerzOber);
+        cardViews.add(herzOber);
 
-        herz_koenig = view.findViewById(R.id.imageViewHerzKoenig);
-        cardViews.add(herz_koenig);
+        ImageView herzKoenig = view.findViewById(R.id.imageViewHerzKoenig);
+        cardViews.add(herzKoenig);
 
-        herz_ass = view.findViewById(R.id.imageViewHerzAss);
-        cardViews.add(herz_ass);
+        ImageView herzAss = view.findViewById(R.id.imageViewHerzAss);
+        cardViews.add(herzAss);
 
         for(ImageView imageView : cardViews){
             setCard(imageView);
         }
 
-        BtnCards.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            hideTextViewsExcept(null);
-            setCardsVisibility(View.VISIBLE);
-            }
+        btnCards.setOnClickListener(view1 -> {
+        hideTextViewsExcept(null);
+        setCardsVisibility(View.VISIBLE);
         });
 
 
-        BtnHosnObe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideTextViewsExcept(hosnObe_rules);
-                setCardsVisibility(View.INVISIBLE);
-            }
+        btnHosnObe.setOnClickListener(view12 -> {
+            hideTextViewsExcept(hosnObe_rules);
+            setCardsVisibility(View.INVISIBLE);
         });
 
-        BtnPensionisteln.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               hideTextViewsExcept(pensionistln_rules);
-               setCardsVisibility(View.INVISIBLE);
-            }
+        btnPensionisteln.setOnClickListener(view13 -> {
+           hideTextViewsExcept(pensionistln_rules);
+           setCardsVisibility(View.INVISIBLE);
         });
 
-        BtnSchnopsn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnSchnopsn.setOnClickListener(view14 -> {
 
-                hideTextViewsExcept(schonpsn_rules);
-                setCardsVisibility(View.INVISIBLE);
-            }
+            hideTextViewsExcept(schonpsn_rules);
+            setCardsVisibility(View.INVISIBLE);
         });
 
-        BtnWattn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnWattn.setOnClickListener(view15 -> {
 
-                hideTextViewsExcept(wattn_rules);
-                setCardsVisibility(View.INVISIBLE);
+            hideTextViewsExcept(wattn_rules);
+            setCardsVisibility(View.INVISIBLE);
 
-            }
         });
         return  view;
     }
 
     private void setCardListener(String desc, ImageView img){
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String[] s = desc.split("_");
-                Toast.makeText(getContext(), s[0].toUpperCase(Locale.ROOT) + " " + s[1].toUpperCase(Locale.ROOT), Toast.LENGTH_LONG).show();
-            }
+        img.setOnClickListener(view -> {
+            String[] s = desc.split("_");
+            Toast.makeText(getContext(), s[0].toUpperCase(Locale.ROOT) + " " + s[1].toUpperCase(Locale.ROOT), Toast.LENGTH_LONG).show();
         });
     }
 

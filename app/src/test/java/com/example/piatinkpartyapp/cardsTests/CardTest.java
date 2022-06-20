@@ -8,15 +8,15 @@ import com.example.piatinkpartyapp.cards.Symbol;
 
 import org.junit.jupiter.api.Test;
 
-public class CardTest {
+class CardTest {
 
     @Test
-    public void addition_isCorrect() {
+    void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
 
     @Test
-    public void testCardValue() {
+    void testCardValue() {
         Symbol symbol = Symbol.KARO;
         CardValue cardValue = CardValue.ASS;
 
@@ -25,13 +25,13 @@ public class CardTest {
     }
 
     @Test
-    public void testIsCheated() {
+    void testIsCheated() {
     	Card card = new Card(Symbol.KARO, CardValue.ASS);
     	assertEquals(false, card.isCheated());
     }
 
     @Test
-    public void testSetCheated() {
+    void testSetCheated() {
         Card card = new Card(Symbol.KARO, CardValue.ASS);
         Boolean cheated = true;
         card.setCheated(cheated);
@@ -39,19 +39,19 @@ public class CardTest {
     }
 
     @Test
-    public void testCard() {
+    void testCard() {
         Card card = new Card(Symbol.KARO, CardValue.ASS);
         assertEquals(Symbol.KARO, card.getSymbol());
     }
 
     @Test
-    public void testGetBackSide() {
+    void testGetBackSide() {
         Card card = new Card(Symbol.KARO, CardValue.ASS);
         assertEquals(new Card(Symbol.KARO, CardValue.ASS).backSide, card.getBackSide());
     }
 
     @Test
-    public void testGetFrontSide() {
+    void testGetFrontSide() {
         Card card = new Card(Symbol.KARO, CardValue.ASS);
         assertEquals(new Card(Symbol.KARO, CardValue.ASS).frontSide, card.getFrontSide());
     }

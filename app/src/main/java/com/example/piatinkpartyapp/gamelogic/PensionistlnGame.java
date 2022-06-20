@@ -5,7 +5,7 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.PensionistlnRound;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses.Response_PensionistlnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.responses.responsePensionistLnStartedClientMessage;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -17,7 +17,6 @@ public class PensionistlnGame extends SchnopsnGame{
     }
     private PensionistlnRound currentRound;
 
-    private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
     @Override
     public void startGame() {
@@ -47,7 +46,7 @@ public class PensionistlnGame extends SchnopsnGame{
     public void sendGameStartedMessageToClients() {
         for (Player player : lobby.getPlayers()) {
             // send message to client that game has started
-            Response_PensionistlnStartedClientMessage request = new Response_PensionistlnStartedClientMessage(currentRound);
+            responsePensionistLnStartedClientMessage request = new responsePensionistLnStartedClientMessage(currentRound);
             player.getClientConnection().sendTCP(request);
         }
     }
@@ -80,7 +79,6 @@ public class PensionistlnGame extends SchnopsnGame{
                 startNewRoundPensionistln(getWinningPlayer());
             } else {
                 // Nächsten Spieler benachrichtigen dass er dran ist
-                //LOG.info("notify next player: " + getNextPlayer(player).getId());
                 notifyPlayerYourTurn(getNextPlayer(player));
             }
         }).start();

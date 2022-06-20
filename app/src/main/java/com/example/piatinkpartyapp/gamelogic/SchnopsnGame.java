@@ -6,9 +6,9 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses.Response_PlayerGetHandoutCard;
-import com.example.piatinkpartyapp.networking.Responses.Response_SendHandCards;
-import com.example.piatinkpartyapp.networking.Responses.Response_mixedCards;
+import com.example.piatinkpartyapp.networking.responses.responsePlayerGetHandoutCard;
+import com.example.piatinkpartyapp.networking.responses.responseSendHandCards;
+import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -60,7 +60,7 @@ public class SchnopsnGame extends Game {
     }
 
     public void sendHandCardsToPlayer(ArrayList<Card> handCards, Player player){
-        Response_SendHandCards request = new Response_SendHandCards();
+        responseSendHandCards request = new responseSendHandCards();
         request.cards = handCards;
         request.playerID = player.getClientConnection().getID();
         player.getClientConnection().sendTCP(request);
@@ -194,7 +194,7 @@ public class SchnopsnGame extends Game {
                 player.addHandcard(newCard);
 
                 // send message with handout card to players
-                Response_PlayerGetHandoutCard response = new Response_PlayerGetHandoutCard();
+                responsePlayerGetHandoutCard response = new responsePlayerGetHandoutCard();
                 response.playerID = player.getClientConnection().getID();
                 response.card = newCard;
                 player.getClientConnection().sendTCP(response);
@@ -211,7 +211,7 @@ public class SchnopsnGame extends Game {
         LOG.info("after mixing");
         LOG.info(deck.getDeck().get(0).toString());
         LOG.info(deck.toString());
-        Response_mixedCards response = new Response_mixedCards();
+        responseMixedCards response = new responseMixedCards();
         lobby.getPlayerByID(1).getClientConnection().sendTCP(response);
     }
 

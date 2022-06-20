@@ -10,13 +10,13 @@ import com.example.piatinkpartyapp.networking.GameServer;
 
 import org.junit.jupiter.api.Test;
 
-public class GameClientTest {
+class GameClientTest {
 
     String ip = "127.0.0.1";
     GameServer gameServer = new GameServer();
     GameClient gameClient;
     @Test
-    public void testIfClientCanConnect() {
+    void testIfClientCanConnect() {
         try{
             gameClient = new GameClient(ip);
 
@@ -30,7 +30,7 @@ public class GameClientTest {
     }
 
     @Test
-    public void testIfGameStarted() {
+    void testIfGameStarted() {
         try{
             gameClient = new GameClient(ip);
             gameServer.startNewGameServer();
@@ -45,13 +45,13 @@ public class GameClientTest {
     }
 /*
     @Test
-    public void testGameStartMessage(){
+    void testGameStartMessage(){
         this.gameClient.startGame();
         Mockito.verify(client,Mockito.times(1)).sendTCP(new Requests.StartGameMessage());
     }
 
     @Test
-    public void testSetCorrectCard(){
+    void testSetCorrectCard(){
         Card card = new Card(Symbol.HERZ, CardValue.ASS);
         this.gameClient.setCard(card);
         Requests.PlayerSetCard req = new Requests.PlayerSetCard();
@@ -60,7 +60,7 @@ public class GameClientTest {
     }
 
     @Test
-    public void testSetSchlag(){
+    void testSetSchlag(){
         MutableLiveData<Boolean> schlag = Mockito.mock(MutableLiveData.class);
         this.gameClient.setSetSchlag(schlag);
         this.gameClient.setSchlag(CardValue.ACHT);
@@ -69,7 +69,7 @@ public class GameClientTest {
     }
 
     @Test
-    public void testSetTrump(){
+    void testSetTrump(){
         MutableLiveData<Boolean> setTrump = Mockito.mock(MutableLiveData.class);
         this.gameClient.setSetTrump(setTrump);
         this.gameClient.setTrump(Symbol.HERZ);
