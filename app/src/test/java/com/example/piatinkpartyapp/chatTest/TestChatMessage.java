@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 public class TestChatMessage {
 
     @Test
-    public void constructorTestIn() {
+    void constructorTestIn() {
         String playerName = "player1";
         String message = "Hallo";
         String date = "10-10-2022";
@@ -21,7 +21,7 @@ public class TestChatMessage {
     }
 
     @Test
-    public void constructorTestOut() {
+     void constructorTestOut() {
         String playerName = "player1";
         String message = "Hallo";
         String date = "10-10-2022";
@@ -31,7 +31,7 @@ public class TestChatMessage {
     }
 
     @Test
-    public void constructorTestNull() {
+     void constructorTestNull() {
         String playerName = null;
         String message = null;
         String date = null;
@@ -41,7 +41,7 @@ public class TestChatMessage {
     }
 
     @Test
-    public void testGetPlayerName() {
+     void testGetPlayerName() {
         String playerName = "player1";
         String message = "Hallo";
         String date = "10-10-2022";
@@ -51,7 +51,7 @@ public class TestChatMessage {
     }
 
     @Test
-    public void testGetMessage() {
+     void testGetMessage() {
         String playerName = "player1";
         String message = "Hallo";
         String date = "10-10-2022";
@@ -62,7 +62,7 @@ public class TestChatMessage {
     }
 
     @Test
-    public void testGetDate() {
+     void testGetDate() {
         String playerName = "player1";
         String message = "Hallo";
         String date = "10-10-2022";
@@ -72,7 +72,7 @@ public class TestChatMessage {
     }
 
     @Test
-    public void testGetType() {
+     void testGetType() {
         String playerName = "player1";
         String message = "Hallo";
         String date = "10-10-2022";

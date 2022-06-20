@@ -29,9 +29,6 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
     private Button ButtonStartLobby;
 
 
-    private String mParam1;
-    private String mParam2;
-
     public CreateGameFragment(){}
 
     public static CreateGameFragment newInstance(String param1, String param2) {
@@ -47,8 +44,8 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 

@@ -12,12 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-public class SchnopsnDeckTest {
+class SchnopsnDeckTest {
 
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
 
     /*
     @Test
@@ -90,7 +86,7 @@ public class SchnopsnDeckTest {
      */
 
     @Test
-    public void testGetSchnopsnCardValues() {
+    void testGetSchnopsnCardValues() {
 
         GameName gameName = GameName.Schnopsn;
         int players = 3;
@@ -103,7 +99,7 @@ public class SchnopsnDeckTest {
     }
 
     @Test
-    public void testCreateCards() {
+    void testCreateCards() {
 
         GameName gameName = GameName.Schnopsn;
         int players = 3;
@@ -125,7 +121,7 @@ public class SchnopsnDeckTest {
     }
 
     @Test
-    public void testSwappingCard() {
+    void testSwappingCard() {
         GameName gameName = GameName.Schnopsn;
         int players = 3;
 
@@ -134,7 +130,7 @@ public class SchnopsnDeckTest {
     }
 
     @Test
-    public void testCardPoints() {
+    void testCardPoints() {
         CardValue cardValue = CardValue.ZEHN;
         GameName gameName = GameName.Schnopsn;
         int players = 3;
@@ -145,7 +141,7 @@ public class SchnopsnDeckTest {
     }
 
     @Test
-    public void testCardPoints1() {
+    void testCardPoints1() {
         GameName gameName = GameName.Schnopsn;
         int players = 3;
 

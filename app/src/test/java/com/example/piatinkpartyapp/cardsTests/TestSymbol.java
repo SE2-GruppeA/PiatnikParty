@@ -1,4 +1,4 @@
 package com.example.piatinkpartyapp.cardsTests;
 
-public class TestSymbol {
+class TestSymbol {
 }

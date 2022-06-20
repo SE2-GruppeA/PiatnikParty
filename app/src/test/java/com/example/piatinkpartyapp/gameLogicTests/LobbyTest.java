@@ -20,20 +20,20 @@ public class LobbyTest {
     private Player playerTest;
 
     @BeforeEach
-    public void init(){
+     void init(){
         //Initialize Variable
         lobby = new Lobby();
 
     }
 
     @AfterEach
-    public void breakDown(){
+     void breakDown(){
 
         lobby = null;
     }
 
     @Test
-    public void testWinnerGameOfVoting(){
+     void testWinnerGameOfVoting(){
         GameName SCHNOPSN = GameName.Schnopsn;
 
         lobby.getWinnerGameOfVoting();
@@ -42,7 +42,7 @@ public class LobbyTest {
     }
 
     @Test
-    public void testHandleVotingForNextGame(){
+     void testHandleVotingForNextGame(){
         int playerID = 1;
         GameName SCHNOPSN = GameName.Schnopsn;
         lobby.handleVotingForNextGame(playerID,SCHNOPSN);
@@ -51,13 +51,13 @@ public class LobbyTest {
     }
 
     @Test
-    public void testCheckIfAllPlayersFinishedVoting(){
+     void testCheckIfAllPlayersFinishedVoting(){
         lobby.checkIfAllPlayersFinishedVoting();
         assertTrue(lobby.checkIfAllPlayersFinishedVoting());
     }
 
     @Test
-    public void test(){
+     void test(){
         assertNotNull(lobby.getPlayerByID(1));
     }
 }

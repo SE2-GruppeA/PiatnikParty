@@ -5,7 +5,7 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.PensionistlnRound;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses.Response_PensionistlnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.responses.responsePensionistLnStartedClientMessage;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -47,7 +47,7 @@ public class PensionistlnGame extends SchnopsnGame{
     public void sendGameStartedMessageToClients() {
         for (Player player : lobby.getPlayers()) {
             // send message to client that game has started
-            Response_PensionistlnStartedClientMessage request = new Response_PensionistlnStartedClientMessage(currentRound);
+            responsePensionistLnStartedClientMessage request = new responsePensionistLnStartedClientMessage(currentRound);
             player.getClientConnection().sendTCP(request);
         }
     }

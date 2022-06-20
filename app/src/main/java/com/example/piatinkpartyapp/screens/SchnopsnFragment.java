@@ -35,7 +35,7 @@ import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.chat.fragments.ExposeCheaterFragment;
 import com.example.piatinkpartyapp.chat.fragments.ExposeDialogFragment;
 import com.example.piatinkpartyapp.chat.fragments.IsCheaterDialogFragment;
-import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardToAllPlayers;
+import com.example.piatinkpartyapp.networking.responses.responseSendPlayedCardToAllPlayers;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -94,14 +94,11 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     Boolean cardsToMix;
 
 
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public SchnopsnFragment() {
         // Required empty public constructor
@@ -115,7 +112,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
      * @param param2 Parameter 2.
      * @return A new instance of fragment SchnopsnFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static SchnopsnFragment newInstance(String param1, String param2) {
         SchnopsnFragment fragment = new SchnopsnFragment();
         Bundle args = new Bundle();
@@ -129,8 +126,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
         //sensorics
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -151,7 +148,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
             mAccelLast = mAccelCurrent;
-            mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+            mAccelCurrent = (float) Math.sqrt((x * x + y * y + z * z));
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta;
             if (mAccel > 12) {
@@ -159,13 +156,15 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
                 Toast.makeText(getContext(), "shake detected", Toast.LENGTH_LONG).show();
                 clientViewModel.mixCards();
-               // mixCards(cardsToMix);
+
             }
         }
 
+        /*
+        //Don't know this methode is empty
+         */
         @Override
         public void onAccuracyChanged(Sensor sensor, int i) {
-
         }
     };
 
@@ -249,38 +248,36 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
 
             //when a game is started, the client gets notified
-            clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), started -> initializeSchnopsn(started));
-            clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), started -> initializeWattn(started));
-            clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), started -> initializePensionistln(started));
-            clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), started -> initializeHosnObe(started));
+            clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), this::initializeSchnopsn);
+            clientViewModel.isWattnStarted().observe(getViewLifecycleOwner(), this::initializeWattn);
+            clientViewModel.isPensionistlnStarted().observe(getViewLifecycleOwner(), this::initializePensionistln);
+            clientViewModel.isHosnObeStarted().observe(getViewLifecycleOwner(), this::initializeHosnObe);
 
-            clientViewModel.getHandCards().observe(getViewLifecycleOwner(), handCards -> updateHandCards(handCards));
-            clientViewModel.isMyTurn().observe(getViewLifecycleOwner(), isMyTurn -> waitForMyTurn(isMyTurn));
-            clientViewModel.getHandoutCard().observe(getViewLifecycleOwner(), card -> getHandoutCard(card));
-            clientViewModel.isVotingForNextGame().observe(getViewLifecycleOwner(), votingForNextGame -> voteForNextGame(votingForNextGame));
-            clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), winner -> atRoundEnd(winner));
-            clientViewModel.getPlayedCard().observe(getViewLifecycleOwner(), playedCard -> setPlayedCard(playedCard));
-            clientViewModel.getPoints().observe(getViewLifecycleOwner(), points -> setScorePoints(points));
-            clientViewModel.isSetTrump().observe(getViewLifecycleOwner(), setTrump -> playerSetTrump(setTrump));
-            clientViewModel.isSetSchlag().observe(getViewLifecycleOwner(), setSchlag -> playerSetSchlag(setSchlag));
-            clientViewModel.getTrump().observe(getViewLifecycleOwner(), trump -> setTrump(trump));
-            clientViewModel.getSchlag().observe(getViewLifecycleOwner(), schlag ->setSchlag(schlag));
-            clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), winnerId -> showWinner(winnerId));
-            clientViewModel.isCheaterExposed().observe(getViewLifecycleOwner(), isCheater -> showCheaterExposed(isCheater));
-            clientViewModel.isCheatingExposed().observe(getViewLifecycleOwner(), isCheating -> showCheatingExposed(isCheating));
+            clientViewModel.getHandCards().observe(getViewLifecycleOwner(), this::updateHandCards);
+            clientViewModel.isMyTurn().observe(getViewLifecycleOwner(), this::waitForMyTurn);
+            clientViewModel.getHandoutCard().observe(getViewLifecycleOwner(), this::getHandoutCard);
+            clientViewModel.isVotingForNextGame().observe(getViewLifecycleOwner(), this::voteForNextGame);
+            clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), this::atRoundEnd);
+            clientViewModel.getPlayedCard().observe(getViewLifecycleOwner(), this::setPlayedCard);
+            clientViewModel.getPoints().observe(getViewLifecycleOwner(), this::setScorePoints);
+            clientViewModel.isSetTrump().observe(getViewLifecycleOwner(), this::playerSetTrump);
+            clientViewModel.isSetSchlag().observe(getViewLifecycleOwner(), this::playerSetSchlag);
+            clientViewModel.getTrump().observe(getViewLifecycleOwner(), this::setTrump);
+            clientViewModel.getSchlag().observe(getViewLifecycleOwner(), this::setSchlag);
+            clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), this::showWinner);
+            clientViewModel.isCheaterExposed().observe(getViewLifecycleOwner(), this::showCheaterExposed);
+            clientViewModel.isCheatingExposed().observe(getViewLifecycleOwner(), this::showCheatingExposed);
 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
-            clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), message -> notifyNewMessage(message));
+            clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), this::notifyNewMessage);
 
             //receiving messages from server
-            clientViewModel.getServerMessage().observe(getViewLifecycleOwner(), serverMessage -> showServerMessage(serverMessage));
+            clientViewModel.getServerMessage().observe(getViewLifecycleOwner(), this::showServerMessage);
 
             //shaking phone to mix cards
 
-            clientViewModel.mixedCards().observe(getViewLifecycleOwner(), mixedCards -> mixCards(mixedCards));
+            clientViewModel.mixedCards().observe(getViewLifecycleOwner(), this::mixCards);
         }
-
-        //initializeGame();
         return root;
     }
 
@@ -386,10 +383,6 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         if (setTrump) {
             requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new TrumpSelect()).commit();
         }
-       /* if(clientViewModel.getTrump().getValue()!=null){
-            setTrump(clientViewModel.getTrump().getValue());
-        }*/
-
     }
 
     private void setScorePoints(Integer points) {
@@ -410,7 +403,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     }
 
-    private void setPlayedCard(Response_SendPlayedCardToAllPlayers playedCard) {
+    private void setPlayedCard(responseSendPlayedCardToAllPlayers playedCard) {
         play(playedCard.card, playedCard.playerID);
     }
 
@@ -445,7 +438,6 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         voteBtn.setOnClickListener(this);
         btnCheat.setOnClickListener(this);
         btnExpose.setOnClickListener(this);
-        //mixCardsBtn.setOnClickListener(this);
     }
 
     private void addAllViews(View view) {
@@ -495,7 +487,6 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    // todo: isCheater comes from LiveData
     private void isCheaterLiveDataHandler(boolean isCheater) {
         IsCheaterDialogFragment dialog;
 

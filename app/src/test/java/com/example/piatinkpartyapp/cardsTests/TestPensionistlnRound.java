@@ -6,7 +6,7 @@ import com.example.piatinkpartyapp.cards.PensionistlnRound;
 
 import org.junit.jupiter.api.Test;
 
-public class TestPensionistlnRound {
+class TestPensionistlnRound {
 
     private enum PensionistlnRoundEnum {
         KEIN_STICH,
