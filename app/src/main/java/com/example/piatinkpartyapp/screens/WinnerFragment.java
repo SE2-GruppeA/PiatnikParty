@@ -18,7 +18,7 @@ public class WinnerFragment extends Fragment implements View.OnClickListener {
 
     private static final String WINNER = "winner";
 
-    private String winner;
+    private String winnerrr;
 
     TextView txtWinner;
     ImageView btnClose;
@@ -27,7 +27,7 @@ public class WinnerFragment extends Fragment implements View.OnClickListener {
 
     public WinnerFragment() {
         // Required empty public constructor
-        winner = "";
+        winnerrr = "";
     }
 
     public static WinnerFragment newInstance(String winner) {
@@ -42,7 +42,7 @@ public class WinnerFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            winner = getArguments().getString(WINNER);
+            winnerrr = getArguments().getString(WINNER);
         }
     }
 
@@ -55,7 +55,7 @@ public class WinnerFragment extends Fragment implements View.OnClickListener {
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
         txtWinner = view.findViewById(R.id.txtWinner);
-        txtWinner.setText(winner);
+        txtWinner.setText(winnerrr);
 
         btnClose = view.findViewById(R.id.btnCloseWinnerFragment);
         btnClose.setOnClickListener(this);

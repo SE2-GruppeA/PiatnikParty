@@ -29,26 +29,18 @@ import com.example.piatinkpartyapp.R;
  */
 public class EinstellungenFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
-    private Button backBtn;
-    private SeekBar seekBar;
     private ContentResolver contentResolver;
     private Window window;
     private int brightness;
     private TextView percentageView;
 
-    private SeekBar seekBarVolume;
     private TextView percantageViewVolume;
     private int volume;
 
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public EinstellungenFragment() {
         // Required empty public constructor
@@ -62,7 +54,7 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
      * @param param2 Parameter 2.
      * @return A new instance of fragment EinstellungenFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static EinstellungenFragment newInstance(String param1, String param2) {
         EinstellungenFragment fragment = new EinstellungenFragment();
         Bundle args = new Bundle();
@@ -76,8 +68,8 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -86,13 +78,13 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_einstellungen, container, false);
 
-        backBtn = (Button) root.findViewById(R.id.button);
+        Button backBtn = (Button) root.findViewById(R.id.button);
         backBtn.setOnClickListener(this);
 
-        seekBar = (SeekBar) root.findViewById(R.id.seekBar);
+        SeekBar seekBar = (SeekBar) root.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(this);
 
-        seekBarVolume = (SeekBar) root.findViewById(R. id. seekBarVolume);
+        SeekBar seekBarVolume = (SeekBar) root.findViewById(R.id.seekBarVolume);
         seekBarVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -105,6 +97,9 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
                 }
             }
 
+            /*
+            //Don't know this methode is empty
+             */
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
@@ -112,8 +107,8 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                String text = "The permissions could be granted";
                 boolean grantPermissions = Settings.System.canWrite(getContext());
-                //Settings.ACTION_MANAGE_WRITE_SETTINGS;
                 AudioManager am = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
 
                 if (!grantPermissions) {
@@ -121,15 +116,15 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
                     startActivity(intent);
 
                     Toast.makeText(getActivity().getApplicationContext(),
-                            "The permissions could be granted", Toast.LENGTH_SHORT).show();
+                            text, Toast.LENGTH_SHORT).show();
 
                     Toast.makeText(getActivity().getApplicationContext(),
-                            "Now you can change the screen brightness", Toast.LENGTH_SHORT).show();
+                            text, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(),
-                            "Screen brightness changed to " + volume, Toast.LENGTH_SHORT).show();
+                            text + volume, Toast.LENGTH_SHORT).show();
 
-                    Log.e("Error", "The permissions could be granted");
+                    Log.e("Error", text);
                 }
 
                 am.setStreamVolume(AudioManager.STREAM_MUSIC,volume,0);
@@ -151,7 +146,6 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
             brightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS);
         } catch (Settings.SettingNotFoundException e) {
             Log.e("Error","Brightness cannot be changed");
-            //e.printStackTrace();
             Toast.makeText(getActivity().getApplicationContext(),
                     "Brightness cannot be changed", Toast.LENGTH_SHORT).show();
         }
@@ -170,11 +164,7 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         Settings.System.canWrite(getContext());
 
-        if (progress <= 1) {
-            brightness = 1;
-        } else {
-            brightness = progress;
-        }
+        brightness = Math.max(progress, 1);
 
         float percentage = (brightness / (float) 100) * 100;
 
