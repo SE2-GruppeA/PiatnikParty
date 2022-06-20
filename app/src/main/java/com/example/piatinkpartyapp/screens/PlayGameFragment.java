@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.clientuilogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.networking.NetworkHandler;
 
@@ -88,7 +88,6 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
     private void atGameStart() {
         getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
                 new SchnopsnFragment()).commit();
-                //new WattnFragment()).commit();
     }
 
     @Override

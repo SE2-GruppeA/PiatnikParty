@@ -8,6 +8,7 @@ public class responseMixedCards implements IPackets {
     //Don't know this methode is empty
      */
     public responseMixedCards() {
+        //Do Nothing
     }
 
 }

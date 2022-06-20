@@ -6,7 +6,7 @@ public class requestExposePossibleCheater implements IPackets {
     public Integer playerId;
 
     public requestExposePossibleCheater() {
-
+        //Do Nothing
     }
 
     public requestExposePossibleCheater(Integer playerId) {

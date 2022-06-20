@@ -115,29 +115,29 @@ public class GameRulesFragment extends Fragment implements View.OnClickListener 
         Button btnPensionisteln = (Button) view.findViewById(R.id.buttonPensionistln);
         Button btnCards = (Button) view.findViewById(R.id.buttonKarten);
 
-        ImageView karo_sieben = view.findViewById(R.id.imageViewKaroSieben);
-        cardViews.add(karo_sieben);
+        ImageView karosieben = view.findViewById(R.id.imageViewKaroSieben);
+        cardViews.add(karosieben);
 
-        ImageView kreuz_acht = view.findViewById(R.id.imageViewKreuzAcht);
-        cardViews.add(kreuz_acht);
+        ImageView kreuzacht = view.findViewById(R.id.imageViewKreuzAcht);
+        cardViews.add(kreuzacht);
 
-        ImageView pick_neun = view.findViewById(R.id.imageViewPickNeun);
-        cardViews.add(pick_neun);
+        ImageView pickNeun = view.findViewById(R.id.imageViewPickNeun);
+        cardViews.add(pickNeun);
 
-        ImageView herz_zehn = view.findViewById(R.id.imageViewHerzZehn);
-        cardViews.add(herz_zehn);
+        ImageView herzZehn = view.findViewById(R.id.imageViewHerzZehn);
+        cardViews.add(herzZehn);
 
-        ImageView herz_unter = view.findViewById(R.id.imageViewHerzUnter);
-        cardViews.add(herz_unter);
+        ImageView herzUnter = view.findViewById(R.id.imageViewHerzUnter);
+        cardViews.add(herzUnter);
 
-        ImageView herz_ober = view.findViewById(R.id.imageViewHerzOber);
-        cardViews.add(herz_ober);
+        ImageView herzOber = view.findViewById(R.id.imageViewHerzOber);
+        cardViews.add(herzOber);
 
-        ImageView herz_koenig = view.findViewById(R.id.imageViewHerzKoenig);
-        cardViews.add(herz_koenig);
+        ImageView herzKoenig = view.findViewById(R.id.imageViewHerzKoenig);
+        cardViews.add(herzKoenig);
 
-        ImageView herz_ass = view.findViewById(R.id.imageViewHerzAss);
-        cardViews.add(herz_ass);
+        ImageView herzAss = view.findViewById(R.id.imageViewHerzAss);
+        cardViews.add(herzAss);
 
         for(ImageView imageView : cardViews){
             setCard(imageView);

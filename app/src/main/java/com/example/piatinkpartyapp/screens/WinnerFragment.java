@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.clientuilogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 
 public class WinnerFragment extends Fragment implements View.OnClickListener {

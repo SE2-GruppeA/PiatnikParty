@@ -34,7 +34,6 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
     private int brightness;
     private TextView percentageView;
 
-    private TextView percantageViewVolume;
     private int volume;
 
 
@@ -97,12 +96,10 @@ public class EinstellungenFragment extends Fragment implements View.OnClickListe
                 }
             }
 
-            /*
-            //Don't know this methode is empty
-             */
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                //Do Nothing
             }
 
             @Override

@@ -8,7 +8,7 @@ import com.example.piatinkpartyapp.cards.Symbol;
 
 import org.junit.jupiter.api.Test;
 
-public class CardTest {
+class CardTest {
 
     @Test
     void addition_isCorrect() {

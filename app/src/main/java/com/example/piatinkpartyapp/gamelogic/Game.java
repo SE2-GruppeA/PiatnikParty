@@ -146,7 +146,6 @@ public class Game {
     public void sendSchlagToAllPlayers(CardValue cardValue){
         for(Player player: lobby.getPlayers()){
             responseSendSchlagToAllPlayers response = new responseSendSchlagToAllPlayers(cardValue);
-            //response.schlag = cardValue;
             player.getClientConnection().sendTCP(response);
         }
     }
@@ -197,29 +196,27 @@ public class Game {
         return lobby;
     }
 
-    /*
-    // DOnt know why this methode is empty.
-     */
-    public void startGame() {
 
+    public void startGame() {
+        // DOnt know why this methode is empty.
     }
 
-    /*
-    // DOnt know why this methode is empty.
-    */
-    public void setCard(int id, Card card) {
 
+
+
+    public void setCard(int id, Card card) {
+        // DOnt know why this methode is empty.
     }
 
     public void givePlayerBestCard(int playerId){
         lobby.getPlayerByID(playerId).setCheaten(true);
     }
 
-    /*
-    // DOnt know why this methode is empty.
-    */
-    public void setSchlag(CardValue hit){
 
+
+
+    public void setSchlag(CardValue hit){
+        // DOnt know why this methode is empty.
     }
 
     public void setTrump(Symbol trump){
@@ -234,11 +231,11 @@ public class Game {
         return null;
     }
 
-    /*
-    // DOnt know why this methode is empty.
-    */
-    public void mixCards() {
 
+
+
+    public void mixCards() {
+        // DOnt know why this methode is empty.
     }
 
     public Boolean isPlayerCheater(Integer playerId, Integer exposerId) {

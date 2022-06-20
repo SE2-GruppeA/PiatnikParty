@@ -151,7 +151,6 @@ public class WattnGame extends Game {
                     == this.deck.getHit()
                     && winningPlayer.getCardPlayed().getSymbol()
                     == deck.getTrump()){
-                //winningPlayer = winningPlayer;
                 return winningPlayer;
             }
 
@@ -161,7 +160,6 @@ public class WattnGame extends Game {
 
             } //hit case - first played hit wins
             else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getHit() ){
-                //winningPlayer = winningPlayer;
             }//hit case - hit wins
             else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && (winningPlayer.getCardPlayed().cardValue != this.deck.getHit())){
 
