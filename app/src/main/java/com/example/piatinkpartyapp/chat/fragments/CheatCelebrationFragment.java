@@ -1,34 +1,29 @@
-package com.example.piatinkpartyapp.chat;
+package com.example.piatinkpartyapp.chat.fragments;
+
+import static nl.dionsegijn.konfetti.core.Position.Relative;
 
 import android.app.Dialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.piatinkpartyapp.R;
-
-
-import static nl.dionsegijn.konfetti.core.Position.Relative;
-
-import android.graphics.drawable.Drawable;
-
-import androidx.core.content.ContextCompat;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import nl.dionsegijn.konfetti.core.Angle;
-import nl.dionsegijn.konfetti.core.Party;
 import nl.dionsegijn.konfetti.core.PartyFactory;
 import nl.dionsegijn.konfetti.core.Spread;
 import nl.dionsegijn.konfetti.core.emitter.Emitter;
 import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
 import nl.dionsegijn.konfetti.core.models.Shape;
-import nl.dionsegijn.konfetti.core.models.Size;
 import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 public class CheatCelebrationFragment extends DialogFragment {
