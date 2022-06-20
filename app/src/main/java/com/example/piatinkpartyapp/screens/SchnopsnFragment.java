@@ -35,7 +35,7 @@ import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.chat.fragments.ExposeCheaterFragment;
 import com.example.piatinkpartyapp.chat.fragments.ExposeDialogFragment;
 import com.example.piatinkpartyapp.chat.fragments.IsCheaterDialogFragment;
-import com.example.piatinkpartyapp.networking.Responses.Response_SendPlayedCardToAllPlayers;
+import com.example.piatinkpartyapp.networking.responses.responseSendPlayedCardToAllPlayers;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -410,7 +410,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     }
 
-    private void setPlayedCard(Response_SendPlayedCardToAllPlayers playedCard) {
+    private void setPlayedCard(responseSendPlayedCardToAllPlayers playedCard) {
         play(playedCard.card, playedCard.playerID);
     }
 

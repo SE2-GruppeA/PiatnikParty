@@ -6,10 +6,10 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.cards.WattnDeck;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerToSetSchlag;
-import com.example.piatinkpartyapp.networking.Responses.Response_NotifyPlayerToSetTrump;
-import com.example.piatinkpartyapp.networking.Responses.Response_SendHandCards;
-import com.example.piatinkpartyapp.networking.Responses.Response_WattnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.responses.responseNotifyPlayerToSetSchlag;
+import com.example.piatinkpartyapp.networking.responses.responseNotifyPlayerToSetTrump;
+import com.example.piatinkpartyapp.networking.responses.responseSendHandCards;
+import com.example.piatinkpartyapp.networking.responses.responseWattnStartedClientMessage;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -58,14 +58,14 @@ public class WattnGame extends Game {
             sendHandCardsToPlayer(handCards, player);
             //messages for player 1 to set schlag & player 2 to set trump
             if(player.getId() == 1){
-                player.getClientConnection().sendTCP(new Response_NotifyPlayerToSetSchlag());
+                player.getClientConnection().sendTCP(new responseNotifyPlayerToSetSchlag());
             }else if(player.getId() == 2){
-                player.getClientConnection().sendTCP(new Response_NotifyPlayerToSetTrump());
+                player.getClientConnection().sendTCP(new responseNotifyPlayerToSetTrump());
             }
         }
     }
     public void sendHandCardsToPlayer(ArrayList<Card> handCards, Player player){
-        Response_SendHandCards request = new Response_SendHandCards();
+        responseSendHandCards request = new responseSendHandCards();
         request.cards = handCards;
         request.playerID = player.getClientConnection().getID();
         player.getClientConnection().sendTCP(request);
@@ -274,7 +274,7 @@ public class WattnGame extends Game {
     public void sendGameStartedMessageToClients() {
         for (Player player : lobby.getPlayers()) {
             // send message to client that game has started
-            Response_WattnStartedClientMessage request = new Response_WattnStartedClientMessage();
+            responseWattnStartedClientMessage request = new responseWattnStartedClientMessage();
             player.getClientConnection().sendTCP(request);
         }
     }

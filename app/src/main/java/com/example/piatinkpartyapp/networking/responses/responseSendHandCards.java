@@ -1,17 +1,17 @@
-package com.example.piatinkpartyapp.networking.Responses;
+package com.example.piatinkpartyapp.networking.responses;
 
 import com.example.piatinkpartyapp.cards.Card;
 
 import java.util.ArrayList;
 
-public class Response_SendHandCards {
+public class responseSendHandCards {
     public int playerID;
     public ArrayList<Card> cards;
 
-    public Response_SendHandCards() {
+    public responseSendHandCards() {
     }
 
-    public Response_SendHandCards(int playerID, ArrayList<Card> cards) {
+    public responseSendHandCards(int playerID, ArrayList<Card> cards) {
         this.playerID = playerID;
         this.cards = cards;
     }

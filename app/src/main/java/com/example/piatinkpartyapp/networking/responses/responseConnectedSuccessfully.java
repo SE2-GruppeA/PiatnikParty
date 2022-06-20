@@ -1,13 +1,13 @@
-package com.example.piatinkpartyapp.networking.Responses;
+package com.example.piatinkpartyapp.networking.responses;
 
-public class Response_ConnectedSuccessfully {
+public class responseConnectedSuccessfully {
     public int playerID;
     public boolean isConnected;
 
-    public Response_ConnectedSuccessfully() {
+    public responseConnectedSuccessfully() {
     }
 
-    public Response_ConnectedSuccessfully(int playerID, boolean isConnected) {
+    public responseConnectedSuccessfully(int playerID, boolean isConnected) {
         this.playerID = playerID;
         this.isConnected = isConnected;
     }
