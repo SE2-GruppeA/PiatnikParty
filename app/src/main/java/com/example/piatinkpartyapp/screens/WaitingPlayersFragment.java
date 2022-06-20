@@ -85,6 +85,12 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
         clientViewModel.startNewGameServer();
 
+        try {
+            clientViewModel.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if(!isGameStarted) {
 
             clientViewModel.getConnectionState().observe(getActivity(), this::displayConnectionState);

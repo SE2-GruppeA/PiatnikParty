@@ -101,7 +101,7 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
             clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
             try {
-                clientViewModel.newGameClientInstance();
+                clientViewModel.getInstance();
             } catch (IOException e) {
                 e.printStackTrace();
             }

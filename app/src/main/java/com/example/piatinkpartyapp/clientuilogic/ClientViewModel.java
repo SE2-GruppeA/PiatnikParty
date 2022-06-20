@@ -27,10 +27,6 @@ public class ClientViewModel extends ViewModel {
 
     private GameServer server = null;
 
-    public void newGameClientInstance() throws IOException {
-        //client = GameClient.getNewInstance();
-    }
-
     public void startNewGameServer(){
         server = new GameServer();
         try {
@@ -214,6 +210,10 @@ public class ClientViewModel extends ViewModel {
                 server.closeGame();
             }
         }
+    }
+
+    public void getInstance() throws IOException {
+        client = client.getInstance();
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////
