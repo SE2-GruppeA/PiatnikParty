@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.piatinkpartyapp.clientuilogic.ClientViewModel;
@@ -22,6 +23,7 @@ import com.example.piatinkpartyapp.networking.NetworkHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class WaitingPlayersFragment extends Fragment implements View.OnClickListener {
@@ -80,37 +82,25 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
         lvPlayers = view.findViewById(R.id.lvPlayers);
 
-        //test for gameserver start -> needs relocation
-        server = new GameServer();
-        try {
-            server.startNewGameServer();
-        } catch (IOException ignored) {
-
-
-        }
+        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+        clientViewModel.startNewGameServer();
 
         if(!isGameStarted) {
-            clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
+
             clientViewModel.getConnectionState().observe(getActivity(), this::displayConnectionState);
 
             clientViewModel.isGameStarted().observe(getActivity(), isGameStarted -> atGameStart());
 
-            server.getPlayers().observe(getActivity(), this::updatePlayers);
+            clientViewModel.getPlayers().observe(getActivity(), this::updatePlayers);
         }
 
         // Inflate the layout for this fragment
         return view;
     }
 
-    private void updatePlayers(ArrayList<Player> players) {
-        ArrayList<String> playerList = new ArrayList<>();
-
-        for(Player p:players){
-            playerList.add(p.getPlayerName());
-        }
-
+    private void updatePlayers(Map<String, Integer> players) {
         ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, playerList);
+                new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, new ArrayList<>(players.keySet()));
         lvPlayers.setAdapter(arrayAdapter);
     }
 
@@ -122,11 +112,17 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
         }
     }
 
+    private void removeObservers(){
+        clientViewModel.getConnectionState().removeObservers(this);
+        clientViewModel.isGameStarted().removeObservers(this);
+        clientViewModel.getPlayers().removeObservers(this);
+    }
+
     private void atGameStart(){
         isGameStarted = true;
 
         //opening the game ui
-        getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+        getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                 new SchnopsnFragment()).commit();
     }
 

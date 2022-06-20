@@ -13,6 +13,7 @@ import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.responses.responseCheatingPenalty;
 import com.example.piatinkpartyapp.networking.responses.responseConnectedSuccessfully;
+import com.example.piatinkpartyapp.networking.responses.responseEndOfGame;
 import com.example.piatinkpartyapp.networking.responses.responseEndOfRound;
 import com.example.piatinkpartyapp.networking.responses.responseGameStartedClientMessage;
 import com.example.piatinkpartyapp.networking.responses.responseHosnObeStartedClientMessage;
@@ -183,6 +184,10 @@ public class GameClient {
                         handleSendSchlagToAllPlayers((responseSendSchlagToAllPlayers) object);
                     } else if(object instanceof responseServerMessage){
                         handleServerMessage((responseServerMessage) object);
+                    } else if(object instanceof responseEndOfGame){
+                        handleEndOfGame((responseEndOfGame) object);
+                    } else if(object instanceof responsePlayerDisconnected){
+                        handlePlayerDisconnected((responsePlayerDisconnected) object);
                     }
                 } catch (Exception e) {
                     LOG.info(e.toString());
@@ -205,6 +210,10 @@ public class GameClient {
     private void handleVoteForNextGame() {
         voteForNextGame.postValue(true);
         LOG.info("VoteForNextGame received from the server");
+    }
+
+    private void handleEndOfGame(responseEndOfGame object) {
+        gameStarted.postValue(false);
     }
 
     private void handleEndOfRound(responseEndOfRound object) {
@@ -378,6 +387,8 @@ public class GameClient {
 
     private void handlePlayerDisconnected(responsePlayerDisconnected object){
         LOG.info("PLayer has disconected ID:" + object.playerID);
+
+        disconnectedPlayer.postValue(object.playerID);
     }
 
     //mixed cards
@@ -536,6 +547,7 @@ public class GameClient {
     private MutableLiveData<Boolean> cheatingExposed;
     private MutableLiveData<Map<String, Integer>> players;
     private MutableLiveData<String> serverMessage;
+    private MutableLiveData<Integer> disconnectedPlayer;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -636,6 +648,7 @@ public class GameClient {
         cheatingExposed = new MutableLiveData<>();
         players = new MutableLiveData<>();
         serverMessage = new MutableLiveData<>();
+        disconnectedPlayer = new MutableLiveData<>();
     }
 
 
@@ -700,5 +713,14 @@ public class GameClient {
     public LiveData<String> getServerMessage() {
         return serverMessage;
     }
+
+    public LiveData<Integer> getDisconnectedPlayer(){
+        return disconnectedPlayer;
+    }
+
+    public void disconnectFromGame() {
+        client.stop();
+    }
+
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }

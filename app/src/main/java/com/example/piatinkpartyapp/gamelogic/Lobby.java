@@ -127,4 +127,8 @@ public class Lobby {
         }
         return winnerGame;
     }
+
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
 }
