@@ -25,6 +25,13 @@ public class Lobby {
         return player;
     }
 
+    // for testing
+    public Player addPlayer(int id, String playerName) {
+        Player player = new Player(id, playerName);
+        players.add(player);
+        return player;
+    }
+
     public Player getPlayerByID(int playerID) {
         for (Player player : players) {
             if (player.getId() == playerID) {

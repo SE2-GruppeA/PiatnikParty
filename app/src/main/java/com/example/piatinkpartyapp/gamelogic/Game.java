@@ -201,9 +201,6 @@ public class Game {
         // DOnt know why this methode is empty.
     }
 
-
-
-
     public void setCard(int id, Card card) {
         // DOnt know why this methode is empty.
     }
