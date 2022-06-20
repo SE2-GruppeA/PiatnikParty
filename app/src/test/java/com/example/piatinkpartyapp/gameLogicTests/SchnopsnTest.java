@@ -1,20 +1,5 @@
 package com.example.piatinkpartyapp.gameLogicTests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import com.example.piatinkpartyapp.cards.Card;
-import com.example.piatinkpartyapp.cards.CardValue;
-import com.example.piatinkpartyapp.cards.GameName;
-import com.example.piatinkpartyapp.cards.SchnopsnDeck;
-import com.example.piatinkpartyapp.cards.Symbol;
-import com.example.piatinkpartyapp.gamelogic.Game;
-import com.example.piatinkpartyapp.gamelogic.Lobby;
-import com.example.piatinkpartyapp.gamelogic.Player;
-import com.example.piatinkpartyapp.gamelogic.SchnopsnGame;
-
-import org.junit.Test;
-
 public class SchnopsnTest {
    /*
     @Test
