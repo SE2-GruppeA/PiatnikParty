@@ -37,17 +37,17 @@ import com.example.piatinkpartyapp.networking.Responses.Response_VoteForNextGame
 import com.example.piatinkpartyapp.networking.Responses.Response_WattnStartedClientMessage;
 import com.example.piatinkpartyapp.networking.Responses.Response_mixedCards;
 import com.example.piatinkpartyapp.networking.Responses.Response_playerDisconnected;
-import com.example.piatinkpartyapp.networking.Requests.Request_ExposePossibleCheater;
-import com.example.piatinkpartyapp.networking.Requests.Request_ForceVoting;
-import com.example.piatinkpartyapp.networking.Requests.Request_MixCardsRequest;
-import com.example.piatinkpartyapp.networking.Requests.Request_PlayerRequestsCheat;
-import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetCard;
-import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetSchlag;
-import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetTrump;
-import com.example.piatinkpartyapp.networking.Requests.Request_SendEndToEndChatMessage;
-import com.example.piatinkpartyapp.networking.Requests.Request_SendToAllChatMessage;
-import com.example.piatinkpartyapp.networking.Requests.Request_StartGameMessage;
-import com.example.piatinkpartyapp.networking.Requests.Request_VoteForNextGame;
+import com.example.piatinkpartyapp.networking.requests.requestExposePossibleCheater;
+import com.example.piatinkpartyapp.networking.requests.requestForceVoting;
+import com.example.piatinkpartyapp.networking.requests.requestMixCardsRequest;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerRequestsCheat;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetCard;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetSchlag;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetTrump;
+import com.example.piatinkpartyapp.networking.requests.requestSendEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestSendToAllChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestStartGameMessage;
+import com.example.piatinkpartyapp.networking.requests.requestVoteForNextGame;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -414,12 +414,12 @@ public class GameClient {
     // Call this method from client to start a game
 
     public void startGame() {
-        sendPacket(new Request_StartGameMessage());
+        sendPacket(new requestStartGameMessage());
     }
 
     public void setCard(Card card) {
 
-        Request_PlayerSetCard request = new Request_PlayerSetCard();
+        requestPlayerSetCard request = new requestPlayerSetCard();
         request.card =  card;
         sendPacket(request);
 
@@ -427,18 +427,18 @@ public class GameClient {
     }
 
    public void mixCards(){
-        Request_MixCardsRequest request = new Request_MixCardsRequest();
+        requestMixCardsRequest request = new requestMixCardsRequest();
         sendPacket(request);
     }
 
     public void setSchlag(CardValue schlag) {
-        Request_PlayerSetSchlag request = new Request_PlayerSetSchlag(schlag);
+        requestPlayerSetSchlag request = new requestPlayerSetSchlag(schlag);
         sendPacket(request);
         setSchlag.postValue(false);
     }
 
     public void setTrump(Symbol trump) {
-        Request_PlayerSetTrump request = new Request_PlayerSetTrump(trump);
+        requestPlayerSetTrump request = new requestPlayerSetTrump(trump);
         sendPacket(request);
         setTrump.postValue(false);
     }
@@ -470,12 +470,12 @@ public class GameClient {
     }
 
     public void sendEndToEndMessage(String message, int to) {
-        Request_SendEndToEndChatMessage request = new Request_SendEndToEndChatMessage(message, playerID, to);
+        requestSendEndToEndChatMessage request = new requestSendEndToEndChatMessage(message, playerID, to);
         sendPacket(request);
     }
 
     public void sendToAll(String message) {
-        Request_SendToAllChatMessage request = new Request_SendToAllChatMessage(message, playerID);
+        requestSendToAllChatMessage request = new requestSendToAllChatMessage(message, playerID);
         sendPacket(request);
     }
 
@@ -648,8 +648,8 @@ public class GameClient {
     }
 
     public void sendVoteForNextGame(GameName nextGame){
-        Request_VoteForNextGame request =
-                new Request_VoteForNextGame(nextGame);
+        requestVoteForNextGame request =
+                new requestVoteForNextGame(nextGame);
 
         sendPacket(request);
 
@@ -659,7 +659,7 @@ public class GameClient {
     }
 
     public void forceVoting(){
-        Request_ForceVoting request = new Request_ForceVoting();
+        requestForceVoting request = new requestForceVoting();
 
         sendPacket(request);
 
@@ -667,7 +667,7 @@ public class GameClient {
     }
 
     public void cheatRequest() {
-        Request_PlayerRequestsCheat request = new Request_PlayerRequestsCheat();
+        requestPlayerRequestsCheat request = new requestPlayerRequestsCheat();
 
         sendPacket(request);
 
@@ -675,7 +675,7 @@ public class GameClient {
     }
 
     public void exposePossibleCheater(Integer playerId) {
-        Request_ExposePossibleCheater request = new Request_ExposePossibleCheater(playerId);
+        requestExposePossibleCheater request = new requestExposePossibleCheater(playerId);
         sendPacket(request);
         LOG.info("ExposePossibleCheater Request was sent for playerID : " + playerId);
     }
@@ -689,7 +689,7 @@ public class GameClient {
     }
 
     public void sendVoteForGameEnd() {
-        Request_VoteForNextGame request = new Request_VoteForNextGame();
+        requestVoteForNextGame request = new requestVoteForNextGame();
 
         //sends a Requests.VoteForNextGame packet without setting a nextGame
         sendPacket(request);

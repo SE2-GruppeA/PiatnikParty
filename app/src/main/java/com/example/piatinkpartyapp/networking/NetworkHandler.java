@@ -41,17 +41,17 @@ import com.example.piatinkpartyapp.networking.Responses.Response_VoteForNextGame
 import com.example.piatinkpartyapp.networking.Responses.Response_WattnStartedClientMessage;
 import com.example.piatinkpartyapp.networking.Responses.Response_mixedCards;
 import com.example.piatinkpartyapp.networking.Responses.Response_playerDisconnected;
-import com.example.piatinkpartyapp.networking.Requests.Request_ExposePossibleCheater;
-import com.example.piatinkpartyapp.networking.Requests.Request_ForceVoting;
-import com.example.piatinkpartyapp.networking.Requests.Request_MixCardsRequest;
-import com.example.piatinkpartyapp.networking.Requests.Request_PlayerRequestsCheat;
-import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetCard;
-import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetSchlag;
-import com.example.piatinkpartyapp.networking.Requests.Request_PlayerSetTrump;
-import com.example.piatinkpartyapp.networking.Requests.Request_SendEndToEndChatMessage;
-import com.example.piatinkpartyapp.networking.Requests.Request_SendToAllChatMessage;
-import com.example.piatinkpartyapp.networking.Requests.Request_StartGameMessage;
-import com.example.piatinkpartyapp.networking.Requests.Request_VoteForNextGame;
+import com.example.piatinkpartyapp.networking.requests.requestExposePossibleCheater;
+import com.example.piatinkpartyapp.networking.requests.requestForceVoting;
+import com.example.piatinkpartyapp.networking.requests.requestMixCardsRequest;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerRequestsCheat;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetCard;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetSchlag;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetTrump;
+import com.example.piatinkpartyapp.networking.requests.requestSendEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestSendToAllChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestStartGameMessage;
+import com.example.piatinkpartyapp.networking.requests.requestVoteForNextGame;
 
 import java.util.TreeMap;
 
@@ -66,22 +66,22 @@ public class NetworkHandler {
     public static void register(Kryo kryo) {
 
 
-        kryo.register(Request_SendToAllChatMessage.class);
+        kryo.register(requestSendToAllChatMessage.class);
         kryo.register(Response_ReceiveToAllChatMessage.class);
 
-        kryo.register(Request_SendEndToEndChatMessage.class);
+        kryo.register(requestSendEndToEndChatMessage.class);
         kryo.register(Response_ReceiveEndToEndChatMessage.class);
 
         //Requests
-        kryo.register(Request_StartGameMessage.class);
-        kryo.register(Request_PlayerSetCard.class);
-        kryo.register(Request_PlayerSetSchlag.class);
-        kryo.register(Request_PlayerSetTrump.class);
-        kryo.register(Request_ForceVoting.class);
-        kryo.register(Request_VoteForNextGame.class);
-        kryo.register(Request_PlayerRequestsCheat.class);
-        kryo.register(Request_ExposePossibleCheater.class);
-        kryo.register(Request_MixCardsRequest.class);
+        kryo.register(requestStartGameMessage.class);
+        kryo.register(requestPlayerSetCard.class);
+        kryo.register(requestPlayerSetSchlag.class);
+        kryo.register(requestPlayerSetTrump.class);
+        kryo.register(requestForceVoting.class);
+        kryo.register(requestVoteForNextGame.class);
+        kryo.register(requestPlayerRequestsCheat.class);
+        kryo.register(requestExposePossibleCheater.class);
+        kryo.register(requestMixCardsRequest.class);
 
         //Responses
         kryo.register(Response_ConnectedSuccessfully.class);
