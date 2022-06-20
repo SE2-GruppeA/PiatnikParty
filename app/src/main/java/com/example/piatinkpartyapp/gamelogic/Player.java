@@ -44,6 +44,15 @@ public class Player {
         this.clientConnection = connection;
     }
 
+    // for testing
+    public Player(int id, String playerName) {
+        this.id = id;
+        this.playerName = playerName;
+        this.clientConnection = null;
+    }
+
+
+
     public Card addHandcard(Card card) {
         handcards.add(card);
         return card;
