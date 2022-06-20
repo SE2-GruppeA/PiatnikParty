@@ -17,7 +17,6 @@ public class PensionistlnGame extends SchnopsnGame{
     }
     private PensionistlnRound currentRound;
 
-    private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
     @Override
     public void startGame() {
@@ -80,7 +79,6 @@ public class PensionistlnGame extends SchnopsnGame{
                 startNewRoundPensionistln(getWinningPlayer());
             } else {
                 // Nächsten Spieler benachrichtigen dass er dran ist
-                //LOG.info("notify next player: " + getNextPlayer(player).getId());
                 notifyPlayerYourTurn(getNextPlayer(player));
             }
         }).start();

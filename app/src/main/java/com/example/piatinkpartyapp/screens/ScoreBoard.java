@@ -15,7 +15,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.piatinkpartyapp.R;
-import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.clientuilogic.ClientViewModel;
 
 import java.util.Map;
 
@@ -83,7 +83,7 @@ public class ScoreBoard extends Fragment implements View.OnClickListener {
         //add view model and observer(s)
         clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
 
-        clientViewModel.getPlayers().observe(getViewLifecycleOwner(), players -> updateScoreboard(players));
+        clientViewModel.getPlayers().observe(getViewLifecycleOwner(), this::updateScoreboard);
 
         return root;
     }

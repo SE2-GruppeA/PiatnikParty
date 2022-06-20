@@ -7,5 +7,6 @@ import com.example.piatinkpartyapp.networking.IPackets;
 //a vote will happen
 public class requestForceVoting implements IPackets {
     public requestForceVoting() {
+        //Do Nothing
     }
 }

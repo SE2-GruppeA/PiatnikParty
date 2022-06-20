@@ -1,4 +1,4 @@
-package com.example.piatinkpartyapp.clientUiLogic;
+package com.example.piatinkpartyapp.clientuilogic;
 
 import android.util.Log;
 
@@ -28,10 +28,12 @@ public class ClientViewModel extends ViewModel {
         client = GameClient.getNewInstance();
     }
 
-    /*
+
+    public ClientViewModel() throws IOException {
+         /*
     // Don't know why this methode is empty
      */
-    public ClientViewModel() throws IOException { }
+    }
 
     public String getPlayerID() {
         return String.valueOf(client.getPlayerID());

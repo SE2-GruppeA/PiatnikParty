@@ -10,7 +10,7 @@ import com.example.piatinkpartyapp.networking.GameServer;
 
 import org.junit.jupiter.api.Test;
 
-public class GameClientTest {
+class GameClientTest {
 
     String ip = "127.0.0.1";
     GameServer gameServer = new GameServer();

@@ -1,5 +1,6 @@
 package com.example.piatinkpartyapp.screens;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class CreateGameFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

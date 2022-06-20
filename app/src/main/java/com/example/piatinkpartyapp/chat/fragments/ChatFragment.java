@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.clientuilogic.ClientViewModel;
 import com.example.piatinkpartyapp.chat.ChatAdapter;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.databinding.FragmentChatBinding;
@@ -30,9 +30,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
 
     private FragmentChatBinding binding;
     private ClientViewModel model;
@@ -69,8 +66,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     }
 
     private void extracted() {
-        mParam1 = getArguments().getString(ARG_PARAM1);
-        mParam2 = getArguments().getString(ARG_PARAM2);
+        String mParam1 = getArguments().getString(ARG_PARAM1);
+        String mParam2 = getArguments().getString(ARG_PARAM2);
     }
 
     private void setUpChatRecyclerView() {
@@ -85,12 +82,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Chea
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentChatBinding.inflate(inflater, container, false);
         binding.arrowBackBtn.setOnClickListener(this);
-        binding.button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChatFragment.this.onClickSendChatMessage(v);
-            }
-        });
+        binding.button2.setOnClickListener(ChatFragment.this::onClickSendChatMessage);
         /*
         ORDER OF THIS CODE IS IMPORTANT !!!!
 

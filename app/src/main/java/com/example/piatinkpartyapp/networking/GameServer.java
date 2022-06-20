@@ -59,7 +59,6 @@ public class GameServer {
             try {
                 server.bind(NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
             } catch (IOException e) {
-                //e.printStackTrace();
                 LOG.info(e.toString());
             }
             // create new Game
@@ -76,7 +75,7 @@ public class GameServer {
             @Override
             public void connected(Connection connection) {
                 try {
-                    handle_connected(connection);
+                    handleConnected(connection);
                     super.connected(connection);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -87,7 +86,7 @@ public class GameServer {
             @Override
             public void disconnected(Connection connection) {
                 super.disconnected(connection);
-                handle_disconnected(connection);
+                handleDisconnected(connection);
             }
 
             @Override
@@ -98,23 +97,23 @@ public class GameServer {
                     } else if (object instanceof requestSendToAllChatMessage) {
                         handleSendToAllChatMessage((requestSendToAllChatMessage) object);
                     } else if (object instanceof requestStartGameMessage) {
-                        handle_StartGameMessage(connection);
+                        handleStartGameMessage(connection);
                     } else if (object instanceof requestPlayerSetCard) {
-                        handle_PlayerSetCard(connection, (requestPlayerSetCard) object);
+                        handlePlayerSetCard(connection, (requestPlayerSetCard) object);
                     } else if (object instanceof requestForceVoting){
-                        handle_ForceVoting(connection);
+                        handleForceVoting(connection);
                     } else if(object instanceof requestVoteForNextGame){
-                        handle_VoteForNextGame(connection, (requestVoteForNextGame) object);
+                        handleVoteForNextGame(connection, (requestVoteForNextGame) object);
                     } else if (object instanceof requestPlayerSetSchlag) {
-                        handle_PlayerSetSchlag(connection, (requestPlayerSetSchlag) object);
+                        handlePlayersetschlag(connection, (requestPlayerSetSchlag) object);
                     } else if (object instanceof requestPlayerSetTrump) {
-                        handle_PlayerSetTrump(connection, (requestPlayerSetTrump) object);
+                        handlePlayerSetTrump(connection, (requestPlayerSetTrump) object);
                     } else if(object instanceof requestPlayerRequestsCheat){
-                        handle_PlayerRequestsCheat(connection, (requestPlayerRequestsCheat) object);
+                        handlePlayerRequestsCheat(connection, (requestPlayerRequestsCheat) object);
                     }else if(object instanceof requestMixCardsRequest){
-                        handle_MixCardsRequest(connection,(requestMixCardsRequest) object);
+                        handleMixCardsRequest();
                     }else if(object instanceof requestExposePossibleCheater){
-                        handle_exposePossibleCheater(connection,(requestExposePossibleCheater) object);
+                        handleExposePossibleCheater(connection,(requestExposePossibleCheater) object);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -124,12 +123,13 @@ public class GameServer {
         });
     }
 
-    private void handle_exposePossibleCheater(Connection connection, requestExposePossibleCheater object) {
+    private void handleExposePossibleCheater(Connection connection, requestExposePossibleCheater object) {
         Integer playerId = object.playerId;
+        String Client = "Client";
 
         responseIsCheater response = new responseIsCheater();
 
-        LOG.info("Client " + connection.getID() + " wants to expose client " + object.playerId);
+        LOG.info(Client + connection.getID() + " wants to expose client " + object.playerId);
 
         //player can only expose one time a round and cannot expose himself
         if(playerId != connection.getID()) {
@@ -140,22 +140,19 @@ public class GameServer {
                     response.isCheater = false;
                 }
 
-                LOG.info("Client " + object.playerId + " cheating: " + response.isCheater);
+                LOG.info(Client  + object.playerId + " cheating: " + response.isCheater);
                 connection.sendTCP(response);
             }else{
-                LOG.info("Client " + connection.getID() + " already cheated");
+                LOG.info(Client  + connection.getID() + " already cheated");
                 sendPacket(connection, new responseServerMessage("Du kannst pro Runde nur einmal exposen!"));
             }
         }else{
-            LOG.info("Client " + connection.getID() + " tried to expose himself");
+            LOG.info(Client  + connection.getID() + " tried to expose himself");
             sendPacket(connection, new responseServerMessage("Du kannst dich nicht selbst exposen!"));
         }
     }
 
-    //todo: Add this function to gamelogic itself, it's just here so i can build the handler above !
     private boolean isCheater(Integer playerId, Integer exposerId) {
-        // todo: Implement gamelogic: how explained down below (Maybe Anton or Bene)!
-        // todo: Also add live data !
 
         Boolean isCheater = lobby.currentGame.isPlayerCheater(playerId, exposerId);
 
@@ -178,15 +175,14 @@ public class GameServer {
     }
 
     /////////////////// START - Handler Methods !!! ///////////////////
-    private void handle_connected(Connection connection) {
+    private void handleConnected(Connection connection) {
         LOG.info("Client with ID : " + connection.getID() + " just connected");
 
         responseConnectedSuccessfully response = new responseConnectedSuccessfully();
-        response.isConnected = clients.contains(connection) ? false : clients.add(connection);
+        response.isConnected = !clients.contains(connection) && clients.add(connection);
         response.playerID = connection.getID();
 
         lobby.addPlayer(connection, "Player " + connection.getID());
-      //  wattnGame.addPlayer(connection, "test");
         connection.sendTCP(response);
 
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
@@ -194,7 +190,7 @@ public class GameServer {
         //players.postValue(wattnGame.getPlayers());
     }
 
-    private void handle_disconnected(Connection connection) {
+    private void handleDisconnected(Connection connection) {
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
         players.postValue(lobby.getPlayers());
 
@@ -203,18 +199,17 @@ public class GameServer {
         response.playerID = connection.getID();
         sendPacketToAll(response);
 
-        //players.postValue(wattnGame.getPlayers());
     }
 
-    private void handle_VoteForNextGame(Connection connection, requestVoteForNextGame object) {
+    private void handleVoteForNextGame(Connection connection, requestVoteForNextGame object) {
         LOG.info("Client " + connection.getID() + " voted for" +
                 object.gameName.toString());
 
         lobby.handleVotingForNextGame(connection.getID(), object.gameName);
-       // wattnGame.handleVotingForNextGame(connection.getID(),object.gameName);
+
     }
 
-    private void handle_ForceVoting(Connection connection) {
+    private void handleForceVoting(Connection connection) {
         LOG.info("Voting has been initiated by client " + connection.getID());
 
         responseVoteForNextGame response =
@@ -225,21 +220,16 @@ public class GameServer {
         LOG.info("VoteForNextGame sent to all Clients");
     }
 
-    private void handle_PlayerSetCard(Connection connection, requestPlayerSetCard object) {
+    private void handlePlayerSetCard(Connection connection, requestPlayerSetCard object) {
         requestPlayerSetCard request =
                 object;
 
         LOG.info("Card: " + request.card.getSymbol().toString() + request.card.getCardValue().toString() + " was set from Client ID: " + connection.getID());
         lobby.currentGame.setCard(connection.getID(), request.card);
-    //    wattnGame.setCard(connection.getID(),request.card);
+
     }
 
-    private void handle_StartGameMessage(Connection connection) {
-
-        // zu testen, danach soll nur Tisch geöffnet werden
-        //lobby.currentGame = new SchnopsnGame(lobby);
-        //lobby.currentGame.startGameSchnopsn();
-      //  wattnGame.startGameWattn();
+    private void handleStartGameMessage(Connection connection) {
 
         LOG.info("Game started on server : " + NetworkHandler.GAMESERVER_IP +
                 ", Client ID started the game: " + connection.getID());
@@ -249,10 +239,10 @@ public class GameServer {
         sendPacketToAll(response);
 
         // Message to all Players to open the voting
-        handle_ForceVoting(connection);
+        handleForceVoting(connection);
     }
 
-    private void handle_PlayerSetSchlag(Connection connection, requestPlayerSetSchlag object) {
+    private void handlePlayersetschlag(Connection connection, requestPlayerSetSchlag object) {
         requestPlayerSetSchlag request =
                 object;
         lobby.currentGame.setSchlag(request.schlag);
@@ -260,7 +250,7 @@ public class GameServer {
         LOG.info("Schlag: " + lobby.currentGame.getSchlag() + " was set from Client ID: " + connection.getID());
     }
 
-    private void handle_PlayerSetTrump(Connection connection, requestPlayerSetTrump object) {
+    private void handlePlayerSetTrump(Connection connection, requestPlayerSetTrump object) {
         requestPlayerSetTrump request =
                 object;
         lobby.currentGame.setTrump(request.trump);
@@ -269,7 +259,7 @@ public class GameServer {
         LOG.info("Trump: " + lobby.currentGame.getTrump() + " was set from Client ID: " + connection.getID());
     }
 
-    private void handle_PlayerRequestsCheat(Connection connection, requestPlayerRequestsCheat object) {
+    private void handlePlayerRequestsCheat(Connection connection, requestPlayerRequestsCheat object) {
         requestPlayerRequestsCheat request = object;
         LOG.info("Client " + connection.getID() + " requested cheating");
 
@@ -284,7 +274,7 @@ public class GameServer {
         }
 
     }
-    private void handle_MixCardsRequest(Connection connection, requestMixCardsRequest object){
+    private void handleMixCardsRequest(){
         responseMixedCards response = new responseMixedCards();
         lobby.currentGame.mixCards();
         LOG.info("here");

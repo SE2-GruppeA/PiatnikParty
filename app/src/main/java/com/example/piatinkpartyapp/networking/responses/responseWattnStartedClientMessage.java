@@ -7,5 +7,6 @@ public class responseWattnStartedClientMessage implements IPackets {
     //Don't know this methode is empty
      */
     public responseWattnStartedClientMessage() {
+        //Do Nothing
     }
 }

@@ -24,7 +24,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.piatinkpartyapp.clientUiLogic.ClientViewModel;
+import com.example.piatinkpartyapp.clientuilogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
@@ -160,11 +160,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             }
         }
 
-        /*
-        //Don't know this methode is empty
-         */
         @Override
         public void onAccuracyChanged(Sensor sensor, int i) {
+            //Do Nothing
         }
     };
 
