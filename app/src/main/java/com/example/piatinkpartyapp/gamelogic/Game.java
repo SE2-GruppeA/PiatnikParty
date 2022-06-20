@@ -197,10 +197,16 @@ public class Game {
         return lobby;
     }
 
+    /*
+    // DOnt know why this methode is empty.
+     */
     public void startGame() {
 
     }
 
+    /*
+    // DOnt know why this methode is empty.
+    */
     public void setCard(int id, Card card) {
 
     }
@@ -209,6 +215,9 @@ public class Game {
         lobby.getPlayerByID(playerId).setCheaten(true);
     }
 
+    /*
+    // DOnt know why this methode is empty.
+    */
     public void setSchlag(CardValue hit){
 
     }
@@ -225,6 +234,9 @@ public class Game {
         return null;
     }
 
+    /*
+    // DOnt know why this methode is empty.
+    */
     public void mixCards() {
 
     }

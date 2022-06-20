@@ -40,7 +40,6 @@ public class SchnopsnGame extends Game {
             resetPlayerPoints();
             resetCheating();
             sendHandCards();
-            //  sendTrumpToAllPlayers(this.deck.getTrump());
 
             sendTrumpToAllPlayers(deck.getTrump());
             setRoundStartPlayer(lobby.getPlayers().get(0));
@@ -105,9 +104,6 @@ public class SchnopsnGame extends Game {
     public void setCard(int playerID, Card card) {
         Player player = lobby.getPlayerByID(playerID);
 
-        //only for testing
-        //Card card2 = player.getHandcards().get(0);
-
         new Thread(() -> {
             player.setRoundFinished(true);
             LOG.info("setRoundFinished = true");
@@ -132,7 +128,6 @@ public class SchnopsnGame extends Game {
 
                 sendRoundWinnerPlayerToAllPlayers(roundWonPlayer);
 
-                //TODO: check if one player have enough points
                 startNewRoundSchnopsn(roundWonPlayer);
             } else {
                 // Nächsten Spieler benachrichtigen dass er dran ist

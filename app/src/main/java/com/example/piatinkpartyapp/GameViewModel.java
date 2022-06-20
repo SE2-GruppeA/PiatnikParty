@@ -31,9 +31,7 @@ public class GameViewModel extends ViewModel {
         server = new GameServer();
         try {
             server.startNewGameServer();
-        } catch (IOException e) {
-            //e.printStackTrace();
-        }
+        } catch (IOException ignored) {}
 
         client = new GameClient(ip);
     }
