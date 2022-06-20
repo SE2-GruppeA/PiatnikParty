@@ -113,4 +113,14 @@ public class GameTest {
         Game game = new Game();
         assertEquals(game.lobby, game.getLobby());
     }
+
+    @Test
+    void testSendPlayerCardToAllPlayers() {
+        int playerId = 1;
+
+        Symbol symbol = Symbol.HERZ;
+        CardValue cardValue = CardValue.OBER;
+
+        Card card = new Card(symbol, cardValue);
+    }
 }
