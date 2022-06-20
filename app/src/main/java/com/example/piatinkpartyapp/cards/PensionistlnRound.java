@@ -12,7 +12,7 @@ public enum PensionistlnRound {
     private static final int SIZE = ROUNDS.size();
     private static final Random RANDOM = new Random();
 
-    public static PensionistlnRound getRandomRound(){
+    public static PensionistlnRound getRandomRound() {
         return ROUNDS.get(RANDOM.nextInt(SIZE));
     }
 }

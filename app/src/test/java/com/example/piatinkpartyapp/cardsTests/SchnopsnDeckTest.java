@@ -1,18 +1,16 @@
 package com.example.piatinkpartyapp.cardsTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
-import com.example.piatinkpartyapp.cards.Symbol;
-import com.example.piatinkpartyapp.gamelogic.Game;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SchnopsnDeckTest {
 
@@ -57,6 +55,7 @@ public class SchnopsnDeckTest {
 
     */
 
+    /*
     @Test
     public void testCardPoints() {
 
@@ -72,6 +71,8 @@ public class SchnopsnDeckTest {
 
         assertEquals(10, schnopsnDeck.cardPoints(cardValue));
     }
+    */
+
 
     /*
     @Test
@@ -99,7 +100,6 @@ public class SchnopsnDeckTest {
         ArrayList<CardValue> cardValues = schnopsnDeck.getSchnopsnCardValues();
 
         assertEquals(cardValues.size(), 5);
-
     }
 
     @Test
@@ -122,5 +122,35 @@ public class SchnopsnDeckTest {
 
         assertEquals(cardArrayList.size(), cards.size());
         assertEquals(cardArrayList, cards);
+    }
+
+    @Test
+    public void testSwappingCard() {
+        GameName gameName = GameName.Schnopsn;
+        int players = 3;
+
+        SchnopsnDeck schnopsnDeck = new SchnopsnDeck(gameName, players);
+        assertNotNull(schnopsnDeck.swappingCard());
+    }
+
+    @Test
+    public void testCardPoints() {
+        CardValue cardValue = CardValue.ZEHN;
+        GameName gameName = GameName.Schnopsn;
+        int players = 3;
+
+        SchnopsnDeck schnopsnDeck = new SchnopsnDeck(gameName, players);
+        Integer points = 10;
+        assertEquals(points, schnopsnDeck.cardPoints(cardValue));
+    }
+
+    @Test
+    public void testCardPoints1() {
+        GameName gameName = GameName.Schnopsn;
+        int players = 3;
+
+        SchnopsnDeck schnopsnDeck = new SchnopsnDeck(gameName, players);
+
+        assertNotNull(schnopsnDeck.cardPoints());
     }
 }
