@@ -185,4 +185,25 @@ public class SchnopsnTest {
         assertEquals(player2.isCheaten(), false);
 
     }
+
+    @Test
+    public void getNextPlayerTest() {
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+
+        SchnopsnGame game = new SchnopsnGame(lobby);
+        Player player1 = game.lobby.getPlayerByID(1);
+        Player player2 = game.lobby.getPlayerByID(2);
+
+        game.setRoundStartPlayer(player1);
+
+        Card card1 = new Card(Symbol.HERZ, CardValue.ASS);
+        player1.setCardPlayed(card1);
+        player1.setRoundFinished(true);
+
+        Player next = game.getNextPlayer(player1);
+
+        assertEquals(player2, next);
+    }
 }
