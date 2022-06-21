@@ -39,8 +39,10 @@ public class WattnGame extends Game {
             resetCheating();
             sendGameStartedMessageToClients();
             sendHandCards();
-            setRoundStartPlayer(lobby.getPlayers().get(0));
-            notifyPlayerYourTurn(lobby.getPlayers().get(0));
+
+            Player roundStartPlayer = getRandomPlayer();
+            setRoundStartPlayer(roundStartPlayer);
+            notifyPlayerYourTurn(roundStartPlayer);
             //reset player points
             for(Player p: lobby.getPlayers()){
                 p.addPoints(-1*p.getPoints());
