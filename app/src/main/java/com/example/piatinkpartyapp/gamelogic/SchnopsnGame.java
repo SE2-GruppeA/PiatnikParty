@@ -176,7 +176,10 @@ public class SchnopsnGame extends Game {
         new Thread(() -> {
             if (startPlayer.getPoints() >= 66 || startPlayer.getHandcards().isEmpty()) {
                 // if the player gets at least 66 points then the player wins or if handcards are empty, the player that won the last "Stich" wins the round
-                sendEndRoundMessageToPlayers(startPlayer);
+                ArrayList<Player> winner = new ArrayList<>();
+                winner.add(startPlayer);
+
+                sendEndRoundMessageToPlayers(winner);
                 addPointsAndUpdateScoreboard(startPlayer, 1);
             } else {
                 resetRoundFinished();

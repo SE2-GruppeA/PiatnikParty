@@ -55,12 +55,27 @@ public class WinnerFragment extends Fragment implements View.OnClickListener {
         clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
         txtWinner = view.findViewById(R.id.txtWinner);
-        txtWinner.setText(winnerrr);
+
+        txtWinner.setText(getWinnerString());
 
         btnClose = view.findViewById(R.id.btnCloseWinnerFragment);
         btnClose.setOnClickListener(this);
 
         return view;
+    }
+
+    public String getWinnerString(){
+        StringBuilder sb = new StringBuilder();
+
+        for(Integer id : clientViewModel.isEndOfRound().getValue()){
+            if(sb.length() > 0){
+                sb.append(" & ");
+            }
+
+            sb.append("Player " + id);
+        }
+
+        return sb.toString();
     }
 
     @Override
