@@ -17,6 +17,7 @@ import com.example.piatinkpartyapp.networking.responses.responseIsCheater;
 import com.example.piatinkpartyapp.networking.responses.responseReceiveEndToEndChatMessage;
 import com.example.piatinkpartyapp.networking.responses.responseReceiveToAllChatMessage;
 import com.example.piatinkpartyapp.networking.responses.responseServerMessage;
+import com.example.piatinkpartyapp.networking.responses.responseUpdateScoreboard;
 import com.example.piatinkpartyapp.networking.responses.responseVoteForNextGame;
 import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
 import com.example.piatinkpartyapp.networking.responses.responsePlayerDisconnected;
@@ -36,6 +37,7 @@ import com.example.piatinkpartyapp.utils.Utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -223,6 +225,8 @@ public class GameServer {
 
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
         players.postValue(lobby.getPlayers());
+
+        sendPacketToAll(new responseUpdateScoreboard(lobby.getPlayerHashMap()));
         //players.postValue(wattnGame.getPlayers());
     }
 
