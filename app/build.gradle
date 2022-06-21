@@ -82,7 +82,7 @@ sonarqube {
         //Excluding some packages from sonarcloud coverage
         //https://stackoverflow.com/questions/27033757/exclude-packages-from-jacoco-report-using-sonarrunner-and-gradle#comment69974453_27446082
         //property "sonar.exclusions", "${project.projectDir}com/example/piatinkpartyapp/screens"
-        property "sonar.exclusions", "**/piatinkpartyapp/screens/*"
+        property "sonar.exclusions", "**/piatinkpartyapp/screens/*, **/databinding/**, **/fragments/**,**/screens/**, **/R.class, **/BuildConfig.*, **/Manifest*.*, **/*Test*.*, android/**/*.*, **/networking/**, **/clientuilogic/**, **/*GameViewModel.*,**/*ListAdapter.*, **/*ChatAdapter.*, **/*ChatMessageViewHolder.*"
     }
 }
 
