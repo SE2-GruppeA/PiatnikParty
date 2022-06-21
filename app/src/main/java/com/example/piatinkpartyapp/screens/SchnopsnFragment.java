@@ -269,6 +269,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.isCheatingExposed().observe(getViewLifecycleOwner(), this::showCheatingExposed);
             clientViewModel.getPlayerDisconnected().observe(getViewLifecycleOwner(), this::disconnectedPlayer);
             clientViewModel.isEndOfGame().observe(getViewLifecycleOwner(), this::onGameEnd);
+            clientViewModel.getWrongNumberOfPlayers().observe(getViewLifecycleOwner(), this::wrongNumberOfPlayers);
 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), this::notifyNewMessage);
@@ -283,6 +284,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         return root;
     }
 
+    private void wrongNumberOfPlayers(String s) {
+        Toast.makeText(requireActivity().getApplicationContext(),
+                s,
+                Toast.LENGTH_SHORT).show();
+        showVote();
+    }
+
     private void onGameEnd(Boolean gameEnd) {
         if(gameEnd){
             showScoreboard();
@@ -290,7 +298,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.setCloseGameScoreboard(true);
 
             //waits for the scoreboard to get closed
-            clientViewModel.getCloseGameAfterScoreboard().observe(getViewLifecycleOwner(), ret -> goBack());
+            clientViewModel.getCloseGameAfterScoreboard().observe(getViewLifecycleOwner(), this::closeAfterScoreboard);
         }
     }
 
@@ -649,6 +657,14 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         });
     }
 
+    public void closeAfterScoreboard(Boolean close){
+        if(close){
+            clientViewModel.setCloseGameScoreboard(false);
+            clientViewModel.closeGame(false);
+            goBack();
+        }
+    }
+
     private void goBack() {
         //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         clientViewModel.leaveGame();
@@ -661,20 +677,18 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     }
 //reset card views
     private void showWinner(Integer winnerID){
-        (new Handler()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
+
                 Toast.makeText(requireActivity().getApplicationContext(),
                         "Player " + winnerID + " hat den Stich bekommen",
                         Toast.LENGTH_SHORT).show();
-            }
-        },2000);
+
+
         (new Handler()).postDelayed(new Runnable() {
             @Override
             public void run() {
                resetAllCardsOnTable();
             }
-        },1000);
+        },2000);
 
     }
 }

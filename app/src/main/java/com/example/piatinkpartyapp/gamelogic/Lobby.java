@@ -6,6 +6,7 @@ import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.responses.responseWrongNumberOfPlayers;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 public class Lobby {
@@ -173,5 +174,14 @@ public class Lobby {
         for (Player player : players) {
             player.getClientConnection().sendTCP(response);
         }
+    }
+    public TreeMap<String, Integer> getPlayerHashMap(){
+        TreeMap<String, Integer> playersHashMap = new TreeMap<>();
+
+        for(Player player: getPlayers()){
+            playersHashMap.put(player.getPlayerName(), player.getPointsScoreboard());
+        }
+
+        return playersHashMap;
     }
 }
