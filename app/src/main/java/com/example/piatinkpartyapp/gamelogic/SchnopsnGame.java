@@ -6,9 +6,9 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.networking.GameServer;
+import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
 import com.example.piatinkpartyapp.networking.responses.responsePlayerGetHandoutCard;
 import com.example.piatinkpartyapp.networking.responses.responseSendHandCards;
-import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -42,9 +42,11 @@ public class SchnopsnGame extends Game {
             sendHandCards();
 
             sendTrumpToAllPlayers(deck.getTrump());
-            setRoundStartPlayer(lobby.getPlayers().get(0));
+
+            Player roundStartPlayer = getRandomPlayer();
+            setRoundStartPlayer(roundStartPlayer);
             // notify first player that it is his turn
-            notifyPlayerYourTurn(lobby.getPlayers().get(0));
+            notifyPlayerYourTurn(roundStartPlayer);
         }).start();
     }
 

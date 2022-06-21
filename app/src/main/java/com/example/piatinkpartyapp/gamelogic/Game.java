@@ -16,6 +16,8 @@ import com.example.piatinkpartyapp.networking.responses.responseUpdatePointsWinn
 import com.example.piatinkpartyapp.networking.responses.*;
 
 import java.util.ArrayList;
+
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
@@ -268,5 +270,12 @@ public class Game {
         Player player = lobby.getPlayerByID(exposerId);
         player.addPoints(-10);
         sendPointsToWinnerPlayer(player);
+    }
+
+    public Player getRandomPlayer() {
+        Random rand = new Random();
+        Player randomPlayer = lobby.getPlayers().get(rand.nextInt(lobby.getPlayers().size()));
+
+        return randomPlayer;
     }
 }
