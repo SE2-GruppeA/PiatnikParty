@@ -672,9 +672,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         (new Handler()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                for(ImageView imageView : handCardImageViews){
-                    imageView.setVisibility(View.INVISIBLE);
-                }
+               resetAllCardsOnTable();
             }
         },1000);
 
