@@ -93,8 +93,12 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        if (view == backBtn)
+        if (view == backBtn){
+            if(clientViewModel != null){
+                clientViewModel.disconnectFromGame();
+            }
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }
         else if (view == connectButton) {
             NetworkHandler.GAMESERVER_IP =  editText.getText().toString();
 

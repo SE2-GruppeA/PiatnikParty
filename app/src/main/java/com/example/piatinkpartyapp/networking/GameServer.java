@@ -50,6 +50,7 @@ public class GameServer {
     private Game game;
     private WattnGame wattnGame;
     private ExecutorService executorService;
+    private Boolean gameStarted = false;
 
     private static GameServer INSTANCE = null;
 
@@ -238,9 +239,12 @@ public class GameServer {
         players.postValue(lobby.getPlayers());
 
         //When the Player disconnects the message is send to all other players.
-        responsePlayerDisconnected response = new responsePlayerDisconnected();
-        response.playerID = connection.getID();
-        sendPacketToAll(response);
+        if(gameStarted){
+            responsePlayerDisconnected response = new responsePlayerDisconnected();
+            response.playerID = connection.getID();
+            sendPacketToAll(response);
+        }
+        sendPacketToAll(new responseUpdateScoreboard(lobby.getPlayerHashMap()));
     }
 
     private void handleVoteForNextGame(Connection connection, requestVoteForNextGame object) {
@@ -282,6 +286,8 @@ public class GameServer {
 
         // Message to all Players to open the voting
         handleForceVoting(connection);
+
+        gameStarted = true;
     }
 
     private void handlePlayersetschlag(Connection connection, requestPlayerSetSchlag object) {
