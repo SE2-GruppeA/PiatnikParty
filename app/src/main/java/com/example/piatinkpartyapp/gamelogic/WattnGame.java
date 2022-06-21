@@ -184,18 +184,7 @@ public class WattnGame extends Game {
                 winningPlayer = currentPlayer;
             }
 
-            if(winningPlayer.getPoints() == 3){
-                LOG.info(winningPlayer + " won this game!");
-                winners.add(roundStartPlayer);
-                sendEndRoundMessageToPlayers(winners);
-                return winningPlayer;
-            }else if(winningPlayer.getPoints() < currentPlayer.getPoints()){
-                winners.add(roundStartPlayer);
-                winners.add(currentPlayer);
-                sendEndRoundMessageToPlayers(winners);
-                winningPlayer = currentPlayer;
-                return winningPlayer;
-            }
+
             currentPlayer = getNextPlayer(currentPlayer);
 
         }
