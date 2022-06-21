@@ -59,9 +59,9 @@ public class WattnGame extends Game {
             // send message to client with handcards
             sendHandCardsToPlayer(handCards, player);
             //messages for player 1 to set schlag & player 2 to set trump
-            if(player.getId() == 1){
+            if(player.getId().equals(roundStartPlayer.getId())){
                 player.getClientConnection().sendTCP(new responseNotifyPlayerToSetSchlag());
-            }else if(player.getId() == 2){
+            }else if(player.getId().equals(getNextPlayer(roundStartPlayer).getId())){
                 player.getClientConnection().sendTCP(new responseNotifyPlayerToSetTrump());
             }
         }
