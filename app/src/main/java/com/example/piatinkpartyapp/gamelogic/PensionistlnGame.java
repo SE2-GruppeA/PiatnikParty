@@ -108,7 +108,10 @@ public class PensionistlnGame extends SchnopsnGame{
         new Thread(() -> {
             if (startPlayer.getHandcards().isEmpty()) {
                 addPointsAndUpdateScoreboard(startPlayer,1);
-                sendEndRoundMessageToPlayers(startPlayer);
+                ArrayList<Player> winner = new ArrayList<>();
+                winner.add(startPlayer);
+
+                sendEndRoundMessageToPlayers(winner);
             } else {
                 resetRoundFinished();
                 resetPlayedCard();

@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp.gamelogic;
 import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.networking.GameServer;
+import com.example.piatinkpartyapp.networking.responses.responseEndOfGame;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -86,10 +87,16 @@ public class Lobby {
                     currentGame = new PensionistlnGame(this);
                     currentGame.startGame();
                     break;
+                case endOfGame:
+                    closeGame();
                 default:
                     break;
             }
         }
+    }
+
+    private void closeGame() {
+        GameServer.getInstance().closeGame();
     }
 
     public GameName getWinnerGameOfVoting() {
@@ -97,6 +104,7 @@ public class Lobby {
         int countWattn = 0;
         int countHosnObe = 0;
         int countPensionisteln = 0;
+        int countEndOfGame = 0;
         GameName winnerGame;
 
         for (Player player : players) {
@@ -114,13 +122,16 @@ public class Lobby {
                 case Pensionisteln:
                     countPensionisteln = countPensionisteln + 1;
                     break;
+                case endOfGame:
+                    countEndOfGame++;
+                    break;
                 default:
                     break;
             }
         }
 
         // get max of votes
-        int max = Math.max(Math.max(countSchnopsn, countWattn), Math.max(countHosnObe, countPensionisteln));
+        int max = Math.max(Math.max(countSchnopsn, countWattn), Math.max(countEndOfGame, countPensionisteln));
 
         // return game with max votes
         if (countSchnopsn == max) {
@@ -129,7 +140,9 @@ public class Lobby {
             winnerGame = GameName.Wattn;
         } else if (countHosnObe == max) {
             winnerGame = GameName.HosnObe;
-        } else {
+        } else if (countEndOfGame == max){
+            winnerGame = GameName.endOfGame;
+        }else {
             winnerGame = GameName.Pensionisteln;
         }
         return winnerGame;

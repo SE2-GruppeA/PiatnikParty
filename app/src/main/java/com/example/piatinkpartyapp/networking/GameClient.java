@@ -209,13 +209,16 @@ public class GameClient {
     }
 
     private void handleEndOfGame(responseEndOfGame object) {
-        gameStarted.postValue(false);
+        endOfGame.postValue(true);
+
+
+        LOG.info("The server closed the game");
     }
 
     private void handleEndOfRound(responseEndOfRound object) {
         responseEndOfRound response = object;
 
-        endOfRound.postValue(response.playerID);
+        endOfRound.postValue(response.playerIDs);
 
         LOG.info("End of round!");
     }
@@ -248,6 +251,7 @@ public class GameClient {
         responseGameStartedClientMessage response =
                 object;
 
+        endOfGame.postValue(false);
         gameStarted.postValue(true);
 
         LOG.info("Game started by server");
@@ -525,7 +529,7 @@ public class GameClient {
     private MutableLiveData<Boolean> myTurn;
     private MutableLiveData<Boolean> gameStarted;
     private MutableLiveData<Card> handoutCard;
-    private MutableLiveData<Integer> endOfRound;
+    private MutableLiveData<ArrayList<Integer>> endOfRound;
     private MutableLiveData<Boolean> voteForNextGame;
     private MutableLiveData<responseSendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
@@ -544,6 +548,7 @@ public class GameClient {
     private MutableLiveData<Map<String, Integer>> players;
     private MutableLiveData<String> serverMessage;
     private MutableLiveData<Integer> disconnectedPlayer;
+    private MutableLiveData<Boolean> endOfGame;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -564,7 +569,7 @@ public class GameClient {
         return gameStarted;
     }
 
-    public LiveData<Integer> isEndOfRound() {
+    public LiveData<ArrayList<Integer>> isEndOfRound() {
         return endOfRound;
     }
 
@@ -627,7 +632,7 @@ public class GameClient {
         mixedCards = new MutableLiveData<Boolean>();
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
-        endOfRound = new MutableLiveData<Integer>();
+        endOfRound = new MutableLiveData<ArrayList<Integer>>();
         voteForNextGame = new MutableLiveData<>();
         playedCard = new MutableLiveData<>();
         trump = new MutableLiveData<>();
@@ -645,6 +650,7 @@ public class GameClient {
         players = new MutableLiveData<>();
         serverMessage = new MutableLiveData<>();
         disconnectedPlayer = new MutableLiveData<>();
+        endOfGame = new MutableLiveData<>();
     }
 
 
@@ -697,15 +703,6 @@ public class GameClient {
         return cheatingExposed;
     }
 
-    public void sendVoteForGameEnd() {
-        requestVoteForNextGame request = new requestVoteForNextGame();
-
-        //sends a Requests.VoteForNextGame packet without setting a nextGame
-        sendPacket(request);
-
-        LOG.info("Client voted for the game to end");
-    }
-
     public LiveData<String> getServerMessage() {
         return serverMessage;
     }
@@ -717,6 +714,10 @@ public class GameClient {
     public void disconnectFromGame() {
         client.stop();
         INSTANCE = null;
+    }
+
+    public LiveData<Boolean> isEndOfGame() {
+        return endOfGame;
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////
