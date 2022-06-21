@@ -298,7 +298,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.setCloseGameScoreboard(true);
 
             //waits for the scoreboard to get closed
-            clientViewModel.getCloseGameAfterScoreboard().observe(getViewLifecycleOwner(), ret -> goBack());
+            clientViewModel.getCloseGameAfterScoreboard().observe(getViewLifecycleOwner(), this::closeAfterScoreboard);
         }
     }
 
@@ -655,6 +655,14 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
                 return false;
             }
         });
+    }
+
+    public void closeAfterScoreboard(Boolean close){
+        if(close){
+            clientViewModel.setCloseGameScoreboard(false);
+            clientViewModel.closeGame(false);
+            goBack();
+        }
     }
 
     private void goBack() {

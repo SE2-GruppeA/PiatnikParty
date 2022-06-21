@@ -229,8 +229,8 @@ public class ClientViewModel extends ViewModel {
         return closeGameAfterScoreboard;
     }
 
-    public void closeGame(){
-        closeGameAfterScoreboard.postValue(true);
+    public void closeGame(Boolean close){
+        closeGameAfterScoreboard.postValue(close);
     }
 
     public void setCloseGameScoreboard(Boolean close){
