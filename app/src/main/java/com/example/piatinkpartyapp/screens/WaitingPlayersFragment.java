@@ -34,8 +34,6 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
     TextView txtIP;
     ListView lvPlayers;
-
-    GameServer server;
     ClientViewModel clientViewModel;
 
     //indicates whether the SchnopsnFragment was called or not
@@ -141,8 +139,12 @@ public class WaitingPlayersFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if (view == backBtn)
+        if (view == backBtn) {
+            if (clientViewModel != null) {
+                clientViewModel.leaveGame();
+            }
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        }
         else if (view == BtnStartGame3) {
             clientViewModel.startGame();
         }

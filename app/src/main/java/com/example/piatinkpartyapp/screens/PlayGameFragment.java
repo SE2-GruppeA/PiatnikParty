@@ -112,8 +112,13 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
 
             clientViewModel.getConnectionState().observe(getActivity(), connectionState -> displayConnectionState(connectionState));
             clientViewModel.isGameStarted().observe(getActivity(), gameStarted -> atGameStart());
+            clientViewModel.getServerMessage().observe(getActivity(), this::displayServerMessage);
         }
 
+    }
+
+    private void displayServerMessage(String s) {
+        textView.setText(s);
     }
 
     public void displayConnectionState(boolean connectionSate) {

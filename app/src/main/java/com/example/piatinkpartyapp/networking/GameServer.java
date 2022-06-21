@@ -50,7 +50,10 @@ public class GameServer {
     private Game game;
     private WattnGame wattnGame;
     private ExecutorService executorService;
+
+    //information for wheter a games was started or the game was closed
     private Boolean gameStarted = false;
+    private Boolean endOfGame = false;
 
     private static GameServer INSTANCE = null;
 
@@ -139,6 +142,9 @@ public class GameServer {
 
 
     public void closeGame(){
+        gameStarted = false;
+        endOfGame = true;
+
         responseEndOfGame response = new responseEndOfGame();
 
         LOG.info(" Server requested to close the game");
@@ -150,10 +156,6 @@ public class GameServer {
         } catch (InterruptedException e) {
             Thread.interrupted();
             e.printStackTrace();
-        }
-
-        for(Connection c:clients){
-            c.close();
         }
 
         server.close();
@@ -215,36 +217,46 @@ public class GameServer {
 
     /////////////////// START - Handler Methods !!! ///////////////////
     private void handleConnected(Connection connection) {
-        LOG.info("Client with ID : " + connection.getID() + " just connected");
+        if(!gameStarted) {
+            LOG.info("Client with ID : " + connection.getID() + " just connected");
 
-        responseConnectedSuccessfully response = new responseConnectedSuccessfully();
-        response.isConnected = !clients.contains(connection) && clients.add(connection);
-        response.playerID = connection.getID();
+            responseConnectedSuccessfully response = new responseConnectedSuccessfully();
+            response.isConnected = !clients.contains(connection) && clients.add(connection);
+            response.playerID = connection.getID();
 
-        lobby.addPlayer(connection, "Player " + connection.getID());
-        connection.sendTCP(response);
+            lobby.addPlayer(connection, "Player " + connection.getID());
+            connection.sendTCP(response);
 
-        //update teilnehmerliste (in clients stehen alle verbundenen clients)
-        players.postValue(lobby.getPlayers());
+            //update teilnehmerliste (in clients stehen alle verbundenen clients)
+            players.postValue(lobby.getPlayers());
 
-        sendPacketToAll(new responseUpdateScoreboard(lobby.getPlayerHashMap()));
-        //players.postValue(wattnGame.getPlayers());
+            sendPacketToAll(new responseUpdateScoreboard(lobby.getPlayerHashMap()));
+            //players.postValue(wattnGame.getPlayers());
+        }else{
+            connection.sendTCP(new responseServerMessage("Game already started!"));
+            LOG.info("Game already started; client cannot connect");
+        }
     }
 
     private void handleDisconnected(Connection connection) {
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
         Player player = lobby.getPlayerByID(connection.getID());
-        clients.remove(player);
+        clients.remove(connection);
         lobby.removePlayer(player);
         players.postValue(lobby.getPlayers());
+        connection.close();
 
         //When the Player disconnects the message is send to all other players.
-        if(gameStarted){
+        if(gameStarted && !endOfGame){
             responsePlayerDisconnected response = new responsePlayerDisconnected();
             response.playerID = connection.getID();
             sendPacketToAll(response);
         }
-        sendPacketToAll(new responseUpdateScoreboard(lobby.getPlayerHashMap()));
+
+        //scoreboard may be incomplete when sockets get closed
+        if(!endOfGame){
+            sendPacketToAll(new responseUpdateScoreboard(lobby.getPlayerHashMap()));
+        }
     }
 
     private void handleVoteForNextGame(Connection connection, requestVoteForNextGame object) {
@@ -288,6 +300,7 @@ public class GameServer {
         handleForceVoting(connection);
 
         gameStarted = true;
+        endOfGame = false;
     }
 
     private void handlePlayersetschlag(Connection connection, requestPlayerSetSchlag object) {
