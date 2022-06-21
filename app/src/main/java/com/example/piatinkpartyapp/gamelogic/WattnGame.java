@@ -184,18 +184,7 @@ public class WattnGame extends Game {
                 winningPlayer = currentPlayer;
             }
 
-            if(winningPlayer.getPoints() == 3){
-                LOG.info(winningPlayer + " won this game!");
-                winners.add(roundStartPlayer);
-                sendEndRoundMessageToPlayers(winners);
-                return winningPlayer;
-            }else if(winningPlayer.getPoints() < currentPlayer.getPoints()){
-                winners.add(roundStartPlayer);
-                winners.add(currentPlayer);
-                sendEndRoundMessageToPlayers(winners);
-                winningPlayer = currentPlayer;
-                return winningPlayer;
-            }
+
             currentPlayer = getNextPlayer(currentPlayer);
 
         }
@@ -205,17 +194,35 @@ public class WattnGame extends Game {
 
 
     public void addPointsToWinnerPlayer(Player winnerPlayer) {
-         if(lobby.getPlayers().size()==3 && (winnerPlayer.getId() == 2 || winnerPlayer.getId() == 3)){
-             updatePoints(lobby.getPlayerByID(2));
-             updatePoints(lobby.getPlayerByID(3));
-
-        }else if(lobby.getPlayers().size()== 4){
-             if(winnerPlayer.getId() == 1 || winnerPlayer.getId() == 3){
-                updatePoints(lobby.getPlayerByID(1));
-                updatePoints(lobby.getPlayerByID(3));
-             }else if(winnerPlayer.getId() == 2 || winnerPlayer.getId() == 4){
-                updatePoints(lobby.getPlayerByID(2));
-                 updatePoints(lobby.getPlayerByID(4));
+         if(lobby.getPlayers().size()==3) {
+             Player nextPlayer = getNextPlayer(winnerPlayer);
+             if (!winnerPlayer.getId().equals(roundStartPlayer.getId())) {
+                 updatePoints(winnerPlayer);
+                 if (!nextPlayer.getId().equals(roundStartPlayer.getId())) {
+                     updatePoints(nextPlayer);
+                 }else{
+                     updatePoints(getNextPlayer(nextPlayer));
+                 }
+             }else{
+                 updatePoints(winnerPlayer);
+             }
+         }
+         else if(lobby.getPlayers().size()== 4){
+             Player oppositeRoundStart = getNextPlayer(getNextPlayer(roundStartPlayer));
+             if(winnerPlayer.equals(roundStartPlayer) || winnerPlayer.equals(oppositeRoundStart)){
+                 LOG.info("winners are: "+winnerPlayer.getId() +" ,"+roundStartPlayer.getId() + " ,"+oppositeRoundStart.getId());
+                updatePoints(roundStartPlayer);
+                LOG.info(roundStartPlayer.getId().toString());
+                updatePoints(oppositeRoundStart);
+                LOG.info(oppositeRoundStart.getId().toString());
+             }else {
+                 LOG.info("winners are: "+winnerPlayer.getId() +" ,"+getNextPlayer(roundStartPlayer).getId() + " ,"+getNextPlayer(oppositeRoundStart).getId());
+                 Player second = getNextPlayer(roundStartPlayer);
+                 LOG.info(second.getId().toString());
+                 updatePoints(second);
+                 Player fourth = getNextPlayer(oppositeRoundStart);
+                 updatePoints(fourth);
+                 LOG.info(fourth.getId().toString());
              }
          }else {
             updatePoints(winnerPlayer);
@@ -234,20 +241,89 @@ public class WattnGame extends Game {
             LOG.info(other.getPlayerName() + " has " + other.getPoints());
             if (startPlayer.getPoints() >= 3 ) {
                 //sendEndRoundMessageToPlayers(startPlayer);
-                winnerIDs.add(startPlayer);
-                addPointsAndUpdateScoreboard(startPlayer, 1);
-                sendEndRoundMessageToPlayers(winnerIDs);
-            }else if(startPlayer.getHandcards().isEmpty() && other.getHandcards().isEmpty()){
-                if(startPlayer.getPoints() >= other.getPoints()){
-                    //sendEndRoundMessageToPlayers(startPlayer);
-                    winnerIDs.add(startPlayer);
-                    addPointsAndUpdateScoreboard(startPlayer,1);
+
+                if(lobby.getPlayers().size() == 3){
+                    if(!startPlayer.equals(roundStartPlayer)){
+                        Player next = getNextPlayer(startPlayer);
+                        Player nextNext = getNextPlayer(next);
+                        winnerIDs.add(next);
+                        LOG.info(next.getId().toString());
+                        winnerIDs.add(nextNext);
+                        LOG.info(nextNext.getId().toString());
+                        addPointsAndUpdateScoreboard(next, 1);
+                        addPointsAndUpdateScoreboard(nextNext, 1);
+                    }else{
+                        winnerIDs.add(startPlayer);
+                        addPointsAndUpdateScoreboard(startPlayer,1);
+                    }
+                }else if(lobby.getPlayers().size() == 4){
+                    Player oppositeOfStart = getNextPlayer(getNextPlayer(roundStartPlayer));
+                    if(startPlayer.equals(roundStartPlayer) || startPlayer.equals(oppositeOfStart)){
+                        winnerIDs.add(roundStartPlayer);
+                        LOG.info("win "+roundStartPlayer.getId().toString());
+                        winnerIDs.add(oppositeOfStart);
+                        LOG.info("win "+oppositeOfStart.getId().toString());
+                        addPointsAndUpdateScoreboard(roundStartPlayer,1);
+                        addPointsAndUpdateScoreboard(oppositeOfStart,1);
+                    }else{
+                        Player next = getNextPlayer(startPlayer);
+                        Player oppositeNext = getNextPlayer(oppositeOfStart);
+                        winnerIDs.add(next);
+                        LOG.info("win "+next.getId().toString());
+                        winnerIDs.add(oppositeNext);
+                        LOG.info("win "+oppositeNext.toString());
+                        addPointsAndUpdateScoreboard(next,1);
+                        addPointsAndUpdateScoreboard(oppositeNext,1);
+                    }
                 }else{
-                    //sendEndRoundMessageToPlayers(other);
-                    winnerIDs.add(other);
-                    addPointsAndUpdateScoreboard(other,1);
+                    winnerIDs.add(startPlayer);
+                    addPointsAndUpdateScoreboard(startPlayer, 1);
                 }
 
+                sendEndRoundMessageToPlayers(winnerIDs);
+            }else if(startPlayer.getHandcards().isEmpty() && other.getHandcards().isEmpty()){
+
+                if(lobby.getPlayers().size() == 2) {
+                    if (startPlayer.getPoints() >= other.getPoints()) {
+                        //sendEndRoundMessageToPlayers(startPlayer);
+                        winnerIDs.add(startPlayer);
+                        addPointsAndUpdateScoreboard(startPlayer, 1);
+                    } else {
+                        //sendEndRoundMessageToPlayers(other);
+                        winnerIDs.add(other);
+                        addPointsAndUpdateScoreboard(other, 1);
+                    }
+
+                }else if(lobby.getPlayers().size() == 3){
+                    Player third = getNextPlayer(other);
+                    if (startPlayer.getPoints() < other.getPoints() && startPlayer.getPoints() < third.getPoints() ) {
+
+                        winnerIDs.add(other);
+                        winnerIDs.add(third);
+                        addPointsAndUpdateScoreboard(other, 1);
+                        addPointsAndUpdateScoreboard(third,1);
+                    } else {
+                        winnerIDs.add(startPlayer);
+                        addPointsAndUpdateScoreboard(startPlayer, 1);
+                    }
+
+                }else if(lobby.getPlayers().size() == 4){
+
+                    Player third = getNextPlayer(other);
+                    Player fourth = getNextPlayer(third);
+                    if (startPlayer.getPoints() < other.getPoints() && third.getPoints() < fourth.getPoints() ) {
+
+                        winnerIDs.add(other);
+                        winnerIDs.add(fourth);
+                        addPointsAndUpdateScoreboard(other, 1);
+                        addPointsAndUpdateScoreboard(fourth,1);
+                    } else {
+                        winnerIDs.add(startPlayer);
+                        winnerIDs.add(fourth);
+                        addPointsAndUpdateScoreboard(startPlayer, 1);
+                        addPointsAndUpdateScoreboard(fourth,1);
+                    }
+                }
                 sendEndRoundMessageToPlayers(winnerIDs);
             }
             else {
@@ -294,22 +370,26 @@ public class WattnGame extends Game {
     @Override
     public void punishWrongExposure(Integer exposerId){
         Player player = lobby.getPlayerByID(exposerId);
+
         if(lobby.getPlayers().size()==2){
             penaltyPoints(player,-1);
         }else if(lobby.getPlayers().size() == 3){
-            if(exposerId == 2 || exposerId == 3){
-                penaltyPoints(lobby.getPlayerByID(2),-1);
-                penaltyPoints(lobby.getPlayerByID(3),-1);
+            if(!exposerId.equals(roundStartPlayer.getId())){
+                //second player  of round
+                penaltyPoints(getNextPlayer(roundStartPlayer),-1);
+                //third player of round
+                penaltyPoints(getNextPlayer(getNextPlayer(roundStartPlayer)),-1);
             }else{
                 penaltyPoints(player,-1);
             }
         }else if(lobby.getPlayers().size() == 4){
-            if(exposerId == 1 || exposerId == 3){
-                penaltyPoints(lobby.getPlayerByID(1),-1);
-                penaltyPoints(lobby.getPlayerByID(3),-1);
+            Player opposite = getNextPlayer(getNextPlayer(roundStartPlayer));
+            if(exposerId.equals(roundStartPlayer.getId()) || exposerId.equals(opposite.getId())){
+                penaltyPoints(roundStartPlayer,-1);
+                penaltyPoints(opposite,-1);
             }else{
-                penaltyPoints(lobby.getPlayerByID(2),-1);
-                penaltyPoints(lobby.getPlayerByID(4),-1);
+                penaltyPoints(getNextPlayer(roundStartPlayer),-1);
+                penaltyPoints(getNextPlayer(opposite),-1);
             }
         }
     }
@@ -326,19 +406,20 @@ public class WattnGame extends Game {
             if(lobby.getPlayers().size() == 2){
                 penaltyPoints(player,-2);
             }else if(lobby.getPlayers().size() == 3){
-                if(playerId == 2 || playerId == 3){
-                    penaltyPoints(lobby.getPlayerByID(2),-2);
-                    penaltyPoints(lobby.getPlayerByID(3),-2);
+                if(!playerId.equals(roundStartPlayer.getId())){
+                    penaltyPoints(getNextPlayer(roundStartPlayer),-2);
+                    penaltyPoints(getNextPlayer(getNextPlayer(roundStartPlayer)),-2);
                 }else{
                     penaltyPoints(player,-2);
                 }
             }else if(lobby.getPlayers().size() == 4){
-                if(playerId == 1 || playerId == 3){
-                    penaltyPoints(lobby.getPlayerByID(1),-2);
-                    penaltyPoints(lobby.getPlayerByID(3),-2);
+                Player oppositeOfRoundStart = getNextPlayer(getNextPlayer(roundStartPlayer));
+                if(playerId.equals(roundStartPlayer.getId()) || playerId.equals(oppositeOfRoundStart.getId())) {
+                    penaltyPoints(roundStartPlayer,-2);
+                    penaltyPoints(oppositeOfRoundStart,-2);
                 }else{
-                    penaltyPoints(lobby.getPlayerByID(2),-2);
-                    penaltyPoints(lobby.getPlayerByID(4),-2);
+                    penaltyPoints(getNextPlayer(roundStartPlayer),-2);
+                    penaltyPoints(getNextPlayer(oppositeOfRoundStart),-2);
                 }
             }
         }

@@ -95,7 +95,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     Boolean mixedCards;
     Boolean cardsToMix;
 
-
+    //if the game is closed by the exit button, the scoreboard is not displayed
+    Boolean closedByExitButton = false;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -292,7 +293,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void onGameEnd(Boolean gameEnd) {
-        if(gameEnd){
+        if(gameEnd && !closedByExitButton){
             showScoreboard();
 
             clientViewModel.setCloseGameScoreboard(true);
@@ -303,10 +304,12 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void disconnectedPlayer(Integer playerID) {
-        Toast.makeText(requireActivity().getApplicationContext(),
-                "Player " + playerID + " hat das Spiel verlassen",
-                Toast.LENGTH_SHORT).show();
-        showVote();
+        if(!clientViewModel.isEndOfGame().getValue()) {
+            Toast.makeText(requireActivity().getApplicationContext(),
+                    "Player " + playerID + " hat das Spiel verlassen",
+                    Toast.LENGTH_SHORT).show();
+            showVote();
+        }
     }
 
     private void showServerMessage(String serverMessage) {
@@ -667,6 +670,10 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private void goBack() {
         //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
+        //scoreboard will not get displayed
+        closedByExitButton = true;
+
         clientViewModel.leaveGame();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
@@ -678,10 +685,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 //reset card views
     private void showWinner(Integer winnerID){
 
-                Toast.makeText(requireActivity().getApplicationContext(),
-                        "Player " + winnerID + " hat den Stich bekommen",
-                        Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(requireActivity().getApplicationContext(),
+                "Player " + winnerID + " hat den Stich bekommen",
+                Toast.LENGTH_SHORT).show();
 
         (new Handler()).postDelayed(new Runnable() {
             @Override
