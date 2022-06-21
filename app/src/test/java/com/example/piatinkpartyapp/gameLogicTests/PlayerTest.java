@@ -48,7 +48,9 @@ class PlayerTest {
 
         player.removeHandcard(card2);
         player.removeHandcard(card1);
-        assertEquals(null, player.getHandcards());
+
+        ArrayList<Card> empty = new ArrayList<>();
+        assertEquals(empty, player.getHandcards());
 
         player.addPoints(2);
         player.addPointsScoreboard(4);
