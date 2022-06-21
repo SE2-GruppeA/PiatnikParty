@@ -11,6 +11,17 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestExposePossibleCheater;
+import com.example.piatinkpartyapp.networking.requests.requestForceVoting;
+import com.example.piatinkpartyapp.networking.requests.requestMixCardsRequest;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerRequestsCheat;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetCard;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetSchlag;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetTrump;
+import com.example.piatinkpartyapp.networking.requests.requestSendEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestSendToAllChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestStartGameMessage;
+import com.example.piatinkpartyapp.networking.requests.requestVoteForNextGame;
 import com.example.piatinkpartyapp.networking.responses.responseCheatingPenalty;
 import com.example.piatinkpartyapp.networking.responses.responseConnectedSuccessfully;
 import com.example.piatinkpartyapp.networking.responses.responseEndOfGame;
@@ -18,10 +29,12 @@ import com.example.piatinkpartyapp.networking.responses.responseEndOfRound;
 import com.example.piatinkpartyapp.networking.responses.responseGameStartedClientMessage;
 import com.example.piatinkpartyapp.networking.responses.responseHosnObeStartedClientMessage;
 import com.example.piatinkpartyapp.networking.responses.responseIsCheater;
+import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
 import com.example.piatinkpartyapp.networking.responses.responseNotifyPlayerToSetSchlag;
 import com.example.piatinkpartyapp.networking.responses.responseNotifyPlayerToSetTrump;
 import com.example.piatinkpartyapp.networking.responses.responseNotifyPlayerYourTurn;
 import com.example.piatinkpartyapp.networking.responses.responsePensionistLnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.responses.responsePlayerDisconnected;
 import com.example.piatinkpartyapp.networking.responses.responsePlayerGetHandoutCard;
 import com.example.piatinkpartyapp.networking.responses.responseReceiveEndToEndChatMessage;
 import com.example.piatinkpartyapp.networking.responses.responseReceiveToAllChatMessage;
@@ -36,19 +49,7 @@ import com.example.piatinkpartyapp.networking.responses.responseUpdatePointsWinn
 import com.example.piatinkpartyapp.networking.responses.responseUpdateScoreboard;
 import com.example.piatinkpartyapp.networking.responses.responseVoteForNextGame;
 import com.example.piatinkpartyapp.networking.responses.responseWattnStartedClientMessage;
-import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
-import com.example.piatinkpartyapp.networking.responses.responsePlayerDisconnected;
-import com.example.piatinkpartyapp.networking.requests.requestExposePossibleCheater;
-import com.example.piatinkpartyapp.networking.requests.requestForceVoting;
-import com.example.piatinkpartyapp.networking.requests.requestMixCardsRequest;
-import com.example.piatinkpartyapp.networking.requests.requestPlayerRequestsCheat;
-import com.example.piatinkpartyapp.networking.requests.requestPlayerSetCard;
-import com.example.piatinkpartyapp.networking.requests.requestPlayerSetSchlag;
-import com.example.piatinkpartyapp.networking.requests.requestPlayerSetTrump;
-import com.example.piatinkpartyapp.networking.requests.requestSendEndToEndChatMessage;
-import com.example.piatinkpartyapp.networking.requests.requestSendToAllChatMessage;
-import com.example.piatinkpartyapp.networking.requests.requestStartGameMessage;
-import com.example.piatinkpartyapp.networking.requests.requestVoteForNextGame;
+import com.example.piatinkpartyapp.networking.responses.responseWrongNumberOfPlayers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,12 +67,13 @@ public class GameClient {
     int x = 11;
 
     //for testing purposes
-    public GameClient(Client client){
+ /*   public GameClient(Client client){
         this.client = client;
         this.executorService = Executors.newFixedThreadPool(1);
-    }
+    }*/
 
     public GameClient(String gameServer_IP) {
+        LOG.info("hereeee");
         initLiveData();
         executorService = Executors.newFixedThreadPool(1);
         executorService.execute(() -> {
@@ -208,13 +210,16 @@ public class GameClient {
     }
 
     private void handleEndOfGame(responseEndOfGame object) {
-        gameStarted.postValue(false);
+        endOfGame.postValue(true);
+
+
+        LOG.info("The server closed the game");
     }
 
     private void handleEndOfRound(responseEndOfRound object) {
         responseEndOfRound response = object;
 
-        endOfRound.postValue(response.playerID);
+        endOfRound.postValue(response.playerIDs);
 
         LOG.info("End of round!");
     }
@@ -247,6 +252,7 @@ public class GameClient {
         responseGameStartedClientMessage response =
                 object;
 
+        endOfGame.postValue(false);
         gameStarted.postValue(true);
 
         LOG.info("Game started by server");
@@ -408,6 +414,12 @@ public class GameClient {
 
         LOG.info("Update Scoreboard!");
     }
+
+    private void handleWroungNumberOfPlayers(responseWrongNumberOfPlayers object) {
+        responseWrongNumberOfPlayers response = object;
+
+        LOG.info("Spiel mit dieser Anzahl an Spielern nicht möglich: " + response.message);
+    }
     /////////////////// END - Handler Methods !!! ///////////////////
 
 
@@ -524,7 +536,7 @@ public class GameClient {
     private MutableLiveData<Boolean> myTurn;
     private MutableLiveData<Boolean> gameStarted;
     private MutableLiveData<Card> handoutCard;
-    private MutableLiveData<Integer> endOfRound;
+    private MutableLiveData<ArrayList<Integer>> endOfRound;
     private MutableLiveData<Boolean> voteForNextGame;
     private MutableLiveData<responseSendPlayedCardToAllPlayers> playedCard;
     private MutableLiveData<Symbol> trump;
@@ -543,6 +555,7 @@ public class GameClient {
     private MutableLiveData<Map<String, Integer>> players;
     private MutableLiveData<String> serverMessage;
     private MutableLiveData<Integer> disconnectedPlayer;
+    private MutableLiveData<Boolean> endOfGame;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -563,7 +576,7 @@ public class GameClient {
         return gameStarted;
     }
 
-    public LiveData<Integer> isEndOfRound() {
+    public LiveData<ArrayList<Integer>> isEndOfRound() {
         return endOfRound;
     }
 
@@ -626,7 +639,7 @@ public class GameClient {
         mixedCards = new MutableLiveData<Boolean>();
         gameStarted = new MutableLiveData<>();
         handoutCard = new MutableLiveData<>();
-        endOfRound = new MutableLiveData<Integer>();
+        endOfRound = new MutableLiveData<ArrayList<Integer>>();
         voteForNextGame = new MutableLiveData<>();
         playedCard = new MutableLiveData<>();
         trump = new MutableLiveData<>();
@@ -644,6 +657,7 @@ public class GameClient {
         players = new MutableLiveData<>();
         serverMessage = new MutableLiveData<>();
         disconnectedPlayer = new MutableLiveData<>();
+        endOfGame = new MutableLiveData<>();
     }
 
 
@@ -696,15 +710,6 @@ public class GameClient {
         return cheatingExposed;
     }
 
-    public void sendVoteForGameEnd() {
-        requestVoteForNextGame request = new requestVoteForNextGame();
-
-        //sends a Requests.VoteForNextGame packet without setting a nextGame
-        sendPacket(request);
-
-        LOG.info("Client voted for the game to end");
-    }
-
     public LiveData<String> getServerMessage() {
         return serverMessage;
     }
@@ -716,6 +721,10 @@ public class GameClient {
     public void disconnectFromGame() {
         client.stop();
         INSTANCE = null;
+    }
+
+    public LiveData<Boolean> isEndOfGame() {
+        return endOfGame;
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

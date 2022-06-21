@@ -39,8 +39,10 @@ public class WattnGame extends Game {
             resetCheating();
             sendGameStartedMessageToClients();
             sendHandCards();
-            setRoundStartPlayer(lobby.getPlayers().get(0));
-            notifyPlayerYourTurn(lobby.getPlayers().get(0));
+
+            Player roundStartPlayer = getRandomPlayer();
+            setRoundStartPlayer(roundStartPlayer);
+            notifyPlayerYourTurn(roundStartPlayer);
             //reset player points
             for(Player p: lobby.getPlayers()){
                 p.addPoints(-1*p.getPoints());
@@ -160,6 +162,7 @@ public class WattnGame extends Game {
 
             } //hit case - first played hit wins
             else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getHit() ){
+                return winningPlayer;
             }//hit case - hit wins
             else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && (winningPlayer.getCardPlayed().cardValue != this.deck.getHit())){
 
@@ -174,7 +177,7 @@ public class WattnGame extends Game {
                 winningPlayer = currentPlayer;
             }
 
-            if(winningPlayer.getPoints() == 3){
+            /*if(winningPlayer.getPoints() == 3){
                 LOG.info(winningPlayer + " won this game!");
 
                 sendEndRoundMessageToPlayers(roundStartPlayer);
@@ -183,7 +186,7 @@ public class WattnGame extends Game {
                 sendEndRoundMessageToPlayers(roundStartPlayer);
                 winningPlayer = currentPlayer;
                 return winningPlayer;
-            }
+            }*/
             currentPlayer = getNextPlayer(currentPlayer);
 
         }
@@ -220,20 +223,26 @@ public class WattnGame extends Game {
 
     public void startNewRoundWattn(Player startPlayer) {
         new Thread(()->{
+            ArrayList<Player> winnerIDs = new ArrayList<>();
             LOG.info(startPlayer.getPlayerName() + " has " +startPlayer.getPoints());
             Player other = getNextPlayer(startPlayer);
             LOG.info(other.getPlayerName() + " has " + other.getPoints());
             if (startPlayer.getPoints() >= 3 ) {
-                sendEndRoundMessageToPlayers(startPlayer);
+                //sendEndRoundMessageToPlayers(startPlayer);
+                winnerIDs.add(startPlayer);
                 addPointsAndUpdateScoreboard(startPlayer, 1);
             }else if(startPlayer.getHandcards().isEmpty() && other.getHandcards().isEmpty()){
                 if(startPlayer.getPoints() >= other.getPoints()){
-                    sendEndRoundMessageToPlayers(startPlayer);
+                    //sendEndRoundMessageToPlayers(startPlayer);
+                    winnerIDs.add(startPlayer);
                     addPointsAndUpdateScoreboard(startPlayer,1);
                 }else{
-                    sendEndRoundMessageToPlayers(other);
+                    //sendEndRoundMessageToPlayers(other);
+                    winnerIDs.add(other);
                     addPointsAndUpdateScoreboard(other,1);
                 }
+
+                sendEndRoundMessageToPlayers(winnerIDs);
             }
             else {
                 resetRoundFinished();
