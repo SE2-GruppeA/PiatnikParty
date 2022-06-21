@@ -1,5 +1,7 @@
 package com.example.piatinkpartyapp.gamelogic;
 
+import android.util.Log;
+
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -79,6 +81,7 @@ public class WattnGame extends Game {
     @Override
     public void givePlayerBestCard(int playerId) {
       sendPlayerBestCard(playerId, new Card(this.deck.getTrump(),this.deck.getHit()));
+      lobby.getPlayerByID(playerId).setCheaten(true);
 
     }
     //replaces the first hand card with the best card in the game
@@ -291,17 +294,53 @@ public class WattnGame extends Game {
     @Override
     public void punishWrongExposure(Integer exposerId){
         Player player = lobby.getPlayerByID(exposerId);
-        player.addPoints(-1);
+        if(lobby.getPlayers().size()==2){
+            penaltyPoints(player,-1);
+        }else if(lobby.getPlayers().size() == 3){
+            if(exposerId == 2 || exposerId == 3){
+                penaltyPoints(lobby.getPlayerByID(2),-1);
+                penaltyPoints(lobby.getPlayerByID(3),-1);
+            }else{
+                penaltyPoints(player,-1);
+            }
+        }else if(lobby.getPlayers().size() == 4){
+            if(exposerId == 1 || exposerId == 3){
+                penaltyPoints(lobby.getPlayerByID(1),-1);
+                penaltyPoints(lobby.getPlayerByID(3),-1);
+            }else{
+                penaltyPoints(lobby.getPlayerByID(2),-1);
+                penaltyPoints(lobby.getPlayerByID(4),-1);
+            }
+        }
+    }
+    private void penaltyPoints(Player player, Integer points){
+        player.addPoints(points);
         sendPointsToWinnerPlayer(player);
     }
+
     @Override
     public void cheaterPenalty(Integer playerId){
         Player player = lobby.getPlayerByID(playerId);
 
         if(player.isCheaten()){
-            player.addPoints(-2);
+            if(lobby.getPlayers().size() == 2){
+                penaltyPoints(player,-2);
+            }else if(lobby.getPlayers().size() == 3){
+                if(playerId == 2 || playerId == 3){
+                    penaltyPoints(lobby.getPlayerByID(2),-2);
+                    penaltyPoints(lobby.getPlayerByID(3),-2);
+                }else{
+                    penaltyPoints(player,-2);
+                }
+            }else if(lobby.getPlayers().size() == 4){
+                if(playerId == 1 || playerId == 3){
+                    penaltyPoints(lobby.getPlayerByID(1),-2);
+                    penaltyPoints(lobby.getPlayerByID(3),-2);
+                }else{
+                    penaltyPoints(lobby.getPlayerByID(2),-2);
+                    penaltyPoints(lobby.getPlayerByID(4),-2);
+                }
+            }
         }
-
-        sendPenaltyMessageToPlayer(player);
     }
 }
