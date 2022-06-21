@@ -266,6 +266,143 @@ public class WattnTest {
 
     }
     @Test
+    public void testGetRoundWinnerWattnHit3(){
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+        lobby.addPlayer(3, "Player 3");
+        WattnGame wg = new WattnGame(lobby);
+        Player player1 = wg.lobby.getPlayerByID(1);
+        Player player2 = wg.lobby.getPlayerByID(2);
+        Player player3 = wg.lobby.getPlayerByID(3);
+
+        wg.setRoundStartPlayer(player1);
+        wg.resetWattnDeck(3);
+        wg.deck.setTrump(Symbol.PICK);
+        wg.deck.setHit(CardValue.KOENIG);
+
+        assertEquals(player1, wg.roundStartPlayer);
+        assertEquals(player2, wg.getNextPlayer(player1));
+
+        player1.setCardPlayed(new Card(Symbol.HERZ,CardValue.KOENIG));
+        player2.setCardPlayed(new Card(Symbol.PICK, CardValue.ASS));
+        player3.setCardPlayed(new Card(Symbol.PICK, CardValue.KOENIG));
+        Player winner = wg.getRoundWinnerWattn();
+        assertEquals(player3, winner);
+
+    }
+    @Test
+    public void testGetRoundWinnerWattnHit32(){
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+        lobby.addPlayer(3, "Player 3");
+        WattnGame wg = new WattnGame(lobby);
+        Player player1 = wg.lobby.getPlayerByID(1);
+        Player player2 = wg.lobby.getPlayerByID(2);
+        Player player3 = wg.lobby.getPlayerByID(3);
+
+        wg.setRoundStartPlayer(player1);
+        wg.resetWattnDeck(3);
+        wg.deck.setTrump(Symbol.PICK);
+        wg.deck.setHit(CardValue.KOENIG);
+
+        assertEquals(player1, wg.roundStartPlayer);
+        assertEquals(player2, wg.getNextPlayer(player1));
+
+        player1.setCardPlayed(new Card(Symbol.HERZ,CardValue.KOENIG));
+        player2.setCardPlayed(new Card(Symbol.PICK, CardValue.ASS));
+        player3.setCardPlayed(new Card(Symbol.PICK, CardValue.ACHT));
+        Player winner = wg.getRoundWinnerWattn();
+        assertEquals(player1, winner);
+
+    }
+    @Test
+    public void testGetRoundWinnerWattnHit33(){
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+        lobby.addPlayer(3, "Player 3");
+        WattnGame wg = new WattnGame(lobby);
+        Player player1 = wg.lobby.getPlayerByID(1);
+        Player player2 = wg.lobby.getPlayerByID(2);
+        Player player3 = wg.lobby.getPlayerByID(3);
+
+        wg.setRoundStartPlayer(player1);
+        wg.resetWattnDeck(3);
+        wg.deck.setTrump(Symbol.PICK);
+        wg.deck.setHit(CardValue.KOENIG);
+
+        assertEquals(player1, wg.roundStartPlayer);
+        assertEquals(player2, wg.getNextPlayer(player1));
+
+        player1.setCardPlayed(new Card(Symbol.HERZ,CardValue.OBER));
+        player2.setCardPlayed(new Card(Symbol.PICK, CardValue.KOENIG));
+        player3.setCardPlayed(new Card(Symbol.PICK, CardValue.ACHT));
+        Player winner = wg.getRoundWinnerWattn();
+        assertEquals(player2, winner);
+
+    }
+    @Test
+    public void testGetRoundWinnerWattnHit4(){
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+        lobby.addPlayer(3, "Player 3");
+        lobby.addPlayer(4, "Player 4");
+        WattnGame wg = new WattnGame(lobby);
+        Player player1 = wg.lobby.getPlayerByID(1);
+        Player player2 = wg.lobby.getPlayerByID(2);
+        Player player3 = wg.lobby.getPlayerByID(3);
+        Player player4 = wg.lobby.getPlayerByID(4);
+
+        wg.setRoundStartPlayer(player1);
+        wg.resetWattnDeck(4);
+        wg.deck.setTrump(Symbol.PICK);
+        wg.deck.setHit(CardValue.KOENIG);
+
+        assertEquals(player1, wg.roundStartPlayer);
+        assertEquals(player2, wg.getNextPlayer(player1));
+
+        player2.setCardPlayed(new Card(Symbol.HERZ,CardValue.KOENIG));
+        player1.setCardPlayed(new Card(Symbol.PICK, CardValue.ASS));
+        player3.setCardPlayed(new Card(Symbol.PICK, CardValue.OBER));
+        player4.setCardPlayed(new Card(Symbol.PICK,CardValue.KOENIG));
+        Player winner = wg.getRoundWinnerWattn();
+        assertEquals(player4, winner);
+
+    }
+    @Test
+    public void testGetRoundWinnerWattnHit42(){
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+        lobby.addPlayer(3, "Player 3");
+        lobby.addPlayer(4, "Player 4");
+        WattnGame wg = new WattnGame(lobby);
+        Player player1 = wg.lobby.getPlayerByID(1);
+        Player player2 = wg.lobby.getPlayerByID(2);
+        Player player3 = wg.lobby.getPlayerByID(3);
+        Player player4 = wg.lobby.getPlayerByID(4);
+
+        wg.setRoundStartPlayer(player1);
+        wg.resetWattnDeck(4);
+        wg.deck.setTrump(Symbol.PICK);
+        wg.deck.setHit(CardValue.KOENIG);
+
+        assertEquals(player1, wg.roundStartPlayer);
+        assertEquals(player2, wg.getNextPlayer(player1));
+
+        player2.setCardPlayed(new Card(Symbol.HERZ,CardValue.KOENIG));
+        player1.setCardPlayed(new Card(Symbol.PICK, CardValue.ASS));
+        player3.setCardPlayed(new Card(Symbol.PICK, CardValue.OBER));
+        player4.setCardPlayed(new Card(Symbol.PICK,CardValue.KOENIG));
+        Player winner = wg.getRoundWinnerWattn();
+        assertEquals(player4, winner);
+
+    }
+
+    @Test
     public void testGetRoundWinnerWattnTrump1(){
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
