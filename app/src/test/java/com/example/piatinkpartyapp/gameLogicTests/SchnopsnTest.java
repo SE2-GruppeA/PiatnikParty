@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
@@ -254,4 +256,49 @@ public class SchnopsnTest {
         assertEquals(finished, true);
         assertNotNull(finished);
     }
+
+    @Test
+    public void setDeckTest() {
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+
+        SchnopsnGame game = new SchnopsnGame(lobby);
+        Player player1 = game.lobby.getPlayerByID(1);
+        Player player2 = game.lobby.getPlayerByID(2);
+
+        SchnopsnDeck deck = new SchnopsnDeck(GameName.Schnopsn, 2);
+        game.setDeck(deck);
+
+        assertEquals(game.getDeck(), deck);
+        assertNotNull(game.getDeck());
+    }
+
+    @Test
+    public void mixCardsTest() {
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+
+        SchnopsnGame game = new SchnopsnGame(lobby);
+        Player player1 = game.lobby.getPlayerByID(1);
+        Player player2 = game.lobby.getPlayerByID(2);
+
+        SchnopsnDeck deck = new SchnopsnDeck(GameName.Schnopsn, 2);
+        game.setDeck(deck);
+
+        assertEquals(game.getDeck(), deck);
+        assertNotNull(game.getDeck());
+    }
+/*
+    @Test
+    public void startSchnopsnTest() {
+        GameServer server = GameServer.getInstance();
+        try {
+            server.startNewGameServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+ */
 }
