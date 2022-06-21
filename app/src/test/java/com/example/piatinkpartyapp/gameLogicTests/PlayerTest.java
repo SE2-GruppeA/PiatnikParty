@@ -62,7 +62,7 @@ class PlayerTest {
         assertEquals(player.getPoints(), 0);
         assertEquals(player.getPointsScoreboard(), 0);
 
-        player.setPoints(6);
+        player.setPoints(6); //test
         assertEquals(player.getPoints(), 6);
 
         player.setFinished(true);
