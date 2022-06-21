@@ -8,7 +8,7 @@ import com.example.piatinkpartyapp.chat.ChatMessage;
 
 import org.junit.jupiter.api.Test;
 
-public class TestChatMessage {
+class TestChatMessage {
 
     @Test
     void constructorTestIn() {

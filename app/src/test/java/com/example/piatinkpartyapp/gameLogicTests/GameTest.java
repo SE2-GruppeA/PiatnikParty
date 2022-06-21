@@ -17,7 +17,7 @@ import com.example.piatinkpartyapp.gamelogic.Player;
 
 import org.junit.jupiter.api.Test;
 
-public class GameTest {
+class GameTest {
 
     Lobby lobby;
 
