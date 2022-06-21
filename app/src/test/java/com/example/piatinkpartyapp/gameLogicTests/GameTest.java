@@ -1,8 +1,10 @@
 package com.example.piatinkpartyapp.gameLogicTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
@@ -138,5 +140,78 @@ public class GameTest {
         Lobby lobby2 = new Lobby();
         this.lobby = lobby2;
         assertNotNull(lobby);
+    }
+
+    /*
+    @Test
+    void testResetPlayedCard() {
+
+        int playerId = 1;
+        String playerName = "Player1";
+
+        Player player = new Player(playerId, playerName);
+
+        CardValue cardValue = CardValue.OBER;
+        Symbol symbol = Symbol.HERZ;
+
+        Card card = new Card(symbol, cardValue);
+
+        Game game = new Game();
+        player.setCardPlayed(card);
+
+        assertNotNull(card);
+
+        game.resetPlayedCard();
+        assertNull(card);
+    }
+
+     */
+
+    @Test
+    void testIsPlayerCheater() {
+        int playerId = 1;
+        int exposerId = 2;
+
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(playerId, "Player1");
+        lobby.addPlayer(exposerId, "Player2");
+
+        Game game = new Game();
+        assertFalse(game.isPlayerCheater(playerId, exposerId));
+    }
+
+    @Test
+    void testGetRandomPlayer() {
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        int player = 1;
+        lobby.addPlayer(player, "Player");
+        assertNull(game.getRandomPlayer());
+    }
+
+    @Test
+    void testSetTrump() {
+        Game game = new Game();
+        assertNull(game.getTrump());
+    }
+
+    @Test
+    void testSetMainPlayerId() {
+
+        Integer newMainPlayerId = 2;
+        Game game = new Game();
+
+        newMainPlayerId = 3;
+        game.setMainPlayerId(newMainPlayerId);
+
+        assertEquals(3, game.getMainPlayerId());
+    }
+
+    @Test
+    void testGetMainPlayerId() {
+        Integer mainPlayerId = 1;
+        Game game = new Game();
+        game.setMainPlayerId(mainPlayerId);
+        assertEquals(1, game.getMainPlayerId());
     }
 }
