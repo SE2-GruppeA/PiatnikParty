@@ -86,8 +86,10 @@ public class Game {
 
     // reset played card from players
     public void resetPlayedCard() {
-        for (Player player : lobby.getPlayers()) {
-            player.setCardPlayed(null);
+        if (lobby != null) {
+            for (Player player : lobby.getPlayers()) {
+                player.setCardPlayed(null);
+            }
         }
     }
 
@@ -246,8 +248,12 @@ public class Game {
     }
 
     public Boolean isPlayerCheater(Integer playerId, Integer exposerId) {
-        lobby.getPlayerByID(exposerId).setHasExposed(true);
-        return lobby.getPlayerByID(playerId).isCheaten();
+        if (lobby != null) {
+            lobby.getPlayerByID(exposerId).setHasExposed(true);
+            return lobby.getPlayerByID(playerId).isCheaten();
+        } else {
+            return false;
+        }
     }
 
     public void cheaterPenalty(Integer playerId) {
@@ -274,8 +280,10 @@ public class Game {
 
     public Player getRandomPlayer() {
         Random rand = new Random();
-        Player randomPlayer = lobby.getPlayers().get(rand.nextInt(lobby.getPlayers().size()));
-
-        return randomPlayer;
+        if (lobby != null) {
+            return lobby.getPlayers().get(rand.nextInt(lobby.getPlayers().size()));
+        } else {
+            return null;
+        }
     }
 }
