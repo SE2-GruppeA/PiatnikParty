@@ -55,7 +55,9 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
         xml.destination file("${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
     }
 
-    def fileFilter = ['**/databinding/**','**/fragments/**','**/screens/**','**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/networking/**', '**/clientuilogic/**', '**/*GameViewModel.*','**/*ListAdapter.*']
+    def fileFilter = ['**/databinding/**','**/fragments/**','**/screens/**','**/R.class', '**/R$*.class', '**/BuildConfig.*',
+                                    '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/networking/**',
+                                    '**/clientuilogic/**', '**/*GameViewModel.*','**/*ListAdapter.*']
     def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
 
@@ -77,7 +79,7 @@ sonarqube {
 
         //Excluding some packages from sonarcloud coverage
         //https://stackoverflow.com/questions/27033757/exclude-packages-from-jacoco-report-using-sonarrunner-and-gradle#comment69974453_27446082
-        property "sonar.exclusions", "${project.projectDir}com/example/piatinkpartyapp/screens"
+        property "sonar.exclusions", '**/databinding/**','**/fragments/**','**/screens/**','**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/networking/**', '**/clientuilogic/**', '**/*GameViewModel.*','**/*ListAdapter.*'
     }
 }
 
