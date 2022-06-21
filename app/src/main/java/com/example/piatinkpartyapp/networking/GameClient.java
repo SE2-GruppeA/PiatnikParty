@@ -185,6 +185,8 @@ public class GameClient {
                         handleEndOfGame((responseEndOfGame) object);
                     } else if(object instanceof responsePlayerDisconnected){
                         handlePlayerDisconnected((responsePlayerDisconnected) object);
+                    } else if(object instanceof responseWrongNumberOfPlayers){
+                        handleWrongNumberOfPlayers((responseWrongNumberOfPlayers) object);
                     }
                 } catch (Exception e) {
                     LOG.info(e.toString());
@@ -246,6 +248,12 @@ public class GameClient {
         handCards.postValue(response.cards);
 
         LOG.info("Handcards received for player: " + response.playerID);
+    }
+
+    private void handleWrongNumberOfPlayers(responseWrongNumberOfPlayers object) {
+        responseWrongNumberOfPlayers response = object;
+
+        wrongNumberOfPlayers.postValue(response.message);
     }
 
     private void handleGameStartedClientMessage(responseGameStartedClientMessage object) {
@@ -556,6 +564,7 @@ public class GameClient {
     private MutableLiveData<String> serverMessage;
     private MutableLiveData<Integer> disconnectedPlayer;
     private MutableLiveData<Boolean> endOfGame;
+    private MutableLiveData<String> wrongNumberOfPlayers;
 
     public LiveData<Boolean> getConnectionState(){
         return connectionState;
@@ -632,6 +641,10 @@ public class GameClient {
         return players;
     }
 
+    public LiveData<String> getWrongNumberOfPlayers() {
+        return wrongNumberOfPlayers;
+    }
+
     private void initLiveDataMainGameUIs(){
         handCards = new MutableLiveData<>();
         connectionState = new MutableLiveData<>();
@@ -658,6 +671,7 @@ public class GameClient {
         serverMessage = new MutableLiveData<>();
         disconnectedPlayer = new MutableLiveData<>();
         endOfGame = new MutableLiveData<>();
+        wrongNumberOfPlayers = new MutableLiveData<>();
     }
 
 

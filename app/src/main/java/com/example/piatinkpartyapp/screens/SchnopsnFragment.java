@@ -269,6 +269,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.isCheatingExposed().observe(getViewLifecycleOwner(), this::showCheatingExposed);
             clientViewModel.getPlayerDisconnected().observe(getViewLifecycleOwner(), this::disconnectedPlayer);
             clientViewModel.isEndOfGame().observe(getViewLifecycleOwner(), this::onGameEnd);
+            clientViewModel.getWrongNumberOfPlayers().observe(getViewLifecycleOwner(), this::wrongNumberOfPlayers);
 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), this::notifyNewMessage);
@@ -281,6 +282,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.mixedCards().observe(getViewLifecycleOwner(), this::mixCards);
         }
         return root;
+    }
+
+    private void wrongNumberOfPlayers(String s) {
+        Toast.makeText(requireActivity().getApplicationContext(),
+                s,
+                Toast.LENGTH_SHORT).show();
+        showVote();
     }
 
     private void onGameEnd(Boolean gameEnd) {

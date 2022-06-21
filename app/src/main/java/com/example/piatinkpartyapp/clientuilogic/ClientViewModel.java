@@ -241,5 +241,9 @@ public class ClientViewModel extends ViewModel {
         return closeGameScoreboard;
     }
 
+    public LiveData<String> getWrongNumberOfPlayers() {
+        return client.getWrongNumberOfPlayers();
+    }
+
     /////////////// END - MainGameUIs - LOGiC ///////////////
 }
