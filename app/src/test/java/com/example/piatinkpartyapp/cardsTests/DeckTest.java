@@ -1,5 +1,6 @@
 package com.example.piatinkpartyapp.cardsTests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -44,5 +45,15 @@ class DeckTest {
         // Testing if a card is taken from the deck
         assertNotEquals(deck.takeCard(),deck.takeCard());
 
+    }
+
+    @Test
+    void testTakeCard2() {
+        // Testing if a card is taken from the deck
+
+        while (deck.getDeck().size() > 0) {
+            deck.takeCard();
+        }
+        assertEquals(deck.takeCard(),null);
     }
 }

@@ -14,8 +14,7 @@ public class Player {
     private String playerName;
     private int points = 0;
     private int pointsScoreboard = 0;
-    private ArrayList<Card> handcards;
-    private ArrayList<Card> cardsWon;
+    private ArrayList<Card> handcards = new ArrayList<>();
     private Card cardPlayed;
     private boolean finished;
     private boolean roundFinished;
@@ -28,10 +27,6 @@ public class Player {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
     public Player() {
-    }
-
-    public ArrayList<Card> getCardsWon() {
-        return cardsWon;
     }
 
     public static Logger getLOG() {
@@ -69,15 +64,6 @@ public class Player {
         } else {
             LOG.info("card could not removed because it's not part of handcards");
         }
-    }
-
-    public Card addCardsWon(Card card) {
-        cardsWon.add(card);
-        return card;
-    }
-
-    public void clearCardsWon() {
-        cardsWon.clear();
     }
 
     public void addPoints(int pointsWon) {
