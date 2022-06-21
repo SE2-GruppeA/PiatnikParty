@@ -121,7 +121,7 @@ public class ScoreBoard extends Fragment implements View.OnClickListener {
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 
             if(clientViewModel.getCloseGameScoreboard()){
-                clientViewModel.closeGame();
+                clientViewModel.closeGame(true);
             }
         }
     }

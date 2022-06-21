@@ -71,6 +71,7 @@ public class SchnopsnGame extends Game {
     //used for cheating; gives player best card
     @Override
     public void givePlayerBestCard(int playerId) {
+        lobby.getPlayerByID(playerId).setCheaten(true);
         switch (deck.getTrump()){
             case HERZ:
                 sendPlayerBestCard(playerId, new Card(Symbol.HERZ, CardValue.ASS));
