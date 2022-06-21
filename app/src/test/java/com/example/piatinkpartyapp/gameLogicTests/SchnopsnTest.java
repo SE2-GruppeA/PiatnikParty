@@ -274,22 +274,6 @@ class SchnopsnTest {
         assertNotNull(game.getDeck());
     }
 
-    @Test
-    public void mixCardsTest() {
-        Lobby lobby = new Lobby();
-        lobby.addPlayer(1, "Player 1");
-        lobby.addPlayer(2, "Player 2");
-
-        SchnopsnGame game = new SchnopsnGame(lobby);
-        Player player1 = game.lobby.getPlayerByID(1);
-        Player player2 = game.lobby.getPlayerByID(2);
-
-        SchnopsnDeck deck = new SchnopsnDeck(GameName.Schnopsn, 2);
-        game.setDeck(deck);
-
-        assertEquals(game.getDeck(), deck);
-        assertNotNull(game.getDeck());
-    }
 /*
     @Test
     public void startSchnopsnTest() {
