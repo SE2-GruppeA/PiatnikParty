@@ -3,6 +3,7 @@ package com.example.piatinkpartyapp.gamelogic;
 import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.networking.GameServer;
+import com.example.piatinkpartyapp.networking.responses.responseWrongNumberOfPlayers;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -58,52 +59,54 @@ public class Lobby {
     }
 
     public void handleVotingForNextGame(int playerID, GameName gameVoted) {
-        Player player = getPlayerByID(playerID);
+        new Thread(()-> {
+            Player player = getPlayerByID(playerID);
 
-        player.setVotingFinished(true);
-        player.setVotingGame(gameVoted);
+            player.setVotingFinished(true);
+            player.setVotingGame(gameVoted);
 
-        if (checkIfAllPlayersFinishedVoting()) {
-            resetVotingFinished();
-            GameName winnerGame = getWinnerGameOfVoting();
-            LOG.info("Voting won by game: " + winnerGame.toString());
-            switch (winnerGame) {
-                case Schnopsn:
-                    //start schnopsn
-                    if (players.size() == 2) {
-                        currentGame = new SchnopsnGame(this);
-                        currentGame.startGame();
-                    } else {
-                        //toast + start new voting
-                    }
-                    break;
-                case Wattn:
-                    //start wattn
-                    if (players.size() == 2 || players.size() == 3 || players.size() == 4) {
-                        currentGame = new WattnGame(this);
-                        currentGame.startGame();
-                    } else {
-                        //toast + start new voting
-                    }
-                    break;
-                case HosnObe:
-                    //start HosnObe
-                    break;
-                case Pensionisteln:
-                    // start pensionistln
-                    if(players.size() == 4) {
-                        currentGame = new PensionistlnGame(this);
-                        currentGame.startGame();
-                    } else {
-                        //toast + start new voting
-                    }
-                    break;
-                case endOfGame:
-                    closeGame();
-                default:
-                    break;
+            if (checkIfAllPlayersFinishedVoting()) {
+                resetVotingFinished();
+                GameName winnerGame = getWinnerGameOfVoting();
+                LOG.info("Voting won by game: " + winnerGame.toString());
+                switch (winnerGame) {
+                    case Schnopsn:
+                        //start schnopsn
+                        if (players.size() == 2) {
+                            currentGame = new SchnopsnGame(this);
+                            currentGame.startGame();
+                        } else {
+                            sendWrongNumberOfPlayersMessage("Schnopsn ist nur für 2 Spieler möglich!");
+                        }
+                        break;
+                    case Wattn:
+                        //start wattn
+                        if (players.size() == 2 || players.size() == 3 || players.size() == 4) {
+                            currentGame = new WattnGame(this);
+                            currentGame.startGame();
+                        } else {
+                            sendWrongNumberOfPlayersMessage("Wattn ist nur für 2, 3 oder 4 Spieler möglich!");
+                        }
+                        break;
+                    case HosnObe:
+                        //start HosnObe
+                        break;
+                    case Pensionisteln:
+                        // start pensionistln
+                        if (players.size() == 4) {
+                            currentGame = new PensionistlnGame(this);
+                            currentGame.startGame();
+                        } else {
+                            sendWrongNumberOfPlayersMessage("Pensionistln ist nur für 4 Spieler möglich!");
+                        }
+                        break;
+                    case endOfGame:
+                        closeGame();
+                    default:
+                        break;
+                }
             }
-        }
+        }).start();
     }
 
     private void closeGame() {
@@ -161,5 +164,14 @@ public class Lobby {
 
     public void removePlayer(Player player) {
         players.remove(player);
+    }
+
+    public void sendWrongNumberOfPlayersMessage(String message) {
+        responseWrongNumberOfPlayers response = new responseWrongNumberOfPlayers();
+        response.message = message;
+
+        for (Player player : players) {
+            player.getClientConnection().sendTCP(response);
+        }
     }
 }
