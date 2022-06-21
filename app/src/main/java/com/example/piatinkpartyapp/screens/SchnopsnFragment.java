@@ -661,20 +661,18 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     }
 //reset card views
     private void showWinner(Integer winnerID){
-        (new Handler()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
+
                 Toast.makeText(requireActivity().getApplicationContext(),
                         "Player " + winnerID + " hat den Stich bekommen",
                         Toast.LENGTH_SHORT).show();
-            }
-        },2000);
+
+
         (new Handler()).postDelayed(new Runnable() {
             @Override
             public void run() {
                resetAllCardsOnTable();
             }
-        },1000);
+        },2000);
 
     }
 }
