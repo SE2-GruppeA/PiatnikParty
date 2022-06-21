@@ -42,9 +42,10 @@ public class Player {
         this.id = connection.getID();
         this.playerName = playerName;
         this.clientConnection = connection;
+
     }
 
-    // for testing
+    // for testing purposes
     public Player(int id, String playerName) {
         this.id = id;
         this.playerName = playerName;

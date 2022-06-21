@@ -3,8 +3,10 @@ package com.example.piatinkpartyapp.gamelogic;
 import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.networking.GameServer;
+import com.example.piatinkpartyapp.networking.responses.responseWrongNumberOfPlayers;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 public class Lobby {
@@ -26,7 +28,7 @@ public class Lobby {
     }
 
     // for testing
-    public Player addPlayer(int id, String playerName) {
+   public Player addPlayer(int id, String playerName) {
         Player player = new Player(id, playerName);
         players.add(player);
         return player;
@@ -58,38 +60,58 @@ public class Lobby {
     }
 
     public void handleVotingForNextGame(int playerID, GameName gameVoted) {
-        Player player = getPlayerByID(playerID);
+        new Thread(()-> {
+            Player player = getPlayerByID(playerID);
 
-        player.setVotingFinished(true);
-        player.setVotingGame(gameVoted);
+            player.setVotingFinished(true);
+            player.setVotingGame(gameVoted);
 
-        if (checkIfAllPlayersFinishedVoting()) {
-            resetVotingFinished();
-            GameName winnerGame = getWinnerGameOfVoting();
-            LOG.info("Voting won by game: " + winnerGame.toString());
-            switch (winnerGame) {
-                case Schnopsn:
-                    //start schnopsn
-                    currentGame = new SchnopsnGame(this);
-                    currentGame.startGame();
-                    break;
-                case Wattn:
-                    //start wattn
-                    currentGame = new WattnGame(this);
-                    currentGame.startGame();
-                    break;
-                case HosnObe:
-                    //start HosnObe
-                    break;
-                case Pensionisteln:
-                    // start pensionistln
-                    currentGame = new PensionistlnGame(this);
-                    currentGame.startGame();
-                    break;
-                default:
-                    break;
+            if (checkIfAllPlayersFinishedVoting()) {
+                resetVotingFinished();
+                GameName winnerGame = getWinnerGameOfVoting();
+                LOG.info("Voting won by game: " + winnerGame.toString());
+                switch (winnerGame) {
+                    case Schnopsn:
+                        //start schnopsn
+                        if (players.size() == 2) {
+                            currentGame = new SchnopsnGame(this);
+                            currentGame.startGame();
+                        } else {
+                            sendWrongNumberOfPlayersMessage("Schnopsn ist nur für 2 Spieler möglich!");
+                        }
+                        break;
+                    case Wattn:
+                        //start wattn
+                        if (players.size() == 2 || players.size() == 3 || players.size() == 4) {
+                            currentGame = new WattnGame(this);
+                            currentGame.startGame();
+                        } else {
+                            sendWrongNumberOfPlayersMessage("Wattn ist nur für 2, 3 oder 4 Spieler möglich!");
+                        }
+                        break;
+                    case HosnObe:
+                        //start HosnObe
+                        break;
+                    case Pensionisteln:
+                        // start pensionistln
+                        if (players.size() == 4) {
+                            currentGame = new PensionistlnGame(this);
+                            currentGame.startGame();
+                        } else {
+                            sendWrongNumberOfPlayersMessage("Pensionistln ist nur für 4 Spieler möglich!");
+                        }
+                        break;
+                    case endOfGame:
+                        closeGame();
+                    default:
+                        break;
+                }
             }
-        }
+        }).start();
+    }
+
+    private void closeGame() {
+        GameServer.getInstance().closeGame();
     }
 
     public GameName getWinnerGameOfVoting() {
@@ -97,6 +119,7 @@ public class Lobby {
         int countWattn = 0;
         int countHosnObe = 0;
         int countPensionisteln = 0;
+        int countEndOfGame = 0;
         GameName winnerGame;
 
         for (Player player : players) {
@@ -114,13 +137,16 @@ public class Lobby {
                 case Pensionisteln:
                     countPensionisteln = countPensionisteln + 1;
                     break;
+                case endOfGame:
+                    countEndOfGame++;
+                    break;
                 default:
                     break;
             }
         }
 
         // get max of votes
-        int max = Math.max(Math.max(countSchnopsn, countWattn), Math.max(countHosnObe, countPensionisteln));
+        int max = Math.max(Math.max(countSchnopsn, countWattn), Math.max(countEndOfGame, countPensionisteln));
 
         // return game with max votes
         if (countSchnopsn == max) {
@@ -129,9 +155,33 @@ public class Lobby {
             winnerGame = GameName.Wattn;
         } else if (countHosnObe == max) {
             winnerGame = GameName.HosnObe;
-        } else {
+        } else if (countEndOfGame == max){
+            winnerGame = GameName.endOfGame;
+        }else {
             winnerGame = GameName.Pensionisteln;
         }
         return winnerGame;
+    }
+
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
+
+    public void sendWrongNumberOfPlayersMessage(String message) {
+        responseWrongNumberOfPlayers response = new responseWrongNumberOfPlayers();
+        response.message = message;
+
+        for (Player player : players) {
+            player.getClientConnection().sendTCP(response);
+        }
+    }
+    public TreeMap<String, Integer> getPlayerHashMap(){
+        TreeMap<String, Integer> playersHashMap = new TreeMap<>();
+
+        for(Player player: getPlayers()){
+            playersHashMap.put(player.getPlayerName(), player.getPointsScoreboard());
+        }
+
+        return playersHashMap;
     }
 }

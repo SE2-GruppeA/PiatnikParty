@@ -4,5 +4,6 @@ public enum GameName {
     Schnopsn,
     Wattn,
     HosnObe,
-    Pensionisteln
+    Pensionisteln,
+    endOfGame
 }

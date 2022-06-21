@@ -11,11 +11,13 @@ import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.gamelogic.WattnGame;
 import com.example.piatinkpartyapp.networking.responses.responseConnectedSuccessfully;
+import com.example.piatinkpartyapp.networking.responses.responseEndOfGame;
 import com.example.piatinkpartyapp.networking.responses.responseGameStartedClientMessage;
 import com.example.piatinkpartyapp.networking.responses.responseIsCheater;
 import com.example.piatinkpartyapp.networking.responses.responseReceiveEndToEndChatMessage;
 import com.example.piatinkpartyapp.networking.responses.responseReceiveToAllChatMessage;
 import com.example.piatinkpartyapp.networking.responses.responseServerMessage;
+import com.example.piatinkpartyapp.networking.responses.responseUpdateScoreboard;
 import com.example.piatinkpartyapp.networking.responses.responseVoteForNextGame;
 import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
 import com.example.piatinkpartyapp.networking.responses.responsePlayerDisconnected;
@@ -35,6 +37,7 @@ import com.example.piatinkpartyapp.utils.Utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -43,16 +46,26 @@ public class GameServer {
     private static final Logger LOG = Logger.getLogger(GameServer.class.getName());
 
     private Server server;
-    private ArrayList<Connection> clients = new ArrayList<>();
+    private ArrayList<Connection> clients;
     private Lobby lobby;
     private Game game;
     private WattnGame wattnGame;
     private ExecutorService executorService;
 
+    private static GameServer INSTANCE = null;
+
+    public static GameServer getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new GameServer();
+        }
+        return INSTANCE;
+    }
+
     public void startNewGameServer() throws IOException {
         executorService = Executors.newFixedThreadPool(5);
         executorService.execute(() -> {
             server = new Server();
+            clients = new ArrayList<>();
             NetworkHandler.register(server.getKryo());
             // this line of code has to run before we start / bind / connect to the server !!
             server.start();
@@ -61,6 +74,7 @@ public class GameServer {
             } catch (IOException e) {
                 LOG.info(e.toString());
             }
+
             // create new Game
             game = new Game();
 
@@ -121,6 +135,30 @@ public class GameServer {
                 }
             }
         });
+    }
+
+
+    public void closeGame(){
+        responseEndOfGame response = new responseEndOfGame();
+
+        LOG.info(" Server requested to close the game");
+
+        sendPacketToAll(response);
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        for(Connection c:clients){
+            c.close();
+        }
+
+        server.close();
+        executorService.shutdown();
+
+        LOG.info("Server closed");
     }
 
     private void handleExposePossibleCheater(Connection connection, requestExposePossibleCheater object) {
@@ -187,18 +225,22 @@ public class GameServer {
 
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
         players.postValue(lobby.getPlayers());
+
+        sendPacketToAll(new responseUpdateScoreboard(lobby.getPlayerHashMap()));
         //players.postValue(wattnGame.getPlayers());
     }
 
     private void handleDisconnected(Connection connection) {
         //update teilnehmerliste (in clients stehen alle verbundenen clients)
+        Player player = lobby.getPlayerByID(connection.getID());
+        clients.remove(player);
+        lobby.removePlayer(player);
         players.postValue(lobby.getPlayers());
 
         //When the Player disconnects the message is send to all other players.
         responsePlayerDisconnected response = new responsePlayerDisconnected();
         response.playerID = connection.getID();
         sendPacketToAll(response);
-
     }
 
     private void handleVoteForNextGame(Connection connection, requestVoteForNextGame object) {

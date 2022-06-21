@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
+import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
@@ -14,10 +16,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-public class SchnopsnTest {
+class SchnopsnTest {
 
     @Test
-    public void constructorTest() {
+    void constructorTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -28,7 +30,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void setRoundStartPlayerTest() {
+    void setRoundStartPlayerTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -43,7 +45,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void getWinnerPlayerSchnopsnTest() {
+    void getWinnerPlayerSchnopsnTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -66,7 +68,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void getWinnerPlayerSchnopsnTest2() {
+    void getWinnerPlayerSchnopsnTest2() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -89,7 +91,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void getWinnerPlayerSchnopsnTest3() {
+    void getWinnerPlayerSchnopsnTest3() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -112,7 +114,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void resetRoundFinishedTest() {
+    void resetRoundFinishedTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -136,7 +138,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void sendHandCardsTest() {
+    void sendHandCardsTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -156,7 +158,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void startGameTest() {
+    void startGameTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -187,7 +189,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void getNextPlayerTest() {
+    void getNextPlayerTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -206,4 +208,81 @@ public class SchnopsnTest {
 
         assertEquals(player2, next);
     }
+
+    @Test
+    void checkIfAllPlayersFinishedRoundTest() {
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+
+        SchnopsnGame game = new SchnopsnGame(lobby);
+        Player player1 = game.lobby.getPlayerByID(1);
+        Player player2 = game.lobby.getPlayerByID(2);
+
+        game.setRoundStartPlayer(player1);
+
+        Card card1 = new Card(Symbol.HERZ, CardValue.ASS);
+        player1.setCardPlayed(card1);
+        player1.setRoundFinished(true);
+
+        Boolean finished = game.checkIfAllPlayersFinishedRound();
+
+        assertEquals(finished, false);
+        assertNotNull(finished);
+    }
+
+    @Test
+    void checkIfAllPlayersFinishedRoundTest2() {
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+
+        SchnopsnGame game = new SchnopsnGame(lobby);
+        Player player1 = game.lobby.getPlayerByID(1);
+        Player player2 = game.lobby.getPlayerByID(2);
+
+        game.setRoundStartPlayer(player1);
+
+        Card card1 = new Card(Symbol.HERZ, CardValue.ASS);
+        player1.setCardPlayed(card1);
+        player1.setRoundFinished(true);
+
+        Card card2 = new Card(Symbol.HERZ, CardValue.NEUN);
+        player2.setCardPlayed(card2);
+        player2.setRoundFinished(true);
+
+        Boolean finished = game.checkIfAllPlayersFinishedRound();
+
+        assertEquals(finished, true);
+        assertNotNull(finished);
+    }
+
+    @Test
+    public void setDeckTest() {
+        Lobby lobby = new Lobby();
+        lobby.addPlayer(1, "Player 1");
+        lobby.addPlayer(2, "Player 2");
+
+        SchnopsnGame game = new SchnopsnGame(lobby);
+        Player player1 = game.lobby.getPlayerByID(1);
+        Player player2 = game.lobby.getPlayerByID(2);
+
+        SchnopsnDeck deck = new SchnopsnDeck(GameName.Schnopsn, 2);
+        game.setDeck(deck);
+
+        assertEquals(game.getDeck(), deck);
+        assertNotNull(game.getDeck());
+    }
+
+/*
+    @Test
+    public void startSchnopsnTest() {
+        GameServer server = GameServer.getInstance();
+        try {
+            server.startNewGameServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+ */
 }

@@ -6,7 +6,7 @@ import com.example.piatinkpartyapp.gamelogic.Player;
 
 import org.junit.jupiter.api.Test;
 
-public class PlayerTest {
+class PlayerTest {
 
   @Test
      void addition_isCorrect() {

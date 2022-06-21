@@ -42,7 +42,9 @@
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_create_game.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_einstellungen.xml" value="0.3625" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_game_rules.xml" value="0.1343370005790388" />
+        <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_play_game.xml" value="0.25" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_schnopsn.xml" value="0.3625" />
+        <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_waiting_players.xml" value="0.25" />
         <entry key="..\:/Users/nejcd/AndroidStudioProjects/PiatnikParty/app/src/main/res/layout/fragment_wattn.xml" value="0.25" />
         <entry key="..\:/Users/tines/AndroidStudioProjects/AppDev/PiatnikParty/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.235" />
         <entry key="..\:/Users/tines/AndroidStudioProjects/AppDev/PiatnikParty/app/src/main/res/drawable/ic_launcher_background.xml" value="0.235" />
@@ -54,7 +56,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

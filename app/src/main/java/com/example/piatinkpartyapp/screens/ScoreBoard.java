@@ -81,7 +81,7 @@ public class ScoreBoard extends Fragment implements View.OnClickListener {
         closeBtn.setOnClickListener(this);
 
         //add view model and observer(s)
-        clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
+        clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
         clientViewModel.getPlayers().observe(getViewLifecycleOwner(), this::updateScoreboard);
 
@@ -119,6 +119,10 @@ public class ScoreBoard extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if(view == closeBtn){
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+
+            if(clientViewModel.getCloseGameScoreboard()){
+                clientViewModel.closeGame(true);
+            }
         }
     }
 }

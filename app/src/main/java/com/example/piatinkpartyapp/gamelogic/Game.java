@@ -14,6 +14,10 @@ import com.example.piatinkpartyapp.networking.responses.responseSendSchlagToAllP
 import com.example.piatinkpartyapp.networking.responses.responseSendTrumpToAllPlayers;
 import com.example.piatinkpartyapp.networking.responses.responseUpdatePointsWinnerPlayer;
 import com.example.piatinkpartyapp.networking.responses.*;
+
+import java.util.ArrayList;
+
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
@@ -82,8 +86,10 @@ public class Game {
 
     // reset played card from players
     public void resetPlayedCard() {
-        for (Player player : lobby.getPlayers()) {
-            player.setCardPlayed(null);
+        if (lobby != null) {
+            for (Player player : lobby.getPlayers()) {
+                player.setCardPlayed(null);
+            }
         }
     }
 
@@ -117,10 +123,16 @@ public class Game {
         player.getClientConnection().sendTCP(request);
     }
 
-    public void sendEndRoundMessageToPlayers(Player roundWinner) {
+    public void sendEndRoundMessageToPlayers(ArrayList<Player> roundWinner) {
+        ArrayList<Integer> winnerIds = new ArrayList<>();
+
+        for(Player winner: roundWinner){
+            winnerIds.add(winner.getId());
+        }
+
         for (Player player : lobby.getPlayers()) {
             responseEndOfRound response = new responseEndOfRound();
-            response.playerID = roundWinner.getId();
+            response.playerIDs = winnerIds;
             player.getClientConnection().sendTCP(response);
         }
     }
@@ -171,22 +183,14 @@ public class Game {
     }
 
     public void sendMessageUpdateScoreboard() {
-        responseUpdateScoreboard response = new responseUpdateScoreboard(getPlayerHashMap());
+        responseUpdateScoreboard response = new responseUpdateScoreboard(lobby.getPlayerHashMap());
 
         for (Player player : lobby.getPlayers()) {
             player.getClientConnection().sendTCP(response);
         }
     }
 
-    public TreeMap<String, Integer> getPlayerHashMap(){
-        TreeMap<String, Integer> playersHashMap = new TreeMap<>();
 
-        for(Player player: lobby.getPlayers()){
-            playersHashMap.put(player.getPlayerName(), player.getPointsScoreboard());
-        }
-
-        return playersHashMap;
-    }
 
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
@@ -200,9 +204,6 @@ public class Game {
     public void startGame() {
         // DOnt know why this methode is empty.
     }
-
-
-
 
     public void setCard(int id, Card card) {
         // DOnt know why this methode is empty.
@@ -239,8 +240,12 @@ public class Game {
     }
 
     public Boolean isPlayerCheater(Integer playerId, Integer exposerId) {
-        lobby.getPlayerByID(exposerId).setHasExposed(true);
-        return lobby.getPlayerByID(playerId).isCheaten();
+        if (lobby != null) {
+            lobby.getPlayerByID(exposerId).setHasExposed(true);
+            return lobby.getPlayerByID(playerId).isCheaten();
+        } else {
+            return false;
+        }
     }
 
     public void cheaterPenalty(Integer playerId) {
@@ -263,5 +268,14 @@ public class Game {
         Player player = lobby.getPlayerByID(exposerId);
         player.addPoints(-10);
         sendPointsToWinnerPlayer(player);
+    }
+
+    public Player getRandomPlayer() {
+        Random rand = new Random();
+        if (lobby != null) {
+            return lobby.getPlayers().get(rand.nextInt(lobby.getPlayers().size()));
+        } else {
+            return null;
+        }
     }
 }

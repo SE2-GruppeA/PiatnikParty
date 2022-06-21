@@ -4,11 +4,9 @@ import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.PensionistlnRound;
 import com.example.piatinkpartyapp.cards.Symbol;
-import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.responses.responsePensionistLnStartedClientMessage;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public class PensionistlnGame extends SchnopsnGame{
 
@@ -32,9 +30,11 @@ public class PensionistlnGame extends SchnopsnGame{
             sendHandCards();
 
             sendTrumpToAllPlayers(getDeck().getTrump());
-            setRoundStartPlayer(lobby.getPlayers().get(0));
+
+            Player roundStartPlayer = getRandomPlayer();
+            setRoundStartPlayer(roundStartPlayer);
             // notify first player that it is his turn
-            notifyPlayerYourTurn(lobby.getPlayers().get(0));
+            notifyPlayerYourTurn(roundStartPlayer);
         }).start();
     }
 
@@ -108,7 +108,10 @@ public class PensionistlnGame extends SchnopsnGame{
         new Thread(() -> {
             if (startPlayer.getHandcards().isEmpty()) {
                 addPointsAndUpdateScoreboard(startPlayer,1);
-                sendEndRoundMessageToPlayers(startPlayer);
+                ArrayList<Player> winner = new ArrayList<>();
+                winner.add(startPlayer);
+
+                sendEndRoundMessageToPlayers(winner);
             } else {
                 resetRoundFinished();
                 resetPlayedCard();

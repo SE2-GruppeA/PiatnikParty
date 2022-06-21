@@ -1,5 +1,7 @@
 package com.example.piatinkpartyapp.gamelogic;
 
+import android.util.Log;
+
 import com.example.piatinkpartyapp.cards.Card;
 import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
@@ -38,9 +40,12 @@ public class WattnGame extends Game {
             resetPlayerPoints();
             resetCheating();
             sendGameStartedMessageToClients();
+
+
+            Player roundStartPlayer = getRandomPlayer();
+            setRoundStartPlayer(roundStartPlayer);
             sendHandCards();
-            setRoundStartPlayer(lobby.getPlayers().get(0));
-            notifyPlayerYourTurn(lobby.getPlayers().get(0));
+            notifyPlayerYourTurn(roundStartPlayer);
             //reset player points
             for(Player p: lobby.getPlayers()){
                 p.addPoints(-1*p.getPoints());
@@ -50,6 +55,8 @@ public class WattnGame extends Game {
     }
     //sending handcards to players
     public void sendHandCards() {
+        roundStartPlayer = this.getRoundStartPlayer();
+        LOG.info(roundStartPlayer.toString());
         for (Player player: lobby.getPlayers()) {
             ArrayList<Card> handCards = deck.getHandCards();
             player.setHandcards(handCards);
@@ -57,9 +64,9 @@ public class WattnGame extends Game {
             // send message to client with handcards
             sendHandCardsToPlayer(handCards, player);
             //messages for player 1 to set schlag & player 2 to set trump
-            if(player.getId() == 1){
+            if(player.getId().equals(roundStartPlayer.getId())){
                 player.getClientConnection().sendTCP(new responseNotifyPlayerToSetSchlag());
-            }else if(player.getId() == 2){
+            }else if(player.getId().equals(getNextPlayer(roundStartPlayer).getId())){
                 player.getClientConnection().sendTCP(new responseNotifyPlayerToSetTrump());
             }
         }
@@ -74,6 +81,7 @@ public class WattnGame extends Game {
     @Override
     public void givePlayerBestCard(int playerId) {
       sendPlayerBestCard(playerId, new Card(this.deck.getTrump(),this.deck.getHit()));
+      lobby.getPlayerByID(playerId).setCheaten(true);
 
     }
     //replaces the first hand card with the best card in the game
@@ -133,6 +141,7 @@ public class WattnGame extends Game {
     }
     public Player getRoundWinnerWattn(){
 
+        ArrayList<Player> winners = new ArrayList<>();
         Player winningPlayer = this.roundStartPlayer;
         LOG.info(winningPlayer.toString());
         Player currentPlayer = getNextPlayer(this.roundStartPlayer);
@@ -160,6 +169,7 @@ public class WattnGame extends Game {
 
             } //hit case - first played hit wins
             else if(winningPlayer.getCardPlayed().getCardValue() == this.deck.getHit() ){
+                return winningPlayer;
             }//hit case - hit wins
             else if(currentPlayer.getCardPlayed().getCardValue() ==this.deck.getHit() && (winningPlayer.getCardPlayed().cardValue != this.deck.getHit())){
 
@@ -176,11 +186,13 @@ public class WattnGame extends Game {
 
             if(winningPlayer.getPoints() == 3){
                 LOG.info(winningPlayer + " won this game!");
-
-                sendEndRoundMessageToPlayers(roundStartPlayer);
+                winners.add(roundStartPlayer);
+                sendEndRoundMessageToPlayers(winners);
                 return winningPlayer;
             }else if(winningPlayer.getPoints() < currentPlayer.getPoints()){
-                sendEndRoundMessageToPlayers(roundStartPlayer);
+                winners.add(roundStartPlayer);
+                winners.add(currentPlayer);
+                sendEndRoundMessageToPlayers(winners);
                 winningPlayer = currentPlayer;
                 return winningPlayer;
             }
@@ -194,46 +206,49 @@ public class WattnGame extends Game {
 
     public void addPointsToWinnerPlayer(Player winnerPlayer) {
          if(lobby.getPlayers().size()==3 && (winnerPlayer.getId() == 2 || winnerPlayer.getId() == 3)){
-            lobby.getPlayerByID(2).addPoints(1);
-            sendPointsToWinnerPlayer(lobby.getPlayerByID(2));
-            lobby.getPlayerByID(3).addPoints(1);
-            sendPointsToWinnerPlayer(lobby.getPlayerByID(3));
+             updatePoints(lobby.getPlayerByID(2));
+             updatePoints(lobby.getPlayerByID(3));
+
         }else if(lobby.getPlayers().size()== 4){
              if(winnerPlayer.getId() == 1 || winnerPlayer.getId() == 3){
-                 lobby.getPlayerByID(1).addPoints(1);
-                 sendPointsToWinnerPlayer(lobby.getPlayerByID(1));
-                 lobby.getPlayerByID(3).addPoints(1);
-                 sendPointsToWinnerPlayer(lobby.getPlayerByID(3));
+                updatePoints(lobby.getPlayerByID(1));
+                updatePoints(lobby.getPlayerByID(3));
              }else if(winnerPlayer.getId() == 2 || winnerPlayer.getId() == 4){
-                 lobby.getPlayerByID(2).addPoints(1);
-                 sendPointsToWinnerPlayer(lobby.getPlayerByID(2));
-                 lobby.getPlayerByID(4).addPoints(1);
-                 sendPointsToWinnerPlayer(lobby.getPlayerByID(4));
+                updatePoints(lobby.getPlayerByID(2));
+                 updatePoints(lobby.getPlayerByID(4));
              }
          }else {
-             winnerPlayer.addPoints(1);
-             sendPointsToWinnerPlayer(winnerPlayer);
+            updatePoints(winnerPlayer);
          }
-
-
+    }
+    private void updatePoints(Player player){
+        lobby.getPlayerByID(player.getId()).addPoints(1);
+        sendPointsToWinnerPlayer(lobby.getPlayerByID(player.getId()));
     }
 
     public void startNewRoundWattn(Player startPlayer) {
         new Thread(()->{
+            ArrayList<Player> winnerIDs = new ArrayList<>();
             LOG.info(startPlayer.getPlayerName() + " has " +startPlayer.getPoints());
             Player other = getNextPlayer(startPlayer);
             LOG.info(other.getPlayerName() + " has " + other.getPoints());
             if (startPlayer.getPoints() >= 3 ) {
-                sendEndRoundMessageToPlayers(startPlayer);
+                //sendEndRoundMessageToPlayers(startPlayer);
+                winnerIDs.add(startPlayer);
                 addPointsAndUpdateScoreboard(startPlayer, 1);
+                sendEndRoundMessageToPlayers(winnerIDs);
             }else if(startPlayer.getHandcards().isEmpty() && other.getHandcards().isEmpty()){
                 if(startPlayer.getPoints() >= other.getPoints()){
-                    sendEndRoundMessageToPlayers(startPlayer);
+                    //sendEndRoundMessageToPlayers(startPlayer);
+                    winnerIDs.add(startPlayer);
                     addPointsAndUpdateScoreboard(startPlayer,1);
                 }else{
-                    sendEndRoundMessageToPlayers(other);
+                    //sendEndRoundMessageToPlayers(other);
+                    winnerIDs.add(other);
                     addPointsAndUpdateScoreboard(other,1);
                 }
+
+                sendEndRoundMessageToPlayers(winnerIDs);
             }
             else {
                 resetRoundFinished();
@@ -279,17 +294,53 @@ public class WattnGame extends Game {
     @Override
     public void punishWrongExposure(Integer exposerId){
         Player player = lobby.getPlayerByID(exposerId);
-        player.addPoints(-1);
+        if(lobby.getPlayers().size()==2){
+            penaltyPoints(player,-1);
+        }else if(lobby.getPlayers().size() == 3){
+            if(exposerId == 2 || exposerId == 3){
+                penaltyPoints(lobby.getPlayerByID(2),-1);
+                penaltyPoints(lobby.getPlayerByID(3),-1);
+            }else{
+                penaltyPoints(player,-1);
+            }
+        }else if(lobby.getPlayers().size() == 4){
+            if(exposerId == 1 || exposerId == 3){
+                penaltyPoints(lobby.getPlayerByID(1),-1);
+                penaltyPoints(lobby.getPlayerByID(3),-1);
+            }else{
+                penaltyPoints(lobby.getPlayerByID(2),-1);
+                penaltyPoints(lobby.getPlayerByID(4),-1);
+            }
+        }
+    }
+    private void penaltyPoints(Player player, Integer points){
+        player.addPoints(points);
         sendPointsToWinnerPlayer(player);
     }
+
     @Override
     public void cheaterPenalty(Integer playerId){
         Player player = lobby.getPlayerByID(playerId);
 
         if(player.isCheaten()){
-            player.addPoints(-2);
+            if(lobby.getPlayers().size() == 2){
+                penaltyPoints(player,-2);
+            }else if(lobby.getPlayers().size() == 3){
+                if(playerId == 2 || playerId == 3){
+                    penaltyPoints(lobby.getPlayerByID(2),-2);
+                    penaltyPoints(lobby.getPlayerByID(3),-2);
+                }else{
+                    penaltyPoints(player,-2);
+                }
+            }else if(lobby.getPlayers().size() == 4){
+                if(playerId == 1 || playerId == 3){
+                    penaltyPoints(lobby.getPlayerByID(1),-2);
+                    penaltyPoints(lobby.getPlayerByID(3),-2);
+                }else{
+                    penaltyPoints(lobby.getPlayerByID(2),-2);
+                    penaltyPoints(lobby.getPlayerByID(4),-2);
+                }
+            }
         }
-
-        sendPenaltyMessageToPlayer(player);
     }
 }

@@ -9,7 +9,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -243,7 +245,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         //checks if the layout is already landscape
         //if it would not be in landscape mode some dialogs would get displayed twice
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
+            clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
             //when a game is started, the client gets notified
             clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), this::initializeSchnopsn);
@@ -255,7 +257,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.isMyTurn().observe(getViewLifecycleOwner(), this::waitForMyTurn);
             clientViewModel.getHandoutCard().observe(getViewLifecycleOwner(), this::getHandoutCard);
             clientViewModel.isVotingForNextGame().observe(getViewLifecycleOwner(), this::voteForNextGame);
-            clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), this::atRoundEnd);
+            clientViewModel.isEndOfRound().observe(getViewLifecycleOwner(), ret -> atRoundEnd());
             clientViewModel.getPlayedCard().observe(getViewLifecycleOwner(), this::setPlayedCard);
             clientViewModel.getPoints().observe(getViewLifecycleOwner(), this::setScorePoints);
             clientViewModel.isSetTrump().observe(getViewLifecycleOwner(), this::playerSetTrump);
@@ -265,6 +267,9 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), this::showWinner);
             clientViewModel.isCheaterExposed().observe(getViewLifecycleOwner(), this::showCheaterExposed);
             clientViewModel.isCheatingExposed().observe(getViewLifecycleOwner(), this::showCheatingExposed);
+            clientViewModel.getPlayerDisconnected().observe(getViewLifecycleOwner(), this::disconnectedPlayer);
+            clientViewModel.isEndOfGame().observe(getViewLifecycleOwner(), this::onGameEnd);
+            clientViewModel.getWrongNumberOfPlayers().observe(getViewLifecycleOwner(), this::wrongNumberOfPlayers);
 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), this::notifyNewMessage);
@@ -277,6 +282,31 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.mixedCards().observe(getViewLifecycleOwner(), this::mixCards);
         }
         return root;
+    }
+
+    private void wrongNumberOfPlayers(String s) {
+        Toast.makeText(requireActivity().getApplicationContext(),
+                s,
+                Toast.LENGTH_SHORT).show();
+        showVote();
+    }
+
+    private void onGameEnd(Boolean gameEnd) {
+        if(gameEnd){
+            showScoreboard();
+
+            clientViewModel.setCloseGameScoreboard(true);
+
+            //waits for the scoreboard to get closed
+            clientViewModel.getCloseGameAfterScoreboard().observe(getViewLifecycleOwner(), this::closeAfterScoreboard);
+        }
+    }
+
+    private void disconnectedPlayer(Integer playerID) {
+        Toast.makeText(requireActivity().getApplicationContext(),
+                "Player " + playerID + " hat das Spiel verlassen",
+                Toast.LENGTH_SHORT).show();
+        showVote();
     }
 
     private void showServerMessage(String serverMessage) {
@@ -405,8 +435,8 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         play(playedCard.card, playedCard.playerID);
     }
 
-    private void atRoundEnd(Integer winner) {
-        showRoundWinner(winner);
+    private void atRoundEnd() {
+        showRoundWinner();
         for(ImageView imageView : handCardImageViews){
             imageView.setContentDescription("started");
         }
@@ -556,6 +586,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private static void setCardImage(String cardName, ImageView imgview) {
         Integer rid = getResId(cardName);
+        imgview.setVisibility(View.VISIBLE);
         imgview.setImageResource(rid);
         imgview.setContentDescription(cardName);
     }
@@ -626,19 +657,38 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         });
     }
 
+    public void closeAfterScoreboard(Boolean close){
+        if(close){
+            clientViewModel.setCloseGameScoreboard(false);
+            clientViewModel.closeGame(false);
+            goBack();
+        }
+    }
+
     private void goBack() {
         //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        clientViewModel.leaveGame();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
-    private void showRoundWinner(Integer winnerID){
-        requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, WinnerFragment.newInstance("Player " + winnerID)).commit();
+    private void showRoundWinner(){
+        requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new WinnerFragment()).commit();
     }
-
+//reset card views
     private void showWinner(Integer winnerID){
-        Toast.makeText(requireActivity().getApplicationContext(),
-                "Player " + winnerID + " hat den Stich bekommen",
-                Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(requireActivity().getApplicationContext(),
+                        "Player " + winnerID + " hat den Stich bekommen",
+                        Toast.LENGTH_SHORT).show();
+
+
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               resetAllCardsOnTable();
+            }
+        },2000);
+
     }
 }

@@ -10,10 +10,10 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TestUtils {
+class TestUtils {
 
     @Test
-    public void testGetDateAsString() {
+    void testGetDateAsString() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(Date.from(Instant.now()));
         int hours = calendar.get(Calendar.HOUR_OF_DAY);
