@@ -45,7 +45,7 @@ public class Player {
 
     }
 
-    // for testing
+    // for testing purposes
     public Player(int id, String playerName) {
         this.id = id;
         this.playerName = playerName;
