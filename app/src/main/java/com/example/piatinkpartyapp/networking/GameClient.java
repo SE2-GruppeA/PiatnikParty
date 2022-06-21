@@ -11,6 +11,17 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestExposePossibleCheater;
+import com.example.piatinkpartyapp.networking.requests.requestForceVoting;
+import com.example.piatinkpartyapp.networking.requests.requestMixCardsRequest;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerRequestsCheat;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetCard;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetSchlag;
+import com.example.piatinkpartyapp.networking.requests.requestPlayerSetTrump;
+import com.example.piatinkpartyapp.networking.requests.requestSendEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestSendToAllChatMessage;
+import com.example.piatinkpartyapp.networking.requests.requestStartGameMessage;
+import com.example.piatinkpartyapp.networking.requests.requestVoteForNextGame;
 import com.example.piatinkpartyapp.networking.responses.responseCheatingPenalty;
 import com.example.piatinkpartyapp.networking.responses.responseConnectedSuccessfully;
 import com.example.piatinkpartyapp.networking.responses.responseEndOfGame;
@@ -18,10 +29,12 @@ import com.example.piatinkpartyapp.networking.responses.responseEndOfRound;
 import com.example.piatinkpartyapp.networking.responses.responseGameStartedClientMessage;
 import com.example.piatinkpartyapp.networking.responses.responseHosnObeStartedClientMessage;
 import com.example.piatinkpartyapp.networking.responses.responseIsCheater;
+import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
 import com.example.piatinkpartyapp.networking.responses.responseNotifyPlayerToSetSchlag;
 import com.example.piatinkpartyapp.networking.responses.responseNotifyPlayerToSetTrump;
 import com.example.piatinkpartyapp.networking.responses.responseNotifyPlayerYourTurn;
 import com.example.piatinkpartyapp.networking.responses.responsePensionistLnStartedClientMessage;
+import com.example.piatinkpartyapp.networking.responses.responsePlayerDisconnected;
 import com.example.piatinkpartyapp.networking.responses.responsePlayerGetHandoutCard;
 import com.example.piatinkpartyapp.networking.responses.responseReceiveEndToEndChatMessage;
 import com.example.piatinkpartyapp.networking.responses.responseReceiveToAllChatMessage;
@@ -36,19 +49,7 @@ import com.example.piatinkpartyapp.networking.responses.responseUpdatePointsWinn
 import com.example.piatinkpartyapp.networking.responses.responseUpdateScoreboard;
 import com.example.piatinkpartyapp.networking.responses.responseVoteForNextGame;
 import com.example.piatinkpartyapp.networking.responses.responseWattnStartedClientMessage;
-import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
-import com.example.piatinkpartyapp.networking.responses.responsePlayerDisconnected;
-import com.example.piatinkpartyapp.networking.requests.requestExposePossibleCheater;
-import com.example.piatinkpartyapp.networking.requests.requestForceVoting;
-import com.example.piatinkpartyapp.networking.requests.requestMixCardsRequest;
-import com.example.piatinkpartyapp.networking.requests.requestPlayerRequestsCheat;
-import com.example.piatinkpartyapp.networking.requests.requestPlayerSetCard;
-import com.example.piatinkpartyapp.networking.requests.requestPlayerSetSchlag;
-import com.example.piatinkpartyapp.networking.requests.requestPlayerSetTrump;
-import com.example.piatinkpartyapp.networking.requests.requestSendEndToEndChatMessage;
-import com.example.piatinkpartyapp.networking.requests.requestSendToAllChatMessage;
-import com.example.piatinkpartyapp.networking.requests.requestStartGameMessage;
-import com.example.piatinkpartyapp.networking.requests.requestVoteForNextGame;
+import com.example.piatinkpartyapp.networking.responses.responseWrongNumberOfPlayers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -412,6 +413,12 @@ public class GameClient {
         players.postValue(response.players);
 
         LOG.info("Update Scoreboard!");
+    }
+
+    private void handleWroungNumberOfPlayers(responseWrongNumberOfPlayers object) {
+        responseWrongNumberOfPlayers response = object;
+
+        LOG.info("Spiel mit dieser Anzahl an Spielern nicht möglich: " + response.message);
     }
     /////////////////// END - Handler Methods !!! ///////////////////
 

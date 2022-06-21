@@ -55,9 +55,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
         xml.destination file("${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
     }
 
-    def fileFilter = ['**/databinding/**','**/fragments/**','**/screens/**','**/R.class', '**/R$*.class', '**/BuildConfig.*',
-                                    '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/networking/**',
-                                    '**/clientuilogic/**', '**/*GameViewModel.*','**/*ListAdapter.*']
+    def fileFilter = ['**/databinding/**','**/fragments/**','**/screens/**','**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/networking/**', '**/clientuilogic/**', '**/*GameViewModel.*','**/*ListAdapter.*', '**/*ChatAdapter.*', '**/*ChatMessageViewHolder.*']
     def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
 
@@ -66,20 +64,20 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
     executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
 }
 
-    ////////// 2. move also sonarqube properties //////////
+////////// 2. move also sonarqube properties //////////
 sonarqube {
     properties {
-            property "sonar.projectKey", "SE2-GruppeA_PiatnikParty"
-            property "sonar.organization", "se2-gruppea"
-            property "sonar.host.url", "https://sonarcloud.io"
-            property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.projectKey", "SE2-GruppeA_PiatnikParty"
+        property "sonar.organization", "se2-gruppea"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.java.coveragePlugin", "jacoco"
 
-            ////////// 5. property same as xml.destination of jacocoTestReport //////////
-            property "sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+        ////////// 5. property same as xml.destination of jacocoTestReport //////////
+        property "sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
 
-            //Excluding some packages from sonarcloud coverage
-            //https://stackoverflow.com/questions/27033757/exclude-packages-from-jacoco-report-using-sonarrunner-and-gradle#comment69974453_27446082
-           property "sonar.coverage.exclusions", '**/databinding/**','**/fragments/**','**/screens/**','**/Manifest*.*', '**/networking/**', '**/clientuilogic/**', '**/*GameViewModel.*'
+        //Excluding some packages from sonarcloud coverage
+        //https://stackoverflow.com/questions/27033757/exclude-packages-from-jacoco-report-using-sonarrunner-and-gradle#comment69974453_27446082
+        property "sonar.exclusions", "${project.projectDir}com/example/piatinkpartyapp/screens"
     }
 }
 

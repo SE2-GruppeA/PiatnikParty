@@ -10,11 +10,14 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.SchnopsnDeck;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.gamelogic.Game;
+import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
 
 import org.junit.jupiter.api.Test;
 
 public class GameTest {
+
+    Lobby lobby;
 
     @Test
      void constructorTest() {
@@ -122,5 +125,18 @@ public class GameTest {
         CardValue cardValue = CardValue.OBER;
 
         Card card = new Card(symbol, cardValue);
+    }
+
+    @Test
+    void testGivePlayerBestCard() {
+        Game game = new Game();
+        int playerId = 1;
+    }
+
+    @Test
+    void testSetLobby() {
+        Lobby lobby2 = new Lobby();
+        this.lobby = lobby2;
+        assertNotNull(lobby);
     }
 }
