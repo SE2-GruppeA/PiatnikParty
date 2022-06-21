@@ -85,7 +85,9 @@ public class GameClient {
             client.start();
             try {
                 client.connect(10000, NetworkHandler.GAMESERVER_IP, NetworkHandler.TCP_Port, NetworkHandler.TCP_UDP);
-            } catch (IOException ignored){}
+            } catch (IOException ignored){
+                disconnectFromGame();
+            }
 
             this.playerID = client.getID();
             startListener();

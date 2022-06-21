@@ -53,6 +53,7 @@ public class PensionistlnGame extends SchnopsnGame{
 
     @Override
     public void givePlayerBestCard(int playerId) {
+        lobby.getPlayerByID(playerId).setCheaten(true);
         sendPlayerBestCard(playerId, new Card(Symbol.randomSymbol(), CardValue.SIEBEN));
     }
 
