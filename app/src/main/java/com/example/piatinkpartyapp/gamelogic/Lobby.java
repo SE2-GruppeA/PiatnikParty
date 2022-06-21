@@ -3,7 +3,6 @@ package com.example.piatinkpartyapp.gamelogic;
 import com.esotericsoftware.kryonet.Connection;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.networking.GameServer;
-import com.example.piatinkpartyapp.networking.responses.responseEndOfGame;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -71,21 +70,33 @@ public class Lobby {
             switch (winnerGame) {
                 case Schnopsn:
                     //start schnopsn
-                    currentGame = new SchnopsnGame(this);
-                    currentGame.startGame();
+                    if (players.size() == 2) {
+                        currentGame = new SchnopsnGame(this);
+                        currentGame.startGame();
+                    } else {
+                        //toast + start new voting
+                    }
                     break;
                 case Wattn:
                     //start wattn
-                    currentGame = new WattnGame(this);
-                    currentGame.startGame();
+                    if (players.size() == 2 || players.size() == 3 || players.size() == 4) {
+                        currentGame = new WattnGame(this);
+                        currentGame.startGame();
+                    } else {
+                        //toast + start new voting
+                    }
                     break;
                 case HosnObe:
                     //start HosnObe
                     break;
                 case Pensionisteln:
                     // start pensionistln
-                    currentGame = new PensionistlnGame(this);
-                    currentGame.startGame();
+                    if(players.size() == 4) {
+                        currentGame = new PensionistlnGame(this);
+                        currentGame.startGame();
+                    } else {
+                        //toast + start new voting
+                    }
                     break;
                 case endOfGame:
                     closeGame();
