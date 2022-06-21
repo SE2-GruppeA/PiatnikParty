@@ -212,10 +212,10 @@ public class WattnTest {
         assertEquals(player1, wg.roundStartPlayer);
         assertEquals(player2, wg.getNextPlayer(player1));
 
-        player2.setCardPlayed(new Card(Symbol.HERZ,CardValue.KOENIG));
-        player1.setCardPlayed(new Card(Symbol.PICK, CardValue.KOENIG));
+        player1.setCardPlayed(new Card(Symbol.HERZ,CardValue.KOENIG));
+        player2.setCardPlayed(new Card(Symbol.PICK, CardValue.KOENIG));
         Player winner = wg.getRoundWinnerWattn();
-        assertEquals(player1, winner);
+        assertEquals(player2, winner);
 
     }
    @Test
