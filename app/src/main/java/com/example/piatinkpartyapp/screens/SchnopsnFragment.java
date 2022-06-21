@@ -243,7 +243,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
         //checks if the layout is already landscape
         //if it would not be in landscape mode some dialogs would get displayed twice
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
+            clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
             //when a game is started, the client gets notified
             clientViewModel.isSchnopsnStarted().observe(getViewLifecycleOwner(), this::initializeSchnopsn);
@@ -265,6 +265,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.getWinnerId().observe(getViewLifecycleOwner(), this::showWinner);
             clientViewModel.isCheaterExposed().observe(getViewLifecycleOwner(), this::showCheaterExposed);
             clientViewModel.isCheatingExposed().observe(getViewLifecycleOwner(), this::showCheatingExposed);
+            clientViewModel.getPlayerDisconnected().observe(getViewLifecycleOwner(), this::disconnectedPlayer);
 
             //if a new chatmessage is received, the arrow gets a little red circle, indicating the new message
             clientViewModel.getChatMessages().observe(getViewLifecycleOwner(), this::notifyNewMessage);
@@ -277,6 +278,13 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
             clientViewModel.mixedCards().observe(getViewLifecycleOwner(), this::mixCards);
         }
         return root;
+    }
+
+    private void disconnectedPlayer(Integer playerID) {
+        Toast.makeText(requireActivity().getApplicationContext(),
+                "Player " + playerID + " hat das Spiel verlassen",
+                Toast.LENGTH_SHORT).show();
+        showVote();
     }
 
     private void showServerMessage(String serverMessage) {
@@ -628,6 +636,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private void goBack() {
         //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        clientViewModel.leaveGame();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }

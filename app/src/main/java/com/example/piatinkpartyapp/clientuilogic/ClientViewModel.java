@@ -12,6 +12,7 @@ import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
 import com.example.piatinkpartyapp.networking.GameClient;
+import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.responses.responseSendPlayedCardToAllPlayers;
 
 import java.io.IOException;
@@ -24,10 +25,16 @@ public class ClientViewModel extends ViewModel {
 
     private GameClient client = GameClient.getInstance();
 
-    public void newGameClientInstance() throws IOException {
-        client = GameClient.getNewInstance();
-    }
+    private GameServer server = null;
 
+    public void startNewGameServer(){
+        server = new GameServer();
+        try {
+            server.startNewGameServer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public ClientViewModel() throws IOException {
          /*
@@ -185,6 +192,28 @@ public class ClientViewModel extends ViewModel {
 
     public LiveData<String> getServerMessage() {
         return client.getServerMessage();
+    }
+
+    public LiveData<Integer> getPlayerDisconnected() {
+        return client.getDisconnectedPlayer();
+    }
+
+    public void disconnectFromGame(){
+        client.disconnectFromGame();
+    }
+
+    public void leaveGame() {
+        disconnectFromGame();
+
+        if(client != null){
+            if(server!=null){
+                server.closeGame();
+            }
+        }
+    }
+
+    public void getInstance() throws IOException {
+        client = client.getInstance();
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

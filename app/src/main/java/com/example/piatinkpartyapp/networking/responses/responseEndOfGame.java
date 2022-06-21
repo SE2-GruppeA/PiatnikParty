@@ -1,6 +1,8 @@
 package com.example.piatinkpartyapp.networking.responses;
 
-public class responseEndOfGame {
+import com.example.piatinkpartyapp.networking.IPackets;
+
+public class responseEndOfGame implements IPackets {
 
     public responseEndOfGame() {
         //Do Nothing

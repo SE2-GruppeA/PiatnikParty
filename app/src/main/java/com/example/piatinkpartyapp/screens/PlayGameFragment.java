@@ -86,7 +86,7 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
     }
 
     private void atGameStart() {
-        getActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content,
+        getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                 new SchnopsnFragment()).commit();
     }
 
@@ -101,7 +101,7 @@ public class PlayGameFragment extends Fragment implements View.OnClickListener {
             clientViewModel = new ViewModelProvider(getActivity()).get(ClientViewModel.class);
 
             try {
-                clientViewModel.newGameClientInstance();
+                clientViewModel.getInstance();
             } catch (IOException e) {
                 e.printStackTrace();
             }
