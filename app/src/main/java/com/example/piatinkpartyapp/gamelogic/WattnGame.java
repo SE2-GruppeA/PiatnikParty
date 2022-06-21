@@ -38,10 +38,11 @@ public class WattnGame extends Game {
             resetPlayerPoints();
             resetCheating();
             sendGameStartedMessageToClients();
-            sendHandCards();
+
 
             Player roundStartPlayer = getRandomPlayer();
             setRoundStartPlayer(roundStartPlayer);
+            sendHandCards();
             notifyPlayerYourTurn(roundStartPlayer);
             //reset player points
             for(Player p: lobby.getPlayers()){
@@ -52,6 +53,8 @@ public class WattnGame extends Game {
     }
     //sending handcards to players
     public void sendHandCards() {
+        roundStartPlayer = this.getRoundStartPlayer();
+        LOG.info(roundStartPlayer.toString());
         for (Player player: lobby.getPlayers()) {
             ArrayList<Card> handCards = deck.getHandCards();
             player.setHandcards(handCards);
@@ -135,6 +138,7 @@ public class WattnGame extends Game {
     }
     public Player getRoundWinnerWattn(){
 
+        ArrayList<Player> winners = new ArrayList<>();
         Player winningPlayer = this.roundStartPlayer;
         LOG.info(winningPlayer.toString());
         Player currentPlayer = getNextPlayer(this.roundStartPlayer);
@@ -177,16 +181,18 @@ public class WattnGame extends Game {
                 winningPlayer = currentPlayer;
             }
 
-            /*if(winningPlayer.getPoints() == 3){
+            if(winningPlayer.getPoints() == 3){
                 LOG.info(winningPlayer + " won this game!");
-
-                sendEndRoundMessageToPlayers(roundStartPlayer);
+                winners.add(roundStartPlayer);
+                sendEndRoundMessageToPlayers(winners);
                 return winningPlayer;
             }else if(winningPlayer.getPoints() < currentPlayer.getPoints()){
-                sendEndRoundMessageToPlayers(roundStartPlayer);
+                winners.add(roundStartPlayer);
+                winners.add(currentPlayer);
+                sendEndRoundMessageToPlayers(winners);
                 winningPlayer = currentPlayer;
                 return winningPlayer;
-            }*/
+            }
             currentPlayer = getNextPlayer(currentPlayer);
 
         }
@@ -197,28 +203,24 @@ public class WattnGame extends Game {
 
     public void addPointsToWinnerPlayer(Player winnerPlayer) {
          if(lobby.getPlayers().size()==3 && (winnerPlayer.getId() == 2 || winnerPlayer.getId() == 3)){
-            lobby.getPlayerByID(2).addPoints(1);
-            sendPointsToWinnerPlayer(lobby.getPlayerByID(2));
-            lobby.getPlayerByID(3).addPoints(1);
-            sendPointsToWinnerPlayer(lobby.getPlayerByID(3));
+             updatePoints(lobby.getPlayerByID(2));
+             updatePoints(lobby.getPlayerByID(3));
+
         }else if(lobby.getPlayers().size()== 4){
              if(winnerPlayer.getId() == 1 || winnerPlayer.getId() == 3){
-                 lobby.getPlayerByID(1).addPoints(1);
-                 sendPointsToWinnerPlayer(lobby.getPlayerByID(1));
-                 lobby.getPlayerByID(3).addPoints(1);
-                 sendPointsToWinnerPlayer(lobby.getPlayerByID(3));
+                updatePoints(lobby.getPlayerByID(1));
+                updatePoints(lobby.getPlayerByID(3));
              }else if(winnerPlayer.getId() == 2 || winnerPlayer.getId() == 4){
-                 lobby.getPlayerByID(2).addPoints(1);
-                 sendPointsToWinnerPlayer(lobby.getPlayerByID(2));
-                 lobby.getPlayerByID(4).addPoints(1);
-                 sendPointsToWinnerPlayer(lobby.getPlayerByID(4));
+                updatePoints(lobby.getPlayerByID(2));
+                 updatePoints(lobby.getPlayerByID(4));
              }
          }else {
-             winnerPlayer.addPoints(1);
-             sendPointsToWinnerPlayer(winnerPlayer);
+            updatePoints(winnerPlayer);
          }
-
-
+    }
+    private void updatePoints(Player player){
+        lobby.getPlayerByID(player.getId()).addPoints(1);
+        sendPointsToWinnerPlayer(lobby.getPlayerByID(player.getId()));
     }
 
     public void startNewRoundWattn(Player startPlayer) {
@@ -231,6 +233,7 @@ public class WattnGame extends Game {
                 //sendEndRoundMessageToPlayers(startPlayer);
                 winnerIDs.add(startPlayer);
                 addPointsAndUpdateScoreboard(startPlayer, 1);
+                sendEndRoundMessageToPlayers(winnerIDs);
             }else if(startPlayer.getHandcards().isEmpty() && other.getHandcards().isEmpty()){
                 if(startPlayer.getPoints() >= other.getPoints()){
                     //sendEndRoundMessageToPlayers(startPlayer);
