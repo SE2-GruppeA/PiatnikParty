@@ -12,7 +12,6 @@
     android:background="@color/white"
     tools:context=".screens.GameRulesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <Button
         android:id="@+id/buttonBackGameRules"
