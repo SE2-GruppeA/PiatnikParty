@@ -183,22 +183,14 @@ public class Game {
     }
 
     public void sendMessageUpdateScoreboard() {
-        responseUpdateScoreboard response = new responseUpdateScoreboard(getPlayerHashMap());
+        responseUpdateScoreboard response = new responseUpdateScoreboard(lobby.getPlayerHashMap());
 
         for (Player player : lobby.getPlayers()) {
             player.getClientConnection().sendTCP(response);
         }
     }
 
-    public TreeMap<String, Integer> getPlayerHashMap(){
-        TreeMap<String, Integer> playersHashMap = new TreeMap<>();
 
-        for(Player player: lobby.getPlayers()){
-            playersHashMap.put(player.getPlayerName(), player.getPointsScoreboard());
-        }
-
-        return playersHashMap;
-    }
 
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
