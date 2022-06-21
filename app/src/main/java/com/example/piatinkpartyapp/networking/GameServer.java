@@ -10,17 +10,6 @@ import com.example.piatinkpartyapp.gamelogic.Game;
 import com.example.piatinkpartyapp.gamelogic.Lobby;
 import com.example.piatinkpartyapp.gamelogic.Player;
 import com.example.piatinkpartyapp.gamelogic.WattnGame;
-import com.example.piatinkpartyapp.networking.responses.responseConnectedSuccessfully;
-import com.example.piatinkpartyapp.networking.responses.responseEndOfGame;
-import com.example.piatinkpartyapp.networking.responses.responseGameStartedClientMessage;
-import com.example.piatinkpartyapp.networking.responses.responseIsCheater;
-import com.example.piatinkpartyapp.networking.responses.responseReceiveEndToEndChatMessage;
-import com.example.piatinkpartyapp.networking.responses.responseReceiveToAllChatMessage;
-import com.example.piatinkpartyapp.networking.responses.responseServerMessage;
-import com.example.piatinkpartyapp.networking.responses.responseUpdateScoreboard;
-import com.example.piatinkpartyapp.networking.responses.responseVoteForNextGame;
-import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
-import com.example.piatinkpartyapp.networking.responses.responsePlayerDisconnected;
 import com.example.piatinkpartyapp.networking.requests.requestExposePossibleCheater;
 import com.example.piatinkpartyapp.networking.requests.requestForceVoting;
 import com.example.piatinkpartyapp.networking.requests.requestMixCardsRequest;
@@ -32,12 +21,22 @@ import com.example.piatinkpartyapp.networking.requests.requestSendEndToEndChatMe
 import com.example.piatinkpartyapp.networking.requests.requestSendToAllChatMessage;
 import com.example.piatinkpartyapp.networking.requests.requestStartGameMessage;
 import com.example.piatinkpartyapp.networking.requests.requestVoteForNextGame;
+import com.example.piatinkpartyapp.networking.responses.responseConnectedSuccessfully;
+import com.example.piatinkpartyapp.networking.responses.responseEndOfGame;
+import com.example.piatinkpartyapp.networking.responses.responseGameStartedClientMessage;
+import com.example.piatinkpartyapp.networking.responses.responseIsCheater;
+import com.example.piatinkpartyapp.networking.responses.responseMixedCards;
+import com.example.piatinkpartyapp.networking.responses.responsePlayerDisconnected;
+import com.example.piatinkpartyapp.networking.responses.responseReceiveEndToEndChatMessage;
+import com.example.piatinkpartyapp.networking.responses.responseReceiveToAllChatMessage;
+import com.example.piatinkpartyapp.networking.responses.responseServerMessage;
+import com.example.piatinkpartyapp.networking.responses.responseUpdateScoreboard;
+import com.example.piatinkpartyapp.networking.responses.responseVoteForNextGame;
 import com.example.piatinkpartyapp.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -148,6 +147,7 @@ public class GameServer {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
+            Thread.interrupted();
             e.printStackTrace();
         }
 
