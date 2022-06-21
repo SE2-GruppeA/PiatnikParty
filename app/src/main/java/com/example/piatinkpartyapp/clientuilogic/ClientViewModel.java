@@ -210,7 +210,7 @@ public class ClientViewModel extends ViewModel {
     }
 
     public void leaveGame() {
-        if(!isEndOfGame().getValue()){
+        if(isEndOfGame().getValue() == null || !isEndOfGame().getValue()){
             if(client != null){
                 if(server!=null){
                     server.closeGame();
