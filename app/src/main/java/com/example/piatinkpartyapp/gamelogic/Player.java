@@ -42,6 +42,7 @@ public class Player {
         this.id = connection.getID();
         this.playerName = playerName;
         this.clientConnection = connection;
+
     }
 
     // for testing

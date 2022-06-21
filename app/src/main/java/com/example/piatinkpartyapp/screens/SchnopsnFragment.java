@@ -9,7 +9,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -576,6 +578,7 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
 
     private static void setCardImage(String cardName, ImageView imgview) {
         Integer rid = getResId(cardName);
+        imgview.setVisibility(View.VISIBLE);
         imgview.setImageResource(rid);
         imgview.setContentDescription(cardName);
     }
@@ -656,10 +659,20 @@ public class SchnopsnFragment extends Fragment implements View.OnClickListener, 
     private void showRoundWinner(){
         requireActivity().getSupportFragmentManager().beginTransaction().add(android.R.id.content, new WinnerFragment()).commit();
     }
-
+//reset card views
     private void showWinner(Integer winnerID){
-        Toast.makeText(requireActivity().getApplicationContext(),
-                "Player " + winnerID + " hat den Stich bekommen",
-                Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(requireActivity().getApplicationContext(),
+                        "Player " + winnerID + " hat den Stich bekommen",
+                        Toast.LENGTH_SHORT).show();
+
+
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               resetAllCardsOnTable();
+            }
+        },2000);
+
     }
 }

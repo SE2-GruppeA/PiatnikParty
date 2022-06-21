@@ -16,10 +16,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-public class SchnopsnTest {
+class SchnopsnTest {
 
     @Test
-    public void constructorTest() {
+    void constructorTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -30,7 +30,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void setRoundStartPlayerTest() {
+    void setRoundStartPlayerTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -45,7 +45,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void getWinnerPlayerSchnopsnTest() {
+    void getWinnerPlayerSchnopsnTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -68,7 +68,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void getWinnerPlayerSchnopsnTest2() {
+    void getWinnerPlayerSchnopsnTest2() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -91,7 +91,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void getWinnerPlayerSchnopsnTest3() {
+    void getWinnerPlayerSchnopsnTest3() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -114,7 +114,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void resetRoundFinishedTest() {
+    void resetRoundFinishedTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -138,7 +138,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void sendHandCardsTest() {
+    void sendHandCardsTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -158,7 +158,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void startGameTest() {
+    void startGameTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -189,7 +189,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void getNextPlayerTest() {
+    void getNextPlayerTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -210,7 +210,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void checkIfAllPlayersFinishedRoundTest() {
+    void checkIfAllPlayersFinishedRoundTest() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");
@@ -232,7 +232,7 @@ public class SchnopsnTest {
     }
 
     @Test
-    public void checkIfAllPlayersFinishedRoundTest2() {
+    void checkIfAllPlayersFinishedRoundTest2() {
         Lobby lobby = new Lobby();
         lobby.addPlayer(1, "Player 1");
         lobby.addPlayer(2, "Player 2");

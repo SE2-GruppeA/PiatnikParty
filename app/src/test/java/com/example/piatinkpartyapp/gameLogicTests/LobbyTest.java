@@ -14,7 +14,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class LobbyTest {
+class LobbyTest {
 
     private Lobby lobby;
     private Player playerTest;
@@ -41,14 +41,15 @@ public class LobbyTest {
 
     }
 
-    @Test
+
+ /*   @Test
      void testHandleVotingForNextGame(){
         int playerID = 1;
         GameName SCHNOPSN = GameName.Schnopsn;
         lobby.handleVotingForNextGame(playerID,SCHNOPSN);
 
         assertNotNull(lobby.currentGame);
-    }
+    }*/
 
     @Test
      void testCheckIfAllPlayersFinishedVoting(){

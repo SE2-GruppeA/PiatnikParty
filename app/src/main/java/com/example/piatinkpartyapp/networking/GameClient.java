@@ -67,12 +67,13 @@ public class GameClient {
     int x = 11;
 
     //for testing purposes
-    public GameClient(Client client){
+ /*   public GameClient(Client client){
         this.client = client;
         this.executorService = Executors.newFixedThreadPool(1);
-    }
+    }*/
 
     public GameClient(String gameServer_IP) {
+        LOG.info("hereeee");
         initLiveData();
         executorService = Executors.newFixedThreadPool(1);
         executorService.execute(() -> {

@@ -27,7 +27,7 @@ public class Lobby {
     }
 
     // for testing
-    public Player addPlayer(int id, String playerName) {
+   public Player addPlayer(int id, String playerName) {
         Player player = new Player(id, playerName);
         players.add(player);
         return player;
