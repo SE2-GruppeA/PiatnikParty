@@ -14,6 +14,10 @@ import com.example.piatinkpartyapp.networking.responses.responseSendSchlagToAllP
 import com.example.piatinkpartyapp.networking.responses.responseSendTrumpToAllPlayers;
 import com.example.piatinkpartyapp.networking.responses.responseUpdatePointsWinnerPlayer;
 import com.example.piatinkpartyapp.networking.responses.*;
+
+import java.util.ArrayList;
+
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
@@ -117,10 +121,16 @@ public class Game {
         player.getClientConnection().sendTCP(request);
     }
 
-    public void sendEndRoundMessageToPlayers(Player roundWinner) {
+    public void sendEndRoundMessageToPlayers(ArrayList<Player> roundWinner) {
+        ArrayList<Integer> winnerIds = new ArrayList<>();
+
+        for(Player winner: roundWinner){
+            winnerIds.add(winner.getId());
+        }
+
         for (Player player : lobby.getPlayers()) {
             responseEndOfRound response = new responseEndOfRound();
-            response.playerID = roundWinner.getId();
+            response.playerIDs = winnerIds;
             player.getClientConnection().sendTCP(response);
         }
     }
@@ -260,5 +270,12 @@ public class Game {
         Player player = lobby.getPlayerByID(exposerId);
         player.addPoints(-10);
         sendPointsToWinnerPlayer(player);
+    }
+
+    public Player getRandomPlayer() {
+        Random rand = new Random();
+        Player randomPlayer = lobby.getPlayers().get(rand.nextInt(lobby.getPlayers().size()));
+
+        return randomPlayer;
     }
 }

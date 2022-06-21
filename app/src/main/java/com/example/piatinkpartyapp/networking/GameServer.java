@@ -50,6 +50,15 @@ public class GameServer {
     private WattnGame wattnGame;
     private ExecutorService executorService;
 
+    private static GameServer INSTANCE = null;
+
+    public static GameServer getInstance(){
+        if(INSTANCE == null){
+            INSTANCE = new GameServer();
+        }
+        return INSTANCE;
+    }
+
     public void startNewGameServer() throws IOException {
         executorService = Executors.newFixedThreadPool(5);
         executorService.execute(() -> {
@@ -133,6 +142,12 @@ public class GameServer {
         LOG.info(" Server requested to close the game");
 
         sendPacketToAll(response);
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         for(Connection c:clients){
             c.close();
