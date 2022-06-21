@@ -183,8 +183,6 @@ public class GameClient {
                         handleServerMessage((responseServerMessage) object);
                     } else if(object instanceof responseEndOfGame){
                         handleEndOfGame((responseEndOfGame) object);
-                    } else if(object instanceof responsePlayerDisconnected){
-                        handlePlayerDisconnected((responsePlayerDisconnected) object);
                     } else if(object instanceof responseWrongNumberOfPlayers){
                         handleWrongNumberOfPlayers((responseWrongNumberOfPlayers) object);
                     }
