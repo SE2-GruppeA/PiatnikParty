@@ -11,6 +11,7 @@ import com.example.piatinkpartyapp.cards.CardValue;
 import com.example.piatinkpartyapp.cards.GameName;
 import com.example.piatinkpartyapp.cards.Symbol;
 import com.example.piatinkpartyapp.chat.ChatMessage;
+import com.example.piatinkpartyapp.gamelogic.Game;
 import com.example.piatinkpartyapp.networking.GameClient;
 import com.example.piatinkpartyapp.networking.GameServer;
 import com.example.piatinkpartyapp.networking.responses.responseSendPlayedCardToAllPlayers;
@@ -28,7 +29,7 @@ public class ClientViewModel extends ViewModel {
     private GameServer server = null;
 
     public void startNewGameServer(){
-        server = new GameServer();
+        server = GameServer.getInstance();
         try {
             server.startNewGameServer();
         } catch (IOException e) {
@@ -65,6 +66,12 @@ public class ClientViewModel extends ViewModel {
 
     ////////////// START - MainGameUIs - LOGiC //////////////
 
+    //when game ends, the scoreboard is shown
+    //this value is used to close the SchnopsnFragment after the scoreboard is shown
+    private MutableLiveData<Boolean> closeGameAfterScoreboard = new MutableLiveData<>();
+    //when true: Scoreboard Fragment sets closeGameAfterScoreboard to true when closed
+    private Boolean closeGameScoreboard = false;
+
     public LiveData<Boolean> getConnectionState(){
         return client.getConnectionState();
     }
@@ -81,6 +88,10 @@ public class ClientViewModel extends ViewModel {
 
     public LiveData<Boolean> isGameStarted(){
         return client.isGameStarted();
+    }
+
+    public LiveData<Boolean> isEndOfGame(){
+        return client.isEndOfGame();
     }
 
     public LiveData<Card> getHandoutCard(){
@@ -108,11 +119,7 @@ public class ClientViewModel extends ViewModel {
         client.sendVoteForNextGame(nextGame);
     }
 
-    public void sendVoteForGameEnd(){
-        client.sendVoteForGameEnd();
-    }
-
-    public LiveData<Integer> isEndOfRound(){
+    public LiveData<ArrayList<Integer>> isEndOfRound(){
         return client.isEndOfRound();
     }
 
@@ -203,17 +210,35 @@ public class ClientViewModel extends ViewModel {
     }
 
     public void leaveGame() {
-        disconnectFromGame();
-
-        if(client != null){
-            if(server!=null){
-                server.closeGame();
+        if(!isEndOfGame().getValue()){
+            if(client != null){
+                if(server!=null){
+                    server.closeGame();
+                }
             }
         }
+
+        disconnectFromGame();
     }
 
     public void getInstance() throws IOException {
         client = client.getInstance();
+    }
+
+    public LiveData<Boolean> getCloseGameAfterScoreboard() {
+        return closeGameAfterScoreboard;
+    }
+
+    public void closeGame(){
+        closeGameAfterScoreboard.postValue(true);
+    }
+
+    public void setCloseGameScoreboard(Boolean close){
+        closeGameScoreboard = close;
+    }
+
+    public Boolean getCloseGameScoreboard(){
+        return closeGameScoreboard;
     }
 
     /////////////// END - MainGameUIs - LOGiC ///////////////

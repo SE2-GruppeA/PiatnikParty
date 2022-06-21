@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import com.example.piatinkpartyapp.clientuilogic.ClientViewModel;
 import com.example.piatinkpartyapp.R;
 import com.example.piatinkpartyapp.cards.GameName;
+import com.example.piatinkpartyapp.gamelogic.Game;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,7 +103,7 @@ public class VotingDialog extends Fragment implements View.OnClickListener {
             closeVotingDialog();
         }else if(view == btnVoteEnd){
             //vote for the end of the game
-            clientViewModel.sendVoteForGameEnd();
+            clientViewModel.voteForNextGame(GameName.endOfGame);
             closeVotingDialog();
         }
     }
